@@ -3,10 +3,10 @@ const morgan = require("morgan");
 const dotenv = require("dotenv");
 const app = express();
 const PORT = 3000;
-const roomRouter = require("./routers/myroom");
-const userRouter = require("./routers/user");
-const postRouter = require("./routers/post");
-const usedRouter = require("./routers/used");
+const roomRouter = require("./routers/roomsRouter");
+const userRouter = require("./routers/usersRouter");
+const postRouter = require("./routers/postsRouter");
+const usedRouter = require("./routers/usedsRouter");
 app.use(morgan("dev"));
 
 app.use("/room", roomRouter);
