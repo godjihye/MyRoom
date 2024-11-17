@@ -3,8 +3,10 @@ const models = require("../models");
 const createRoom = async (data) => {
   return await models.Room.create(data);
 };
-const findRoomById = async (id) => {
-  return await models.Room.findByPk(id);
+const findRoomByUserId = async (id) => {
+  return await models.Room.findAll({
+    where: {userId: id}
+  });
 };
 const findAllRoom = async () => {
   return await models.Room.findAll();
@@ -14,10 +16,15 @@ const deleteRoom = async (id) => {
     where: { id },
   });
 };
-
+const updateRoom = async(id, data) => {
+  return await models.Room.update(data,{
+    where: {id}
+  })
+}
 module.exports = {
   createRoom,
-  findRoomById,
+  findRoomByUserId,
   findAllRoom,
   deleteRoom,
+  updateRoom
 };

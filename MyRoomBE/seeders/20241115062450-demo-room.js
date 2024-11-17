@@ -16,14 +16,14 @@ module.exports = {
       {
         roomName: "침실",
         roomDesc: "침실.",
-        userId: 3,
+        userId: 1,
         createdAt: now(),
         updatedAt: now(),
       },
       {
-        roomName: "침실",
-        roomDesc: "침실.",
-        userId: 3,
+        roomName: "공부방",
+        roomDesc: "공부하는 곳.",
+        userId: 1,
         createdAt: now(),
         updatedAt: now(),
       },
