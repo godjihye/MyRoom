@@ -49,10 +49,21 @@ const updateRoom = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+const getAllRoom = async (req, res) => {
+  try {
+    const result = await roomService.getAllRoom(req.params.userId);
+    if (result) {
+      res.status(200).json({ documents: result });
+    }
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+};
 module.exports = {
   createRoom,
   findAllRoom,
   findRoom,
   deleteRoom,
   updateRoom,
+  getAllRoom,
 };

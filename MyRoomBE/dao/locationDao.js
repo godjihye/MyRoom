@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const models = require("../models");
 
 // 1. Location 생성
@@ -26,11 +27,18 @@ const updateLocation = async (id, data) => {
     where: { id },
   });
 };
-
+const findList = async (id) => {
+  return await models.Location.findAll({
+    where: {
+      id,
+    },
+  });
+};
 module.exports = {
   createLocation,
   findAllLocation,
   findLocation,
   deleteLocation,
   updateLocation,
+  findList,
 };
