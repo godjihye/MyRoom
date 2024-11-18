@@ -10,6 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       itemName: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       purchaseDate: {

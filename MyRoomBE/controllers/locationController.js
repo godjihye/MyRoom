@@ -6,7 +6,7 @@ const createLocation = async (req, res) => {
     const location = await locationService.createLocation(req.body);
     res.status(201).json({ location: location });
   } catch (e) {
-    res.status(500).json({ error: e.error });
+    res.status(500).json({ error: e.message });
   }
 };
 
@@ -16,7 +16,7 @@ const findAllLocation = async (req, res) => {
     const locations = await locationService.findAllLocation(req.params.roomId);
     res.status(200).json({ data: locations });
   } catch (e) {
-    res.status(500).json({ error: e.error });
+    res.status(500).json({ error: e.message });
   }
 };
 
@@ -26,7 +26,7 @@ const findLocation = async (req, res) => {
     const location = await locationService.findLocation(req.params.locationId);
     res.status(200).json({ data: location });
   } catch (e) {
-    res.status(500).json({ error: e.error });
+    res.status(500).json({ error: e.message });
   }
 };
 
@@ -36,7 +36,7 @@ const deleteLocation = async (req, res) => {
     await locationService.deleteLocation(req.params.locationId);
     res.status(202).json({ success: "true" });
   } catch (e) {
-    res.status(500).json({ error: e.error });
+    res.status(500).json({ error: e.message });
   }
 };
 
@@ -49,7 +49,7 @@ const updateLocation = async (req, res) => {
     );
     res.status(200).json({ data: result });
   } catch (e) {
-    res.status(500).json({ error: e.error });
+    res.status(500).json({ error: e.message });
   }
 };
 
