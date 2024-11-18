@@ -1,17 +1,26 @@
 const locationDao = require("../dao/locationDao");
 
+// 1. Location 생성
 const createLocation = async (data) => {
   return await locationDao.createLocation(data);
 };
+
+// 2. Location 전체 조회
 const findAllLocation = async (id) => {
-  return await locationDao.findLocationById(id);
+  return await locationDao.findAllLocation(id);
 };
+
+//3. Location 상세 조회
 const findLocation = async (id) => {
   return await locationDao.findLocation(id);
 };
+
+// 4. Location 삭제
 const deleteLocation = async (id) => {
   return await locationDao.deleteLocation(id);
 };
+
+// 5. Location tnwjd
 const updateLocation = async (id, data) => {
   return await locationDao.updateLocation(id, data);
 };
