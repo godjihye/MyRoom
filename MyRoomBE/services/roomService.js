@@ -20,6 +20,9 @@ const deleteRoom = async (id) => {
 const updateRoom = async (id, data) => {
   return await roomDao.updateRoom(id, data);
 };
+const getAllRoom = async (id) => {
+  return await roomDao.getAllRoom(id);
+};
 
 module.exports = {
   createRoom,
@@ -27,4 +30,5 @@ module.exports = {
   findRoom,
   deleteRoom,
   updateRoom,
+  getAllRoom,
 };

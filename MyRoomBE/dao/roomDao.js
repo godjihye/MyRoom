@@ -28,11 +28,26 @@ const updateRoom = async (id, data) => {
     where: { id },
   });
 };
-
+const getAllRoom = async (id) => {
+  try {
+    return await models.Room.findAll({
+      include: {
+        model: models.Location,
+        as: "Locations",
+        attributes: ["id", "locationName", "locationDesc"],
+      },
+      where: { userId: id },
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 module.exports = {
   createRoom,
   findAllRoom,
   findRoom,
   deleteRoom,
   updateRoom,
+  getAllRoom,
 };

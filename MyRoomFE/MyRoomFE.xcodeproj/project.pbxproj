@@ -6,33 +6,122 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXFileReference section */
-		B89A1B552CE5D432001AA7AE /* MyRoomFE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRoomFE.app; sourceTree = BUILT_PRODUCTS_DIR; };
-/* End PBXFileReference section */
+/* Begin PBXBuildFile section */
+		B81D49912CEB3B8800682453 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81D49902CEB3B8800682453 /* HomeView.swift */; };
+		B81D49B82CEB3C5400682453 /* TabItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81D49B72CEB3C5400682453 /* TabItemView.swift */; };
+		B86FFA862CEAE1180062BC30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFA832CEAE1180062BC30 /* ContentView.swift */; };
+		B86FFA872CEAE1180062BC30 /* MyRoomFEApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFA842CEAE1180062BC30 /* MyRoomFEApp.swift */; };
+		B86FFA882CEAE1180062BC30 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B86FFA802CEAE1180062BC30 /* Preview Assets.xcassets */; };
+		B86FFA892CEAE1180062BC30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B86FFA822CEAE1180062BC30 /* Assets.xcassets */; };
+		B86FFAB12CEAE1A10062BC30 /* HomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFAB02CEAE1A10062BC30 /* HomeListView.swift */; };
+		B86FFAB52CEAE2610062BC30 /* ItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFAB42CEAE2610062BC30 /* ItemViewModel.swift */; };
+		B86FFAB82CEAE27C0062BC30 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B86FFAB72CEAE27C0062BC30 /* Alamofire */; };
+		B86FFABB2CEAE2B70062BC30 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFABA2CEAE2B70062BC30 /* Model.swift */; };
+		B86FFABE2CEAE4CC0062BC30 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */; };
+		B86FFAEE2CEAE9260062BC30 /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFAED2CEAE9260062BC30 /* ItemListView.swift */; };
+		B86FFAF02CEB01AA0062BC30 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFAEF2CEB01AA0062BC30 /* RoomViewModel.swift */; };
+		B88F6A482CEB4154009E2970 /* FavListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F6A472CEB4154009E2970 /* FavListView.swift */; };
+		B8AE17742CEB0B5A00B757B8 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE17732CEB0B5A00B757B8 /* EntryView.swift */; };
+		B8AE17762CEB110200B757B8 /* AddRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE17752CEB110200B757B8 /* AddRoomView.swift */; };
+		B8AE17782CEB121500B757B8 /* AddLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE17772CEB121500B757B8 /* AddLocationView.swift */; };
+		B8AE17A72CEB192400B757B8 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE17A62CEB192400B757B8 /* CustomTextField.swift */; };
+/* End PBXBuildFile section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		B89A1B572CE5D432001AA7AE /* MyRoomFE */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MyRoomFE;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
+/* Begin PBXFileReference section */
+		B81D49902CEB3B8800682453 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		B81D49B72CEB3C5400682453 /* TabItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItemView.swift; sourceTree = "<group>"; };
+		B86FFA802CEAE1180062BC30 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B86FFA822CEAE1180062BC30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B86FFA832CEAE1180062BC30 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B86FFA842CEAE1180062BC30 /* MyRoomFEApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoomFEApp.swift; sourceTree = "<group>"; };
+		B86FFAB02CEAE1A10062BC30 /* HomeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListView.swift; sourceTree = "<group>"; };
+		B86FFAB42CEAE2610062BC30 /* ItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModel.swift; sourceTree = "<group>"; };
+		B86FFABA2CEAE2B70062BC30 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		B86FFABF2CEAE5010062BC30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B86FFAED2CEAE9260062BC30 /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
+		B86FFAEF2CEB01AA0062BC30 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
+		B88F6A472CEB4154009E2970 /* FavListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavListView.swift; sourceTree = "<group>"; };
+		B89A1B552CE5D432001AA7AE /* MyRoomFE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRoomFE.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8AE17732CEB0B5A00B757B8 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
+		B8AE17752CEB110200B757B8 /* AddRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRoomView.swift; sourceTree = "<group>"; };
+		B8AE17772CEB121500B757B8 /* AddLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationView.swift; sourceTree = "<group>"; };
+		B8AE17A62CEB192400B757B8 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B89A1B522CE5D432001AA7AE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B86FFAB82CEAE27C0062BC30 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B86FFA812CEAE1180062BC30 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B86FFA802CEAE1180062BC30 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B86FFA852CEAE1180062BC30 /* MyRoomFE */ = {
+			isa = PBXGroup;
+			children = (
+				B86FFABF2CEAE5010062BC30 /* Info.plist */,
+				B86FFAB92CEAE2A80062BC30 /* Model */,
+				B86FFAB32CEAE2510062BC30 /* ViewModel */,
+				B86FFA8A2CEAE11C0062BC30 /* View */,
+				B86FFA812CEAE1180062BC30 /* Preview Content */,
+				B86FFA822CEAE1180062BC30 /* Assets.xcassets */,
+				B86FFA832CEAE1180062BC30 /* ContentView.swift */,
+				B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */,
+				B86FFA842CEAE1180062BC30 /* MyRoomFEApp.swift */,
+				B8AE17732CEB0B5A00B757B8 /* EntryView.swift */,
+			);
+			path = MyRoomFE;
+			sourceTree = "<group>";
+		};
+		B86FFA8A2CEAE11C0062BC30 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B86FFAB02CEAE1A10062BC30 /* HomeListView.swift */,
+				B81D49902CEB3B8800682453 /* HomeView.swift */,
+				B88F6A472CEB4154009E2970 /* FavListView.swift */,
+				B81D49B72CEB3C5400682453 /* TabItemView.swift */,
+				B8AE17752CEB110200B757B8 /* AddRoomView.swift */,
+				B8AE17772CEB121500B757B8 /* AddLocationView.swift */,
+				B86FFAED2CEAE9260062BC30 /* ItemListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B86FFAB32CEAE2510062BC30 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B86FFAB42CEAE2610062BC30 /* ItemViewModel.swift */,
+				B86FFAEF2CEB01AA0062BC30 /* RoomViewModel.swift */,
+				B8AE17A62CEB192400B757B8 /* CustomTextField.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B86FFAB92CEAE2A80062BC30 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B86FFABA2CEAE2B70062BC30 /* Model.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		B89A1B4C2CE5D432001AA7AE = {
 			isa = PBXGroup;
 			children = (
-				B89A1B572CE5D432001AA7AE /* MyRoomFE */,
+				B86FFA852CEAE1180062BC30 /* MyRoomFE */,
 				B89A1B562CE5D432001AA7AE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,11 +149,9 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				B89A1B572CE5D432001AA7AE /* MyRoomFE */,
-			);
 			name = MyRoomFE;
 			packageProductDependencies = (
+				B86FFAB72CEAE27C0062BC30 /* Alamofire */,
 			);
 			productName = MyRoomFE;
 			productReference = B89A1B552CE5D432001AA7AE /* MyRoomFE.app */;
@@ -94,6 +181,9 @@
 			);
 			mainGroup = B89A1B4C2CE5D432001AA7AE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B86FFAB62CEAE27C0062BC30 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B89A1B562CE5D432001AA7AE /* Products */;
 			projectDirPath = "";
@@ -109,6 +199,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B86FFA882CEAE1180062BC30 /* Preview Assets.xcassets in Resources */,
+				B86FFABE2CEAE4CC0062BC30 /* Config.xcconfig in Resources */,
+				B86FFA892CEAE1180062BC30 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +212,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8AE17742CEB0B5A00B757B8 /* EntryView.swift in Sources */,
+				B8AE17A72CEB192400B757B8 /* CustomTextField.swift in Sources */,
+				B86FFABB2CEAE2B70062BC30 /* Model.swift in Sources */,
+				B86FFAEE2CEAE9260062BC30 /* ItemListView.swift in Sources */,
+				B86FFAB12CEAE1A10062BC30 /* HomeListView.swift in Sources */,
+				B86FFAB52CEAE2610062BC30 /* ItemViewModel.swift in Sources */,
+				B86FFA862CEAE1180062BC30 /* ContentView.swift in Sources */,
+				B86FFAF02CEB01AA0062BC30 /* RoomViewModel.swift in Sources */,
+				B8AE17782CEB121500B757B8 /* AddLocationView.swift in Sources */,
+				B81D49912CEB3B8800682453 /* HomeView.swift in Sources */,
+				B88F6A482CEB4154009E2970 /* FavListView.swift in Sources */,
+				B86FFA872CEAE1180062BC30 /* MyRoomFEApp.swift in Sources */,
+				B8AE17762CEB110200B757B8 /* AddRoomView.swift in Sources */,
+				B81D49B82CEB3C5400682453 /* TabItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +234,7 @@
 /* Begin XCBuildConfiguration section */
 		B89A1B612CE5D432001AA7AE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -190,6 +298,7 @@
 		};
 		B89A1B622CE5D432001AA7AE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -254,6 +363,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"MyRoomFE/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyRoomFE/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -282,6 +393,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"MyRoomFE/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyRoomFE/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -322,6 +435,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B86FFAB62CEAE27C0062BC30 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B86FFAB72CEAE27C0062BC30 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B86FFAB62CEAE27C0062BC30 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B89A1B4D2CE5D432001AA7AE /* Project object */;
 }

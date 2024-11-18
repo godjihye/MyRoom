@@ -12,7 +12,7 @@ const createItem = async (req, res) => {
 const findAllItem = async (req, res) => {
   try {
     const items = await itemService.findAllItem(req.params.locationId);
-    res.status(200).json({ data: items });
+    res.status(200).json({ documents: items });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -20,7 +20,7 @@ const findAllItem = async (req, res) => {
 const findItem = async (req, res) => {
   try {
     const item = await itemService.findItem(req.params.itemId);
-    res.status(200).json({ data: item });
+    res.status(200).json({ documents: item });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

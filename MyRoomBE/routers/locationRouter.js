@@ -12,5 +12,6 @@ router.get("/detail/:locationId", locationController.findLocation);
 router.delete("/:locationId", locationController.deleteLocation);
 // 5. Location tnwjd
 router.put("/:locationId", locationController.updateLocation);
-
+// 6. Room의 정보도 담긴 Location 목록 조회
+router.get("/list/:userId", locationController.findList);
 module.exports = router;

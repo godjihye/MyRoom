@@ -20,9 +20,14 @@ const deleteLocation = async (id) => {
   return await locationDao.deleteLocation(id);
 };
 
-// 5. Location tnwjd
+// 5. Location 수정
 const updateLocation = async (id, data) => {
   return await locationDao.updateLocation(id, data);
+};
+
+// 6.
+const findList = async (id) => {
+  return await locationDao.findList(id);
 };
 
 module.exports = {
@@ -31,4 +36,5 @@ module.exports = {
   findLocation,
   deleteLocation,
   updateLocation,
+  findList,
 };

@@ -53,10 +53,20 @@ const updateLocation = async (req, res) => {
   }
 };
 
+const findList = async (req, res) => {
+  try {
+    const result = await locationService.findList(req.param.userId);
+    res.status(200).json({ documents: result });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
+
 module.exports = {
   createLocation,
   findAllLocation,
   findLocation,
   deleteLocation,
   updateLocation,
+  findList,
 };

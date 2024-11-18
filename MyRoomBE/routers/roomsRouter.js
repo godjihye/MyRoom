@@ -12,5 +12,5 @@ router.get("/detail/:roomId", roomController.findRoom);
 router.delete("/:roomId", roomController.deleteRoom);
 // 5. Room 수정
 router.put("/:roomId", roomController.updateRoom);
-
+router.get("/list/:userId", roomController.getAllRoom);
 module.exports = router;
