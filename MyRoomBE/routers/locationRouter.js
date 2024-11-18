@@ -1,19 +1,16 @@
-const express = require("express")
+const express = require("express");
 const locationController = require("../controllers/locationController");
-const { updateLocation } = require("../services/locationService");
 const router = express.Router();
 
-/*
-createLocation,
-    findAllLocation,
-    findLocation,
-    deleteLocation,
-    updateLocation
-*/
-router.post("/", locationController.createLocation)
-router.get("/user/:id", locationController.findAllLocation)
-router.get("/:id", locationController.findLocation)
-router.delete("/:id", locationController.deleteLocation)
-router.put("/:id", locationController.updateLocation)
+// 1. Location 생성
+router.post("/", locationController.createLocation);
+// 2. 방 하나의 Location 전체 조회
+router.get("/:roomId", locationController.findAllLocation);
+// 3. Location 상세 조회
+router.get("/detail/:locationId", locationController.findLocation);
+// 4. Location 삭제
+router.delete("/:locationId", locationController.deleteLocation);
+// 5. Location tnwjd
+router.put("/:locationId", locationController.updateLocation);
 
 module.exports = router;
