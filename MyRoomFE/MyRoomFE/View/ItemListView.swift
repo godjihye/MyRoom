@@ -6,110 +6,60 @@
 //
 
 import SwiftUI
-
+let sampleLocation = Location(id: 1, locationName: "책장", locationDesc: "책상 옆 책장")
 struct ItemListView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
+	@State var isShowingAddRoomView: Bool = false
+	@Binding var showHeaderView: Bool
 	var location: Location
 	var body: some View {
 		NavigationView {
 			if !itemVM.items.isEmpty{
 				List(itemVM.items) { item in
-					NavigationLink(destination: ItemDetailView(item: item)) {
+					NavigationLink(destination: ItemDetailView(showHeaderView: $showHeaderView, item: item)) {
 						ItemRowView(item: item)
 					}
 				}
 				.navigationTitle(location.locationName)
+				.toolbar {
+					ToolbarItem(placement: .topBarTrailing) {
+						Button {
+							self.isShowingAddRoomView = true
+						} label: {
+							Image(systemName: "plus")
+								.font(.system(size: 20))
+								.bold()
+						}
+						
+					}
+				}
+				.sheet(isPresented: $isShowingAddRoomView) {
+					Text("")
+				}
 			} else {
 				Text("아이템이 없네요...")
+				Button("아이템 추가하기") {
+					
+				}
 			}
 				
+			
+			
 		}
 		
-		
 		.listStyle(InsetGroupedListStyle())
-		
+		.onAppear {
+				showHeaderView = false
+		}
 		.task {
+			showHeaderView = false
 			await itemVM.fetchItems(locationId: location.id) // 데이터 가져오기
 		}
 	}
 }
 
-struct ItemRowView: View {
-	let item: Item
-	
-	var body: some View {
-		HStack {
-			if let photo = item.photo {
-				AsyncImage(url: URL(string: photo)) { image in
-					image
-						.resizable()
-						.scaledToFill()
-						.frame(width: 50, height: 50)
-						.clipShape(RoundedRectangle(cornerRadius: 8))
-				} placeholder: {
-					ProgressView()
-				}
-			}
-			VStack(alignment: .leading, spacing: 5) {
-				Text(item.itemName)
-					.font(.headline)
-				if let desc = item.desc {
-					Text(desc)
-						.font(.subheadline)
-						.foregroundColor(.secondary)
-				}
-			}
-			Spacer()
-			
-			// 즐겨찾기 여부 표시
-			if item.isFav {
-				Image(systemName: "star.fill")
-					.foregroundColor(.yellow)
-			}
-		}
-		.padding(.vertical, 8)
-	}
-}
-
-struct ItemDetailView: View {
-	let item: Item
-	
-	var body: some View {
-		VStack(spacing: 20) {
-			if let photo = item.photo {
-				AsyncImage(url: URL(string: photo)) { image in
-					image
-						.resizable()
-						.scaledToFit()
-						.frame(maxHeight: 300)
-				} placeholder: {
-					ProgressView()
-				}
-			}
-			Text(item.itemName)
-				.font(.title)
-				.padding()
-			if let desc = item.desc{
-				Text(desc)
-					.font(.body)
-					.padding()
-			}
-			Text("Color: \(item.color)")
-				.font(.body)
-				.foregroundColor(.gray)
-			
-			Text("Price: \(item.price)원")
-				.font(.headline)
-			if let url = item.url {
-				Link("View Online", destination: URL(string: url)!)
-					.foregroundColor(.blue)
-					.padding(.top)
-				
-				Spacer()
-			}
-		}
-		.padding()
-		.navigationTitle("Item Detail")
-	}
+#Preview {
+	let itemVM = ItemViewModel()
+	ItemListView(showHeaderView: .constant(false), location: sampleLocation).environmentObject(itemVM)
 }
 

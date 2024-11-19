@@ -11,7 +11,7 @@ struct HomeListView: View {
 	@EnvironmentObject var roomVM: RoomViewModel
 	@State private var isShowingAddRoomView: Bool = false
 	@State private var isShowingAddLocationView: Bool = false
-	
+	@Binding var showHeaderView: Bool
 	var body: some View {
 		NavigationStack {
 			
@@ -40,7 +40,12 @@ struct HomeListView: View {
 					ForEach(roomVM.rooms) { (room: Room) in
 						Section(header: Text(room.roomName)){
 							ForEach(room.Locations) { (location: Location) in
-								NavigationLink(destination: ItemListView(location: location)) {
+								NavigationLink(
+									destination: ItemListView(
+										showHeaderView: $showHeaderView,
+										location: location
+									)
+								) {
 									Text(location.locationName)
 										.padding(8)
 								}
@@ -51,31 +56,52 @@ struct HomeListView: View {
 				.sheet(isPresented: $isShowingAddRoomView) {
 					AddRoomView { roomName, roomDesc in
 						Task{
-							await roomVM.addRoom(roomName: roomName, roomDesc: roomDesc)
+							addRoom(roomName: roomName, roomDesc: roomDesc)
 						}
 					}
 				}
 				.sheet(isPresented: $isShowingAddLocationView) {
 					AddLocationView(rooms: roomVM.rooms) { roomId, locationName, locationDesc in
-						Task {
-							await roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId)
-						}
+						addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId)
 					}
 				}
 				.refreshable {
-					await roomVM.fetchRooms()
+					fetchRooms()
 				}
 			}
 			.background(Color.backgroud)
+		}
+		.onAppear {
+			showHeaderView = true
 		}
 		.task {
 			await roomVM.fetchRooms()
 		}
 	}
+	private func fetchRooms() {
+			Task {
+					await roomVM.fetchRooms()
+			}
+	}
+
+	private func addRoom(roomName: String, roomDesc: String) {
+			Task {
+					await roomVM.addRoom(roomName: roomName, roomDesc: roomDesc)
+					await roomVM.fetchRooms()
+			}
+	}
+
+	private func addLocation(locationName: String, locationDesc: String, roomId: Int) {
+			Task {
+					await roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId)
+					await roomVM.fetchRooms()
+			}
+	}
+
 }
 
-#Preview {
-	let roomVM = RoomViewModel()
-	let itemVM = ItemViewModel()
-	HomeListView().environmentObject(roomVM).environmentObject(itemVM)
-}
+//#Preview {
+//	let roomVM = RoomViewModel()
+//	let itemVM = ItemViewModel()
+//	HomeListView().environmentObject(roomVM).environmentObject(itemVM)
+//}

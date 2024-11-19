@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+	@State private var showHeaderView: Bool = true
 	@State private var selectedTab: Int = 0 {
 		willSet {
 			if newValue == 0 {
@@ -25,31 +26,12 @@ struct HomeView: View {
 	private let tabs = ["홈", "즐겨찾기"]
 	var body: some View {
 		VStack(spacing: 20) {
-			CustomTextField(icon: "magnifyingglass", placeholder: "검색어를 입력하세요", text: $query)
-			HStack(spacing:0) {
-				Button {
-					withAnimation {
-						selectedTab = 0
-					}
-				} label: {
-					TabItemView(isActive: $tabHome, tab: tabs[0])
-				}
-				Button {
-					withAnimation{
-						selectedTab = 1
-					}
-				} label: {
-					TabItemView(isActive: $tabFav, tab: tabs[1])
-				}
+			if showHeaderView {
+				HomeHeaderView(query: $query, selectedTab: $selectedTab, tabHome: $tabHome, tabFav: $tabFav)
 			}
-			TabView(selection: $selectedTab) {
-				
-				HomeListView().tag(0)
-				FavListView().tag(1)
-				
-					.toolbar(.hidden, for: .tabBar)
+			if selectedTab == 0 { HomeListView(showHeaderView: $showHeaderView) } else {
+				FavListView(showHeaderView: $showHeaderView)
 			}
-			.tabViewStyle(.page(indexDisplayMode: .automatic))
 		}
 		.background(Color.backgroud)
 	}
