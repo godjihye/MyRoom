@@ -1,4 +1,4 @@
 # MyRoom
 - Home
--   - MainList
+    - MainList
     - FavItemList
