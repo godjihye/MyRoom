@@ -1,11 +1,11 @@
 const express = require("express");
-const locationController = require("../controllers/itemController");
+const itemController = require("../controllers/itemController");
 const router = express.Router();
 
-router.post("/", locationController.createItem);
-router.get("/:locationId", locationController.findAllItem);
-router.get("/detail/:itemId", locationController.findItem);
-router.delete("/:itemId", locationController.deleteItem);
-router.put("/:itemId", locationController.updateItem);
-
+router.post("/", itemController.createItem);
+router.get("/:locationId", itemController.findAllItem);
+router.get("/detail/:itemId", itemController.findItem);
+router.delete("/:itemId", itemController.deleteItem);
+router.put("/:itemId", itemController.updateItem);
+router.get("/favList/:locationId", itemController.findFavList);
 module.exports = router;

@@ -7,47 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B81D49912CEB3B8800682453 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81D49902CEB3B8800682453 /* HomeView.swift */; };
-		B81D49B82CEB3C5400682453 /* TabItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81D49B72CEB3C5400682453 /* TabItemView.swift */; };
-		B86FFA862CEAE1180062BC30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFA832CEAE1180062BC30 /* ContentView.swift */; };
-		B86FFA872CEAE1180062BC30 /* MyRoomFEApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFA842CEAE1180062BC30 /* MyRoomFEApp.swift */; };
-		B86FFA882CEAE1180062BC30 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B86FFA802CEAE1180062BC30 /* Preview Assets.xcassets */; };
-		B86FFA892CEAE1180062BC30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B86FFA822CEAE1180062BC30 /* Assets.xcassets */; };
-		B86FFAB12CEAE1A10062BC30 /* HomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFAB02CEAE1A10062BC30 /* HomeListView.swift */; };
-		B86FFAB52CEAE2610062BC30 /* ItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFAB42CEAE2610062BC30 /* ItemViewModel.swift */; };
 		B86FFAB82CEAE27C0062BC30 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B86FFAB72CEAE27C0062BC30 /* Alamofire */; };
-		B86FFABB2CEAE2B70062BC30 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFABA2CEAE2B70062BC30 /* Model.swift */; };
-		B86FFABE2CEAE4CC0062BC30 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */; };
-		B86FFAEE2CEAE9260062BC30 /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFAED2CEAE9260062BC30 /* ItemListView.swift */; };
-		B86FFAF02CEB01AA0062BC30 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FFAEF2CEB01AA0062BC30 /* RoomViewModel.swift */; };
-		B88F6A482CEB4154009E2970 /* FavListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F6A472CEB4154009E2970 /* FavListView.swift */; };
-		B8AE17742CEB0B5A00B757B8 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE17732CEB0B5A00B757B8 /* EntryView.swift */; };
-		B8AE17762CEB110200B757B8 /* AddRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE17752CEB110200B757B8 /* AddRoomView.swift */; };
-		B8AE17782CEB121500B757B8 /* AddLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE17772CEB121500B757B8 /* AddLocationView.swift */; };
-		B8AE17A72CEB192400B757B8 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE17A62CEB192400B757B8 /* CustomTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B81D49902CEB3B8800682453 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		B81D49B72CEB3C5400682453 /* TabItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItemView.swift; sourceTree = "<group>"; };
-		B86FFA802CEAE1180062BC30 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B86FFA822CEAE1180062BC30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B86FFA832CEAE1180062BC30 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		B86FFA842CEAE1180062BC30 /* MyRoomFEApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoomFEApp.swift; sourceTree = "<group>"; };
-		B86FFAB02CEAE1A10062BC30 /* HomeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListView.swift; sourceTree = "<group>"; };
-		B86FFAB42CEAE2610062BC30 /* ItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModel.swift; sourceTree = "<group>"; };
-		B86FFABA2CEAE2B70062BC30 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		B86FFABF2CEAE5010062BC30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		B86FFAED2CEAE9260062BC30 /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
-		B86FFAEF2CEB01AA0062BC30 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
-		B88F6A472CEB4154009E2970 /* FavListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavListView.swift; sourceTree = "<group>"; };
 		B89A1B552CE5D432001AA7AE /* MyRoomFE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRoomFE.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B8AE17732CEB0B5A00B757B8 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
-		B8AE17752CEB110200B757B8 /* AddRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRoomView.swift; sourceTree = "<group>"; };
-		B8AE17772CEB121500B757B8 /* AddLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationView.swift; sourceTree = "<group>"; };
-		B8AE17A62CEB192400B757B8 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B80359162CEC1E0B00A3D90E /* Exceptions for "MyRoomFE" folder in "MyRoomFE" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B89A1B542CE5D432001AA7AE /* MyRoomFE */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B80359022CEC1E0B00A3D90E /* MyRoomFE */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B80359162CEC1E0B00A3D90E /* Exceptions for "MyRoomFE" folder in "MyRoomFE" target */,
+			);
+			path = MyRoomFE;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B89A1B522CE5D432001AA7AE /* Frameworks */ = {
@@ -61,67 +47,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B86FFA812CEAE1180062BC30 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				B86FFA802CEAE1180062BC30 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		B86FFA852CEAE1180062BC30 /* MyRoomFE */ = {
-			isa = PBXGroup;
-			children = (
-				B86FFABF2CEAE5010062BC30 /* Info.plist */,
-				B86FFAB92CEAE2A80062BC30 /* Model */,
-				B86FFAB32CEAE2510062BC30 /* ViewModel */,
-				B86FFA8A2CEAE11C0062BC30 /* View */,
-				B86FFA812CEAE1180062BC30 /* Preview Content */,
-				B86FFA822CEAE1180062BC30 /* Assets.xcassets */,
-				B86FFA832CEAE1180062BC30 /* ContentView.swift */,
-				B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */,
-				B86FFA842CEAE1180062BC30 /* MyRoomFEApp.swift */,
-				B8AE17732CEB0B5A00B757B8 /* EntryView.swift */,
-			);
-			path = MyRoomFE;
-			sourceTree = "<group>";
-		};
-		B86FFA8A2CEAE11C0062BC30 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				B86FFAB02CEAE1A10062BC30 /* HomeListView.swift */,
-				B81D49902CEB3B8800682453 /* HomeView.swift */,
-				B88F6A472CEB4154009E2970 /* FavListView.swift */,
-				B81D49B72CEB3C5400682453 /* TabItemView.swift */,
-				B8AE17752CEB110200B757B8 /* AddRoomView.swift */,
-				B8AE17772CEB121500B757B8 /* AddLocationView.swift */,
-				B86FFAED2CEAE9260062BC30 /* ItemListView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		B86FFAB32CEAE2510062BC30 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				B86FFAB42CEAE2610062BC30 /* ItemViewModel.swift */,
-				B86FFAEF2CEB01AA0062BC30 /* RoomViewModel.swift */,
-				B8AE17A62CEB192400B757B8 /* CustomTextField.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		B86FFAB92CEAE2A80062BC30 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				B86FFABA2CEAE2B70062BC30 /* Model.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		B89A1B4C2CE5D432001AA7AE = {
 			isa = PBXGroup;
 			children = (
-				B86FFA852CEAE1180062BC30 /* MyRoomFE */,
+				B80359022CEC1E0B00A3D90E /* MyRoomFE */,
 				B89A1B562CE5D432001AA7AE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -148,6 +77,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B80359022CEC1E0B00A3D90E /* MyRoomFE */,
 			);
 			name = MyRoomFE;
 			packageProductDependencies = (
@@ -199,9 +131,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B86FFA882CEAE1180062BC30 /* Preview Assets.xcassets in Resources */,
-				B86FFABE2CEAE4CC0062BC30 /* Config.xcconfig in Resources */,
-				B86FFA892CEAE1180062BC30 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,20 +141,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8AE17742CEB0B5A00B757B8 /* EntryView.swift in Sources */,
-				B8AE17A72CEB192400B757B8 /* CustomTextField.swift in Sources */,
-				B86FFABB2CEAE2B70062BC30 /* Model.swift in Sources */,
-				B86FFAEE2CEAE9260062BC30 /* ItemListView.swift in Sources */,
-				B86FFAB12CEAE1A10062BC30 /* HomeListView.swift in Sources */,
-				B86FFAB52CEAE2610062BC30 /* ItemViewModel.swift in Sources */,
-				B86FFA862CEAE1180062BC30 /* ContentView.swift in Sources */,
-				B86FFAF02CEB01AA0062BC30 /* RoomViewModel.swift in Sources */,
-				B8AE17782CEB121500B757B8 /* AddLocationView.swift in Sources */,
-				B81D49912CEB3B8800682453 /* HomeView.swift in Sources */,
-				B88F6A482CEB4154009E2970 /* FavListView.swift in Sources */,
-				B86FFA872CEAE1180062BC30 /* MyRoomFEApp.swift in Sources */,
-				B8AE17762CEB110200B757B8 /* AddRoomView.swift in Sources */,
-				B81D49B82CEB3C5400682453 /* TabItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,7 +149,8 @@
 /* Begin XCBuildConfiguration section */
 		B89A1B612CE5D432001AA7AE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */;
+			baseConfigurationReferenceAnchor = B80359022CEC1E0B00A3D90E /* MyRoomFE */;
+			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -298,7 +214,8 @@
 		};
 		B89A1B622CE5D432001AA7AE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B86FFABD2CEAE4CC0062BC30 /* Config.xcconfig */;
+			baseConfigurationReferenceAnchor = B80359022CEC1E0B00A3D90E /* MyRoomFE */;
+			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

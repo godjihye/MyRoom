@@ -30,10 +30,20 @@ const updateItem = async (id, data) => {
     },
   });
 };
+
+const findFavList = async (id) => {
+  return await models.Item.findAll({
+    where: {
+      locationId: id,
+      isFav: true,
+    },
+  });
+};
 module.exports = {
   createItem,
   findAllItem,
   findItem,
   deleteItem,
   updateItem,
+  findFavList,
 };

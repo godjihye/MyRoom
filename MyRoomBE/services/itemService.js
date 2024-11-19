@@ -15,11 +15,14 @@ const deleteItem = async (id) => {
 const updateItem = async (id, data) => {
   return await itemDao.updateItem(id, data);
 };
-
+const findFavList = async (id) => {
+  return await itemDao.findFavList(id);
+};
 module.exports = {
   createItem,
   findAllItem,
   findItem,
   deleteItem,
   updateItem,
+  findFavList,
 };
