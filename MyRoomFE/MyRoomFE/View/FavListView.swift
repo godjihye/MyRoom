@@ -24,14 +24,14 @@ struct FavListView: View {
 						.onAppear {
 							showHeaderView = true
 						}
-						.task {
-							await itemVM.fetchFavItems(locationId: 1)
-						}
-						.padding()
+						.onAppear(perform: {
+							itemVM.fetchFavItems(locationId: 1)
+						}) 
+						.padding(.top)
 					LazyVGrid(columns: columns, spacing: 16) {
 						ForEach(itemVM.favItems) { item in
 							NavigationLink {
-								ItemDetailView(showHeaderView: $showHeaderView, item: item)
+								ItemDetailView(item: item)
 							} label: {
 								FavItemRow(item: item)
 									.frame(height: 200)
@@ -42,7 +42,7 @@ struct FavListView: View {
 				.padding()
 				.offset(y: -30)
 			}
-			.background(Color.backgroud)
+			.background(Color.background)
 		} detail: { Text("Select Your Fav Item") }
 			
 	}

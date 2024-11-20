@@ -14,7 +14,6 @@ struct HomeListView: View {
 	@Binding var showHeaderView: Bool
 	var body: some View {
 		NavigationStack {
-			
 			VStack(alignment: .leading) {
 				HStack {
 					Text("Home")
@@ -33,7 +32,6 @@ struct HomeListView: View {
 							.font(.title2)
 							.bold()
 					}
-					
 				}
 				.padding(.horizontal)
 				List {
@@ -54,54 +52,37 @@ struct HomeListView: View {
 					}
 				}
 				.sheet(isPresented: $isShowingAddRoomView) {
-					AddRoomView { roomName, roomDesc in
+					AddRoomView {
+						roomName,
+						roomDesc in
 						Task{
-							addRoom(roomName: roomName, roomDesc: roomDesc)
+							roomVM
+								.addRoom(roomName: roomName, roomDesc: roomDesc)
 						}
 					}
 				}
 				.sheet(isPresented: $isShowingAddLocationView) {
 					AddLocationView(rooms: roomVM.rooms) { roomId, locationName, locationDesc in
-						addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId)
+						roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId)
 					}
 				}
 				.refreshable {
-					fetchRooms()
+					roomVM.fetchRooms()
 				}
 			}
-			.background(Color.backgroud)
+			.background(Color.background)
 		}
 		.onAppear {
 			showHeaderView = true
 		}
-		.task {
-			await roomVM.fetchRooms()
+		.onAppear {
+			roomVM.fetchRooms()
 		}
 	}
-	private func fetchRooms() {
-			Task {
-					await roomVM.fetchRooms()
-			}
-	}
-
-	private func addRoom(roomName: String, roomDesc: String) {
-			Task {
-					await roomVM.addRoom(roomName: roomName, roomDesc: roomDesc)
-					await roomVM.fetchRooms()
-			}
-	}
-
-	private func addLocation(locationName: String, locationDesc: String, roomId: Int) {
-			Task {
-					await roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId)
-					await roomVM.fetchRooms()
-			}
-	}
-
 }
 
-//#Preview {
-//	let roomVM = RoomViewModel()
-//	let itemVM = ItemViewModel()
-//	HomeListView().environmentObject(roomVM).environmentObject(itemVM)
-//}
+#Preview {
+	let roomVM = RoomViewModel()
+	let itemVM = ItemViewModel()
+	HomeListView(showHeaderView: .constant(true)).environmentObject(roomVM).environmentObject(itemVM)
+}

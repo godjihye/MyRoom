@@ -3,7 +3,7 @@ const itemService = require("../services/itemService");
 const createItem = async (req, res) => {
   try {
     const item = await itemService.createItem(req.body);
-    res.status(201).json({ data: item });
+    res.status(201).json({ documents: item });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

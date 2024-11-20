@@ -19,23 +19,26 @@ struct Item: Identifiable, Codable {
 	let isFav: Bool
 	let price: Int?
 	let openDate: String?
-	let locationId: Int?
+	let locationId: Int
 	let createdAt: String?
 	let updatedAt: String?
 }
+
 struct ItemResponse: Codable {
-		let documents: [Item]
+	let documents: [Item]
 }
 struct Location: Identifiable, Codable, Hashable {
 	let id: Int
 	let locationName: String
 	let locationDesc: String
 }
+struct LocationResponse:Codable {
+	let documents: [Location]
+}
 struct Room: Identifiable, Codable, Equatable, Hashable {
 	static func == (lhs: Room, rhs: Room) -> Bool {
 		return lhs.id == rhs.id
 	}
-
 	let id: Int
 	let roomName: String
 	let roomDesc: String
