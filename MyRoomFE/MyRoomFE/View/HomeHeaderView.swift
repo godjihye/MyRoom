@@ -6,9 +6,7 @@
 //
 
 import SwiftUI
-class HeaderVisibilityManager: ObservableObject {
-	@Published var showHeader: Bool = true
-}
+
 struct HomeHeaderView: View {
 	@Binding var query: String
 	@Binding var selectedTab: Int
@@ -54,3 +52,4 @@ struct HomeHeaderView: View {
 		tabFav: .constant(true)
 	)
 }
+

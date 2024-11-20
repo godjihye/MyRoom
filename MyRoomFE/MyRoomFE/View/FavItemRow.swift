@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-let sample = Item(id: 14, itemName: "다이소 물티슈", purchaseDate: Optional("2024-11-19T00:00:00.000Z"), expiryDate: Optional("2025-11-18T00:00:00.000Z"), url: Optional("https://www.daisomall.co.kr/pd/pdr/SCR_PDR_0001?pdNo=1017947&recmYn=N"), photo: Optional("https://cdn.daisomall.co.kr/file/PD/20240628/S2GacZCWu6MAZHG6b9cB1017947_00_00S2GacZCWu6MAZHG6b9cB.jpg/dims/resize/600/quality/95"), desc: Optional("다이소 뷰러 핑크색"), color: Optional("rose gold"), isFav: true, price: Optional(2000), openDate: nil, locationId: Optional(1), createdAt: Optional("2024-11-19T01:23:56.426Z"), updatedAt: Optional("2024-11-19T01:23:56.426Z"))
+//let sample = Item(id: 14, itemName: "다이소 물티슈", purchaseDate: Optional("2024-11-19T00:00:00.000Z"), expiryDate: Optional("2025-11-18T00:00:00.000Z"), url: Optional("https://www.daisomall.co.kr/pd/pdr/SCR_PDR_0001?pdNo=1017947&recmYn=N"), photo: Optional("https://cdn.daisomall.co.kr/file/PD/20240628/S2GacZCWu6MAZHG6b9cB1017947_00_00S2GacZCWu6MAZHG6b9cB.jpg/dims/resize/600/quality/95"), desc: Optional("다이소 뷰러 핑크색"), color: Optional("rose gold"), isFav: true, price: Optional(2000), openDate: nil, locationId: 1, createdAt: Optional("2024-11-19T01:23:56.426Z"), updatedAt: Optional("2024-11-19T01:23:56.426Z"))
 struct FavItemRow: View {
 	let item: Item
 	var dateFormatter = DateFormatter()
@@ -31,6 +31,6 @@ struct FavItemRow: View {
 	}
 }
 
-#Preview {
-	FavItemRow(item: sample)
-}
+//#Preview {
+//	FavItemRow(item: sample)
+//}

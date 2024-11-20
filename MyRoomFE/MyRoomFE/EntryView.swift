@@ -9,10 +9,18 @@ import SwiftUI
 
 struct EntryView: View {
     var body: some View {
-			HomeView()
+			TabView {
+				HomeView()
+					.tabItem {
+						Image(systemName: "house")
+						Text("홈")
+					}
+			}
     }
 }
 
 #Preview {
-    EntryView()
+	let roomVM = RoomViewModel()
+	let itemVM = ItemViewModel()
+	EntryView().environmentObject(roomVM).environmentObject(itemVM)
 }

@@ -42,7 +42,7 @@ struct ItemRowView: View {
 		.padding(.vertical, 8)
 	}
 }
-
-#Preview {
-	ItemRowView(item: sample)
-}
+//
+//#Preview {
+//	ItemRowView(item: sample)
+//}
