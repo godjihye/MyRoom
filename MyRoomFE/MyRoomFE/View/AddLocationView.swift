@@ -9,10 +9,12 @@ import SwiftUI
 
 struct AddLocationView: View {
 	@Environment(\.dismiss) var dismiss
-	@State private var locationName: String = ""
-	@State private var locationDesc: String = ""
-	@State private var selectedRoomId: Int = 0
 	
+	@State var locationName: String = ""
+	@State var locationDesc: String = ""
+	@State var selectedRoomId: Int = 0
+	
+	var title: String = "새로운 위치 추가"
 	let rooms: [Room]
 	let onSave: (Int, String, String) -> Void
 	
@@ -32,18 +34,20 @@ struct AddLocationView: View {
 					TextField("위치를 설명해주세요", text: $locationDesc)
 				}
 			}
-			.navigationTitle("새로운 위치 추가")
+			.navigationTitle(title)
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {
 					Button("Save") {
-							onSave(selectedRoomId, locationName, locationDesc)
-							dismiss()
+						onSave(selectedRoomId, locationName, locationDesc)
+						dismiss()
 						
 					}
 				}
-				ToolbarItem(placement: .cancellationAction) {
-					Button("Cancel") {
-						dismiss()
+				if title == "새로운 위치 추가" {
+					ToolbarItem(placement: .cancellationAction) {
+						Button("Cancel") {
+							dismiss()
+						}
 					}
 				}
 			}

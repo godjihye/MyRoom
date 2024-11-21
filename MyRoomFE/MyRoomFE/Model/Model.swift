@@ -31,9 +31,7 @@ struct Location: Identifiable, Codable, Hashable {
 	let id: Int
 	let locationName: String
 	let locationDesc: String
-}
-struct LocationResponse:Codable {
-	let documents: [Location]
+	private (set) var roomId: Int
 }
 struct Room: Identifiable, Codable, Equatable, Hashable {
 	static func == (lhs: Room, rhs: Room) -> Bool {

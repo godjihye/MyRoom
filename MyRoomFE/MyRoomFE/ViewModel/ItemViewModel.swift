@@ -12,6 +12,7 @@ class ItemViewModel: ObservableObject {
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	@Published var items: [Item] = []
 	@Published var favItems: [Item] = []
+	
 	func fetchItems(locationId: Int) {
 		let url = "\(endPoint)/items/\(locationId)"
 		AF.request(url,method: .get)
@@ -23,8 +24,7 @@ class ItemViewModel: ObservableObject {
 							do {
 								let root = try JSONDecoder().decode(ItemResponse.self, from: data)
 								self.items = root.documents
-								print(self.items.first)
-							}catch let error {
+							} catch let error {
 								print("error: \(error)")
 							}
 						}
@@ -36,7 +36,6 @@ class ItemViewModel: ObservableObject {
 	}
 	func fetchFavItems(locationId: Int) {
 		let url = "\(endPoint)/items/favList/\(locationId)"
-		print(url)
 		AF.request(url,method: .get)
 			.response { response in
 				if let statusCode = response.response?.statusCode {
@@ -46,7 +45,6 @@ class ItemViewModel: ObservableObject {
 							do {
 								let root = try JSONDecoder().decode(ItemResponse.self, from: data)
 								self.favItems = root.documents
-								print(self.favItems)
 							} catch let error {
 								print("error: \(error)")
 							}
@@ -71,7 +69,7 @@ class ItemViewModel: ObservableObject {
 			"price": 2000,
 			"locationId": locationId
 		]
-		AF.request(url,method: .post,parameters: params,encoding: JSONEncoding.default)
+		AF.request(url, method: .post,parameters: params, encoding: JSONEncoding.default)
 			.response { response in
 				switch response.result {
 				case .success(_):
@@ -81,7 +79,7 @@ class ItemViewModel: ObservableObject {
 				}
 			}
 	}
-	func deleteItem(itemId: Int) {
+	func removeItem(itemId: Int) {
 		let url = "\(endPoint)/items/\(itemId)"
 		AF.request(url, method: .delete)
 			.response { response in
@@ -97,7 +95,7 @@ class ItemViewModel: ObservableObject {
 	}
 }
 
-func addFormData(formData: MultipartFormData, optionalString: String?, withName: String) {
+private func addFormData(formData: MultipartFormData, optionalString: String?, withName: String) {
 	guard let str = optionalString else { return }
 	formData.append(str.data(using: .utf8)!, withName: withName)
 }

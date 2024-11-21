@@ -12,6 +12,7 @@ import SwiftUI
 struct ItemDetailView: View {
 	let item: Item
 	@EnvironmentObject var itemVM: ItemViewModel
+	@Binding var showHeaderView: Bool
 	var body: some View {
 		ScrollView {
 			VStack(alignment: .leading, spacing: 16) {
@@ -42,7 +43,7 @@ struct ItemDetailView: View {
 						.font(.title)
 						.fontWeight(.bold)
 					Button("삭제") {
-						itemVM.deleteItem(itemId: item.id)
+						itemVM.removeItem(itemId: item.id)
 					}
 				}
 				
@@ -115,6 +116,9 @@ struct ItemDetailView: View {
 			.padding()
 			.navigationTitle("Item Details")
 			.navigationBarTitleDisplayMode(.inline)
+			.onAppear {
+				showHeaderView = false
+			}
 		}
 	}
 }
