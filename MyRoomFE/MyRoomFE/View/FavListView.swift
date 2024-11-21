@@ -31,7 +31,7 @@ struct FavListView: View {
 					LazyVGrid(columns: columns, spacing: 16) {
 						ForEach(itemVM.favItems) { item in
 							NavigationLink {
-								ItemDetailView(item: item)
+								ItemDetailView(item: item, showHeaderView: $showHeaderView)
 							} label: {
 								FavItemRow(item: item)
 									.frame(height: 200)

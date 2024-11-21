@@ -12,29 +12,26 @@ struct HomeView: View {
 	@State private var selectedTab: Int = 0 {
 		willSet {
 			if newValue == 0 {
-				tabHome = true
-				tabFav = false
+				tabHome = true;	tabFav = false
 			} else {
-				tabHome = false
-				tabFav = true
+				tabHome = false; tabFav = true
 			}
 		}
 	}
 	@State private var tabHome: Bool = true
 	@State private var tabFav: Bool = false
 	@State private var query: String = ""
-	@State private var path: [String] = []
-	
 	private let tabs = ["홈", "즐겨찾기"]
+	 
 	var body: some View {
 		VStack(spacing: 20) {
-
+			if showHeaderView {
 				HomeHeaderView(query: $query, selectedTab: $selectedTab, tabHome: $tabHome, tabFav: $tabFav)
 					.transition(.move(edge: .top).combined(with: .opacity))
 					.animation(.easeInOut(duration: 1.0), value: showHeaderView)
-			
-			if selectedTab == 0 { HomeListView(showHeaderView: $showHeaderView) } else {
-				FavListView(showHeaderView: $showHeaderView)
+			}
+			if selectedTab == 0 { HomeListView(showHeaderView: $showHeaderView).environmentObject(RoomViewModel()) } else {
+				FavListView(showHeaderView: $showHeaderView).environmentObject(ItemViewModel())
 			}
 		}
 		.background(Color.background)

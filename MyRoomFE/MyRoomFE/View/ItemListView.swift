@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-let sampleLocation = Location(id: 1, locationName: "책장", locationDesc: "책상 옆 책장")
+let sampleLocation = Location(id: 1, locationName: "책장", locationDesc: "책상 옆 책장", roomId: 1)
 struct ItemListView: View {
 	@EnvironmentObject var roomVM: RoomViewModel
 	@EnvironmentObject var itemVM: ItemViewModel
@@ -21,9 +21,18 @@ struct ItemListView: View {
 					Text(location.locationName)
 						.font(.title)
 						.bold()
+					NavigationLink {
+						AddLocationView(locationName: location.locationName, locationDesc: location.locationDesc, selectedRoomId: location.roomId, title: "위치 정보 편집", rooms: roomVM.rooms) { roomId, locationName, locationDesc in
+							roomVM.editLocation(locationId: location.id, locationName: locationName, locationDesc: locationDesc, roomId: roomId)
+						}
+					} label: {
+						Text("편집")
+					}
+
 					Button("삭제") {
 						roomVM.removeLocation(locationId: location.id)
-					}.foregroundStyle(.red)
+					}
+					.foregroundStyle(.red)
 
 					Spacer()
 					Button {
@@ -39,7 +48,7 @@ struct ItemListView: View {
 				// 아이템 리스트
 				if !itemVM.items.isEmpty{
 					List(itemVM.items) { item in
-						NavigationLink(destination: ItemDetailView(item: item)) {
+						NavigationLink(destination: ItemDetailView(item: item, showHeaderView: $showHeaderView)) {
 							ItemRowView(item: item)
 						}
 					}
@@ -57,6 +66,10 @@ struct ItemListView: View {
 		}
 		.onAppear {
 			itemVM.fetchItems(locationId: location.id)
+			showHeaderView = false
+		}
+		.onDisappear {
+			showHeaderView = true
 		}
 	}
 }
