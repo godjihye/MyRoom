@@ -11,6 +11,7 @@ struct EntryView: View {
     var body: some View {
 			TabView {
 				HomeView()
+					.environmentObject(RoomViewModel()).environmentObject(ItemViewModel())
 					.tabItem {
 						Image(systemName: "house")
 						Text("홈")

@@ -6,10 +6,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Room.belongsTo(models.User, {
         foreignKey: "userId",
+        as: "Users",
         onDelete: "CASCADE",
       });
       Room.hasMany(models.Location, {
         foreignKey: "roomId",
+        as: "Locations",
         onDelete: "CASCADE",
       });
     }

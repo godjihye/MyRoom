@@ -24,9 +24,9 @@ struct FavListView: View {
 						.onAppear {
 							showHeaderView = true
 						}
-						.onAppear(perform: {
-							itemVM.fetchFavItems(locationId: 1)
-						}) 
+						.task {
+							await itemVM.fetchFavItems(locationId: 1)
+						}
 						.padding(.top)
 					LazyVGrid(columns: columns, spacing: 16) {
 						ForEach(itemVM.favItems) { item in

@@ -25,13 +25,13 @@ struct HomeView: View {
 	 
 	var body: some View {
 		VStack(spacing: 20) {
-			if showHeaderView {
+			
 				HomeHeaderView(query: $query, selectedTab: $selectedTab, tabHome: $tabHome, tabFav: $tabFav)
 					.transition(.move(edge: .top).combined(with: .opacity))
 					.animation(.easeInOut(duration: 1.0), value: showHeaderView)
-			}
-			if selectedTab == 0 { HomeListView(showHeaderView: $showHeaderView).environmentObject(RoomViewModel()) } else {
-				FavListView(showHeaderView: $showHeaderView).environmentObject(ItemViewModel())
+			
+			if selectedTab == 0 { HomeListView(showHeaderView: $showHeaderView) } else {
+				FavListView(showHeaderView: $showHeaderView)
 			}
 		}
 		.background(Color.background)

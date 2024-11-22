@@ -10,6 +10,21 @@ const findAllItem = async (id) => {
     where: {
       locationId: id,
     },
+    include: [
+      {
+        model: models.Location,
+        as: "Locations",
+        attributes: ["locationName"],
+        include: [
+          {
+            model: models.Room,
+            as: "Rooms",
+            attributes: ["roomName"],
+          },
+        ],
+      },
+    ],
+    raw: true,
   });
 };
 // 3. Item 상세 조회
@@ -37,6 +52,21 @@ const findFavList = async (id) => {
       locationId: id,
       isFav: true,
     },
+    include: [
+      {
+        model: models.Location,
+        as: "Locations",
+        attributes: ["locationName"],
+        include: [
+          {
+            model: models.Room,
+            as: "Rooms",
+            attributes: ["roomName"],
+          },
+        ],
+      },
+    ],
+    raw: true,
   });
 };
 module.exports = {
