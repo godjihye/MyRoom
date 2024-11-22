@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Item.belongsTo(models.Location, {
         foreignKey: "locationId",
+        as: "Locations",
         onDelete: "CASCADE",
       });
     }

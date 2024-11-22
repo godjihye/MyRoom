@@ -5,12 +5,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Location.belongsTo(models.Room, {
         foreignKey: "roomId",
-        as: "room",
+        as: "Rooms",
         onDelete: "CASCADE",
       });
       Location.hasMany(models.Item, {
         foreignKey: "locationId",
-        as: "items",
+        as: "Items",
+        onDelete: "CASCADE",
       });
     }
   }

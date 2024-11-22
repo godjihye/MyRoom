@@ -18,7 +18,7 @@ struct SearchBar: View {
 				.background(Color(.systemGray5))
 				.clipShape(.rect(cornerRadius: 15))
 				.padding(.horizontal, 10)
-				.frame(width: 350)
+				.frame(width: 300)
 				.onSubmit {
 					handler()
 				}

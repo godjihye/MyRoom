@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Item: Identifiable, Codable {
+struct Item: Identifiable, Codable, Hashable {
 	let id: Int
 	let itemName: String
 	let purchaseDate: String?
@@ -16,12 +16,23 @@ struct Item: Identifiable, Codable {
 	let photo: String?
 	let desc: String?
 	let color: String?
-	let isFav: Bool
+	var isFav: Bool
 	let price: Int?
 	let openDate: String?
 	let locationId: Int
 	let createdAt: String?
 	let updatedAt: String?
+	let locationName: String
+	let roomName: String
+	
+	enum CodingKeys: String, CodingKey {
+		case id, itemName, purchaseDate, expiryDate, url, photo, desc, color, isFav, price, openDate, locationId, createdAt, updatedAt
+		case locationName = "Locations.locationName" // Mapping `location.locationName` to `locationName`
+		case roomName = "Locations.Rooms.roomName" // Mapping `location.room.roomName` to `roomName`
+	}
+	mutating func changeIsFav() {
+		isFav = !isFav
+	}
 }
 
 struct ItemResponse: Codable {
@@ -31,7 +42,7 @@ struct Location: Identifiable, Codable, Hashable {
 	let id: Int
 	let locationName: String
 	let locationDesc: String
-	private (set) var roomId: Int
+	let roomId: Int
 }
 struct Room: Identifiable, Codable, Equatable, Hashable {
 	static func == (lhs: Room, rhs: Room) -> Bool {

@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct ItemRowView: View {
+	@EnvironmentObject var itemVM: ItemViewModel
 	let item: Item
+	@State private var itemFav: Bool = false
 	var body: some View {
 		HStack {
 			if let photo = item.photo {
@@ -32,17 +34,23 @@ struct ItemRowView: View {
 				}
 			}
 			Spacer()
-			
-			// 즐겨찾기 여부 표시
-			if item.isFav {
-				Image(systemName: "star.fill")
-					.foregroundColor(.yellow)
+			Button {
+				Task {
+					await itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
+				}
+			} label: {
+				Image(systemName: "star.fill").foregroundStyle(item.isFav ? .yellow : .gray)
+					.font(.system(size: 20))
+			}
+			.onAppear {
+				itemFav = item.isFav
 			}
 		}
 		.padding(.vertical, 8)
 	}
 }
-//
-//#Preview {
-//	ItemRowView(item: sample)
-//}
+
+#Preview {
+	let itemVM = ItemViewModel()
+	ItemRowView(item: sampleItem).environmentObject(itemVM)
+}

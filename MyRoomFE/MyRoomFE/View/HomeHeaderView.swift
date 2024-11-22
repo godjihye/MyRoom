@@ -17,6 +17,8 @@ struct HomeHeaderView: View {
     var body: some View {
 			VStack(spacing: 20) {
 				HStack(spacing: 0) {
+					Text("마룸")
+						.font(.headline)
 					SearchBar(searchText: $query) {
 						
 					}

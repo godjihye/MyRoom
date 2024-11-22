@@ -34,7 +34,7 @@ const getAllRoom = async (id) => {
       include: {
         model: models.Location,
         as: "Locations",
-        attributes: ["id", "locationName", "locationDesc"],
+        attributes: ["id", "locationName", "locationDesc", "roomId"],
       },
       where: { userId: id },
     });

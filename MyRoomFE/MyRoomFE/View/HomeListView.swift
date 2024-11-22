@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeListView: View {
 	@EnvironmentObject var roomVM: RoomViewModel
-	
+	@State var path: NavigationPath = NavigationPath()
 	@State private var isShowingAddRoomView: Bool = false
 	@State private var isShowingAddLocationView: Bool = false
 	@State private var isShowingAlert: Bool = false
@@ -41,57 +41,74 @@ struct HomeListView: View {
 					}
 				}
 				.padding(.horizontal)
-				List {
-					ForEach(roomVM.rooms) { (room: Room) in
-						Section(header: HStack {
-							Text(room.roomName)
-							Spacer()
-							NavigationLink("편집") {
-								AddRoomView(title: "방 정보 편집", roomName: room.roomName, roomDesc: room.roomDesc) { roomName, roomDesc in
-									roomVM.editRoom(roomId: room.id, roomName: roomName, roomDesc: roomDesc)
-									roomVM.fetchRooms()
+				if !roomVM.rooms.isEmpty {
+					List {
+						ForEach(roomVM.rooms) { (room: Room) in
+							Section(header: HStack {
+								Text(room.roomName)
+								Spacer()
+								NavigationLink("편집") {
+									AddRoomView(title: "방 정보 편집", roomName: room.roomName, roomDesc: room.roomDesc) { roomName, roomDesc in
+										Task {
+											await roomVM.editRoom(roomId: room.id, roomName: roomName, roomDesc: roomDesc)
+											await roomVM.fetchRooms()
+										}
+									}
 								}
-							}
-							.font(.system(size: 15))
-							.foregroundStyle(.secondary)
-							Button("삭제") {
-								isShowingAlert = true
-								if removeRoomCheck {
-									roomVM.removeRoom(roomId: room.id)
-									roomVM.fetchRooms()
+								.font(.system(size: 15))
+								.foregroundStyle(.secondary)
+								Button("삭제") {
+									isShowingAlert = true
+									if removeRoomCheck {
+										Task {
+											await roomVM.removeRoom(roomId: room.id)
+											await roomVM.fetchRooms()
+										}
+									}
 								}
-							}
-							.font(.system(size: 15))
-							.foregroundStyle(.red)
-						}) {
-							ForEach(room.Locations) { (location: Location) in
-								NavigationLink(destination: ItemListView(showHeaderView: $showHeaderView, location: location).environmentObject(ItemViewModel())) {
-									Text(location.locationName)
-										.padding(8)
+								.font(.system(size: 15))
+								.foregroundStyle(.red)
+							}) {
+								ForEach(room.Locations) { location in
+									NavigationLink {
+										ItemListView(showHeaderView: $showHeaderView, location: location)
+									} label: {
+										Text(location.locationName)
+									}
+
 								}
 							}
 						}
 					}
 					.sheet(isPresented: $isShowingAddRoomView) {
 						AddRoomView {roomName, roomDesc in
-							roomVM.addRoom(roomName: roomName, roomDesc: roomDesc)
+							Task {
+								await roomVM.addRoom(roomName: roomName, roomDesc: roomDesc)
+							}
 						}
 					}
 					.sheet(isPresented: $isShowingAddLocationView) {
 						AddLocationView(rooms: roomVM.rooms) { roomId, locationName, locationDesc in
-							roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId)
+							Task { await roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId) }
 						}
 					}
 					.refreshable {
-						roomVM.fetchRooms()
+						Task {
+							await roomVM.fetchRooms()
+						}
+					}
+				} else {
+					VStack {
+						Text("서버 연결을 확인해주세요")
+						Button("다시 시도하기") {
+							Task {
+								await roomVM.fetchRooms()
+							}
+						}
 					}
 				}
 			}
 			.background(Color.background)
-			.onAppear {
-				showHeaderView = true
-				roomVM.fetchRooms()
-			}
 			.alert(isPresented: $isShowingAlert) {
 				Alert(
 					title: Text("방 삭제 확인"),
@@ -102,6 +119,9 @@ struct HomeListView: View {
 					secondaryButton: .cancel(Text("취소"))
 				)
 			}
+		}
+		.task {
+			await roomVM.fetchRooms()
 		}
 	}
 }
