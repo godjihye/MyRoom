@@ -15,40 +15,50 @@ struct FavListView: View {
 		GridItem(.flexible(), spacing: 16)
 	]
 	var body: some View {
-		NavigationSplitView {
+		NavigationStack {
 			ScrollView {
-				VStack(alignment: .leading) {
-					Text("Fav List ✨")
-						.font(.title)
-						.bold()
-						.onAppear {
-							showHeaderView = true
-						}
-						.task {
-							await itemVM.fetchFavItems(locationId: 1)
-						}
-						.padding(.top)
-					LazyVGrid(columns: columns, spacing: 16) {
-						ForEach(itemVM.favItems) { item in
-							NavigationLink {
-								ItemDetailView(item: item, showHeaderView: $showHeaderView)
-							} label: {
-								FavItemRow(item: item)
-									.frame(height: 200)
-							}
+				VStack {
+					
+					HStack {
+						Text("Fav List ✨")
+							.font(.title)
+							.bold()
+							.padding(.top)
+						Spacer()
+						Button {
+							
+						} label: {
+							Image(systemName: "plus")
+								.font(.title)
+								.bold()
 						}
 					}
+					.padding(.horizontal)
+					if !itemVM.favItems.isEmpty {
+						LazyVGrid(columns: columns, spacing: 16) {
+							ForEach(itemVM.favItems) { item in
+								NavigationLink {
+									ItemDetailView(item: item, showHeaderView: $showHeaderView)
+								} label: {
+									FavItemRow(item: item)
+										.frame(height: 200)
+								}
+							}
+						}
+					} else { Text("Fav에 추가된 아이템이 없습니다.")
+						.padding(.top, 250)}
 				}
-				.padding()
-				.offset(y: -30)
 			}
+			.frame(maxWidth: .infinity)
 			.background(Color.background)
-		} detail: { Text("Select Your Fav Item") }
-			
+			.task {
+				await itemVM.fetchFavItems(locationId: 1)
+			}
+		}
 	}
 }
 
-//#Preview {
-//	let itemVM = ItemViewModel()
-//	FavListView().environmentObject(itemVM)
-//}
+#Preview {
+	let itemVM = ItemViewModel()
+	FavListView(showHeaderView: .constant(true)).environmentObject(itemVM)
+}

@@ -12,6 +12,11 @@ const findAllItem = async (id) => {
     },
     include: [
       {
+        model: models.ItemPhoto,
+        as: "ItemPhotos",
+        attributes: ["id","photo"],
+      },
+      {
         model: models.Location,
         as: "Locations",
         attributes: ["locationName"],
@@ -24,7 +29,6 @@ const findAllItem = async (id) => {
         ],
       },
     ],
-    raw: true,
   });
 };
 // 3. Item 상세 조회
@@ -45,7 +49,7 @@ const updateItem = async (id, data) => {
     },
   });
 };
-
+// 6. Fav List 조회
 const findFavList = async (id) => {
   return await models.Item.findAll({
     where: {
@@ -69,6 +73,8 @@ const findFavList = async (id) => {
     raw: true,
   });
 };
+// 7.아이템의 추가 정보 사진 조회
+
 module.exports = {
   createItem,
   findAllItem,
