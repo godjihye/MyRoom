@@ -20,7 +20,7 @@ struct HomeListView: View {
 	
 	var body: some View {
 		NavigationStack {
-			VStack(alignment: .leading) {
+			VStack {
 				// title
 				HStack {
 					Text("Home")
@@ -80,18 +80,6 @@ struct HomeListView: View {
 							}
 						}
 					}
-					.sheet(isPresented: $isShowingAddRoomView) {
-						AddRoomView {roomName, roomDesc in
-							Task {
-								await roomVM.addRoom(roomName: roomName, roomDesc: roomDesc)
-							}
-						}
-					}
-					.sheet(isPresented: $isShowingAddLocationView) {
-						AddLocationView(rooms: roomVM.rooms) { roomId, locationName, locationDesc in
-							Task { await roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId) }
-						}
-					}
 					.refreshable {
 						Task {
 							await roomVM.fetchRooms()
@@ -99,16 +87,30 @@ struct HomeListView: View {
 					}
 				} else {
 					VStack {
-						Text("서버 연결을 확인해주세요")
+						Text("서버 연결을 확인해주세요!")
 						Button("다시 시도하기") {
 							Task {
 								await roomVM.fetchRooms()
 							}
 						}
 					}
+					.padding(.top, 250)
 				}
+				Spacer()
 			}
 			.background(Color.background)
+			.sheet(isPresented: $isShowingAddRoomView) {
+				AddRoomView {roomName, roomDesc in
+					Task {
+						await roomVM.addRoom(roomName: roomName, roomDesc: roomDesc)
+					}
+				}
+			}
+			.sheet(isPresented: $isShowingAddLocationView) {
+				AddLocationView(rooms: roomVM.rooms) { roomId, locationName, locationDesc in
+					Task { await roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId) }
+				}
+			}
 			.alert(isPresented: $isShowingAlert) {
 				Alert(
 					title: Text("방 삭제 확인"),

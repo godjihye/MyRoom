@@ -50,7 +50,7 @@ struct ItemRowView: View {
 	}
 }
 
-#Preview {
-	let itemVM = ItemViewModel()
-	ItemRowView(item: sampleItem).environmentObject(itemVM)
-}
+//#Preview {
+//	let itemVM = ItemViewModel()
+//	ItemRowView(item: sampleItem).environmentObject(itemVM)
+//}

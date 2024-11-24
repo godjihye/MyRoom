@@ -16,8 +16,9 @@ struct ItemDetailView: View {
 	@EnvironmentObject var roomVM: RoomViewModel
 	@EnvironmentObject var itemVM: ItemViewModel
 	@State private var isShowingDeleteAlert: Bool = false
+	@State private var selectedPhotoId: Int = 0
+	@State private var isShowingDetailImageView: Bool = false
 	@Binding var showHeaderView: Bool
-	
 	
 	var body: some View {
 		NavigationStack {
@@ -48,6 +49,17 @@ struct ItemDetailView: View {
 					Text(item.itemName)
 						.font(.title)
 						.fontWeight(.bold)
+						.lineLimit(1)
+					// Favorites
+					Label("", systemImage: "heart.fill")
+						.font(.subheadline)
+						.foregroundColor(item.isFav ? .pink : .secondary)
+						.onTapGesture {
+							Task {
+								await itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
+								await itemVM.fetchItems(locationId: item.locationId)
+							}
+						}
 					Spacer()
 					NavigationLink("편집") {
 						AddItemView(isEditMode: true, existingItem: item)
@@ -69,6 +81,10 @@ struct ItemDetailView: View {
 						}
 				}
 				
+				// Location
+				Label("위치  |  \(item.locations.rooms.roomName)의 \(item.locations.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
+					.font(.headline)
+				
 				// Purchase and Expiry Dates
 				HStack {
 					if let purchaseDate = item.purchaseDate {
@@ -86,7 +102,9 @@ struct ItemDetailView: View {
 				// Item Description
 				if let desc = item.desc, !desc.isEmpty {
 					VStack(alignment: .leading) {
-						Text("아이템 설명")
+						Label("아이템 설명", systemImage: "tag.fill")
+							.font(.subheadline)
+							.foregroundColor(.primary)
 						Text(desc)
 							.font(.body)
 							.foregroundColor(.secondary)
@@ -113,32 +131,39 @@ struct ItemDetailView: View {
 					}
 				}
 				
-				// Location
-				Label("위치 | \(item.roomName)의 \(item.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
-					.font(.subheadline)
-				
-				
-				// Favorites
-				Label("Favorite", systemImage: "heart.fill")
-					.font(.subheadline)
-					.foregroundColor(item.isFav ? .pink : .secondary)
-					.onTapGesture {
-						Task {
-							await itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
-							await itemVM.fetchItems(locationId: item.locationId)
-						}
-					}
-				
 				// Created and Updated At
-				if let createdAt = item.createdAt {
-					Text("Created At: \(dateToString(createdAt))")
+				HStack {
+					Text("Created At: \(dateToString(item.createdAt))")
+						.font(.caption)
+						.foregroundColor(.secondary)
+					Spacer()
+					Text("Updated At: \(dateToString(item.updatedAt))")
 						.font(.caption)
 						.foregroundColor(.secondary)
 				}
-				if let updatedAt = item.updatedAt {
-					Text("Updated At: \(dateToString(updatedAt))")
-						.font(.caption)
-						.foregroundColor(.secondary)
+				Label("추가 사진(사용설명서)", systemImage: "tag.fill")
+					.font(.subheadline)
+					.foregroundColor(.primary)
+				if let photos = item.itemPhotos, !photos.isEmpty {
+					ScrollView(.horizontal){
+						HStack {
+							ForEach(photos) { photo in
+								AsyncImage(url: URL(string: photo.photo)) { image in
+									image
+										.resizable()
+										.scaledToFit()
+										.frame(maxWidth: .infinity, maxHeight: 400)
+										.onTapGesture {
+											selectedPhotoId = photo.id
+											isShowingDetailImageView = true
+										}
+										.cornerRadius(10)
+								} placeholder: {
+									ProgressView()
+								}
+							}
+						}
+					}
 				}
 			}
 			.padding()
@@ -146,6 +171,11 @@ struct ItemDetailView: View {
 			.navigationBarTitleDisplayMode(.inline)
 			.onAppear {
 				showHeaderView = false
+			}
+			.fullScreenCover(isPresented: $isShowingDetailImageView) {
+				if let itemPhotos = item.itemPhotos {
+					ItemDetailImageView(selectedPhotoId: selectedPhotoId, itemPhotos: itemPhotos)
+				}
 			}
 		}
 		.background(Color.background)
@@ -167,7 +197,7 @@ extension Color {
 	}
 }
 
-//#Preview {
-//	let itemVM = ItemViewModel()
-//	ItemDetailView(item: sampleItem, showHeaderView: .constant(false))
-//}
+#Preview {
+	let itemVM = ItemViewModel()
+	ItemDetailView(item: sampleItem, showHeaderView: .constant(false))
+}

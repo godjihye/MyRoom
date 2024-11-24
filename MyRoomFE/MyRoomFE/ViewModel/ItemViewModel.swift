@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Alamofire
-import Combine
 
 class ItemViewModel: ObservableObject {
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
@@ -18,17 +17,14 @@ class ItemViewModel: ObservableObject {
 	func fetchItems(locationId: Int) async {
 		let url = "\(endPoint)/items/\(locationId)"
 		do {
-			// 비동기적으로 요청을 보내고 결과를 기다림
 			let response = try await AF.request(url, method: .get)
 				.serializingDecodable(ItemResponse.self).value
-			
-			// 응답 데이터 처리
 			DispatchQueue.main.async {
 				self.items = response.documents
+				print(self.items.first)
 			}
 			print("fetchItems complete!")
 		} catch {
-			// 오류 처리
 			if let afError = error as? AFError {
 				print("Alamofire Error: \(afError)")
 			} else {
@@ -53,7 +49,7 @@ class ItemViewModel: ObservableObject {
 			"purchaseDate": purchaseDate,
 			"expiryDate": expiryDate,
 			"url": itemUrl,
-			"photo": "https://i.namu.wiki/i/T6CkUjJqyNWEudh3KBic3zcUeUo0Ugpl-V6XvfjZb6Cz3pdJ0ACGRSYlIkO9u6iYQELSPgQnWAZqnw5V1kQyOsFYRPNe203Q3BtyPh4bvWLxJ-CVt0k56aCmwqc_gw5VXFq7U2jPXdm5J1Vs2KY7BA.webp",
+			"photo": "https://data.onnada.com/character/202406/thumb_1982740661_05661aad_2050_1.png",
 			"desc": desc,
 			"color": "rose gold",
 			"isFav": true,
