@@ -21,7 +21,6 @@ class ItemViewModel: ObservableObject {
 				.serializingDecodable(ItemResponse.self).value
 			DispatchQueue.main.async {
 				self.items = response.documents
-				print(self.items.first)
 			}
 			print("fetchItems complete!")
 		} catch {
@@ -58,7 +57,7 @@ class ItemViewModel: ObservableObject {
 		]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			print(response.description)
+			// print(response.description)
 		} catch {
 			print("do-try-catch error!")
 		}
@@ -79,7 +78,7 @@ class ItemViewModel: ObservableObject {
 		]
 		do {
 			let response = try await AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			print(response)
+//			print(response)
 		} catch {
 			print("do-try-catch error!")
 		}
@@ -105,7 +104,7 @@ class ItemViewModel: ObservableObject {
 		]
 		do {
 			let response = try await AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			print(response)
+//			print(response)
 		} catch {
 			print("do-try-catch error!")
 		}

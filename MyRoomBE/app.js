@@ -6,7 +6,7 @@ const PORT = 3000;
 const roomRouter = require("./routers/roomsRouter");
 const locationRouter = require("./routers/locationRouter");
 const itemRouter = require("./routers/itemsRouter");
-const userRouter = require("./routers/usersRouter");
+// const userRouter = require("./routers/usersRouter");
 const postRouter = require("./routers/postsRouter");
 const usedRouter = require("./routers/usedsRouter");
 app.use(morgan("dev"));

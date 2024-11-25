@@ -13,7 +13,7 @@ struct HomeListView: View {
 	@State private var isShowingAddRoomView: Bool = false
 	@State private var isShowingAddLocationView: Bool = false
 	@State private var isShowingAlert: Bool = false
-	@State private var removeRoomCheck: Bool = false
+	@State private var removeRoomId: Int = 0
 	@State private var isShowingAlertRemove: Bool = false
 	
 	@Binding var showHeaderView: Bool
@@ -59,13 +59,10 @@ struct HomeListView: View {
 								.foregroundStyle(.secondary)
 								Button("삭제") {
 									isShowingAlert = true
-									if removeRoomCheck {
-										Task {
-											await roomVM.removeRoom(roomId: room.id)
-											await roomVM.fetchRooms()
-										}
+									removeRoomId = room.id
+									
 									}
-								}
+								
 								.font(.system(size: 15))
 								.foregroundStyle(.red)
 							}) {
@@ -75,7 +72,6 @@ struct HomeListView: View {
 									} label: {
 										Text(location.locationName)
 									}
-
 								}
 							}
 						}
@@ -116,7 +112,10 @@ struct HomeListView: View {
 					title: Text("방 삭제 확인"),
 					message: Text("정말로 방을 삭제하시겠습니까?"),
 					primaryButton: .destructive(Text("삭제"), action: {
-						removeRoomCheck = true
+						Task {
+							await roomVM.removeRoom(roomId: removeRoomId)
+							await roomVM.fetchRooms()
+						}
 					}),
 					secondaryButton: .cancel(Text("취소"))
 				)

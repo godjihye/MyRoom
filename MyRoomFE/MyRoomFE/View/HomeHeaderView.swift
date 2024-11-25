@@ -32,14 +32,20 @@ struct HomeHeaderView: View {
 				}
 				HStack(spacing:0) {
 					Button {
-						selectedTab = 0
+						withAnimation {
+							selectedTab = 0
+						}
+						
 						tabHome = true
 						tabFav = false
 					} label: {
 						TabItemView(isActive: $tabHome, tab: tabs[0])
 					}
 					Button {
-						selectedTab = 1
+						withAnimation {
+							selectedTab = 1
+						}
+						
 						tabHome = false
 						tabFav = true
 					} label: {
