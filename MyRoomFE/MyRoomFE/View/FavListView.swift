@@ -34,14 +34,16 @@ struct FavListView: View {
 						}
 					}
 					.padding(.horizontal)
-					if !itemVM.favItems.isEmpty {
+					if !itemVM.items.isEmpty {
 						LazyVGrid(columns: columns, spacing: 16) {
-							ForEach(itemVM.favItems) { item in
-								NavigationLink {
-									ItemDetailView(item: item, showHeaderView: $showHeaderView)
-								} label: {
-									FavItemRow(item: item)
-										.frame(height: 200)
+							ForEach(itemVM.items) { item in
+								if item.isFav {
+									NavigationLink {
+										ItemDetailView(item: item, showHeaderView: $showHeaderView)
+									} label: {
+										FavItemRow(item: item)
+											.frame(height: 200)
+									}
 								}
 							}
 						}
@@ -51,9 +53,6 @@ struct FavListView: View {
 			}
 			.frame(maxWidth: .infinity)
 			.background(Color.background)
-			.task {
-				await itemVM.fetchFavItems(locationId: 1)
-			}
 		}
 	}
 }

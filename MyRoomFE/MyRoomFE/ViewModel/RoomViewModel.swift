@@ -12,6 +12,7 @@ import SwiftUICore
 class RoomViewModel: ObservableObject {
 	@Published var rooms: [Room] = []
 	@Published var locations: [Location] = []
+	@Published var message: String = ""
 	let userId = 1
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	
