@@ -23,12 +23,7 @@ struct Item: Codable,Identifiable {
 		let createdAt: String
 		let updatedAt: String
 		let itemPhotos: [ItemPhoto]?
-		let locations: Item_Location
-		enum CodingKeys: String, CodingKey {
-				case id, itemName, purchaseDate, expiryDate, url, photo, desc, color, isFav, price, openDate, locationId, createdAt, updatedAt
-				case itemPhotos = "ItemPhotos"
-				case locations = "Locations"
-		}
+		let location: Item_Location
 }
 struct ItemPhoto: Codable, Identifiable {
 		let id: Int
@@ -36,12 +31,7 @@ struct ItemPhoto: Codable, Identifiable {
 }
 struct Item_Location: Codable {
 		let locationName: String
-		let rooms: Item_Room
-
-		enum CodingKeys: String, CodingKey {
-				case locationName
-				case rooms = "Rooms"
-		}
+		let room: Item_Room
 }
 struct Item_Room: Codable {
 	let roomName: String
@@ -66,7 +56,7 @@ struct Room: Identifiable, Codable, Equatable, Hashable {
 	let userId: Int
 	let createdAt: String
 	let updatedAt: String
-	let Locations: [Location]
+	let locations: [Location]
 }
 
 struct RoomResponse:Codable {

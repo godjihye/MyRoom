@@ -33,7 +33,7 @@ const getAllRoom = async (id) => {
     return await models.Room.findAll({
       include: {
         model: models.Location,
-        as: "Locations",
+        as: "locations",
         attributes: ["id", "locationName", "locationDesc", "roomId"],
       },
       where: { userId: id },

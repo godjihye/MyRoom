@@ -18,7 +18,6 @@ struct FavListView: View {
 		NavigationStack {
 			ScrollView {
 				VStack {
-					
 					HStack {
 						Text("Fav List ✨")
 							.font(.title)
@@ -26,7 +25,6 @@ struct FavListView: View {
 							.padding(.top)
 						Spacer()
 						Button {
-							
 						} label: {
 							Image(systemName: "plus")
 								.font(.title)
@@ -34,9 +32,10 @@ struct FavListView: View {
 						}
 					}
 					.padding(.horizontal)
-					if !itemVM.items.isEmpty {
+					
+					if !itemVM.favItems.isEmpty {
 						LazyVGrid(columns: columns, spacing: 16) {
-							ForEach(itemVM.items) { item in
+							ForEach(itemVM.favItems) { item in
 								if item.isFav {
 									NavigationLink {
 										ItemDetailView(item: item, showHeaderView: $showHeaderView)
@@ -53,6 +52,9 @@ struct FavListView: View {
 			}
 			.frame(maxWidth: .infinity)
 			.background(Color.background)
+			.task {
+				await itemVM.fetchFavItems()
+			}
 		}
 	}
 }

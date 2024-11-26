@@ -14,33 +14,9 @@ class ItemViewModel: ObservableObject {
 	@Published var favItems: [Item] = []
 	@Published var message: String = ""
 	@Published var isShowingAlert: Bool = false
-	func fetchItems(locationId: Int) async {
-		let url = "\(endPoint)/items/\(locationId)"
-		do {
-			let response = try await AF.request(url, method: .get)
-				.serializingDecodable(ItemResponse.self).value
-			DispatchQueue.main.async {
-				self.items = response.documents
-			}
-			print("fetchItems complete!")
-		} catch {
-			if let afError = error as? AFError {
-				print("Alamofire Error: \(afError)")
-			} else {
-				print("Unexpected Error: \(error)")
-			}
-		}
-	}
-	func fetchFavItems(locationId: Int) async {
-		let url = "\(endPoint)/items/favList/\(locationId)"
-		do {
-			let response = try await AF.request(url,method: .get).serializingDecodable(ItemResponse.self).value
-			DispatchQueue.main.async { self.favItems = response.documents }
-			print("fetchFavItems Complete")
-		} catch {
-			print("fetchFavItems Error: \(error)")
-		}
-	}
+	
+	//MARK: CRUD
+	// 1. Create
 	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items"
 		let params: Parameters = [
@@ -57,11 +33,44 @@ class ItemViewModel: ObservableObject {
 		]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			// print(response.description)
+			log("addItem Complete", trait: .success)
 		} catch {
-			print("do-try-catch error!")
+			if let afError = error as? AFError {
+				log("AFError: \(afError.localizedDescription)", trait: .error)
+			} else {
+				log("UnexpectedError: \(error.localizedDescription)", trait: .error)
+			}
 		}
 	}
+	// 2. Read
+	func fetchItems(locationId: Int) async {
+		let url = "\(endPoint)/items/\(locationId)"
+		do {
+			let response = try await AF.request(url, method: .get)
+				.serializingDecodable(ItemResponse.self).value
+			DispatchQueue.main.async {
+				self.items = response.documents
+			}
+			log("fetchItems Complete", trait: .success)
+		} catch {
+			if let afError = error as? AFError {
+				log("AFError: \(afError.localizedDescription)", trait: .error)
+			} else {
+				log("UnexpectedError: \(error.localizedDescription)", trait: .error)
+			}
+		}
+	}
+	func fetchFavItems() async {
+		let url = "\(endPoint)/items/fav/\(sampleUserId)"
+		do {
+			let response = try await AF.request(url,method: .get).serializingDecodable(ItemResponse.self).value
+			DispatchQueue.main.async { self.favItems = response.documents }
+			log("fetchFavItems Complete", trait: .success)
+		} catch {
+			log("fetchFavItems Error: \(error.localizedDescription)", trait: .error)
+		}
+	}
+	
 	func updateItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: String?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items/\(itemId)"
 		let params: Parameters = [
@@ -78,24 +87,19 @@ class ItemViewModel: ObservableObject {
 		]
 		do {
 			let response = try await AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default).serializingData().value
-//			print(response)
+			log("updateItem Complete! \(response.description)", trait: .success)
 		} catch {
-			print("do-try-catch error!")
+			log("updateItem Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
 	func removeItem(itemId: Int) async {
 		let url = "\(endPoint)/items/\(itemId)"
-		AF.request(url, method: .delete)
-			.response { response in
-				if let statusCode = response.response?.statusCode {
-					switch statusCode {
-					case 200..<300:
-						print("success")
-					default:
-						print("Network error")
-					}
-				}
-			}
+		do {
+			let response = try await AF.request(url, method: .delete).serializingData().value
+			log("removeItem Complete! \(response.description)", trait: .success)
+		} catch {
+			log("removeItem Error: \(error.localizedDescription)", trait: .error)
+		}
 	}
 	func updateItemFav(itemId: Int, itemFav: Bool) async {
 		let url = "\(endPoint)/items/\(itemId)"
@@ -104,8 +108,9 @@ class ItemViewModel: ObservableObject {
 		]
 		do {
 			let response = try await AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default).serializingData().value
-//			print(response)
+			log("updateItemFav complete! \(response.description)", trait: .success)
 		} catch {
+			log("updateItemFav Error", trait: .error)
 			print("do-try-catch error!")
 		}
 	}

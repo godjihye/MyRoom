@@ -13,17 +13,17 @@ const findAllItem = async (id) => {
     include: [
       {
         model: models.ItemPhoto,
-        as: "ItemPhotos",
-        attributes: ["id","photo"],
+        as: "itemPhoto",
+        attributes: ["id", "photo"],
       },
       {
         model: models.Location,
-        as: "Locations",
+        as: "location",
         attributes: ["locationName"],
         include: [
           {
             model: models.Room,
-            as: "Rooms",
+            as: "room",
             attributes: ["roomName"],
           },
         ],
@@ -49,28 +49,35 @@ const updateItem = async (id, data) => {
     },
   });
 };
-// 6. Fav List 조회
-const findFavList = async (id) => {
+// 6. Fav Item 조회
+const findAllFavItem = async (id) => {
   return await models.Item.findAll({
     where: {
-      locationId: id,
       isFav: true,
     },
     include: [
       {
+        model: models.ItemPhoto,
+        as: "itemPhoto",
+        attributes: ["id", "photo"],
+      },
+      {
         model: models.Location,
-        as: "Locations",
+        as: "location",
         attributes: ["locationName"],
         include: [
           {
             model: models.Room,
-            as: "Rooms",
-            attributes: ["roomName"],
+            as: "room",
+            attributes: ["roomName", "userId"],
+            where: { userId: id },
+            required: true,
           },
         ],
+        required: true,
       },
     ],
-    raw: true,
+    //raw: true,
   });
 };
 // 7.아이템의 추가 정보 사진 조회
@@ -81,5 +88,5 @@ module.exports = {
   findItem,
   deleteItem,
   updateItem,
-  findFavList,
+  findAllFavItem,
 };

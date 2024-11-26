@@ -74,7 +74,7 @@ struct ItemDetailView: View {
 							}
 						}
 				}
-				Label("위치  |  \(item.locations.rooms.roomName)의 \(item.locations.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
+				Label("위치  |  \(item.location.room.roomName)의 \(item.location.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
 					.font(.headline)
 				HStack {
 					if let purchaseDate = item.purchaseDate {
@@ -159,6 +159,5 @@ extension Color {
 }
 
 #Preview {
-	let itemVM = ItemViewModel()
 	ItemDetailView(item: sampleItem, showHeaderView: .constant(false))
 }

@@ -13,7 +13,6 @@ class RoomViewModel: ObservableObject {
 	@Published var rooms: [Room] = []
 	@Published var locations: [Location] = []
 	@Published var message: String = ""
-	let userId = 1
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	
 	// CRUD
@@ -22,16 +21,17 @@ class RoomViewModel: ObservableObject {
 	/// 1-1) Create Room
 	func addRoom(roomName: String, roomDesc: String) async {
 		let url = "\(endPoint)/rooms"
-		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc, "userId": userId]
+		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc, "userId": sampleUserId]
 		do {
-			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(RoomResponse.self).value
-			self.rooms = response.documents
-			print("addRoom() Complete")
+			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
+//			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(RoomResponse.self).value
+//			self.rooms = response.documents
+			log("addRoom() Complete", trait: .success)
 		} catch {
 			if let afError = error as? AFError {
-				print("AF Error! \(afError)")
+				log("addRoom AF Error! \(afError)", trait: .error)
 			} else {
-				print("Unexpected Error: \(error)")
+				log("addRoom Unexpected Error: \(error)", trait: .error)
 			}
 		}
 	}
@@ -50,21 +50,22 @@ class RoomViewModel: ObservableObject {
 	// 2. Read
 	/// 2. Read Rooms/Locations
 	func fetchRooms() async {
-		let url = "\(endPoint)/rooms/list/\(userId)"
+		let url = "\(endPoint)/rooms/list/\(sampleUserId)"
 		do {
 			let response = try await AF.request(url, method: .get).serializingDecodable(RoomResponse.self).value
 			DispatchQueue.main.async {
 				self.rooms = response.documents;
-				self.locations = response.documents.flatMap { $0.Locations }
+				self.locations = response.documents.flatMap { $0.locations }
 			}
 		} catch {
 			if let afError = error as? AFError {
-				print("afError: \(afError)")
+				log("fetchRooms AF Error: \(afError.localizedDescription)", trait: .error)
 			} else {
-				print("Unexpected Error: \(error)")
+				log("fetchRooms Unexpected Error: \(error.localizedDescription)", trait: .error)
 			}
 		}
 	}
+	
 	// 3. Update
 	/// 3-1) Update Room
 	func editRoom(roomId: Int, roomName: String, roomDesc: String) async {
@@ -86,9 +87,9 @@ class RoomViewModel: ObservableObject {
 		let params: Parameters = ["locationName": locationName, "locationDesc": locationDesc, "roomId": roomId]
 		do {
 			let response = try await AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			print("editLocation")
+			log("editLocation Complete", trait: .success)
 		} catch {
-			print("editLocation Error: \(error)")
+			log("editLocation Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
 	// 4. Delete
@@ -97,9 +98,9 @@ class RoomViewModel: ObservableObject {
 		let url = "\(endPoint)/rooms/\(roomId)"
 		do {
 			let response = try await AF.request(url, method: .delete).serializingData().value
-			print("removeRoom Complete")
+			log("removeRoom Complete", trait: .success)
 		} catch {
-			print("removeRoom Failure")
+			log("removeRoom Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
 	/// 4-2) Delete Location
@@ -107,9 +108,9 @@ class RoomViewModel: ObservableObject {
 		let url = "\(endPoint)/locations/\(locationId)"
 		do {
 			let response = try await AF.request(url, method: .delete).serializingData().value
-			print("removeLocation Complete")
+			log("removeLocation Complete", trait: .success)
 		} catch {
-			print("removeLocation Error: \(error)")
+			log("removeLocation Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
 }

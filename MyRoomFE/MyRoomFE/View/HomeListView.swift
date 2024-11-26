@@ -41,6 +41,8 @@ struct HomeListView: View {
 					}
 				}
 				.padding(.horizontal)
+				
+				// Room - Location List
 				if !roomVM.rooms.isEmpty {
 					List {
 						ForEach(roomVM.rooms) { (room: Room) in
@@ -57,16 +59,16 @@ struct HomeListView: View {
 								}
 								.font(.system(size: 15))
 								.foregroundStyle(.secondary)
-								Button("삭제") {
+								Button {
 									isShowingAlert = true
 									removeRoomId = room.id
-									
-									}
-								
-								.font(.system(size: 15))
-								.foregroundStyle(.red)
+								} label: {
+									Text("삭제")
+										.font(.system(size: 15))
+										.foregroundStyle(.red)
+								}
 							}) {
-								ForEach(room.Locations) { location in
+								ForEach(room.locations) { location in
 									NavigationLink {
 										ItemListView(showHeaderView: $showHeaderView, location: location)
 									} label: {
@@ -99,18 +101,20 @@ struct HomeListView: View {
 				AddRoomView {roomName, roomDesc in
 					Task {
 						await roomVM.addRoom(roomName: roomName, roomDesc: roomDesc)
+						await roomVM.fetchRooms()
 					}
 				}
 			}
 			.sheet(isPresented: $isShowingAddLocationView) {
 				AddLocationView(rooms: roomVM.rooms) { roomId, locationName, locationDesc in
-					Task { await roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId) }
+					Task { await roomVM.addLocation(locationName: locationName, locationDesc: locationDesc, roomId: roomId)
+						await roomVM.fetchRooms()}
 				}
 			}
 			.alert(isPresented: $isShowingAlert) {
 				Alert(
 					title: Text("방 삭제 확인"),
-					message: Text("정말로 방을 삭제하시겠습니까?"),
+					message: Text("방을 삭제하시겠습니까?\n방의 모든 것이 삭제됩니다.(위치, 아이템)"),
 					primaryButton: .destructive(Text("삭제"), action: {
 						Task {
 							await roomVM.removeRoom(roomId: removeRoomId)
