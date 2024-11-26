@@ -7,5 +7,5 @@ router.get("/:locationId", itemController.findAllItem);
 router.get("/detail/:itemId", itemController.findItem);
 router.delete("/:itemId", itemController.deleteItem);
 router.put("/:itemId", itemController.updateItem);
-router.get("/favList/:locationId", itemController.findFavList);
+router.get("/fav/:userId", itemController.findAllFavItem);
 module.exports = router;

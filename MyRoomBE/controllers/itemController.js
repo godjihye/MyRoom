@@ -41,9 +41,9 @@ const updateItem = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
-const findFavList = async (req, res) => {
+const findAllFavItem = async (req, res) => {
   try {
-    const result = await itemService.findFavList(req.params.locationId);
+    const result = await itemService.findAllFavItem(req.params.userId);
     res.status(200).json({ documents: result });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -55,5 +55,5 @@ module.exports = {
   findItem,
   deleteItem,
   updateItem,
-  findFavList,
+  findAllFavItem,
 };

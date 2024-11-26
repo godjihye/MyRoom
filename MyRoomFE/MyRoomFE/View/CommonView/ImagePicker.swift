@@ -9,8 +9,9 @@ import SwiftUI
 import PhotosUI
 
 struct ImagePicker: UIViewControllerRepresentable {
-	@Binding var selectedImage: UIImage?
+	@Binding var selectedImages: [UIImage]
 	var selectionLimit: Int
+	
 	func makeUIViewController(context: Context) -> PHPickerViewController {
 		var config = PHPickerConfiguration()
 		config.filter = .images
@@ -36,21 +37,22 @@ struct ImagePicker: UIViewControllerRepresentable {
 		
 		func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
 			picker.dismiss(animated: true)
-			
-			if let result = results.first, result.itemProvider.canLoadObject(ofClass: UIImage.self) {
-				result.itemProvider.loadObject(ofClass: UIImage.self) { object, error in
-					if let image = object as? UIImage {
-						DispatchQueue.main.async {
-							self.parent.selectedImage = image
+			var selected: [UIImage] = []
+			for result in results {
+				if result.itemProvider.canLoadObject(ofClass: UIImage.self) {
+					result.itemProvider.loadObject(ofClass: UIImage.self) { object, error in
+						if let image = object as? UIImage {
+							selected.append(image)
 						}
 					}
 				}
+			}
+			DispatchQueue.main.async {
+				self.parent.selectedImages = selected
 			}
 		}
 	}
 }
 
 
-#Preview {
-	ImagePicker(selectedImage: .constant(UIImage(named: "logo")), selectionLimit: 1)
-}
+

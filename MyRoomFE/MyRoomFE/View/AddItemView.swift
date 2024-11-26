@@ -22,22 +22,24 @@ struct AddItemView: View {
 	@State private var purchaseDate: Date
 	@State private var expiryDate: Date
 	@State private var openDate: Date
-	@State private var selectedImage: UIImage?
+	@State private var selectedImage: [UIImage] = []
 	@State private var isImagePickerPresented: Bool = false
 	@State var selectedLocationId: Int = 0
 	@State private var itemColor: String
-	@State private var additionalPhotos: [UIImage]?
-	
+	@State private var additionalPhotos: [UIImage] = []
+	@State private var isPickOneImage: Bool = true
 	let isEditMode: Bool
 	let existingItem: Item?
+	let locationId: Int
 	
 	init(
 		isEditMode: Bool = false,
-		existingItem: Item? = nil
+		existingItem: Item? = nil,
+		locationId: Int = 0
 	) {
 		self.isEditMode = isEditMode
 		self.existingItem = existingItem
-		
+		self.locationId = locationId
 		_itemName = State(initialValue: existingItem?.itemName ?? "")
 		_itemDesc = State(initialValue: existingItem?.desc ?? "")
 		_itemLocation = State(initialValue: "")
@@ -47,7 +49,7 @@ struct AddItemView: View {
 		_purchaseDate = State(initialValue: stringToDate(existingItem?.purchaseDate))
 		_expiryDate = State(initialValue: stringToDate(existingItem?.expiryDate))
 		_openDate = State(initialValue: stringToDate(existingItem?.openDate))
-		_selectedLocationId = State(initialValue: existingItem?.locationId ?? 0)
+		_selectedLocationId = State(initialValue: existingItem?.locationId ?? locationId)
 		_itemColor = State(initialValue: existingItem?.color ?? "")
 		//_additionalPhotos = State(initialValue: existingItem?.itemPhotos )
 	}
@@ -56,7 +58,7 @@ struct AddItemView: View {
 		NavigationStack {
 			Form {
 				Section(header: Text("Image")) {
-					if let image = selectedImage {
+					if let image = selectedImage.first {
 						Image(uiImage: image)
 							.resizable()
 							.scaledToFit()
@@ -70,6 +72,7 @@ struct AddItemView: View {
 							.cornerRadius(10)
 					}
 					Button("이미지 선택 / 변경") {
+						isPickOneImage = true
 						isImagePickerPresented = true
 					}
 				}
@@ -95,7 +98,21 @@ struct AddItemView: View {
 				}
 				
 				Section(header: Text("추가 이미지 정보")) {
-					
+					ScrollView(.horizontal) {
+						ForEach(additionalPhotos, id: \.self) { photo in
+							Image(uiImage: photo)
+								.resizable()
+								.scaledToFit()
+								.frame(width: 100, height: 100)
+								.cornerRadius(10)
+						}
+					}
+					Button("추가 이미지 선택") {
+						isPickOneImage = false
+						isImagePickerPresented = true
+						
+							log("isPickOneImage: \(isPickOneImage), isImagePickerPresented: \(isImagePickerPresented)", trait: .info)
+					}
 				}
 			}
 			.navigationTitle(isEditMode ? "아이템 편집" : "새로운 아이템 추가")
@@ -111,7 +128,7 @@ struct AddItemView: View {
 							}
 						} else {
 							Task {
-								await itemVM.addItem(itemName: itemName, purchaseDate: purchaseDate.description, expiryDate: expiryDate.description, itemUrl: itemUrl, image: selectedImage, desc: itemDesc, color: itemColor, price: Int(itemPrice) ?? 0, openDate: openDate.description, locationId: selectedLocationId)
+								await itemVM.addItem(itemName: itemName, purchaseDate: purchaseDate.description, expiryDate: expiryDate.description, itemUrl: itemUrl, image: selectedImage.first, desc: itemDesc, color: itemColor, price: Int(itemPrice) ?? 0, openDate: openDate.description, locationId: selectedLocationId)
 								await itemVM.fetchItems(locationId: selectedLocationId)
 								dismiss()
 							}
@@ -127,7 +144,11 @@ struct AddItemView: View {
 			}
 		}
 		.sheet(isPresented: $isImagePickerPresented) {
-			ImagePicker(selectedImage: $selectedImage, selectionLimit: 1)
+			if isPickOneImage {
+				ImagePicker(selectedImages: $selectedImage, selectionLimit: 1)
+			} else {
+				ImagePicker(selectedImages: $additionalPhotos, selectionLimit: 20)
+			}
 		}
 		.sheet(isPresented: $isImagePickerPresented) {
 			
@@ -141,13 +162,12 @@ struct AddItemView: View {
 	}
 	func loadInitialImage() {
 		if let strUrl = existingItem?.photo, let url = URL(string: strUrl) {
-			
 			Task {
 				do {
 					let (data, _) = try await URLSession.shared.data(from: url)
 					if let uiImage = UIImage(data: data) {
 						DispatchQueue.main.async {
-							self.selectedImage = uiImage
+							self.selectedImage = [uiImage]
 						}
 					}
 				} catch {
@@ -162,7 +182,6 @@ struct AddItemView: View {
 					urls.append(url)
 				}
 			}
-			
 		}
 	}
 }

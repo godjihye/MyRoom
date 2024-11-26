@@ -19,12 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Item.belongsTo(models.Location, {
         foreignKey: "locationId",
-        as: "Locations",
+        as: "location",
         onDelete: "CASCADE",
       });
       Item.hasMany(models.ItemPhoto, {
         foreignKey: "itemId",
-        as: "ItemPhotos",
+        as: "itemPhoto",
         onDelete: "CASCADE",
       });
     }
