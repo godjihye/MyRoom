@@ -12,16 +12,21 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Post.belongsTo(models.User,{
-        foreignKey:"id",
+        foreignKey:"userId",
         onDelete: "CASCADE",
       })
 
       Post.hasMany(models.PostPhoto,{
-        foreignKey:"id"
+        foreignKey:"postId"
       })
 
       Post.hasMany(models.Comment,{
-        foreignKey:"id"
+        foreignKey:"postId"
+      })
+
+      Post.hasMany(models.PostFav,{
+        foreignKey:"postId",
+        as: "postFav"
       })
     }
   }
@@ -33,8 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     thumbnail: DataTypes.STRING,
     postViewCnt: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    createdDate: DataTypes.DATE,
-    updatedDate: DataTypes.DATE
+    isFavorite:DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Post',

@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  MyRoomFE
+//
+//  Created by 이수정 on 11/18/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+
+ENDPOINT = "http://localhost:3000/"

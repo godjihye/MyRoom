@@ -16,9 +16,8 @@ class ItemViewModel: ObservableObject {
 	@Published var isShowingAlert: Bool = false
 	@Published var searchResultItems: [Item] = []
 	
-	
 	//MARK: CRUD
-	/// 1. Create Item
+	// 1. Create Item
 	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items"
 		let params: Parameters = [
@@ -44,7 +43,9 @@ class ItemViewModel: ObservableObject {
 			}
 		}
 	}
-	// 2. Read Item
+	
+	// 2. Read Items
+	/// 2-1. Read All Items (location)
 	func fetchItems(locationId: Int) async {
 		let url = "\(endPoint)/items/\(locationId)"
 		do {
@@ -62,6 +63,7 @@ class ItemViewModel: ObservableObject {
 			}
 		}
 	}
+	/// 2-2. Read Fav Items (All location)
 	func fetchFavItems() async {
 		let url = "\(endPoint)/items/fav/\(sampleUserId)"
 		do {
@@ -72,6 +74,7 @@ class ItemViewModel: ObservableObject {
 			log("fetchFavItems Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
+
 	// 3. Update Item
 	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: String?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items/\(itemId)"
@@ -94,6 +97,19 @@ class ItemViewModel: ObservableObject {
 			log("updateItem Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
+
+	// 4. Delete Item
+	func removeItem(itemId: Int) async {
+		let url = "\(endPoint)/items/\(itemId)"
+		do {
+			let response = try await AF.request(url, method: .delete).serializingData().value
+			log("removeItem Complete! \(response.description)", trait: .success)
+		} catch {
+			log("removeItem Error: \(error.localizedDescription)", trait: .error)
+		}
+	}
+
+	// Fav 등록 / 해제
 	func updateItemFav(itemId: Int, itemFav: Bool) async {
 		let url = "\(endPoint)/items/\(itemId)"
 		let params: Parameters = [
@@ -106,17 +122,7 @@ class ItemViewModel: ObservableObject {
 			log("updateItemFav Error", trait: .error)
 			print("do-try-catch error!")
 		}
-	}
-	// 4. Delete Item
-	func removeItem(itemId: Int) async {
-		let url = "\(endPoint)/items/\(itemId)"
-		do {
-			let response = try await AF.request(url, method: .delete).serializingData().value
-			log("removeItem Complete! \(response.description)", trait: .success)
-		} catch {
-			log("removeItem Error: \(error.localizedDescription)", trait: .error)
-		}
-	}
+	}	
 	
 	// Search Item
 	func searchItem(query: String?) async {
@@ -134,6 +140,8 @@ class ItemViewModel: ObservableObject {
 			}
 		}
 	}
+
+	// Clear Search Result
 	func clearSearchResult() {
 		searchResultItems.removeAll()
 	}

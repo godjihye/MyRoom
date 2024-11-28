@@ -1,21 +1,8 @@
 "use strict";
+
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
-    /**
-    static associate(models) {
-      Location.belongsTo(models.Room, {
-        foreignKey: "roomId",
-        as: "Rooms",
-        onDelete: "CASCADE",
-      });
-      Location.hasMany(models.Item, {
-        foreignKey: "locationId",
-        as: "Items",
-        onDelete: "CASCADE",
-      });
-    }
-     */
     static associate(models) {
       Item.belongsTo(models.Location, {
         foreignKey: "locationId",
@@ -29,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Item.init(
     {
       itemName: DataTypes.STRING,

@@ -25,6 +25,7 @@ const findItem = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+
 const findItemByName = async (req, res) => {
   try {
     const item = await itemService.findItemByName(
@@ -37,6 +38,7 @@ const findItemByName = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+
 const deleteItem = async (req, res) => {
   try {
     const result = await itemService.deleteItem(req.params.itemId);
@@ -70,3 +72,4 @@ module.exports = {
   updateItem,
   findAllFavItem,
 };
+
