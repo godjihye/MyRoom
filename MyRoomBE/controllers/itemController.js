@@ -25,6 +25,18 @@ const findItem = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+const findItemByName = async (req, res) => {
+  try {
+    const item = await itemService.findItemByName(
+      req.body.userId,
+      req.body.query
+    );
+
+    res.status(200).json({ documents: item });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
 const deleteItem = async (req, res) => {
   try {
     const result = await itemService.deleteItem(req.params.itemId);
@@ -53,6 +65,7 @@ module.exports = {
   createItem,
   findAllItem,
   findItem,
+  findItemByName,
   deleteItem,
   updateItem,
   findAllFavItem,

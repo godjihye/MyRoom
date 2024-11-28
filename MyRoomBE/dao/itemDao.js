@@ -1,4 +1,5 @@
 const models = require("../models");
+const { Op } = require("sequelize"); // Sequelize operators 가져오기
 
 // 1. Item 생성
 const createItem = async (data) => {
@@ -34,6 +35,33 @@ const findAllItem = async (id) => {
 // 3. Item 상세 조회
 const findItem = async (id) => {
   return await models.Item.findByPk(id);
+};
+// 3-1. Item 이름으로 상세 조회 (포함 검색)
+const findItemByName = async (id, data) => {
+  return await models.Item.findAll({
+    where: {
+      itemName: {
+        [Op.like]: `%${data}%`, // data가 포함된 값을 검색
+      },
+    },
+    include: [
+      {
+        model: models.Location,
+        as: "location",
+        attributes: ["locationName"],
+        include: [
+          {
+            model: models.Room,
+            as: "room",
+            attributes: ["roomName", "userId"],
+            where: { userId: id },
+            required: true,
+          },
+        ],
+        required: true,
+      },
+    ],
+  });
 };
 // 4. Item 삭제
 const deleteItem = async (id) => {
@@ -86,6 +114,7 @@ module.exports = {
   createItem,
   findAllItem,
   findItem,
+  findItemByName,
   deleteItem,
   updateItem,
   findAllFavItem,

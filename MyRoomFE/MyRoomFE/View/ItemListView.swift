@@ -11,20 +11,25 @@ struct ItemListView: View {
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject var roomVM: RoomViewModel
 	@EnvironmentObject var itemVM: ItemViewModel
+	
 	@State var isShowingAddItemView: Bool = false
 	@State var removeLocationId: Int = 0
 	@State var isShowingAlert: Bool = false
-	@Binding var showHeaderView: Bool
+	
 	var location: Location
 	var body: some View {
 		NavigationStack {
 			VStack {
 				// 상단 Label, Button
-				VStack {
+				VStack{
 					HStack {
-						Text(location.locationName)
-							.font(.title)
-							.bold()
+						VStack(alignment: .leading) {
+							Text(location.locationName)
+								.font(.title)
+								.bold()
+							Text(location.locationDesc)
+								.font(.caption)
+						}
 						NavigationLink {
 							AddLocationView(locationName: location.locationName, locationDesc: location.locationDesc, selectedRoomId: location.roomId, title: "위치 정보 편집", rooms: roomVM.rooms) { roomId, locationName, locationDesc in
 								Task {
@@ -51,7 +56,6 @@ struct ItemListView: View {
 								.bold()
 						}
 					}
-					.padding(.horizontal)
 					.alert("위치 삭제 확인", isPresented: $isShowingAlert, actions: {
 						Button("삭제", role: .destructive) {
 							Task {
@@ -67,12 +71,12 @@ struct ItemListView: View {
 					}, message: {
 						Text("방 안의 아이템도 함께 삭제됩니다.")
 					})
-					Text(location.locationDesc)
 				}
+				.padding(.horizontal)
 				if !itemVM.items.isEmpty{
 					List(itemVM.items) { item in
 						NavigationLink {
-							ItemDetailView(item: item, showHeaderView: $showHeaderView)
+							ItemDetailView(item: item)
 						} label: {
 							ItemRowView(item: item)
 						}
@@ -103,14 +107,11 @@ struct ItemListView: View {
 		.task {
 			await itemVM.fetchItems(locationId: location.id)
 		}
-		.onDisappear {
-			showHeaderView = false
-		}
 	}
 }
 
 #Preview {
 	let roomVM = RoomViewModel()
 	let itemVM = ItemViewModel()
-	ItemListView(isShowingAddItemView: false, showHeaderView: .constant(false), location: sampleLocation).environmentObject(roomVM).environmentObject(itemVM)
+	ItemListView(isShowingAddItemView: false, location: sampleLocation).environmentObject(roomVM).environmentObject(itemVM)
 }

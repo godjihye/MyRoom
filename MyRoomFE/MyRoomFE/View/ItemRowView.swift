@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ItemRowView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
-	let item: Item
 	@State private var itemFav: Bool = false
+	let item: Item
+	var isSearch: Bool = false
 	var body: some View {
 		HStack {
 			if let photo = item.photo {
@@ -27,10 +28,14 @@ struct ItemRowView: View {
 			VStack(alignment: .leading, spacing: 5) {
 				Text(item.itemName)
 					.font(.headline)
-				if let desc = item.desc {
-					Text(desc)
-						.font(.subheadline)
-						.foregroundColor(.secondary)
+				if isSearch {
+					Text("\(item.location.room.roomName)의 \(item.location.locationName)에 있습니다.")
+				} else {
+					if let desc = item.desc {
+						Text(desc)
+							.font(.subheadline)
+							.foregroundColor(.secondary)
+					}
 				}
 			}
 			Spacer()

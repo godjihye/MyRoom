@@ -9,6 +9,9 @@ const findAllItem = async (id) => {
 const findItem = async (id) => {
   return await itemDao.findItem(id);
 };
+const findItemByName = async (id, data) => {
+  return await itemDao.findItemByName(id, data);
+};
 const deleteItem = async (id) => {
   return await itemDao.deleteItem(id);
 };
@@ -22,6 +25,7 @@ module.exports = {
   createItem,
   findAllItem,
   findItem,
+  findItemByName,
   deleteItem,
   updateItem,
   findAllFavItem,

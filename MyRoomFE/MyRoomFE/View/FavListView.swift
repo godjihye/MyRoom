@@ -9,10 +9,10 @@ import SwiftUI
 
 struct FavListView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
-	@Binding var showHeaderView: Bool
+	
 	let columns = [
-		GridItem(.flexible(), spacing: 16),
-		GridItem(.flexible(), spacing: 16)
+		GridItem(.flexible(), spacing: 10),
+		GridItem(.flexible(), spacing: 10)
 	]
 	var body: some View {
 		NavigationStack {
@@ -24,12 +24,12 @@ struct FavListView: View {
 							.bold()
 							.padding(.top)
 						Spacer()
-						Button {
-						} label: {
-							Image(systemName: "plus")
-								.font(.title)
-								.bold()
-						}
+//						Button {
+//						} label: {
+//							Image(systemName: "plus")
+//								.font(.title)
+//								.bold()
+//						}
 					}
 					.padding(.horizontal)
 					
@@ -38,10 +38,9 @@ struct FavListView: View {
 							ForEach(itemVM.favItems) { item in
 								if item.isFav {
 									NavigationLink {
-										ItemDetailView(item: item, showHeaderView: $showHeaderView)
+										ItemDetailView(item: item)
 									} label: {
 										FavItemRow(item: item)
-											.frame(height: 200)
 									}
 								}
 							}
@@ -53,7 +52,9 @@ struct FavListView: View {
 			.frame(maxWidth: .infinity)
 			.background(Color.background)
 			.task {
-				await itemVM.fetchFavItems()
+				if itemVM.favItems.isEmpty {
+					await itemVM.fetchFavItems()
+				}
 			}
 		}
 	}
@@ -61,5 +62,5 @@ struct FavListView: View {
 
 #Preview {
 	let itemVM = ItemViewModel()
-	FavListView(showHeaderView: .constant(true)).environmentObject(itemVM)
+	FavListView().environmentObject(itemVM)
 }
