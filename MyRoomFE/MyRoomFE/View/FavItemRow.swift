@@ -18,7 +18,7 @@ struct FavItemRow: View {
 				AsyncImage(url: itemPhotoUrl) { image in
 					image.image?.resizable()
 						.aspectRatio(contentMode: .fill)
-						.frame(width: 160, height: 160)
+						.frame(width: 180, height: 180)
 						.clipShape(RoundedRectangle(cornerRadius: 10))
 				}
 			}

@@ -8,20 +8,27 @@
 import SwiftUI
 
 struct HomeHeaderView: View {
-	@Binding var query: String
+	@EnvironmentObject var itemVM: ItemViewModel
+	@State private var query: String = ""
 	@Binding var selectedTab: Int
 	@Binding var tabHome: Bool
 	@Binding var tabFav: Bool
 	
 	private let tabs = ["홈", "즐겨찾기"]
     var body: some View {
-			VStack(spacing: 20) {
+			NavigationStack {
 				HStack(spacing: 0) {
-					Text("마룸")
-						.font(.headline)
-					SearchBar(searchText: $query) {
-						
+					NavigationLink {
+						SearchView()
+					} label: {
+						RoundedRectangle(cornerRadius: 10)
+							.frame(width: 300, height: 30)
 					}
+
+						
+					
+
+					
 					Button {
 						
 					} label: {
@@ -58,7 +65,6 @@ struct HomeHeaderView: View {
 
 #Preview {
 	HomeHeaderView(
-		query: .constant(""),
 		selectedTab: .constant(1),
 		tabHome: .constant(false),
 		tabFav: .constant(true)

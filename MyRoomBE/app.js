@@ -1,8 +1,11 @@
+// require('./models/sync')();
+
 const express = require("express");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
+dotenv.config();
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const roomRouter = require("./routers/roomsRouter");
 const locationRouter = require("./routers/locationRouter");
 const itemRouter = require("./routers/itemsRouter");

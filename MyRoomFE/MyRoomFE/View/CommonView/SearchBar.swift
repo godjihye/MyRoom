@@ -1,6 +1,6 @@
 //
 //  SearchBar.swift
-//  InMyRoom
+//  MyRoom
 //
 //  Created by jhshin on 11/13/24.
 //
@@ -13,7 +13,7 @@ struct SearchBar: View {
 	var handler: ()->Void
 	var body: some View {
 		HStack {
-			TextField("🔍 검색어를 입력하세요", text: $searchText)
+			TextField("검색어를 입력하세요", text: $searchText)
 				.padding(.all, 10)
 				.background(Color(.systemGray5))
 				.clipShape(.rect(cornerRadius: 15))
@@ -24,10 +24,9 @@ struct SearchBar: View {
 				}
 				.onTapGesture {
 					isEditing = true
-				}.animation(.easeInOut, value: isEditing)
+				}
+				.animation(.easeInOut, value: isEditing)
 				.textInputAutocapitalization(.none)
-			//focus가 오면 isEditing을 활성화해줘야함.
-			
 			if isEditing {
 				Button {
 					isEditing = false
@@ -38,6 +37,7 @@ struct SearchBar: View {
 				.padding(.trailing, 15)
 				.transition(.move(edge: .trailing))
 			}
+			Spacer()
 		}
 	}
 }

@@ -14,9 +14,11 @@ class ItemViewModel: ObservableObject {
 	@Published var favItems: [Item] = []
 	@Published var message: String = ""
 	@Published var isShowingAlert: Bool = false
+	@Published var searchResultItems: [Item] = []
+	
 	
 	//MARK: CRUD
-	// 1. Create
+	/// 1. Create Item
 	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items"
 		let params: Parameters = [
@@ -42,7 +44,7 @@ class ItemViewModel: ObservableObject {
 			}
 		}
 	}
-	// 2. Read
+	// 2. Read Item
 	func fetchItems(locationId: Int) async {
 		let url = "\(endPoint)/items/\(locationId)"
 		do {
@@ -70,8 +72,8 @@ class ItemViewModel: ObservableObject {
 			log("fetchFavItems Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
-	
-	func updateItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: String?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) async {
+	// 3. Update Item
+	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: String?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items/\(itemId)"
 		let params: Parameters = [
 			"itemName": itemName,
@@ -92,15 +94,6 @@ class ItemViewModel: ObservableObject {
 			log("updateItem Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
-	func removeItem(itemId: Int) async {
-		let url = "\(endPoint)/items/\(itemId)"
-		do {
-			let response = try await AF.request(url, method: .delete).serializingData().value
-			log("removeItem Complete! \(response.description)", trait: .success)
-		} catch {
-			log("removeItem Error: \(error.localizedDescription)", trait: .error)
-		}
-	}
 	func updateItemFav(itemId: Int, itemFav: Bool) async {
 		let url = "\(endPoint)/items/\(itemId)"
 		let params: Parameters = [
@@ -113,6 +106,36 @@ class ItemViewModel: ObservableObject {
 			log("updateItemFav Error", trait: .error)
 			print("do-try-catch error!")
 		}
+	}
+	// 4. Delete Item
+	func removeItem(itemId: Int) async {
+		let url = "\(endPoint)/items/\(itemId)"
+		do {
+			let response = try await AF.request(url, method: .delete).serializingData().value
+			log("removeItem Complete! \(response.description)", trait: .success)
+		} catch {
+			log("removeItem Error: \(error.localizedDescription)", trait: .error)
+		}
+	}
+	
+	// Search Item
+	func searchItem(query: String?) async {
+		guard let query = query else { return }
+		let url = "\(endPoint)/items/search"
+		let params: Parameters = ["userId": sampleUserId,"query": query]
+		do {
+			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(ItemResponse.self).value
+			DispatchQueue.main.async { self.searchResultItems = response.documents }
+		} catch {
+			if let afError = error as? AFError {
+				log("AFError: \(afError.localizedDescription)", trait: .error)
+			} else {
+				log("UnexpectedError: \(error.localizedDescription)", trait: .error)
+			}
+		}
+	}
+	func clearSearchResult() {
+		searchResultItems.removeAll()
 	}
 }
 

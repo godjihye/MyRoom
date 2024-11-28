@@ -14,7 +14,6 @@ struct ItemDetailView: View {
 	@EnvironmentObject var roomVM: RoomViewModel
 	@EnvironmentObject var itemVM: ItemViewModel
 	@State private var isShowingDeleteAlert: Bool = false
-	@Binding var showHeaderView: Bool
 	
 	var body: some View {
 		NavigationStack {
@@ -24,7 +23,8 @@ struct ItemDetailView: View {
 					AsyncImage(url: URL(string: photo)) { image in
 						image
 							.resizable()
-							.scaledToFit()
+							.scaledToFill()
+							.frame(height: 300)
 							.frame(maxWidth: .infinity)
 							.cornerRadius(10)
 							.overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray).opacity(0.2))
@@ -131,13 +131,10 @@ struct ItemDetailView: View {
 					
 				}
 			}
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
 			.padding()
-			.navigationTitle("Item Details")
-			.navigationBarTitleDisplayMode(.inline)
-			.onAppear {
-				showHeaderView = false
-			}
-			
+			.navigationTitle("아이템 상세 조회")
+			.navigationBarTitleDisplayMode(.inline)			
 		}
 		.background(Color.background)
 	}
@@ -159,5 +156,5 @@ extension Color {
 }
 
 #Preview {
-	ItemDetailView(item: sampleItem, showHeaderView: .constant(false))
+	ItemDetailView(item: sampleItem)
 }

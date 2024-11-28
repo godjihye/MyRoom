@@ -122,7 +122,7 @@ struct AddItemView: View {
 					Button("Save") {
 						if isEditMode, let item = existingItem {
 							Task {
-								await itemVM.updateItem(itemId: item.id, itemName: itemName, purchaseDate: purchaseDate.description, expiryDate: expiryDate.description, itemUrl: itemUrl, image: "", desc: itemDesc, color: itemColor, price: Int(itemPrice) ?? 0, openDate: openDate.description, locationId: selectedLocationId)
+								await itemVM.editItem(itemId: item.id, itemName: itemName, purchaseDate: purchaseDate.description, expiryDate: expiryDate.description, itemUrl: itemUrl, image: "", desc: itemDesc, color: itemColor, price: Int(itemPrice) ?? 0, openDate: openDate.description, locationId: selectedLocationId)
 								await itemVM.fetchItems(locationId: selectedLocationId)
 								dismiss()
 							}
@@ -134,11 +134,14 @@ struct AddItemView: View {
 							}
 						}
 					}
+					
 					.disabled(itemName.isEmpty)
 				}
-				ToolbarItem(placement: .cancellationAction) {
-					Button("Cancel") {
-						dismiss()
+				if !isEditMode{
+					ToolbarItem(placement: .cancellationAction) {
+						Button("Cancel") {
+							dismiss()
+						}
 					}
 				}
 			}

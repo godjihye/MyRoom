@@ -9,14 +9,11 @@ import SwiftUI
 
 struct HomeListView: View {
 	@EnvironmentObject var roomVM: RoomViewModel
-	@State var path: NavigationPath = NavigationPath()
 	@State private var isShowingAddRoomView: Bool = false
 	@State private var isShowingAddLocationView: Bool = false
 	@State private var isShowingAlert: Bool = false
 	@State private var removeRoomId: Int = 0
 	@State private var isShowingAlertRemove: Bool = false
-	
-	@Binding var showHeaderView: Bool
 	
 	var body: some View {
 		NavigationStack {
@@ -40,7 +37,7 @@ struct HomeListView: View {
 							.bold()
 					}
 				}
-				.padding(.horizontal)
+				.padding()
 				
 				// Room - Location List
 				if !roomVM.rooms.isEmpty {
@@ -70,7 +67,7 @@ struct HomeListView: View {
 							}) {
 								ForEach(room.locations) { location in
 									NavigationLink {
-										ItemListView(showHeaderView: $showHeaderView, location: location)
+										ItemListView(location: location)
 									} label: {
 										Text(location.locationName)
 									}
@@ -134,5 +131,5 @@ struct HomeListView: View {
 #Preview {
 	let roomVM = RoomViewModel()
 	let itemVM = ItemViewModel()
-	HomeListView(showHeaderView: .constant(true)).environmentObject(roomVM).environmentObject(itemVM)
+	HomeListView().environmentObject(roomVM).environmentObject(itemVM)
 }
