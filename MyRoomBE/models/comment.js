@@ -20,6 +20,16 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       })
 
+      // 자기참조 관계 설정
+      Comment.hasMany(models.Comment, {
+        foreignKey: 'parentId', 
+        as: 'replies',
+      });
+      Comment.belongsTo(models.Comment, {
+        foreignKey: 'parentId',
+        onDelete: "CASCADE",
+      });
+
 
     }
   }
@@ -28,9 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     comment: DataTypes.STRING,
     commentGroup: DataTypes.INTEGER,
-    parentId: DataTypes.INTEGER,
-    createdDate: DataTypes.DATE,
-    updatedDate: DataTypes.DATE
+    parentId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Comment',

@@ -19,13 +19,15 @@ module.exports = {
         type: Sequelize.STRING
       },
       postFavCnt: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue:0
       },
       thumbnail: {
         type: Sequelize.STRING
       },
       postViewCnt: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue:0
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -35,11 +37,9 @@ module.exports = {
           key: "id",
         },
       },
-      createdDate: {
-        type: Sequelize.DATE
-      },
-      updatedDate: {
-        type: Sequelize.DATE
+      isFavorite: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
