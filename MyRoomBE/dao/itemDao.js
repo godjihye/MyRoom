@@ -29,6 +29,7 @@ const findAllItem = async (id) => {
           },
         ],
       },
+
     ],
   });
 };
@@ -114,6 +115,7 @@ module.exports = {
   createItem,
   findAllItem,
   findItem,
+
   findItemByName,
   deleteItem,
   updateItem,
