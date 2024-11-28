@@ -32,13 +32,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       parentId: {
-        type: Sequelize.INTEGER
-      },
-      createdDate: {
-        type: Sequelize.DATE
-      },
-      updatedDate: {
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Comments', // 참조할 모델
+          key: 'id',          // 참조할 키
+        },
       },
       createdAt: {
         allowNull: false,
