@@ -45,6 +45,26 @@
 		B8C99D0E2CF835E500B7A2F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8C99CE32CF835E500B7A2F4 /* Assets.xcassets */; };
 		B8C99D0F2CF835E500B7A2F4 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B8C99CE42CF835E500B7A2F4 /* Config.xcconfig */; };
 		B8C99D132CF8360300B7A2F4 /* UIApplication+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D122CF8360300B7A2F4 /* UIApplication+KeyboardExtension.swift */; };
+		B8C99D162CF8A5CE00B7A2F4 /* CommentAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D152CF8A5C800B7A2F4 /* CommentAddView.swift */; };
+		B8C99D182CF8A5E800B7A2F4 /* CommentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D172CF8A5D900B7A2F4 /* CommentListView.swift */; };
+		B8C99D1A2CF8A60800B7A2F4 /* CommentRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D192CF8A60200B7A2F4 /* CommentRowView.swift */; };
+		B8C99D1C2CF8A62000B7A2F4 /* FullScreenImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D1B2CF8A61E00B7A2F4 /* FullScreenImageView.swift */; };
+		B8C99D1E2CF8A64000B7A2F4 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D1D2CF8A63900B7A2F4 /* PhotoPicker.swift */; };
+		B8C99D202CF8A69000B7A2F4 /* WideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D1F2CF8A68B00B7A2F4 /* WideButton.swift */; };
+		B8C99D232CF8A6FD00B7A2F4 /* PostAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D222CF8A6F700B7A2F4 /* PostAddView.swift */; };
+		B8C99D252CF8A71D00B7A2F4 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D242CF8A71500B7A2F4 /* PostDetailView.swift */; };
+		B8C99D272CF8A73200B7A2F4 /* PostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D262CF8A72E00B7A2F4 /* PostListView.swift */; };
+		B8C99D292CF8A74700B7A2F4 /* PostRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D282CF8A74200B7A2F4 /* PostRowView.swift */; };
+		B8C99D2C2CF8A82F00B7A2F4 /* UsedAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D2B2CF8A82900B7A2F4 /* UsedAddView.swift */; };
+		B8C99D2E2CF8A83E00B7A2F4 /* UsedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D2D2CF8A83C00B7A2F4 /* UsedDetailView.swift */; };
+		B8C99D302CF8A85E00B7A2F4 /* UsedItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D2F2CF8A84E00B7A2F4 /* UsedItemListView.swift */; };
+		B8C99D322CF8A87400B7A2F4 /* UsedItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D312CF8A86E00B7A2F4 /* UsedItemRowView.swift */; };
+		B8C99D342CF8A88200B7A2F4 /* UsedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D332CF8A87D00B7A2F4 /* UsedListView.swift */; };
+		B8C99D362CF8A88F00B7A2F4 /* UsedRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D352CF8A88C00B7A2F4 /* UsedRowView.swift */; };
+		B8C99D382CF8A8A700B7A2F4 /* UsedWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D372CF8A8A500B7A2F4 /* UsedWebView.swift */; };
+		B8C99D3D2CF8A95200B7A2F4 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D3C2CF8A95200B7A2F4 /* PostViewModel.swift */; };
+		B8C99D3F2CF8A96E00B7A2F4 /* UsedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99D3E2CF8A96E00B7A2F4 /* UsedViewModel.swift */; };
+		B8C99D422CF8A9B400B7A2F4 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = B8C99D412CF8A9B400B7A2F4 /* SVProgressHUD */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +106,25 @@
 		B8C99CEA2CF835E500B7A2F4 /* MyRoomFEApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoomFEApp.swift; sourceTree = "<group>"; };
 		B8C99CEB2CF835E500B7A2F4 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		B8C99D122CF8360300B7A2F4 /* UIApplication+KeyboardExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+KeyboardExtension.swift"; sourceTree = "<group>"; };
+		B8C99D152CF8A5C800B7A2F4 /* CommentAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAddView.swift; sourceTree = "<group>"; };
+		B8C99D172CF8A5D900B7A2F4 /* CommentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentListView.swift; sourceTree = "<group>"; };
+		B8C99D192CF8A60200B7A2F4 /* CommentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRowView.swift; sourceTree = "<group>"; };
+		B8C99D1B2CF8A61E00B7A2F4 /* FullScreenImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageView.swift; sourceTree = "<group>"; };
+		B8C99D1D2CF8A63900B7A2F4 /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
+		B8C99D1F2CF8A68B00B7A2F4 /* WideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideButton.swift; sourceTree = "<group>"; };
+		B8C99D222CF8A6F700B7A2F4 /* PostAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddView.swift; sourceTree = "<group>"; };
+		B8C99D242CF8A71500B7A2F4 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
+		B8C99D262CF8A72E00B7A2F4 /* PostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListView.swift; sourceTree = "<group>"; };
+		B8C99D282CF8A74200B7A2F4 /* PostRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRowView.swift; sourceTree = "<group>"; };
+		B8C99D2B2CF8A82900B7A2F4 /* UsedAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedAddView.swift; sourceTree = "<group>"; };
+		B8C99D2D2CF8A83C00B7A2F4 /* UsedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedDetailView.swift; sourceTree = "<group>"; };
+		B8C99D2F2CF8A84E00B7A2F4 /* UsedItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedItemListView.swift; sourceTree = "<group>"; };
+		B8C99D312CF8A86E00B7A2F4 /* UsedItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedItemRowView.swift; sourceTree = "<group>"; };
+		B8C99D332CF8A87D00B7A2F4 /* UsedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedListView.swift; sourceTree = "<group>"; };
+		B8C99D352CF8A88C00B7A2F4 /* UsedRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedRowView.swift; sourceTree = "<group>"; };
+		B8C99D372CF8A8A500B7A2F4 /* UsedWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedWebView.swift; sourceTree = "<group>"; };
+		B8C99D3C2CF8A95200B7A2F4 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
+		B8C99D3E2CF8A96E00B7A2F4 /* UsedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8C99D422CF8A9B400B7A2F4 /* SVProgressHUD in Frameworks */,
 				0B25FEC22CF4331100AE7301 /* Kingfisher in Frameworks */,
 				B86FFAB82CEAE27C0062BC30 /* Alamofire in Frameworks */,
 			);
@@ -136,6 +176,8 @@
 		B8C99CCE2CF835E500B7A2F4 /* CommonView */ = {
 			isa = PBXGroup;
 			children = (
+				B8C99D1F2CF8A68B00B7A2F4 /* WideButton.swift */,
+				B8C99D1D2CF8A63900B7A2F4 /* PhotoPicker.swift */,
 				B8C99CC72CF835E500B7A2F4 /* AddItemDatePicker.swift */,
 				B8C99CC82CF835E500B7A2F4 /* AddItemTextField.swift */,
 				B8C99CC92CF835E500B7A2F4 /* CustomTextField.swift */,
@@ -150,6 +192,9 @@
 		B8C99CDD2CF835E500B7A2F4 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B8C99D2A2CF8A82000B7A2F4 /* UsedView */,
+				B8C99D212CF8A6EC00B7A2F4 /* PostView */,
+				B8C99D142CF8A5BA00B7A2F4 /* CommentView */,
 				B8C99CCE2CF835E500B7A2F4 /* CommonView */,
 				B8C99CCF2CF835E500B7A2F4 /* AddItemView.swift */,
 				B8C99CD02CF835E500B7A2F4 /* AdditionalPhotosView.swift */,
@@ -172,6 +217,8 @@
 		B8C99CE12CF835E500B7A2F4 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				B8C99D3E2CF8A96E00B7A2F4 /* UsedViewModel.swift */,
+				B8C99D3C2CF8A95200B7A2F4 /* PostViewModel.swift */,
 				B8C99CDE2CF835E500B7A2F4 /* ItemViewModel.swift */,
 				B8C99CDF2CF835E500B7A2F4 /* RoomViewModel.swift */,
 				B8C99CE02CF835E500B7A2F4 /* UserViewModel.swift */,
@@ -190,10 +237,8 @@
 				B8C99CE32CF835E500B7A2F4 /* Assets.xcassets */,
 				B8C99CE42CF835E500B7A2F4 /* Config.xcconfig */,
 				B8C99CE52CF835E500B7A2F4 /* ContentView.swift */,
-				B8C99CE62CF835E500B7A2F4 /* DateFormatter.swift */,
 				B8C99CE72CF835E500B7A2F4 /* EntryView.swift */,
 				B8C99CE82CF835E500B7A2F4 /* Info.plist */,
-				B8C99CE92CF835E500B7A2F4 /* LogManager.swift */,
 				B8C99CEA2CF835E500B7A2F4 /* MyRoomFEApp.swift */,
 				B8C99CEB2CF835E500B7A2F4 /* Sample.swift */,
 			);
@@ -203,10 +248,48 @@
 		B8C99D112CF835E800B7A2F4 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B8C99CE62CF835E500B7A2F4 /* DateFormatter.swift */,
+				B8C99CE92CF835E500B7A2F4 /* LogManager.swift */,
 				B8C99CE22CF835E500B7A2F4 /* Array+RawRepresentable.swift */,
 				B8C99D122CF8360300B7A2F4 /* UIApplication+KeyboardExtension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		B8C99D142CF8A5BA00B7A2F4 /* CommentView */ = {
+			isa = PBXGroup;
+			children = (
+				B8C99D152CF8A5C800B7A2F4 /* CommentAddView.swift */,
+				B8C99D172CF8A5D900B7A2F4 /* CommentListView.swift */,
+				B8C99D192CF8A60200B7A2F4 /* CommentRowView.swift */,
+				B8C99D1B2CF8A61E00B7A2F4 /* FullScreenImageView.swift */,
+			);
+			path = CommentView;
+			sourceTree = "<group>";
+		};
+		B8C99D212CF8A6EC00B7A2F4 /* PostView */ = {
+			isa = PBXGroup;
+			children = (
+				B8C99D282CF8A74200B7A2F4 /* PostRowView.swift */,
+				B8C99D262CF8A72E00B7A2F4 /* PostListView.swift */,
+				B8C99D242CF8A71500B7A2F4 /* PostDetailView.swift */,
+				B8C99D222CF8A6F700B7A2F4 /* PostAddView.swift */,
+			);
+			path = PostView;
+			sourceTree = "<group>";
+		};
+		B8C99D2A2CF8A82000B7A2F4 /* UsedView */ = {
+			isa = PBXGroup;
+			children = (
+				B8C99D2D2CF8A83C00B7A2F4 /* UsedDetailView.swift */,
+				B8C99D332CF8A87D00B7A2F4 /* UsedListView.swift */,
+				B8C99D312CF8A86E00B7A2F4 /* UsedItemRowView.swift */,
+				B8C99D2F2CF8A84E00B7A2F4 /* UsedItemListView.swift */,
+				B8C99D352CF8A88C00B7A2F4 /* UsedRowView.swift */,
+				B8C99D372CF8A8A500B7A2F4 /* UsedWebView.swift */,
+				B8C99D2B2CF8A82900B7A2F4 /* UsedAddView.swift */,
+			);
+			path = UsedView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,6 +311,7 @@
 			packageProductDependencies = (
 				B86FFAB72CEAE27C0062BC30 /* Alamofire */,
 				0B25FEC12CF4331100AE7301 /* Kingfisher */,
+				B8C99D412CF8A9B400B7A2F4 /* SVProgressHUD */,
 			);
 			productName = MyRoomFE;
 			productReference = B89A1B552CE5D432001AA7AE /* MyRoomFE.app */;
@@ -260,6 +344,7 @@
 			packageReferences = (
 				B86FFAB62CEAE27C0062BC30 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				0B25FEC02CF4331100AE7301 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				B8C99D402CF8A9B400B7A2F4 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B89A1B562CE5D432001AA7AE /* Products */;
@@ -289,26 +374,43 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8C99D3D2CF8A95200B7A2F4 /* PostViewModel.swift in Sources */,
 				B8C99CED2CF835E500B7A2F4 /* Model.swift in Sources */,
+				B8C99D2C2CF8A82F00B7A2F4 /* UsedAddView.swift in Sources */,
 				B8C99CEE2CF835E500B7A2F4 /* AddItemDatePicker.swift in Sources */,
 				B8C99CEF2CF835E500B7A2F4 /* AddItemTextField.swift in Sources */,
 				B8C99CF02CF835E500B7A2F4 /* CustomTextField.swift in Sources */,
+				B8C99D202CF8A69000B7A2F4 /* WideButton.swift in Sources */,
 				B8C99D132CF8360300B7A2F4 /* UIApplication+KeyboardExtension.swift in Sources */,
 				B8C99CF12CF835E500B7A2F4 /* ImagePicker.swift in Sources */,
+				B8C99D182CF8A5E800B7A2F4 /* CommentListView.swift in Sources */,
+				B8C99D252CF8A71D00B7A2F4 /* PostDetailView.swift in Sources */,
 				B8C99CF22CF835E500B7A2F4 /* ImgUploadRectBtn.swift in Sources */,
 				B8C99CF32CF835E500B7A2F4 /* SearchBar.swift in Sources */,
+				B8C99D1A2CF8A60800B7A2F4 /* CommentRowView.swift in Sources */,
+				B8C99D322CF8A87400B7A2F4 /* UsedItemRowView.swift in Sources */,
+				B8C99D162CF8A5CE00B7A2F4 /* CommentAddView.swift in Sources */,
 				B8C99CF42CF835E500B7A2F4 /* TabItemView.swift in Sources */,
 				B8C99CF52CF835E500B7A2F4 /* AddItemView.swift in Sources */,
+				B8C99D232CF8A6FD00B7A2F4 /* PostAddView.swift in Sources */,
 				B8C99CF62CF835E500B7A2F4 /* AdditionalPhotosView.swift in Sources */,
 				B8C99CF72CF835E500B7A2F4 /* AddLocationView.swift in Sources */,
+				B8C99D2E2CF8A83E00B7A2F4 /* UsedDetailView.swift in Sources */,
+				B8C99D342CF8A88200B7A2F4 /* UsedListView.swift in Sources */,
+				B8C99D1C2CF8A62000B7A2F4 /* FullScreenImageView.swift in Sources */,
 				B8C99CF82CF835E500B7A2F4 /* AddRoomView.swift in Sources */,
 				B8C99CF92CF835E500B7A2F4 /* FavItemRow.swift in Sources */,
 				B8C99CFA2CF835E500B7A2F4 /* FavListView.swift in Sources */,
+				B8C99D3F2CF8A96E00B7A2F4 /* UsedViewModel.swift in Sources */,
+				B8C99D292CF8A74700B7A2F4 /* PostRowView.swift in Sources */,
 				B8C99CFB2CF835E500B7A2F4 /* HomeHeaderView.swift in Sources */,
 				B8C99CFC2CF835E500B7A2F4 /* HomeListView.swift in Sources */,
 				B8C99CFD2CF835E500B7A2F4 /* HomeView.swift in Sources */,
+				B8C99D362CF8A88F00B7A2F4 /* UsedRowView.swift in Sources */,
 				B8C99CFE2CF835E500B7A2F4 /* ItemDetailImageView.swift in Sources */,
+				B8C99D382CF8A8A700B7A2F4 /* UsedWebView.swift in Sources */,
 				B8C99CFF2CF835E500B7A2F4 /* ItemDetailView.swift in Sources */,
+				B8C99D302CF8A85E00B7A2F4 /* UsedItemListView.swift in Sources */,
 				B8C99D002CF835E500B7A2F4 /* ItemListView.swift in Sources */,
 				B8C99D012CF835E500B7A2F4 /* ItemRowView.swift in Sources */,
 				B8C99D022CF835E500B7A2F4 /* SearchView.swift in Sources */,
@@ -316,7 +418,9 @@
 				B8C99D042CF835E500B7A2F4 /* RoomViewModel.swift in Sources */,
 				B8C99D052CF835E500B7A2F4 /* UserViewModel.swift in Sources */,
 				B8C99D062CF835E500B7A2F4 /* Array+RawRepresentable.swift in Sources */,
+				B8C99D272CF8A73200B7A2F4 /* PostListView.swift in Sources */,
 				B8C99D072CF835E500B7A2F4 /* ContentView.swift in Sources */,
+				B8C99D1E2CF8A64000B7A2F4 /* PhotoPicker.swift in Sources */,
 				B8C99D082CF835E500B7A2F4 /* DateFormatter.swift in Sources */,
 				B8C99D092CF835E500B7A2F4 /* EntryView.swift in Sources */,
 				B8C99D0A2CF835E500B7A2F4 /* LogManager.swift in Sources */,
@@ -551,6 +655,14 @@
 				minimumVersion = 5.10.1;
 			};
 		};
+		B8C99D402CF8A9B400B7A2F4 /* XCRemoteSwiftPackageReference "SVProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVProgressHUD/SVProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -563,6 +675,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B86FFAB62CEAE27C0062BC30 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		B8C99D412CF8A9B400B7A2F4 /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B8C99D402CF8A9B400B7A2F4 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
