@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-let test = Comments(id: 1, comment: "댓글이에용", userImage: "soo1.jpeg",nickName: "마루미",date: "2024.11.21")
+let test = Comment(id: 1, comment: "댓글이에용", userImage: "soo1.jpeg",nickName: "마루미",date: "2024.11.21")
 struct CommentView: View {
-		let comments:Comments
+		let comments:Comment
 		var body: some View {
 				VStack{
 						HStack{

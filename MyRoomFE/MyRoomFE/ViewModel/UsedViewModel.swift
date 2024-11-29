@@ -10,7 +10,7 @@ import Alamofire
 import SVProgressHUD
 
 class UsedViewModel:ObservableObject {
-	@Published var useds:[Useds]=[]
+	@Published var useds:[Used]=[]
 	@Published var images:[String] = []
 	//    @Published var usedPhoto:UsedPhotos
 	@Published var message = ""

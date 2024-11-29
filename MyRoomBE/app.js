@@ -1,4 +1,4 @@
-// require('./models/sync')();
+
 const models = require("./models");
 const express = require("express");
 const morgan = require("morgan");

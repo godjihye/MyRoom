@@ -12,7 +12,7 @@ let postPhotoData = [PostPhotoData(id: 1, image: "test1.jpeg"),PostPhotoData(id:
 struct PostDetailView: View {
 		@EnvironmentObject var postVM:PostViewModel
 		
-		var post:Posts
+		var post:Post
 		let photos:[PostPhotoData]
 		
 		@State private var isWebViewPresented = false

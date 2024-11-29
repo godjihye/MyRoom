@@ -4,5 +4,7 @@
 <dict>
 	<key>ENDPOINT</key>
 	<string>$(ENDPOINT)</string>
+	<key>AZURESTORAGE</key>
+	<string>$(AZURESTORAGE)</string>
 </dict>
 </plist>

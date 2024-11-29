@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PostRowView: View {
-		var post:Posts
+		var post:Post
 		var body: some View {
 				
 				HStack{
