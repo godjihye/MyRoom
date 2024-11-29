@@ -12,7 +12,7 @@ import Alamofire
 
 
 class PostViewModel:ObservableObject {
-    @Published var posts:[Posts]=[]  //무한스크롤
+    @Published var posts:[Post]=[]  //무한스크롤
     @Published var postPhotos:[PostPhotos]=[]
     @Published var message = ""
     @Published var isAlertShowing = false

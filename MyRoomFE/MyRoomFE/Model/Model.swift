@@ -72,7 +72,7 @@ struct RoomResponse:Codable {
 
 import Foundation
 
-struct Comments: Identifiable ,Codable{
+struct Comment: Identifiable ,Codable{
 		var id:Int
 		var comment: String
 		var userImage:String
@@ -89,7 +89,7 @@ struct Comments: Identifiable ,Codable{
 
 import Foundation
 
-struct Posts: Identifiable,Codable,Equatable {
+struct Post: Identifiable,Codable,Equatable {
 		let id: Int
 		let title: String
 		let content: String
@@ -108,7 +108,7 @@ struct Posts: Identifiable,Codable,Equatable {
 
 struct PostRoot: Codable{
 		let success: Bool
-		let posts: [Posts]
+		let posts: [Post]
 		let message: String
 }
 
@@ -134,7 +134,7 @@ struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
 
 import Foundation
 
-struct Useds: Identifiable,Codable,Equatable {
+struct Used: Identifiable,Codable,Equatable {
 		
 		let id: Int
 		let usedTitle: String
@@ -177,7 +177,7 @@ struct User : Codable,Equatable {
 
 struct UsedRoot: Codable{
 //    let success: Bool
-		let useds: [Useds]
+		let useds: [Used]
 //    let message: String
 }
 

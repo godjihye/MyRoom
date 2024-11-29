@@ -13,7 +13,7 @@ let photoData = [UsedPhotoData(id: 1, image: "test1.jpeg"),UsedPhotoData(id: 2, 
 struct UsedDetailView: View {
 		@EnvironmentObject var usedVM: UsedViewModel
 		@Binding var isFavorite:Bool
-		@State var used:Useds
+		@State var used:Used
 		let photos:[UsedPhotoData]
 		let dateFormatter = DateFormatter().dateFormat
 		
