@@ -85,5 +85,5 @@ struct PostDetailView: View {
 
 #Preview {
 		let post = PostViewModel()
-		PostDetailView(post: sample,photos: postPhotoData).environmentObject(post)
+		PostDetailView(post: samplePost, photos: postPhotoData).environmentObject(post)
 }
