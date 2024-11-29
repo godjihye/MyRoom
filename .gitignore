@@ -1,6 +1,5 @@
-.DS_Store
-node_modules
 *.xcconfig
+.DS_Store
 *.xcuserstate
 xcuserdata/
 DerivedData/
@@ -9,3 +8,4 @@ node_modules
 *.env
 MyRoomFE/MyRoomFE.xcodeproj/project.xcworkspace/xcuserdata/jhshin.xcuserdatad/UserInterfaceState.xcuserstate
 MyRoomFE/MyRoomFE.xcodeproj/xcuserdata/jhshin.xcuserdatad/xcschemes/xcschememanagement.plist
+
