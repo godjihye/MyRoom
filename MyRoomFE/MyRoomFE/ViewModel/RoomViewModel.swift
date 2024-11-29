@@ -15,6 +15,7 @@ class RoomViewModel: ObservableObject {
 	@Published var message: String = ""
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	
+	
 	// CRUD
 	
 	// 1. Create
@@ -50,6 +51,7 @@ class RoomViewModel: ObservableObject {
 	// 2. Read
 	/// 2. Read Rooms/Locations
 	func fetchRooms() async {
+		print("endPoint: \(endPoint)")
 		let url = "\(endPoint)/rooms/list/\(sampleUserId)"
 		do {
 			let response = try await AF.request(url, method: .get).serializingDecodable(RoomResponse.self).value
