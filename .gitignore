@@ -1,2 +1,8 @@
+*.xcconfig
 .DS_Store
+*.xcuserstate
+xcuserdata/
+DerivedData/
+build/
 node_modules
+*.env
