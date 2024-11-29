@@ -63,6 +63,14 @@ const findAllFavItem = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+const findAllItemByUserId = async (req, res) => {
+  try {
+    const result = await itemService.findAllItemByUserId(req.params.userId);
+    res.status(200).json({ documents: result });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
 module.exports = {
   createItem,
   findAllItem,
@@ -71,5 +79,5 @@ module.exports = {
   deleteItem,
   updateItem,
   findAllFavItem,
+  findAllItemByUserId,
 };
-

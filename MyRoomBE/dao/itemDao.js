@@ -29,7 +29,6 @@ const findAllItem = async (id) => {
           },
         ],
       },
-
     ],
   });
 };
@@ -109,15 +108,43 @@ const findAllFavItem = async (id) => {
     //raw: true,
   });
 };
-// 7.아이템의 추가 정보 사진 조회
+
+// User의 전체 아이템 조회
+const findAllItemByUserId = async (id) => {
+  return await models.Item.findAll({
+    include: [
+      {
+        model: models.ItemPhoto,
+        as: "itemPhoto",
+        attributes: ["id", "photo"],
+      },
+      {
+        model: models.Location,
+        as: "location",
+        attributes: ["locationName"],
+        include: [
+          {
+            model: models.Room,
+            as: "room",
+            attributes: ["roomName", "userId"],
+            where: { userId: id },
+            required: true,
+          },
+        ],
+        required: true,
+      },
+    ],
+    //raw: true,
+  });
+};
 
 module.exports = {
   createItem,
   findAllItem,
   findItem,
-
   findItemByName,
   deleteItem,
   updateItem,
   findAllFavItem,
+  findAllItemByUserId,
 };
