@@ -21,6 +21,9 @@ const updateItem = async (id, data) => {
 const findAllFavItem = async (id) => {
   return await itemDao.findAllFavItem(id);
 };
+const findAllItemByUserId = async (id) => {
+  return await itemDao.findAllItemByUserId(id);
+};
 module.exports = {
   createItem,
   findAllItem,
