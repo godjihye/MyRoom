@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Foundation
-import Kingfisher
 
 struct AddItemView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
@@ -148,9 +147,9 @@ struct AddItemView: View {
 		}
 		.sheet(isPresented: $isImagePickerPresented) {
 			if isPickOneImage {
-				ImagePicker(selectedImages: $selectedImage, selectionLimit: 1)
+				//ImagePicker(selectedImages: $selectedImage, selectionLimit: 1)
 			} else {
-				ImagePicker(selectedImages: $additionalPhotos, selectionLimit: 20)
+				//ImagePicker(selectedImages: $additionalPhotos, selectionLimit: 20)
 			}
 		}
 		.sheet(isPresented: $isImagePickerPresented) {
