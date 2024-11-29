@@ -23,7 +23,6 @@
 		B8C99CF82CF835E500B7A2F4 /* AddRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99CD22CF835E500B7A2F4 /* AddRoomView.swift */; };
 		B8C99CF92CF835E500B7A2F4 /* FavItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99CD32CF835E500B7A2F4 /* FavItemRow.swift */; };
 		B8C99CFA2CF835E500B7A2F4 /* FavListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99CD42CF835E500B7A2F4 /* FavListView.swift */; };
-		B8C99CFB2CF835E500B7A2F4 /* HomeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99CD52CF835E500B7A2F4 /* HomeHeaderView.swift */; };
 		B8C99CFC2CF835E500B7A2F4 /* HomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99CD62CF835E500B7A2F4 /* HomeListView.swift */; };
 		B8C99CFD2CF835E500B7A2F4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99CD72CF835E500B7A2F4 /* HomeView.swift */; };
 		B8C99CFE2CF835E500B7A2F4 /* ItemDetailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C99CD82CF835E500B7A2F4 /* ItemDetailImageView.swift */; };
@@ -84,7 +83,6 @@
 		B8C99CD22CF835E500B7A2F4 /* AddRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRoomView.swift; sourceTree = "<group>"; };
 		B8C99CD32CF835E500B7A2F4 /* FavItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavItemRow.swift; sourceTree = "<group>"; };
 		B8C99CD42CF835E500B7A2F4 /* FavListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavListView.swift; sourceTree = "<group>"; };
-		B8C99CD52CF835E500B7A2F4 /* HomeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderView.swift; sourceTree = "<group>"; };
 		B8C99CD62CF835E500B7A2F4 /* HomeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListView.swift; sourceTree = "<group>"; };
 		B8C99CD72CF835E500B7A2F4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B8C99CD82CF835E500B7A2F4 /* ItemDetailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailImageView.swift; sourceTree = "<group>"; };
@@ -141,6 +139,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B88C097F2CF94A10007844E4 /* ItemView */ = {
+			isa = PBXGroup;
+			children = (
+				B8C99CCF2CF835E500B7A2F4 /* AddItemView.swift */,
+				B8C99CD02CF835E500B7A2F4 /* AdditionalPhotosView.swift */,
+				B8C99CD32CF835E500B7A2F4 /* FavItemRow.swift */,
+				B8C99CD42CF835E500B7A2F4 /* FavListView.swift */,
+				B8C99CD22CF835E500B7A2F4 /* AddRoomView.swift */,
+				B8C99CD12CF835E500B7A2F4 /* AddLocationView.swift */,
+				B8C99CD82CF835E500B7A2F4 /* ItemDetailImageView.swift */,
+				B8C99CD92CF835E500B7A2F4 /* ItemDetailView.swift */,
+				B8C99CDB2CF835E500B7A2F4 /* ItemRowView.swift */,
+				B8C99CDA2CF835E500B7A2F4 /* ItemListView.swift */,
+				B8C99CD62CF835E500B7A2F4 /* HomeListView.swift */,
+				B8C99CD72CF835E500B7A2F4 /* HomeView.swift */,
+			);
+			path = ItemView;
+			sourceTree = "<group>";
+		};
 		B89A1B4C2CE5D432001AA7AE = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +193,7 @@
 		B8C99CCE2CF835E500B7A2F4 /* CommonView */ = {
 			isa = PBXGroup;
 			children = (
+				B8C99CDC2CF835E500B7A2F4 /* SearchView.swift */,
 				B8C99D1F2CF8A68B00B7A2F4 /* WideButton.swift */,
 				B8C99D1D2CF8A63900B7A2F4 /* PhotoPicker.swift */,
 				B8C99CC72CF835E500B7A2F4 /* AddItemDatePicker.swift */,
@@ -192,24 +210,11 @@
 		B8C99CDD2CF835E500B7A2F4 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B88C097F2CF94A10007844E4 /* ItemView */,
 				B8C99D2A2CF8A82000B7A2F4 /* UsedView */,
 				B8C99D212CF8A6EC00B7A2F4 /* PostView */,
 				B8C99D142CF8A5BA00B7A2F4 /* CommentView */,
 				B8C99CCE2CF835E500B7A2F4 /* CommonView */,
-				B8C99CCF2CF835E500B7A2F4 /* AddItemView.swift */,
-				B8C99CD02CF835E500B7A2F4 /* AdditionalPhotosView.swift */,
-				B8C99CD12CF835E500B7A2F4 /* AddLocationView.swift */,
-				B8C99CD22CF835E500B7A2F4 /* AddRoomView.swift */,
-				B8C99CD32CF835E500B7A2F4 /* FavItemRow.swift */,
-				B8C99CD42CF835E500B7A2F4 /* FavListView.swift */,
-				B8C99CD52CF835E500B7A2F4 /* HomeHeaderView.swift */,
-				B8C99CD62CF835E500B7A2F4 /* HomeListView.swift */,
-				B8C99CD72CF835E500B7A2F4 /* HomeView.swift */,
-				B8C99CD82CF835E500B7A2F4 /* ItemDetailImageView.swift */,
-				B8C99CD92CF835E500B7A2F4 /* ItemDetailView.swift */,
-				B8C99CDA2CF835E500B7A2F4 /* ItemListView.swift */,
-				B8C99CDB2CF835E500B7A2F4 /* ItemRowView.swift */,
-				B8C99CDC2CF835E500B7A2F4 /* SearchView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -403,7 +408,6 @@
 				B8C99CFA2CF835E500B7A2F4 /* FavListView.swift in Sources */,
 				B8C99D3F2CF8A96E00B7A2F4 /* UsedViewModel.swift in Sources */,
 				B8C99D292CF8A74700B7A2F4 /* PostRowView.swift in Sources */,
-				B8C99CFB2CF835E500B7A2F4 /* HomeHeaderView.swift in Sources */,
 				B8C99CFC2CF835E500B7A2F4 /* HomeListView.swift in Sources */,
 				B8C99CFD2CF835E500B7A2F4 /* HomeView.swift in Sources */,
 				B8C99D362CF8A88F00B7A2F4 /* UsedRowView.swift in Sources */,

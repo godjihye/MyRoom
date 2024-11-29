@@ -41,7 +41,7 @@ struct UsedItemListView: View {
 								.padding(.top, 200)
 						}
 						Spacer()
-				}.onAppear {
+				}.task {
 						await itemVM.fetchItems(locationId: 1)
 
 				}
