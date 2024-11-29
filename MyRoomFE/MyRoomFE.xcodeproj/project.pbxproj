@@ -15,9 +15,22 @@
 		B89A1B552CE5D432001AA7AE /* MyRoomFE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRoomFE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B86F34292CF959390040BB33 /* Exceptions for "MyRoomFE" folder in "MyRoomFE" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B89A1B542CE5D432001AA7AE /* MyRoomFE */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B89A1B572CE5D432001AA7AE /* MyRoomFE */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B86F34292CF959390040BB33 /* Exceptions for "MyRoomFE" folder in "MyRoomFE" target */,
+			);
 			path = MyRoomFE;
 			sourceTree = "<group>";
 		};
@@ -140,6 +153,8 @@
 /* Begin XCBuildConfiguration section */
 		B89A1B612CE5D432001AA7AE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B89A1B572CE5D432001AA7AE /* MyRoomFE */;
+			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -203,6 +218,8 @@
 		};
 		B89A1B622CE5D432001AA7AE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B89A1B572CE5D432001AA7AE /* MyRoomFE */;
+			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

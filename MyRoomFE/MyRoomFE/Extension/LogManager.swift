@@ -16,12 +16,11 @@ enum LogTrait: String {
 	case info = "ℹ️"
 	case warning = "⚠️"
 	case error = "🔥"
-	
 }
 
 // 로그 함수 정의
 func log(_ message: String,
-				 trait: LogTrait,
+				 trait: LogTrait = .info,
 				 function: String = #function,
 				 line: Int = #line,
 				 file: String = #file) {
