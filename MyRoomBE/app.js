@@ -1,5 +1,5 @@
 // require('./models/sync')();
-
+const models = require("./models");
 const express = require("express");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
@@ -29,5 +29,14 @@ app.use((_, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`${PORT}에서 서버 실행중`);
+  // models.sequelize
+  //   .sync({ force: false })
+  //   .then(() => {
+  //     console.log("db 연결 성공");
+  //   })
+  //   .catch((err) => {
+  //     console.log(`db 연결 실패 : ${err}`);
+  //     process.exit();
+  //   });
+  console.log(`server on ${PORT}`);
 });
