@@ -3,7 +3,7 @@
 //  MyRoomFE
 //
 //  Created by jhshin on 11/28/24.
-//
+//  @AppStorage를 배열로 쓰기 위함.
 
 import Foundation
 
