@@ -11,7 +11,6 @@ import PhotosUI
 
 class ImagePickerCoordinator:NSObject, PHPickerViewControllerDelegate {
 		let parent:ImagePicker
-		
 		init(parent: ImagePicker) {
 				self.parent = parent
 		}
@@ -31,10 +30,11 @@ class ImagePickerCoordinator:NSObject, PHPickerViewControllerDelegate {
 
 struct ImagePicker: UIViewControllerRepresentable {
 		@Binding var image:UIImage?
+	var selectionLimit = 1
 		func makeUIViewController(context: Context) -> PHPickerViewController {
 				var config = PHPickerConfiguration()
 				config.filter = .images
-				config.selectionLimit = 1
+				config.selectionLimit = selectionLimit
 				let picker = PHPickerViewController(configuration: config)
 				return picker
 		}

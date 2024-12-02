@@ -42,9 +42,9 @@ class RoomViewModel: ObservableObject {
 		let params: [String: Any] = ["locationName": locationName, "locationDesc": locationDesc, "roomId": roomId]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			print("addLocation Complete")
+			log("addLocation Complete")
 		} catch {
-			print("Error: \(error)")
+			log("Error: \(error)", trait: .error)
 		}
 	}
 	
@@ -77,9 +77,9 @@ class RoomViewModel: ObservableObject {
 		]
 		do {
 			let response = try await AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			print("editRoom Complete")
+			log("editRoom Complete")
 		} catch {
-			print("editRoom Error: \(error)")
+			log("editRoom Error: \(error)", trait: .error)
 		}
 	}
 	/// 3-2) Update Location
