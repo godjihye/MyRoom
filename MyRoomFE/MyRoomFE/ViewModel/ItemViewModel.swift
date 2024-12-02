@@ -14,33 +14,70 @@ class ItemViewModel: ObservableObject {
 	@Published var message: String = ""
 	@Published var isShowingAlert: Bool = false
 	@Published var searchResultItems: [Item] = []
-	
+	@Published var isAddShowing: Bool = false
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
 	//MARK: CRUD
 	// 1. Create Item
 	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items"
-		let params: Parameters = [
-			"itemName": itemName,
-			"purchaseDate": purchaseDate,
-			"expiryDate": expiryDate,
-			"url": itemUrl,
-			"photo": "https://data.onnada.com/character/202406/thumb_1982740661_05661aad_2050_1.png",
-			"desc": desc,
-			"color": "rose gold",
-			"isFav": true,
-			"price": 2000,
-			"locationId": locationId
-		]
-		do {
-			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			log("addItem Complete", trait: .success)
-		} catch {
-			if let afError = error as? AFError {
-				log("AFError: \(afError.localizedDescription)", trait: .error)
-			} else {
-				log("UnexpectedError: \(error.localizedDescription)", trait: .error)
+		let userId = UserDefaults.standard.integer(forKey: "userId")
+		guard let token = UserDefaults.standard.string(forKey: "token") else { log("token can't unwrapping", trait: .error); return}
+		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
+		guard let imageData = image?.jpegData(compressionQuality: 0.2) else {return}
+		guard let itemName = itemName,
+					let locationId = locationId,
+					let isFav = isFav else { return }
+		var formData = MultipartFormData()
+		formData.append(imageData, withName: "photo", fileName: "itemPhoto.jpg", mimeType: "image/jpeg")
+		addFormData(formData: formData, optionalString: itemName, withName: "itemName")
+		addFormData(formData: formData, optionalString: purchaseDate, withName: "purchaseDate")
+		addFormData(formData: formData, optionalString: expiryDate, withName: "expiryDate")
+		addFormData(formData: formData, optionalString: itemUrl, withName: "itemUrl")
+		addFormData(formData: formData, optionalString: desc, withName: "desc")
+		addFormData(formData: formData, optionalString: color, withName: "color")
+		addFormData(formData: formData, optionalString: openDate, withName: "openDate")
+		formData.append(isFav.description.data(using: .utf8)!, withName: "isFav")
+		if let price = price {
+			formData.append(price.description.data(using: .utf8)!, withName: "price")
+		}
+		formData.append(locationId.description.data(using: .utf8)!, withName: "locationId")
+		
+		AF.upload(multipartFormData: formData, to: url, headers: headers).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data {
+						do {
+							let root = try JSONDecoder().decode(ItemResponse.self, from: data)
+							log("addItem Complete", trait: .success)
+							//self.isAddShowing = true
+							//self.message = root.message
+						} catch{
+							if let afError = error as? AFError {
+								log("AFError: \(afError.localizedDescription)", trait: .error)
+							} else {
+								log("UnexpectedError: \(error.localizedDescription)", trait: .error)
+							}
+							//self.isAddShowing = true
+							//self.message = error.localizedDescription
+						}
+					}
+				case 300..<600:
+					if let data = response.data {
+						do {
+							self.isAddShowing = true
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
+							self.message = apiError.message
+						} catch let error {
+							self.isAddShowing = true
+							self.message = error.localizedDescription
+						}
+					}
+				default:
+					self.isAddShowing = true
+					self.message = "네트워크 오류입니다."
+				}
 			}
 		}
 	}
@@ -75,9 +112,9 @@ class ItemViewModel: ObservableObject {
 			log("fetchFavItems Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
-
+	
 	// 3. Update Item
-	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: String?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) async {
+	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items/\(itemId)"
 		let params: Parameters = [
 			"itemName": itemName,
@@ -98,7 +135,7 @@ class ItemViewModel: ObservableObject {
 			log("updateItem Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
-
+	
 	// 4. Delete Item
 	func removeItem(itemId: Int) async {
 		let url = "\(endPoint)/items/\(itemId)"
@@ -109,7 +146,7 @@ class ItemViewModel: ObservableObject {
 			log("removeItem Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
-
+	
 	// Fav 등록 / 해제
 	func updateItemFav(itemId: Int, itemFav: Bool) async {
 		let url = "\(endPoint)/items/\(itemId)"
@@ -123,7 +160,7 @@ class ItemViewModel: ObservableObject {
 			log("updateItemFav Error", trait: .error)
 			log("do-try-catch error!", trait: .error)
 		}
-	}	
+	}
 	
 	// Search Item
 	func searchItem(query: String?) async {
@@ -141,7 +178,7 @@ class ItemViewModel: ObservableObject {
 			}
 		}
 	}
-
+	
 	// Clear Search Result
 	func clearSearchResult() {
 		searchResultItems.removeAll()

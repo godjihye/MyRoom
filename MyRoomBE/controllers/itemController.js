@@ -1,10 +1,14 @@
 const itemService = require("../services/itemService");
 
 const createItem = async (req, res) => {
+  const itemData = req.body;
+  itemData.photo = req.filename;
+  console.log(`req.filename: ${req.filename}`);
   try {
-    const item = await itemService.createItem(req.body);
+    const item = await itemService.createItem(itemData);
     res.status(201).json({ documents: item });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 };

@@ -3,6 +3,7 @@ const { Op } = require("sequelize"); // Sequelize operators 가져오기
 
 // 1. Item 생성
 const createItem = async (data) => {
+  console.log(data);
   return await models.Item.create(data);
 };
 // 2. Item 전체 조회
