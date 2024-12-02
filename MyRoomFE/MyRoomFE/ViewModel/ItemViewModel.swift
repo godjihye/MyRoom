@@ -9,13 +9,14 @@ import SwiftUI
 import Alamofire
 
 class ItemViewModel: ObservableObject {
-	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	@Published var items: [Item] = []
 	@Published var favItems: [Item] = []
 	@Published var message: String = ""
 	@Published var isShowingAlert: Bool = false
 	@Published var searchResultItems: [Item] = []
 	
+	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
+	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
 	//MARK: CRUD
 	// 1. Create Item
 	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async {
@@ -65,7 +66,7 @@ class ItemViewModel: ObservableObject {
 	}
 	/// 2-2. Read Fav Items (All location)
 	func fetchFavItems() async {
-		let url = "\(endPoint)/items/fav/\(sampleUserId)"
+		let url = "\(endPoint)/items/fav/\(userId)"
 		do {
 			let response = try await AF.request(url,method: .get).serializingDecodable(ItemResponse.self).value
 			DispatchQueue.main.async { self.favItems = response.documents }
@@ -120,7 +121,7 @@ class ItemViewModel: ObservableObject {
 			log("updateItemFav complete! \(response.description)", trait: .success)
 		} catch {
 			log("updateItemFav Error", trait: .error)
-			print("do-try-catch error!")
+			log("do-try-catch error!", trait: .error)
 		}
 	}	
 	
