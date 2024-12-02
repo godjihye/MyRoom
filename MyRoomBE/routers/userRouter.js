@@ -1,7 +1,7 @@
 const express = require("express");
 const { User } = require("../models/index");
 const router = express.Router();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { RequestPolicyOptions } = require("@azure/storage-blob");
 const secret = process.env.JWT_SECRET;
