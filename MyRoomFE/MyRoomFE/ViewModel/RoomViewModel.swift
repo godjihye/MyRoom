@@ -14,7 +14,7 @@ class RoomViewModel: ObservableObject {
 	@Published var locations: [Location] = []
 	@Published var message: String = ""
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
-	
+	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
 	
 	// CRUD
 	
@@ -22,7 +22,7 @@ class RoomViewModel: ObservableObject {
 	/// 1-1) Create Room
 	func addRoom(roomName: String, roomDesc: String) async {
 		let url = "\(endPoint)/rooms"
-		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc, "userId": sampleUserId]
+		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc, "userId": userId]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
 //			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(RoomResponse.self).value
@@ -51,8 +51,7 @@ class RoomViewModel: ObservableObject {
 	// 2. Read
 	/// 2. Read Rooms/Locations
 	func fetchRooms() async {
-		print("endPoint: \(endPoint)")
-		let url = "\(endPoint)/rooms/list/\(sampleUserId)"
+		let url = "\(endPoint)/rooms/list/\(userId)"
 		do {
 			let response = try await AF.request(url, method: .get).serializingDecodable(RoomResponse.self).value
 			DispatchQueue.main.async {

@@ -133,7 +133,6 @@ struct AddItemView: View {
 							}
 						}
 					}
-					
 					.disabled(itemName.isEmpty)
 				}
 				if !isEditMode{
