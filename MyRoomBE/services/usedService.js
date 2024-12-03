@@ -23,11 +23,23 @@ const deleteUsed = async (id) => {
 const toggleFavorite = async(usedId,userId,action) => {
     return await usedDao.toggleFavorite(usedId,userId,action)
 }
+
+const updateUsedStatus = async(usedStatus,id) => {
+    return await usedDao.updateUsedStatus(usedStatus,id)
+}
+
+const updateViewCnt = async(id) => {
+    return await usedDao.updateViewCnt(id)
+}
+
+
 module.exports = {
     createUsed,
     findAllUsed,
     findUsedById,
     updateUsed,
     deleteUsed,
-    toggleFavorite
+    toggleFavorite,
+    updateUsedStatus,
+    updateViewCnt
 }

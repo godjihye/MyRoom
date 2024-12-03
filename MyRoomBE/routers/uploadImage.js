@@ -16,7 +16,7 @@ const resolveBlobName = (req, file) => {
   const azureStoreage = new MulterAzureStorage({
     connectionString: process.env.SA_CONNECTION_STRING,
     accessKey: process.env.SA_KEY,
-    containerName: 'yangpa',
+    containerName: 'myrooomdb',
     blobName: resolveBlobName,
     containerAccessLevel: 'blob',
   });
