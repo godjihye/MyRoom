@@ -5,10 +5,12 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models.Post,{
-        foreignKey:"userId"
+        foreignKey:"userId",
+        as:"Posts"
       })
       User.hasMany(models.Comment,{
-        foreignKey:"userId"
+        foreignKey:"userId",
+        as:"Commnets"
       })
       User.hasMany(models.Used,{
         foreignKey:"userId",

@@ -90,38 +90,47 @@ struct Comment: Identifiable ,Codable{
 import Foundation
 
 struct Post: Identifiable,Codable,Equatable {
-		let id: Int
-		let title: String
-		let content: String
-		let nickName: String
-		let userImage:String
-		let thumbnail: String
-		let user: User
-		
-		let postFavCnt: Int
-		let postViewCnt: Int
-		
-		let images: [PostPhotoData]
-		
+    let id: Int
+    let postTitle: String
+    let postContent: String
+    let postThumbnail: String
+    
+    let user: User
+    
+    let postFav: [PostFavData]?
+    var isFavorite:Bool
+    let postFavCnt: Int
+    let postViewCnt: Int
+    
+    let updatedAt:String
+    let createdAt:String
+    
+    let images: [PostPhotoData]
+    
+    mutating func toggleFavorite() {
+        isFavorite.toggle()
+    }
+    
+    mutating func setFavorite(_ value: Bool) {
+        isFavorite = value
+    }
 }
-
 
 struct PostRoot: Codable{
-		let success: Bool
-		let posts: [Post]
-		let message: String
+    let success: Bool
+    let posts: [Post]
+    let message: String
 }
-
-
-
-struct PostPhotos: Codable,Equatable {
-		let images: [UsedPhotoData]
-}
-
 
 struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
-		let id:Int
-		let image:String
+    let id:Int
+    let image:String
+}
+
+struct PostFavData:Identifiable,Codable, Equatable {
+    let id:Int
+    let postId:Int
+    let userId:Int
 }
 
 //
@@ -135,73 +144,62 @@ struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
 import Foundation
 
 struct Used: Identifiable,Codable,Equatable {
-		
-		let id: Int
-		let usedTitle: String
-		let usedPrice: Int
-		let usedDesc: String
-		let user: User
-		let usedUrl: String?
-		let usedStatus: Int
-
-		let usedPurchaseDate: String?
-		let usedExpiryDate: String?
-		let usedOpenDate: String?
-		let purchasePrice: Int?
-
-		let usedFavCnt: Int
-		let usedViewCnt: Int
-		let usedChatCnt: Int
-
-		let images: [UsedPhotoData]
-		let usedThumbnail: String
-		var isFavorite:Bool
-		let usedFav: [UsedFavData]?
-		let updatedAt: String
-		
-		mutating func toggleFavorite() {
-				isFavorite.toggle()
-		}
-		
-		mutating func setFavorite(_ value: Bool) {
-				isFavorite = value
-		}
-	
+    
+    let id: Int
+    let usedTitle: String
+    let usedPrice: Int
+    let usedDesc: String
+    let user: User
+    let usedUrl: String?
+    let usedStatus: Int
+    
+    let usedPurchaseDate: String?
+    let usedExpiryDate: String?
+    let usedOpenDate: String?
+    let purchasePrice: Int?
+    
+    let usedFavCnt: Int
+    let usedViewCnt: Int
+    let usedChatCnt: Int
+    
+    let images: [UsedPhotoData]
+    let usedThumbnail: String
+    var isFavorite:Bool
+    let usedFav: [UsedFavData]?
+    let updatedAt: String
+    
+    mutating func toggleFavorite() {
+        isFavorite.toggle()
+    }
+    
+    mutating func setFavorite(_ value: Bool) {
+        isFavorite = value
+    }
+    
 }
 
 struct User : Codable,Equatable {
-		let nickname:String
-		let userImage:String?
+    let nickname:String
+    let userImage:String?
 }
 
 
 struct UsedRoot: Codable{
-//    let success: Bool
-		let useds: [Used]
-//    let message: String
-}
-
-
-
-
-struct UsedPhotos: Codable,Equatable {
-		let images: [UsedPhotoData]
+    //    let success: Bool
+    let useds: [Used]
+    //    let message: String
 }
 
 
 struct UsedPhotoData:Identifiable,Codable, Equatable, Hashable  {
-		let id:Int
-		let image:String
-}
-
-struct UsedFavs:Codable,Equatable {
-		let usedFav: [UsedFavData]
+    let id:Int
+    let image:String
 }
 
 struct UsedFavData:Identifiable,Codable, Equatable {
-		let id:Int
-		let usedId:Int
-		let userId:Int
+    let id:Int
+    let usedId:Int
+    let userId:Int
 }
 
 
@@ -216,5 +214,5 @@ import Foundation
 
 
 struct APIError: Codable {
-		let message: String
+    let message: String
 }

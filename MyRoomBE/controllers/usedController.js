@@ -1,10 +1,16 @@
+const { json } = require("sequelize");
 const usedService = require("../services/usedService");
 
 
 const createUsed = async(req,res) => {
   console.log("createUsed start ---------")
-    const usedData = req.body
+    const data = req.body.usedData
+    const usedData = JSON.parse(data)
+    // const usedData = req.body  --postman test용
     const photoData = req.files
+    
+    
+    console.log('photo',photoData)
     const thumbnailBlobName = photoData.usedThumbnail.find(item => item.fieldname === 'usedThumbnail').blobName;
     usedData.usedThumbnail = thumbnailBlobName //usedThumbnail 추가 
 
@@ -80,10 +86,9 @@ const deleteUsed = async(req,res) => {
 }
 
 const toggleFavorite = async(req,res) => {
-  console.log(req.params)
-  console.log(req.body)
   const usedId = req.params.usedId
   const {userId,action} = req.body
+  console.log('action',action)
   
   try{
     const result = await usedService.toggleFavorite(usedId,userId,action)
@@ -91,6 +96,39 @@ const toggleFavorite = async(req,res) => {
 
     if (result) {
         res.status(200).json({ usedFav: result });
+      } else {
+        res.status(404).json({ error: `used not found` });
+      }
+  }catch(e) {
+    res.status(500).json({error:e.message})
+  }
+}
+
+const updateUsedStatus = async(req,res) => {
+  const id = req.params.id
+  const usedStatus = req.body
+
+  try{
+    const result = await usedService.updateUsedStatus(usedStatus,id)
+    
+    if (result) {
+        res.status(200).json({ usedStatus: result });
+      } else {
+        res.status(404).json({ error: `used not found` });
+      }
+  }catch(e) {
+    res.status(500).json({error:e.message})
+  }
+}
+
+const updateViewCnt = async(req,res) => {
+  const id = req.params.id
+
+  try {
+    const result = await usedService.updateViewCnt(id)
+    
+    if (result) {
+        res.status(200).json({ usedViewCnt: result });
       } else {
         res.status(404).json({ error: `used not found` });
       }
@@ -107,5 +145,7 @@ module.exports = {
   findUsedById,
   updateUsed,
   deleteUsed,
-  toggleFavorite
+  toggleFavorite,
+  updateUsedStatus,
+  updateViewCnt
 }

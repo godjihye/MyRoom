@@ -22,4 +22,7 @@ router.delete("/:id", usedController.deleteUsed);
 router.post("/:usedId/favorite", usedController.toggleFavorite); // 좋아요 추가
 router.delete("/:usedId/favorite", usedController.toggleFavorite); // 좋아요 제거
 
+router.put("/:id/status",usedController.updateUsedStatus) //거래상태 변경
+router.post("/:id/viewCnt",usedController.updateViewCnt) //조회수 증가
+
 module.exports = router;

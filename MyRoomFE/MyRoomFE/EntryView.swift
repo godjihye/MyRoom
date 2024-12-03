@@ -16,6 +16,11 @@ struct EntryView: View {
 						Image(systemName: "house")
 						Text("홈")
 					}
+                UsedAddView().environmentObject(UsedViewModel())
+                    .tabItem {
+                        Image(systemName: "plus")
+                        Text("test중..")
+                    }
 			}
     }
 }

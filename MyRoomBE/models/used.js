@@ -43,7 +43,6 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     usedUrl:DataTypes.STRING,
     usedThumbnail: DataTypes.STRING,
-    isFavorite:DataTypes.BOOLEAN,
     itemName: DataTypes.STRING,
     itemDesc: DataTypes.STRING,
   }, {
