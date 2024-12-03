@@ -8,7 +8,7 @@
 import Foundation
 
 //MARK: ITEM
-struct Item: Codable,Identifiable {
+struct Item: Codable,Identifiable, Equatable {
 	let id: Int
 	let itemName: String
 	let purchaseDate: String?
@@ -23,18 +23,18 @@ struct Item: Codable,Identifiable {
 	let locationId: Int
 	let createdAt: String
 	let updatedAt: String
-	let itemPhotos: [ItemPhoto]?
-	let location: Item_Location
+	let itemPhoto: [ItemPhoto]?
+	let location: Item_Location?
 }
-struct ItemPhoto: Codable, Identifiable {
+struct ItemPhoto: Codable, Identifiable,Equatable {
 	let id: Int
 	let photo: String
 }
-struct Item_Location: Codable {
+struct Item_Location: Codable,Equatable {
 	let locationName: String
 	let room: Item_Room
 }
-struct Item_Room: Codable {
+struct Item_Room: Codable,Equatable {
 	let roomName: String
 }
 struct ItemResponse: Codable {
@@ -180,6 +180,6 @@ struct UsedFavData:Identifiable,Codable, Equatable {
 	let userId:Int
 }
 
-struct APIError: Codable {
+struct APIError: Error, Codable {
 	let message: String
 }

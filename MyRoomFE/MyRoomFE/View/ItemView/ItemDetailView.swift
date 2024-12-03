@@ -20,11 +20,11 @@ struct ItemDetailView: View {
 			VStack(alignment: .leading, spacing: 16) {
 				// Item Image
 				if let photo = item.photo, !photo.isEmpty {
-					AsyncImage(url: URL(string: photo)) { image in
+					AsyncImage(url: URL(string: photo.addingURLPrefix())) { image in
 						image
 							.resizable()
 							.scaledToFill()
-							.frame(height: 300)
+							.frame(width: 300, height: 300)
 							.frame(maxWidth: .infinity)
 							.cornerRadius(10)
 							.overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray).opacity(0.2))
@@ -74,7 +74,7 @@ struct ItemDetailView: View {
 							}
 						}
 				}
-				Label("위치  |  \(item.location.room.roomName)의 \(item.location.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
+				Label("위치  |  \(item.location!.room.roomName)의 \(item.location!.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
 					.font(.headline)
 				HStack {
 					if let purchaseDate = item.purchaseDate {
@@ -117,22 +117,48 @@ struct ItemDetailView: View {
 					}
 				}
 				HStack {
-					Text("Created At: \(dateToString(item.createdAt))")
+					Text("아이템 생성일: \(dateToString(item.createdAt))")
 						.font(.caption)
 						.foregroundColor(.secondary)
-					Spacer()
-					Text("Updated At: \(dateToString(item.updatedAt))")
-						.font(.caption)
-						.foregroundColor(.secondary)
-				}
-				
-				if let photos = item.itemPhotos, !photos.isEmpty {
-					AdditionalPhotosView(itemPhotos: photos)
 					
+					if item.createdAt != item.updatedAt {
+						Text("(수정: \(dateToString(item.updatedAt)))")
+							.font(.caption)
+							.foregroundColor(.secondary)
+					}
+					Spacer()
 				}
+					AdditionalPhotosView(itemPhotos: item.itemPhoto)
+				Spacer()
 			}
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 			.padding()
+			.toolbar(content: {
+				ToolbarItem(placement: .topBarTrailing) {
+					Menu {
+						NavigationLink("편집") {
+							AddItemView(isEditMode: true, existingItem: item)
+						}
+						Button("삭제") {
+							isShowingDeleteAlert = true
+						}
+						.confirmationDialog(
+							"\(item.itemName)을/를 삭제하시겠습니까?",
+							isPresented: $isShowingDeleteAlert,
+							titleVisibility: .visible) {
+								Button("삭제", role: .destructive) {
+									Task {
+										await itemVM.removeItem(itemId: item.id)
+										dismiss()
+									}
+								}
+							}
+					} label: {
+						Image(systemName: "ellipsis")
+					}
+
+				}
+			})
 			.navigationTitle("아이템 상세 조회")
 			.navigationBarTitleDisplayMode(.inline)			
 		}

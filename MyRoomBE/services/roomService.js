@@ -1,3 +1,6 @@
+// roomService.js
+// 사용자의 Room에 대한 Service
+
 const roomDao = require("../dao/roomDao");
 
 // 1. Room 생성

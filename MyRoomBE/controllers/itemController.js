@@ -6,7 +6,7 @@ const createItem = async (req, res) => {
   console.log(`req.filename: ${req.filename}`);
   try {
     const item = await itemService.createItem(itemData);
-    res.status(201).json({ documents: item });
+    res.status(201).json({ documents: [item] });
   } catch (e) {
     console.log(e);
     res.status(500).json({ error: e.message });
@@ -75,6 +75,38 @@ const findAllItemByUserId = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+
+/*
+const createItem = async (req, res) => {
+  const itemData = req.body;
+  itemData.photo = req.filename;
+  console.log(`req.filename: ${req.filename}`);
+  try {
+    const item = await itemService.createItem(itemData);
+    res.status(201).json({ documents: item });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ error: e.message });
+  }
+};
+*/
+
+const updateAdditionalPhotos = async (req, res) => {
+  const photos = req.files;
+  try {
+    const result = await itemService.updateAdditionalPhotos(
+      photos,
+      req.params.itemId
+    );
+    res.status(201).json({
+      success: true,
+      message: "아이템 추가 정보 사진이 성공적으로 등록되었습니다.",
+      photos: result,
+    });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+};
 module.exports = {
   createItem,
   findAllItem,
@@ -84,4 +116,5 @@ module.exports = {
   updateItem,
   findAllFavItem,
   findAllItemByUserId,
+  updateAdditionalPhotos,
 };

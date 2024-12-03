@@ -1,3 +1,6 @@
+// userService.js
+// User에 대한 Service
+
 const userDao = require("../dao/userDao");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -9,6 +12,7 @@ const createHash = async (password, saltRound) => {
   console.log(hashed);
   return hashed;
 };
+
 // 1. login
 const login = async (data) => {
   const { userName, password } = data;
