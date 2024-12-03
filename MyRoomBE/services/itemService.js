@@ -1,3 +1,6 @@
+// itemService.js
+// Item의 Service
+
 const itemDao = require("../dao/itemDao");
 
 const createItem = async (data) => {
@@ -24,6 +27,9 @@ const findAllFavItem = async (id) => {
 const findAllItemByUserId = async (id) => {
   return await itemDao.findAllItemByUserId(id);
 };
+const updateAdditionalPhotos = async (data, id) => {
+  return await itemDao.updateAdditionalPhotos(data, id);
+};
 module.exports = {
   createItem,
   findAllItem,
@@ -32,4 +38,5 @@ module.exports = {
   deleteItem,
   updateItem,
   findAllFavItem,
+  updateAdditionalPhotos,
 };

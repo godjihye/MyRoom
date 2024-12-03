@@ -65,6 +65,8 @@
 		B86F351F2CF9709C0040BB33 /* WideImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F351E2CF9709C0040BB33 /* WideImageButton.swift */; };
 		B88C0A292CF95406007844E4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B88C0A282CF95406007844E4 /* Alamofire */; };
 		B88C0A2C2CF954F9007844E4 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = B88C0A2B2CF954F9007844E4 /* SVProgressHUD */; };
+		B89D55262CFE9F8B00DEE4AC /* String+AzureStorageURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89D55252CFE9F8B00DEE4AC /* String+AzureStorageURL.swift */; };
+		B89D55282CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89D55272CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,6 +128,8 @@
 		B86F351C2CF970130040BB33 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B86F351E2CF9709C0040BB33 /* WideImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideImageButton.swift; sourceTree = "<group>"; };
 		B89A1B552CE5D432001AA7AE /* MyRoomFE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRoomFE.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B89D55252CFE9F8B00DEE4AC /* String+AzureStorageURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AzureStorageURL.swift"; sourceTree = "<group>"; };
+		B89D55272CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAdditionalPhotosView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +151,7 @@
 				B86F34A22CF96F920040BB33 /* Array+RawRepresentable.swift */,
 				B86F34A32CF96F920040BB33 /* DateFormatter.swift */,
 				B86F34A42CF96F920040BB33 /* LogManager.swift */,
+				B89D55252CFE9F8B00DEE4AC /* String+AzureStorageURL.swift */,
 				B86F34A52CF96F920040BB33 /* UIApplication+KeyboardExtension.swift */,
 			);
 			path = Extension;
@@ -211,6 +216,7 @@
 				B86F34C32CF96F920040BB33 /* HomeView.swift */,
 				B86F34C42CF96F920040BB33 /* ItemDetailImageView.swift */,
 				B86F34C52CF96F920040BB33 /* ItemDetailView.swift */,
+				B89D55272CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift */,
 				B86F34C62CF96F920040BB33 /* ItemListView.swift */,
 				B86F34C72CF96F920040BB33 /* ItemRowView.swift */,
 			);
@@ -407,6 +413,7 @@
 				B86F34F22CF96F920040BB33 /* ImgUploadRectBtn.swift in Sources */,
 				B86F34F32CF96F920040BB33 /* PhotoPicker.swift in Sources */,
 				B86F34F42CF96F920040BB33 /* SearchBar.swift in Sources */,
+				B89D55262CFE9F8B00DEE4AC /* String+AzureStorageURL.swift in Sources */,
 				B86F34F52CF96F920040BB33 /* SearchView.swift in Sources */,
 				B86F34F62CF96F920040BB33 /* TabItemView.swift in Sources */,
 				B86F34F72CF96F920040BB33 /* WideButton.swift in Sources */,
@@ -424,6 +431,7 @@
 				B86F35032CF96F920040BB33 /* ItemRowView.swift in Sources */,
 				B86F35042CF96F920040BB33 /* PostAddView.swift in Sources */,
 				B86F35052CF96F920040BB33 /* PostDetailView.swift in Sources */,
+				B89D55282CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift in Sources */,
 				B86F35062CF96F920040BB33 /* PostListView.swift in Sources */,
 				B86F35072CF96F920040BB33 /* PostRowView.swift in Sources */,
 				B86F35082CF96F920040BB33 /* UsedAddView.swift in Sources */,

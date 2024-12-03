@@ -4,16 +4,20 @@ const router = express.Router();
 const upload = require("./uploadImage");
 router.post("/", upload.single("photo"));
 router.post("/", itemController.createItem);
+router.put(
+  "/additionalPhoto/:itemId",
+  upload.fields([
+    { name: "photos", maxCount: 20 }, // 최대 20개의 이미지
+  ])
+);
+router.put("/additionalPhoto/:itemId", itemController.updateAdditionalPhotos);
 router.get("/:locationId", itemController.findAllItem);
 router.get("/detail/:itemId", itemController.findItem);
 router.post("/search", itemController.findItemByName);
 router.delete("/:itemId", itemController.deleteItem);
+router.put("/:itemId", upload.single("photo"));
 router.put("/:itemId", itemController.updateItem);
 router.get("/fav/:userId", itemController.findAllFavItem);
 router.get("/allItem/:userId", itemController.findAllItemByUserId);
-router.post("/test", (req, res) => {
-  console.log(req.body);
-  console.log(req.filename);
-  //res.status(200).json({ body: req.body, photo: req.photo });
-});
+
 module.exports = router;

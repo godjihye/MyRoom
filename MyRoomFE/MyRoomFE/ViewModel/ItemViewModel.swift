@@ -17,17 +17,23 @@ class ItemViewModel: ObservableObject {
 	@Published var isAddShowing: Bool = false
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
+	
 	//MARK: CRUD
 	// 1. Create Item
-	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async {
+	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async throws -> ItemResponse {
 		let url = "\(endPoint)/items"
 		let userId = UserDefaults.standard.integer(forKey: "userId")
-		guard let token = UserDefaults.standard.string(forKey: "token") else { log("token can't unwrapping", trait: .error); return}
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
-		guard let imageData = image?.jpegData(compressionQuality: 0.2) else {return}
+		
+		guard let image, let imageData = image.jpegData(compressionQuality: 0.2) else {
+			throw NSError(domain: "addItem", code: 1, userInfo: [NSLocalizedDescriptionKey: "Image cannot be nil"])
+		}
 		guard let itemName = itemName,
 					let locationId = locationId,
-					let isFav = isFav else { return }
+					let isFav = isFav else {
+			throw NSError(domain: "addItem", code: 2, userInfo: [NSLocalizedDescriptionKey: "Required parameters are missing"])
+		}
+		
 		var formData = MultipartFormData()
 		formData.append(imageData, withName: "photo", fileName: "itemPhoto.jpg", mimeType: "image/jpeg")
 		addFormData(formData: formData, optionalString: itemName, withName: "itemName")
@@ -43,44 +49,17 @@ class ItemViewModel: ObservableObject {
 		}
 		formData.append(locationId.description.data(using: .utf8)!, withName: "locationId")
 		
-		AF.upload(multipartFormData: formData, to: url, headers: headers).response { response in
-			if let statusCode = response.response?.statusCode {
-				switch statusCode {
-				case 200..<300:
-					if let data = response.data {
-						do {
-							let root = try JSONDecoder().decode(ItemResponse.self, from: data)
-							log("addItem Complete", trait: .success)
-							//self.isAddShowing = true
-							//self.message = root.message
-						} catch{
-							if let afError = error as? AFError {
-								log("AFError: \(afError.localizedDescription)", trait: .error)
-							} else {
-								log("UnexpectedError: \(error.localizedDescription)", trait: .error)
-							}
-							//self.isAddShowing = true
-							//self.message = error.localizedDescription
-						}
-					}
-				case 300..<600:
-					if let data = response.data {
-						do {
-							self.isAddShowing = true
-							let apiError = try JSONDecoder().decode(APIError.self, from: data)
-							self.message = apiError.message
-						} catch let error {
-							self.isAddShowing = true
-							self.message = error.localizedDescription
-						}
-					}
-				default:
-					self.isAddShowing = true
-					self.message = "네트워크 오류입니다."
-				}
-			}
+		let dataTask = AF.upload(multipartFormData: formData, to: url, headers: headers)
+			.serializingDecodable(ItemResponse.self)
+		
+		do {
+			let response = try await dataTask.value
+			return response
+		} catch {
+			throw error
 		}
 	}
+	
 	
 	// 2. Read Items
 	/// 2-1. Read All Items (location)
@@ -114,25 +93,66 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	// 3. Update Item
-	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) async {
+	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items/\(itemId)"
-		let params: Parameters = [
-			"itemName": itemName,
-			"purchaseDate": purchaseDate,
-			"expiryDate": expiryDate,
-			"url": itemUrl,
-			"photo": "https://i.namu.wiki/i/T6CkUjJqyNWEudh3KBic3zcUeUo0Ugpl-V6XvfjZb6Cz3pdJ0ACGRSYlIkO9u6iYQELSPgQnWAZqnw5V1kQyOsFYRPNe203Q3BtyPh4bvWLxJ-CVt0k56aCmwqc_gw5VXFq7U2jPXdm5J1Vs2KY7BA.webp",
-			"desc": desc,
-			"color": "rose gold",
-			"isFav": true,
-			"price": price,
-			"locationId": locationId
-		]
-		do {
-			let response = try await AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			log("updateItem Complete! \(response.description)", trait: .success)
-		} catch {
-			log("updateItem Error: \(error.localizedDescription)", trait: .error)
+		//let userId = UserDefaults.standard.integer(forKey: "userId")
+		//guard let token = UserDefaults.standard.string(forKey: "token") else { log("token can't unwrapping", trait: .error); return}
+		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
+		guard let image, let imageData = image.jpegData(compressionQuality: 0.2) else {return}
+		guard let itemName = itemName,
+					let locationId = locationId,
+					let isFav = isFav else { return }
+		let formData = MultipartFormData()
+		formData.append(imageData, withName: "photo", fileName: "itemPhoto.jpg", mimeType: "image/jpeg")
+		addFormData(formData: formData, optionalString: itemName, withName: "itemName")
+		addFormData(formData: formData, optionalString: purchaseDate, withName: "purchaseDate")
+		addFormData(formData: formData, optionalString: expiryDate, withName: "expiryDate")
+		addFormData(formData: formData, optionalString: itemUrl, withName: "itemUrl")
+		addFormData(formData: formData, optionalString: desc, withName: "desc")
+		addFormData(formData: formData, optionalString: color, withName: "color")
+		addFormData(formData: formData, optionalString: openDate, withName: "openDate")
+		formData.append(isFav.description.data(using: .utf8)!, withName: "isFav")
+		if let price = price {
+			formData.append(price.description.data(using: .utf8)!, withName: "price")
+		}
+		formData.append(locationId.description.data(using: .utf8)!, withName: "locationId")
+		
+		AF.upload(multipartFormData: formData, to: url, method: .put, headers: headers).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data {
+						do {
+							let root = try JSONDecoder().decode(ItemResponse.self, from: data)
+							log("updateItem Complete", trait: .success)
+							//self.isAddShowing = true
+							//self.message = root.message
+						} catch{
+							if let afError = error as? AFError {
+								log("updateItem AFError: \(afError.localizedDescription)", trait: .error)
+							} else {
+								log("updateItem UnexpectedError: \(error.localizedDescription)", trait: .error)
+							}
+							//self.isAddShowing = true
+							//self.message = error.localizedDescription
+						}
+					}
+				case 300..<600:
+					if let data = response.data {
+						do {
+							self.isAddShowing = true
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
+							self.message = apiError.message
+						} catch let error {
+							self.isAddShowing = true
+							self.message = error.localizedDescription
+						}
+					}
+				default:
+					self.isAddShowing = true
+					self.message = "네트워크 오류입니다."
+				}
+			}
 		}
 	}
 	
@@ -162,11 +182,64 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
+	// 추가 사진 등록, 수정
+	func addAdditionalPhotos(images: [UIImage]?, itemId: Int?) async {
+		guard let images, let itemId else {return}
+		if images.isEmpty {return}
+		log("images.is not Empty")
+		let url = "\(endPoint)/additionalPhoto/\(itemId)"
+		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
+		let formData = MultipartFormData()
+		for (index, image) in images.enumerated() {
+			if let imageData = image.jpegData(compressionQuality: 0.8) {
+				formData.append(
+					imageData,
+					withName: "photos", // 서버에서 기대하는 키
+					fileName: "photo\(index + 1).jpg",
+					mimeType: "image/jpeg"
+				)
+			}
+		}
+		AF.upload(multipartFormData: formData, to: url, method: .put, headers: headers).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data {
+						do {
+							let root = try JSONDecoder().decode(ItemResponse.self, from: data)
+							log("addAdditionalPhotos", trait: .success)
+						} catch{
+							if let afError = error as? AFError {
+								log("AFError: \(afError.localizedDescription)", trait: .error)
+							} else {
+								log("UnexpectedError: \(error.localizedDescription)", trait: .error)
+							}
+						}
+					}
+				case 300..<600:
+					if let data = response.data {
+						do {
+							self.isAddShowing = true
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
+							self.message = apiError.message
+						} catch let error {
+							self.isAddShowing = true
+							self.message = error.localizedDescription
+						}
+					}
+				default:
+					self.isAddShowing = true
+					self.message = "네트워크 오류입니다."
+				}
+			}
+		}
+	}
+	
 	// Search Item
 	func searchItem(query: String?) async {
 		guard let query = query else { return }
 		let url = "\(endPoint)/items/search"
-		let params: Parameters = ["userId": sampleUserId,"query": query]
+		let params: Parameters = ["userId": userId,"query": query]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(ItemResponse.self).value
 			DispatchQueue.main.async { self.searchResultItems = response.documents }
