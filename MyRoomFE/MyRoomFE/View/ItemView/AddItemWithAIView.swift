@@ -1,16 +1,16 @@
 //
-//  AddItemView.swift
+//  AddItemWithAIView.swift
 //  MyRoomFE
 //
-//  Created by jhshin on 11/19/24.
-//
+//  Created by jhshin on 12/4/24.
 //
 
 import SwiftUI
 import Foundation
 import _PhotosUI_SwiftUI
+import Vision
 
-struct AddItemView: View {
+struct AddItemWithAIView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
 	@EnvironmentObject var roomVM: RoomViewModel
 	@Environment(\.dismiss) private var dismiss
@@ -39,7 +39,9 @@ struct AddItemView: View {
 	@State private var showImagePicker: Bool = false
 	@State private var isPhotosPickerPresented: Bool = false
 	@State private var isCamera: Bool = false
-	@State private var isItemThumbnailChanged: Bool = false
+	
+	@State private var isVisionRecog: Bool = false
+	@State private var recognizedText: [String] = []
 	
 	private let maxImageCount = 20
 	let isEditMode: Bool
@@ -85,8 +87,8 @@ struct AddItemView: View {
 			}
 			.task { await roomVM.fetchRooms() }
 			.onAppear { loadInitialImages() }
-			.onChange(of: itemThumbnail, { oldValue, newValue in
-				log("isItemThumbnailChanged: \(isItemThumbnailChanged)")
+			.onChange(of: itemThumbnail ?? UIImage(), { oldValue, newValue in
+				recognizeText(from: newValue)
 			})
 			.onChange(of: additionalItems, { oldValue, newValue in handleAdditionalItemsChange() })
 			.alert(message, isPresented: $showAlert) { Button("확인", role: .cancel) { } }
@@ -119,12 +121,10 @@ struct AddItemView: View {
 				Button("포토 앨범") {
 					isCamera = false
 					showImagePicker = true
-					isItemThumbnailChanged = true
 				}
 				Button("카메라") {
 					isCamera = true
 					showImagePicker = true
-					isItemThumbnailChanged = true
 				}
 			}
 		}
@@ -133,6 +133,22 @@ struct AddItemView: View {
 	private var basicInfoSection: some View {
 		Section(header: Text("기본 정보")) {
 			TextField("아이템 이름", text: $itemName)
+			if !recognizedText.isEmpty {
+				ScrollView(.horizontal) {
+					HStack {
+						Text("추천: ")
+						ForEach(recognizedText, id: \.self) { text in
+							Button {
+								itemName = text
+							} label: {
+								Text(text)
+									.padding(.all, 8)
+									.overlay(RoundedRectangle(cornerRadius: 20).stroke(.gray))
+							}
+						}
+					}
+				}
+			}
 			TextField("아이템 설명", text: $itemDesc)
 			Picker("아이템 위치", selection: $selectedLocationId) {
 				ForEach(roomVM.locations) { location in
@@ -156,7 +172,7 @@ struct AddItemView: View {
 	}
 	
 //	private var additionalImagesSection: some View {
-//		AddAdditionalPhotosView(itemId: )
+//		AddAdditionalPhotosView()
 //	}
 	
 	// MARK: - Toolbar
@@ -207,22 +223,6 @@ struct AddItemView: View {
 	
 	private func saveItem() {
 		Task {
-			if isEditMode, let item = existingItem {
-				await itemVM.editItem(
-					itemId: item.id,
-					itemName: item.itemName == itemName ? nil : itemName,
-					purchaseDate: areDatesEqual(purchaseDate, stringToDate(item.purchaseDate)) ? nil : purchaseDate.description,
-					expiryDate: areDatesEqual(expiryDate, stringToDate(item.expiryDate)) ? nil : expiryDate.description,
-					itemUrl: item.url == itemUrl ? nil : itemUrl,
-					image: isItemThumbnailChanged ? itemThumbnail : nil,
-					desc: item.desc == itemDesc ? nil : itemDesc,
-					color: item.color == itemColor ? nil : itemColor,
-					price: item.price == Int(itemPrice) ? nil : Int(itemPrice),
-					openDate: areDatesEqual(openDate, stringToDate(item.openDate)) ? nil : openDate.description,
-					locationId: item.locationId == selectedLocationId ? nil : selectedLocationId
-				)
-				await itemVM.addAdditionalPhotos(images: additionalPhotos, itemId: item.id)
-			} else {
 				let newItem = try? await itemVM.addItem(
 					itemName: itemName,
 					purchaseDate: purchaseDate.description,
@@ -231,33 +231,17 @@ struct AddItemView: View {
 					image: itemThumbnail,
 					desc: itemDesc,
 					color: itemColor,
-					price: Int(itemPrice) ?? 0,
+					price: Int(itemPrice),
 					openDate: openDate.description,
 					locationId: selectedLocationId
 				)
-				if let newId = newItem?.documents.first?.id {
-					await itemVM.addAdditionalPhotos(images: additionalPhotos, itemId: newId)
-				}
-			}
-			await itemVM.fetchItems(locationId: selectedLocationId)
+//			await itemVM.fetchItems(locationId: selectedLocationId)
 			dismiss()
 		}
 	}
 	
 	private var isSaveButtonDisabled: Bool {
-		guard let existingItem = existingItem else { return true }
-		log("\(itemUrl) != \(existingItem.url)")
-		let isUnchanged = itemName == existingItem.itemName &&
-		!isItemThumbnailChanged &&
-		itemDesc == existingItem.desc &&
-		Int(itemPrice) == existingItem.price &&
-		itemUrl == existingItem.url ?? "" &&
-		areDatesEqual(purchaseDate, stringToDate(existingItem.purchaseDate)) &&
-		areDatesEqual(expiryDate, stringToDate(existingItem.expiryDate)) &&
-		areDatesEqual(openDate, stringToDate(existingItem.openDate)) &&
-		selectedLocationId == existingItem.locationId &&
-		itemColor == existingItem.color
-		return isEditMode ? isUnchanged : itemName.isEmpty || selectedLocationId == 0
+		itemName.isEmpty || selectedLocationId == 0
 	}
 	
 	private func areDatesEqual(_ date1: Date, _ date2: Date) -> Bool {
@@ -265,9 +249,55 @@ struct AddItemView: View {
 		return calendar.isDate(date1, equalTo: date2, toGranularity: .day)
 	}
 	
+	private func recognizeText(from image: UIImage) {
+		guard let cgImage = image.cgImage else {
+			recognizedText.append("Could not load image.")
+			return
+		}
+		
+		let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+		let request = VNRecognizeTextRequest { request, error in
+			guard let observations = request.results as? [VNRecognizedTextObservation], error == nil else {
+				recognizedText.append("Text recognition failed.")
+				return
+			}
+			
+			let text = observations.compactMap {
+				$0.topCandidates(1).first?.string
+			}
+			
+			DispatchQueue.main.async {
+				recognizedText = text
+			}
+		}
+		
+		if #available(iOS 16.0, *) {
+			request.revision = VNRecognizeTextRequestRevision3
+			request.recognitionLevel = .accurate
+			request.recognitionLanguages = ["ko-KR"]
+			request.usesLanguageCorrection = true
+			
+			do {
+				let supportedLanguages = try request.supportedRecognitionLanguages()
+				print("Supported languages: \(supportedLanguages)")
+			} catch {
+				print("Error fetching supported languages: \(error)")
+			}
+		} else {
+			request.recognitionLanguages = ["en-US"]
+			request.usesLanguageCorrection = true
+		}
+		do {
+			try handler.perform([request])
+		} catch {
+			DispatchQueue.main.async {
+				recognizedText.append("Error: \(error.localizedDescription)")
+			}
+		}
+	}
 	
 }
 
 #Preview {
-	AddItemView().environmentObject(RoomViewModel())
+	AddItemWithAIView().environmentObject(RoomViewModel())
 }

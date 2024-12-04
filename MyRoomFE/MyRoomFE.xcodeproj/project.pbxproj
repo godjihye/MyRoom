@@ -20,9 +20,8 @@
 		B86F34EE2CF96F920040BB33 /* AddItemDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B12CF96F920040BB33 /* AddItemDatePicker.swift */; };
 		B86F34EF2CF96F920040BB33 /* AddItemTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B22CF96F920040BB33 /* AddItemTextField.swift */; };
 		B86F34F02CF96F920040BB33 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B32CF96F920040BB33 /* CustomTextField.swift */; };
-		B86F34F12CF96F920040BB33 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B42CF96F920040BB33 /* ImagePicker.swift */; };
 		B86F34F22CF96F920040BB33 /* ImgUploadRectBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B52CF96F920040BB33 /* ImgUploadRectBtn.swift */; };
-		B86F34F32CF96F920040BB33 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B62CF96F920040BB33 /* PhotoPicker.swift */; };
+		B86F34F32CF96F920040BB33 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B62CF96F920040BB33 /* ImagePicker.swift */; };
 		B86F34F42CF96F920040BB33 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B72CF96F920040BB33 /* SearchBar.swift */; };
 		B86F34F52CF96F920040BB33 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B82CF96F920040BB33 /* SearchView.swift */; };
 		B86F34F62CF96F920040BB33 /* TabItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B92CF96F920040BB33 /* TabItemView.swift */; };
@@ -67,6 +66,8 @@
 		B88C0A2C2CF954F9007844E4 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = B88C0A2B2CF954F9007844E4 /* SVProgressHUD */; };
 		B89D55262CFE9F8B00DEE4AC /* String+AzureStorageURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89D55252CFE9F8B00DEE4AC /* String+AzureStorageURL.swift */; };
 		B89D55282CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89D55272CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift */; };
+		B8C3F1C32D000263004F8C44 /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C3F1C22D000263004F8C44 /* CameraPicker.swift */; };
+		B8C3F1C52D0021CC004F8C44 /* AddItemWithAIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C3F1C42D0021CC004F8C44 /* AddItemWithAIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,9 +85,8 @@
 		B86F34B12CF96F920040BB33 /* AddItemDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemDatePicker.swift; sourceTree = "<group>"; };
 		B86F34B22CF96F920040BB33 /* AddItemTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemTextField.swift; sourceTree = "<group>"; };
 		B86F34B32CF96F920040BB33 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
-		B86F34B42CF96F920040BB33 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		B86F34B52CF96F920040BB33 /* ImgUploadRectBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgUploadRectBtn.swift; sourceTree = "<group>"; };
-		B86F34B62CF96F920040BB33 /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
+		B86F34B62CF96F920040BB33 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		B86F34B72CF96F920040BB33 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		B86F34B82CF96F920040BB33 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		B86F34B92CF96F920040BB33 /* TabItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItemView.swift; sourceTree = "<group>"; };
@@ -130,6 +130,8 @@
 		B89A1B552CE5D432001AA7AE /* MyRoomFE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRoomFE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B89D55252CFE9F8B00DEE4AC /* String+AzureStorageURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AzureStorageURL.swift"; sourceTree = "<group>"; };
 		B89D55272CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAdditionalPhotosView.swift; sourceTree = "<group>"; };
+		B8C3F1C22D000263004F8C44 /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
+		B8C3F1C42D0021CC004F8C44 /* AddItemWithAIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemWithAIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,9 +193,9 @@
 				B86F34B12CF96F920040BB33 /* AddItemDatePicker.swift */,
 				B86F34B22CF96F920040BB33 /* AddItemTextField.swift */,
 				B86F34B32CF96F920040BB33 /* CustomTextField.swift */,
-				B86F34B42CF96F920040BB33 /* ImagePicker.swift */,
 				B86F34B52CF96F920040BB33 /* ImgUploadRectBtn.swift */,
-				B86F34B62CF96F920040BB33 /* PhotoPicker.swift */,
+				B86F34B62CF96F920040BB33 /* ImagePicker.swift */,
+				B8C3F1C22D000263004F8C44 /* CameraPicker.swift */,
 				B86F34B72CF96F920040BB33 /* SearchBar.swift */,
 				B86F34B82CF96F920040BB33 /* SearchView.swift */,
 				B86F34B92CF96F920040BB33 /* TabItemView.swift */,
@@ -216,6 +218,7 @@
 				B86F34C32CF96F920040BB33 /* HomeView.swift */,
 				B86F34C42CF96F920040BB33 /* ItemDetailImageView.swift */,
 				B86F34C52CF96F920040BB33 /* ItemDetailView.swift */,
+				B8C3F1C42D0021CC004F8C44 /* AddItemWithAIView.swift */,
 				B89D55272CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift */,
 				B86F34C62CF96F920040BB33 /* ItemListView.swift */,
 				B86F34C72CF96F920040BB33 /* ItemRowView.swift */,
@@ -398,6 +401,7 @@
 				B86F34E42CF96F920040BB33 /* Array+RawRepresentable.swift in Sources */,
 				B86F34E52CF96F920040BB33 /* DateFormatter.swift in Sources */,
 				B86F34E62CF96F920040BB33 /* LogManager.swift in Sources */,
+				B8C3F1C32D000263004F8C44 /* CameraPicker.swift in Sources */,
 				B86F34E72CF96F920040BB33 /* UIApplication+KeyboardExtension.swift in Sources */,
 				B86F34E82CF96F920040BB33 /* Model.swift in Sources */,
 				B86F34E92CF96F920040BB33 /* Sample.swift in Sources */,
@@ -409,9 +413,8 @@
 				B86F34EE2CF96F920040BB33 /* AddItemDatePicker.swift in Sources */,
 				B86F34EF2CF96F920040BB33 /* AddItemTextField.swift in Sources */,
 				B86F34F02CF96F920040BB33 /* CustomTextField.swift in Sources */,
-				B86F34F12CF96F920040BB33 /* ImagePicker.swift in Sources */,
 				B86F34F22CF96F920040BB33 /* ImgUploadRectBtn.swift in Sources */,
-				B86F34F32CF96F920040BB33 /* PhotoPicker.swift in Sources */,
+				B86F34F32CF96F920040BB33 /* ImagePicker.swift in Sources */,
 				B86F34F42CF96F920040BB33 /* SearchBar.swift in Sources */,
 				B89D55262CFE9F8B00DEE4AC /* String+AzureStorageURL.swift in Sources */,
 				B86F34F52CF96F920040BB33 /* SearchView.swift in Sources */,
@@ -422,6 +425,7 @@
 				B86F34FA2CF96F920040BB33 /* AddLocationView.swift in Sources */,
 				B86F34FB2CF96F920040BB33 /* AddRoomView.swift in Sources */,
 				B86F34FC2CF96F920040BB33 /* FavItemRow.swift in Sources */,
+				B8C3F1C52D0021CC004F8C44 /* AddItemWithAIView.swift in Sources */,
 				B86F34FD2CF96F920040BB33 /* FavListView.swift in Sources */,
 				B86F34FE2CF96F920040BB33 /* HomeListView.swift in Sources */,
 				B86F34FF2CF96F920040BB33 /* HomeView.swift in Sources */,

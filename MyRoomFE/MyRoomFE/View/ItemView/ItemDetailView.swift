@@ -45,34 +45,19 @@ struct ItemDetailView: View {
 						.font(.title)
 						.fontWeight(.bold)
 						.lineLimit(1)
-					Label("", systemImage: "heart.fill")
-						.font(.subheadline)
-						.foregroundColor(item.isFav ? .pink : .secondary)
-						.onTapGesture {
-							Task {
-								await itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
-								await itemVM.fetchItems(locationId: item.locationId)
-							}
-						}
 					Spacer()
-					NavigationLink("편집") {
-						AddItemView(isEditMode: true, existingItem: item)
-					}
-					.foregroundStyle(.gray)
-					Button("삭제") {
-						isShowingDeleteAlert = true
-					}
-					.confirmationDialog(
-						"\(item.itemName)을/를 삭제하시겠습니까?",
-						isPresented: $isShowingDeleteAlert,
-						titleVisibility: .visible) {
-							Button("삭제", role: .destructive) {
-								Task {
-									await itemVM.removeItem(itemId: item.id)
-									dismiss()
-								}
-							}
+					Button {
+						Task {
+							await itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
+							await itemVM.fetchItems(locationId: item.locationId)
 						}
+					} label: {
+						Image(systemName: item.isFav ? "heart.fill" : "heart")
+							.resizable()
+							.frame(width: 30, height: 30)
+							.foregroundStyle(item.isFav ? .red : .gray)
+							
+					}
 				}
 				Label("위치  |  \(item.location!.room.roomName)의 \(item.location!.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
 					.font(.headline)
@@ -128,7 +113,7 @@ struct ItemDetailView: View {
 					}
 					Spacer()
 				}
-					AdditionalPhotosView(itemPhotos: item.itemPhoto)
+				AdditionalPhotosView(itemPhotos: item.itemPhoto, itemId: item.id)
 				Spacer()
 			}
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -156,7 +141,6 @@ struct ItemDetailView: View {
 					} label: {
 						Image(systemName: "ellipsis")
 					}
-
 				}
 			})
 			.navigationTitle("아이템 상세 조회")

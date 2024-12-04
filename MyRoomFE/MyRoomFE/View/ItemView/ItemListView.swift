@@ -11,8 +11,9 @@ struct ItemListView: View {
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject var roomVM: RoomViewModel
 	@EnvironmentObject var itemVM: ItemViewModel
-	
+	@State var isShowingAddItem: Bool = false
 	@State var isShowingAddItemView: Bool = false
+	@State var isShowingAddItemWithAIView: Bool = false
 	@State var removeLocationId: Int = 0
 	@State var isShowingAlert: Bool = false
 	
@@ -48,8 +49,19 @@ struct ItemListView: View {
 								.foregroundStyle(.red)
 						}
 						Spacer()
-						Button {
-							self.isShowingAddItemView = true
+						Menu {
+							// self.isShowingAddItem = true
+							Button {
+								isShowingAddItemView = true
+							} label: {
+								Text("직접 등록하기")
+							}
+							Button {
+								isShowingAddItemWithAIView = true
+							} label: {
+								Text("AI로 등록하기")
+							}
+
 						} label: {
 							Image(systemName: "plus")
 								.font(.title2)
@@ -98,6 +110,9 @@ struct ItemListView: View {
 		}
 		.sheet(isPresented: $isShowingAddItemView) {
 			AddItemView(locationId: location.id)
+		}
+		.sheet(isPresented: $isShowingAddItemWithAIView) {
+			AddItemWithAIView(locationId: location.id)
 		}
 		.alert("즐겨찾기", isPresented: $itemVM.isShowingAlert, actions: {
 			Button("확인", role: .cancel) {

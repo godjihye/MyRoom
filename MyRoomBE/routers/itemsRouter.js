@@ -11,6 +11,10 @@ router.post(
   ])
 );
 router.post("/additionalPhoto/:itemId", itemController.updateAdditionalPhotos);
+router.delete(
+  "/additionalPhoto/:photoId",
+  itemController.deleteAdditionalPhoto
+);
 router.get("/:locationId", itemController.findAllItem);
 router.get("/detail/:itemId", itemController.findItem);
 router.post("/search", itemController.findItemByName);

@@ -27,8 +27,11 @@ const findAllFavItem = async (id) => {
 const findAllItemByUserId = async (id) => {
   return await itemDao.findAllItemByUserId(id);
 };
-const updateAdditionalPhotos = async (data, id) => {
-  return await itemDao.updateAdditionalPhotos(data, id);
+const uploadAdditionalPhotos = async (data, id) => {
+  return await itemDao.uploadAdditionalPhotos(data, id);
+};
+const deleteAdditionalPhoto = async (id) => {
+  return await itemDao.deleteAdditionalPhoto(id);
 };
 module.exports = {
   createItem,
@@ -38,5 +41,6 @@ module.exports = {
   deleteItem,
   updateItem,
   findAllFavItem,
-  updateAdditionalPhotos,
+  uploadAdditionalPhotos,
+  deleteAdditionalPhoto,
 };
