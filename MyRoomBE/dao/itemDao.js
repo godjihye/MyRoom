@@ -141,7 +141,7 @@ const findAllItemByUserId = async (id) => {
   });
 };
 
-const updateAdditionalPhotos = async (photoData, itemId) => {
+const uploadAdditionalPhotos = async (photoData, itemId) => {
   const transaction = await models.sequelize.transaction();
   try {
     const photos = [];
@@ -164,6 +164,12 @@ const updateAdditionalPhotos = async (photoData, itemId) => {
   }
 };
 
+const deleteAdditionalPhoto = async (id) => {
+  return models.ItemPhoto.destroy({
+    where: { id },
+  });
+};
+
 module.exports = {
   createItem,
   findAllItem,
@@ -173,5 +179,6 @@ module.exports = {
   updateItem,
   findAllFavItem,
   findAllItemByUserId,
-  updateAdditionalPhotos,
+  uploadAdditionalPhotos,
+  deleteAdditionalPhoto,
 };

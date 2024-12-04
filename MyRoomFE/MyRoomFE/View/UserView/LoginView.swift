@@ -34,7 +34,7 @@ struct LoginView: View {
 
 			if isRegister {
 				WideImageButton(icon: "person.badge.plus", title: "회원가입", backgroundColor: .green) {
-					userVM.signUp(userName: userID, password: password, nickname: nickname, userImage: UIImage(systemName: "heart"))
+					userVM.signUp(userName: userID, password: password, nickname: nickname)
 				}
 				.padding()
 				.disabled(userID.isEmpty || password.isEmpty || nickname.isEmpty)

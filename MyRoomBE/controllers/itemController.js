@@ -94,7 +94,7 @@ const createItem = async (req, res) => {
 const updateAdditionalPhotos = async (req, res) => {
   const photos = req.files;
   try {
-    const result = await itemService.updateAdditionalPhotos(
+    const result = await itemService.uploadAdditionalPhotos(
       photos,
       req.params.itemId
     );
@@ -107,6 +107,19 @@ const updateAdditionalPhotos = async (req, res) => {
     res.status(500).json({ message: e.message });
   }
 };
+
+const deleteAdditionalPhoto = async (req, res) => {
+  try {
+    const result = await itemService.deleteAdditionalPhoto(req.params.photoId);
+    res.status(200).json({
+      success: true,
+      message: "성공적으로 삭제되었습니다.",
+      data: result,
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+};
 module.exports = {
   createItem,
   findAllItem,
@@ -117,4 +130,5 @@ module.exports = {
   findAllFavItem,
   findAllItemByUserId,
   updateAdditionalPhotos,
+  deleteAdditionalPhoto,
 };

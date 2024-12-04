@@ -36,16 +36,16 @@ struct ItemDetailImageView: View {
 					image
 						.resizable()
 						.aspectRatio(contentMode: isZoomed ? .fill : .fit)
-						.frame(maxWidth: .infinity, maxHeight: 400)
+						.frame(maxWidth: .infinity)
 						.onTapGesture {
 							withAnimation {
 								isZoomed.toggle()
 							}
 						}
-						.cornerRadius(10)
 				} placeholder: {
 					ProgressView()
 				}
+				.padding(.bottom, 50)
 				Spacer()
 				
 				ScrollView(.horizontal) {
@@ -61,7 +61,6 @@ struct ItemDetailImageView: View {
 							}
 							.onTapGesture {
 								selectedPhoto = photo.photo
-								print("selectedPhoto changed!")
 							}
 						}
 					}

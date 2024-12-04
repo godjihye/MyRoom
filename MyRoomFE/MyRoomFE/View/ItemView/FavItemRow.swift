@@ -14,7 +14,7 @@ struct FavItemRow: View {
 	
 	var body: some View {
 		VStack {
-			if let photo = item.photo, let itemPhotoUrl = URL(string: photo) {
+			if let photo = item.photo, let itemPhotoUrl = URL(string: photo.addingURLPrefix()) {
 				AsyncImage(url: itemPhotoUrl) { image in
 					image.image?.resizable()
 						.aspectRatio(contentMode: .fill)
