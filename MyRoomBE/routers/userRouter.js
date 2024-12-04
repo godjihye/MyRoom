@@ -5,7 +5,7 @@ const userController = require("../controllers/userController");
 
 router.post("/sign-in", userController.login);
 router.post("/sign-up", userController.createUser);
-
+router.delete("/:userId", userController.deleteUser)
 module.exports = router;
 
 // router.post("/regist-apns", async (req, res, next) => {
