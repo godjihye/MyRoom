@@ -112,11 +112,13 @@ struct User : Codable,Equatable {
 	let createdAt: String
 	let updatedAt: String
 }
+
 struct SignUp: Codable {
 	let success: Bool
 	let user: User
 	let message: String
 }
+
 struct SignIn: Codable {
 	let success: Bool
 	let token: String
@@ -180,6 +182,7 @@ struct UsedFavData:Identifiable,Codable, Equatable {
 	let userId:Int
 }
 
-struct APIError: Error, Codable {
+struct ApiResponse: Error, Decodable {
+	let success: String?
 	let message: String
 }

@@ -29,7 +29,7 @@ const createUser = async (req, res) => {
 // 4. 회원 탈퇴
 const deleteUser = async (req, res) => {
   try {
-    const result = await userService.deleteUser(req.params.id);
+    const result = await userService.deleteUser(req.params.userId);
     res
       .status(200)
       .json({ success: true, message: "회원 탈퇴가 완료되었습니다." });

@@ -92,67 +92,50 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
-	// 3. Update Item
+	// 3. Update Item (** patch)
 	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async {
 		let url = "\(endPoint)/items/\(itemId)"
-		//let userId = UserDefaults.standard.integer(forKey: "userId")
-		//guard let token = UserDefaults.standard.string(forKey: "token") else { log("token can't unwrapping", trait: .error); return}
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
-		guard let image, let imageData = image.jpegData(compressionQuality: 0.2) else {return}
-		guard let itemName = itemName,
-					let locationId = locationId,
-					let isFav = isFav else { return }
+		
 		let formData = MultipartFormData()
-		formData.append(imageData, withName: "photo", fileName: "itemPhoto.jpg", mimeType: "image/jpeg")
-		addFormData(formData: formData, optionalString: itemName, withName: "itemName")
-		addFormData(formData: formData, optionalString: purchaseDate, withName: "purchaseDate")
-		addFormData(formData: formData, optionalString: expiryDate, withName: "expiryDate")
-		addFormData(formData: formData, optionalString: itemUrl, withName: "itemUrl")
-		addFormData(formData: formData, optionalString: desc, withName: "desc")
-		addFormData(formData: formData, optionalString: color, withName: "color")
-		addFormData(formData: formData, optionalString: openDate, withName: "openDate")
-		formData.append(isFav.description.data(using: .utf8)!, withName: "isFav")
-		if let price = price {
+		
+		if let purchaseDate {
+			formData.append(purchaseDate.description.data(using: .utf8)!, withName: "purchaseDate")
+		}
+		if let expiryDate {
+			formData.append(expiryDate.description.data(using: .utf8)!, withName: "expiryDate")
+		}
+		if let openDate {
+			formData.append(openDate.description.data(using: .utf8)!, withName: "openDate")
+		}
+		if let itemUrl {
+			formData.append(itemUrl.data(using: .utf8)!, withName: "url")
+		}
+		if let image {
+			if let imageData = image.jpegData(compressionQuality: 0.2) {
+				formData.append(imageData, withName: "photo", fileName: "itemPhoto.jpg", mimeType: "image/jpeg")
+			}
+		}
+		if let desc {
+			formData.append(desc.data(using: .utf8)!, withName: "desc")
+		}
+		if let color {
+			formData.append(color.data(using: .utf8)!, withName: "color")
+		}
+		if let isFav {
+			formData.append(isFav.description.data(using: .utf8)!, withName: "isFav")
+		}
+		if let price {
 			formData.append(price.description.data(using: .utf8)!, withName: "price")
 		}
-		formData.append(locationId.description.data(using: .utf8)!, withName: "locationId")
-		
-		AF.upload(multipartFormData: formData, to: url, method: .put, headers: headers).response { response in
-			if let statusCode = response.response?.statusCode {
-				switch statusCode {
-				case 200..<300:
-					if let data = response.data {
-						do {
-							let root = try JSONDecoder().decode(ItemResponse.self, from: data)
-							log("updateItem Complete", trait: .success)
-							//self.isAddShowing = true
-							//self.message = root.message
-						} catch{
-							if let afError = error as? AFError {
-								log("updateItem AFError: \(afError.localizedDescription)", trait: .error)
-							} else {
-								log("updateItem UnexpectedError: \(error.localizedDescription)", trait: .error)
-							}
-							//self.isAddShowing = true
-							//self.message = error.localizedDescription
-						}
-					}
-				case 300..<600:
-					if let data = response.data {
-						do {
-							self.isAddShowing = true
-							let apiError = try JSONDecoder().decode(APIError.self, from: data)
-							self.message = apiError.message
-						} catch let error {
-							self.isAddShowing = true
-							self.message = error.localizedDescription
-						}
-					}
-				default:
-					self.isAddShowing = true
-					self.message = "네트워크 오류입니다."
-				}
-			}
+		if let locationId {
+			formData.append(locationId.description.data(using: .utf8)!, withName: "locationId")
+		}
+		do {
+			let response = try await AF.upload(multipartFormData: formData, to: url, method: .patch, headers: headers).serializingDecodable(ApiResponse.self).value
+			self.message = response.message
+		} catch {
+			self.message = "물건 정보를 수정하는데 실패했습니다."
 		}
 	}
 	
@@ -220,7 +203,7 @@ class ItemViewModel: ObservableObject {
 					if let data = response.data {
 						do {
 							self.isAddShowing = true
-							let apiError = try JSONDecoder().decode(APIError.self, from: data)
+							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
 							self.message = apiError.message
 						} catch let error {
 							self.isAddShowing = true
