@@ -7,9 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasMany(models.Post, {
         foreignKey: "userId",
+        as: "Posts",
       });
       User.hasMany(models.Comment, {
         foreignKey: "userId",
+        as: "Commnets",
       });
       User.hasMany(models.Used, {
         foreignKey: "userId",
@@ -23,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "fav",
       });
+
+      User.belongsTo(models.Home, {
+        foreignKey: "homeId",
+        as: "homeUser",
+      });
     }
   }
   User.init(
@@ -30,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       userName: DataTypes.STRING,
       password: DataTypes.STRING,
       nickname: DataTypes.STRING,
-      mateId: DataTypes.INTEGER,
+      homeId: DataTypes.INTEGER,
       userImage: DataTypes.STRING,
     },
     {

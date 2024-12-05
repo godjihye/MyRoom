@@ -1,5 +1,5 @@
 {
-  "appService.defaultWebAppToDeploy": "/subscriptions/2a769e9c-bc20-4df8-92cb-ae25de0da5af/resourceGroups/rg-myroom/providers/Microsoft.Web/sites/appbe-myroom/slots/myroomprod",
-  "appService.deploySubpath": ".",
-  "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"]
+  "appService.showBuildDuringDeployPrompt": false,
+  "appService.defaultWebAppToDeploy": "/subscriptions/cb0d28e1-799a-402e-a0f5-1436621369bd/resourceGroups/rg-MyRoom/providers/Microsoft.Web/sites/appbemyroom/slots/appbe-myroom",
+  "appService.deploySubpath": "."
 }

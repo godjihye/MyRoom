@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       PostPhoto.belongsTo(models.Post,{
         foreignKey:"postId",
         onDelete: "CASCADE",
+        as:"images"
       })
     }
   }
