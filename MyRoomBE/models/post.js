@@ -14,14 +14,18 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.User,{
         foreignKey:"userId",
         onDelete: "CASCADE",
+        as:"user"
       })
 
       Post.hasMany(models.PostPhoto,{
-        foreignKey:"postId"
+        foreignKey:"postId",
+        as:"images"
       })
 
       Post.hasMany(models.Comment,{
-        foreignKey:"postId"
+        foreignKey:"postId",
+        onDelete:"CASCADE",
+        as:"commnet"
       })
 
       Post.hasMany(models.PostFav,{
@@ -31,14 +35,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Post.init({
-    title: DataTypes.STRING,
-    content: DataTypes.STRING,
+    postTitle: DataTypes.STRING,
+    postContent: DataTypes.STRING,
     itemUrl: DataTypes.STRING,
     postFavCnt: DataTypes.INTEGER,
-    thumbnail: DataTypes.STRING,
+    postThumbnail: DataTypes.STRING,
     postViewCnt: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
-    isFavorite:DataTypes.BOOLEAN
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Post',

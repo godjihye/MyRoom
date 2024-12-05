@@ -6,52 +6,57 @@
 //
 
 import SwiftUI
-
+let items: Item? =
+    Item(
+                id: 1,
+                itemName: "아이폰 13",
+                purchaseDate: "2023-11-15",
+                expiryDate: "2024-11-15",
+                url: "https://example.com/item/1",
+                photo: "iphone_13_image",
+                desc: "상태 좋은 아이폰 13, 128GB, 흰색",
+                color: "흰색",
+                isFav: true,
+                price: 550000,
+                openDate: "2023-11-15",
+                locationId: 101,
+                createdAt: "2023-11-15",
+                updatedAt: "2023-12-01",
+                itemPhotos: [
+                    ItemPhoto(id: 1, photo: "https://example.com/images/iphone_13_1.jpg"),
+                    ItemPhoto(id: 2, photo: "https://example.com/images/iphone_13_2.jpg")
+                ],
+                location: MyRoomFE.Item_Location(locationName: "화장대", room: MyRoomFE.Item_Room(roomName: "jh")))
 struct UsedItemListView: View {
-		@Environment(\.dismiss) private var dismiss
-		@EnvironmentObject var itemVM: ItemViewModel
-		@State var isShowingAddItemView: Bool = false
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var itemVM: ItemViewModel
+    @State var isShowingAddItemView: Bool = false
+    
+    @Binding var selectMyItem: Item?
+    @Binding var isMyItemPresented:Bool
+   
 		
+    let columns = [
+            GridItem(.flexible()), // 첫 번째 열
+            GridItem(.flexible()), // 두 번째 열
+            GridItem(.flexible())
+        ]
 		var body: some View {
-							
-				VStack{
-				if !itemVM.items.isEmpty{
-								List(itemVM.items) { item in
-										NavigationView {
-															 List(items, id: \.self) { item in
-																	 Button(action: {
-																			 print(item)
-//                                         selectMyItem.append(contentsOf: items)
-																			 dismiss()
-																	 }) {
-//                                        UsedItemRowView(item: item)
-																	 }
-															 }
-															 .navigationTitle("내 아이템 선택")
-													 }
-								}
-								.listStyle(.inset)
-								.refreshable {
-										await itemVM.fetchItems(locationId: 1)
-								}
-						} else {
-								Button("아이템이 없네요..."){
-										isShowingAddItemView = true
-								}
-								.padding(.top, 200)
-						}
-						Spacer()
-				}.task {
-						await itemVM.fetchItems(locationId: 1)
-
-				}
-				
-		 
-		
+            ScrollView{
+                LazyVGrid(columns: columns) {
+                    ForEach(itemVM.items) { item in
+                        UsedItemRowView(selectedItem: $selectMyItem, isMyItemPresented: $isMyItemPresented, item: item)
+                    }
+                }.task {
+                        await itemVM.fetchItems(locationId: 62)
+                    print(itemVM)
+                }
+                
+            }
 		}
 }
 
 #Preview {
-		let itemVM = ItemViewModel()
-		UsedItemListView().environmentObject(itemVM)
+    let itemVM = ItemViewModel()
+    UsedItemListView(selectMyItem:.constant(items), isMyItemPresented: .constant(true)).environmentObject(itemVM)
 }
