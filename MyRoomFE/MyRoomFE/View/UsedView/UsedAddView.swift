@@ -29,9 +29,13 @@ struct UsedAddView: View {
     @State private var isMyItemPresented: Bool = false
     @State private var selectMyItem: Item?
     
+    @State var isCompleted : Bool = false
+    
     @State var usedTitle : String = "title"
     @State var usedPrice : Int  = 1000
     @State var usedContent : String  = "내용"
+    
+//    let onRegister: (Item) -> Void 
     
     var body: some View {
         ScrollView {
@@ -193,29 +197,34 @@ struct UsedAddView: View {
                             alignment: .bottomLeading
                         )
                     
-                    WideButton(title: "작성완료", backgroundColor: Color.btn) {
-                        if usedTitle.isEmpty {
-                            titleError = "제목을 입력해주세요."
-                            titleIsFocused = true // 타이틀 필드로 포커스 이동
-                            return
-                        } else {
-                            titleError = nil
-                        }
-                        if usedContent.isEmpty {
-                            contentError = "내용을 입력해주세요."
-                            contentIsFocused = true // 콘텐츠 필드로 포커스 이동
-                            return
-                        } else {
-                            contentError = nil
-                        }
-                        usedVM.addUsed(selectedImages: selectedImages, usedTitle: usedTitle, usedPrice: usedPrice, usedContent: usedContent, selectMyItem: selectMyItem)
-                        
-                    }// true가되면 detailview를 보여주라
+                    
                 }
             }.background(Color(UIColor.systemGroupedBackground))
         }
         .padding(.bottom, 20)
         .padding(.top, 20)
+        
+        WideButton(title: "작성완료", backgroundColor: Color.blue) {
+            if usedTitle.isEmpty {
+                titleError = "제목을 입력해주세요."
+                titleIsFocused = true // 타이틀 필드로 포커스 이동
+                return
+            } else {
+                titleError = nil
+            }
+            if usedContent.isEmpty {
+                contentError = "내용을 입력해주세요."
+                contentIsFocused = true // 콘텐츠 필드로 포커스 이동
+                return
+            } else {
+                contentError = nil
+            }
+            usedVM.addUsed(selectedImages: selectedImages, usedTitle: usedTitle, usedPrice: usedPrice, usedContent: usedContent, selectMyItem: selectMyItem) { success in
+                if success {
+                    isCompleted.toggle()
+                }
+            }
+        }.padding()
     }
     
     private func removeImage(at index: Int) {

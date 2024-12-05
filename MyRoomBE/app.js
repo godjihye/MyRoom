@@ -7,6 +7,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const homeRouter = require("./routers/homeRouter")
 const roomRouter = require("./routers/roomsRouter");
 const locationRouter = require("./routers/locationRouter");
 const itemRouter = require("./routers/itemsRouter");
@@ -19,6 +20,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/home",homeRouter)
 app.use("/rooms", roomRouter);
 app.use("/locations", locationRouter);
 app.use("/items", itemRouter);

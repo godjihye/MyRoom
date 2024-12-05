@@ -48,7 +48,10 @@ const findAllUsed = async(req,res) => {
 
 const findUsedById = async(req, res) => {
   try {
-    const used = await usedService.findUsedById(req.params.id);
+    const {id,userId} = req.params
+    console.log(id)
+    console.log(userId)
+    const used = await usedService.findUsedById(id,userId);
     if(used) {
       res.status(201).json({useds:[used]})
     }else{

@@ -104,28 +104,35 @@ const findAllUsed = async(page,pageSize,userId) => {
 };
 
 //detail
-const findUsedById = async(id) => {
+const findUsedById = async(id,userId) => {
     return await models.Used.findByPk(id,{
         include: [
             {
-              model: models.User,           
-              as: 'user',           
-              attributes: ['nickname','userImage'], 
+              model: models.User,           // 조인할 모델 (Post)
+              as: 'user',           // alias (선택 사항)
+              attributes: ['nickname','userImage'], // 가져올 필드 (선택 사항)
             }
             ,
             {
                 model: models.UsedPhoto,
                 as:"images",
-                attributes: ['id','image']
             },
             {
                 model: models.UsedFav,
                 as: "usedFav",
-                where: { usedId:id },
-                required: true, 
+                where: { userId },
+                required: false, // LEFT OUTER JOIN
             }
-          ], 
-        })
+          ],
+          attributes: {
+            include: [
+                [
+                    models.sequelize.literal(`CASE WHEN "usedFav"."userId" IS NOT NULL THEN true ELSE false END`),
+                    'isFavorite',
+                ],
+            ],
+        },
+    })
 }
 
 //edit
@@ -163,29 +170,29 @@ const toggleFavorite = async(usedId,userId,action) => {
         }
         await used.save();
 
-        const returnData = await models.Used.findByPk(usedId,{
-            include: [
-                {
-                  model: models.User,           
-                  as: 'user',           
-                  attributes: ['nickname','userImage'], 
-                }
-                ,
-                {
-                    model: models.UsedPhoto,
-                    as:"images",
-                    attributes: ['id','image']
-                },
-                {
-                    model: models.UsedFav,
-                    as: "usedFav",
-                    where: { usedId:usedId },
-                    required: false, 
-                }
-              ], 
-            })
+        // const returnData = await models.Used.findByPk(usedId,{
+        //     include: [
+        //         {
+        //           model: models.User,           
+        //           as: 'user',           
+        //           attributes: ['nickname','userImage'], 
+        //         }
+        //         ,
+        //         {
+        //             model: models.UsedPhoto,
+        //             as:"images",
+        //             attributes: ['id','image']
+        //         },
+        //         {
+        //             model: models.UsedFav,
+        //             as: "usedFav",
+        //             where: { usedId:usedId },
+        //             required: false, 
+        //         }
+        //       ], 
+        //     })
 
-        return returnData;
+        // return returnData;
     }
 }
 

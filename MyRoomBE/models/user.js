@@ -24,13 +24,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:"userId",
         as:"fav"
       })
+
+      User.belongsTo(models.Home, {
+        foreignKey:"homeId",
+        as: "homeUser"
+      })
     }
   }
   User.init({
     userName: DataTypes.STRING,
     password: DataTypes.STRING,
     nickname: DataTypes.STRING,
-    mateId: DataTypes.INTEGER,
+    homeId: DataTypes.INTEGER,
     userImage: DataTypes.STRING
   }, {
     sequelize,

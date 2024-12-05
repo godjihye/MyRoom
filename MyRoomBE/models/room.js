@@ -4,10 +4,9 @@ module.exports = (sequelize, DataTypes) => {
   class Room extends Model {
     static associate(models) {
       // define association here
-      Room.belongsTo(models.User, {
-        foreignKey: "userId",
-        as: "user",
-        onDelete: "CASCADE",
+      Room.belongsTo(models.Home, {
+        foreignKey: "homeId",
+        as: "homeRoom",
       });
       Room.hasMany(models.Location, {
         foreignKey: "roomId",
@@ -20,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       roomName: DataTypes.STRING,
       roomDesc: DataTypes.STRING,
-      userId: DataTypes.INTEGER,
+      homeId: DataTypes.INTEGER,
     },
     {
       sequelize,

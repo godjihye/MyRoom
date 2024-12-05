@@ -8,8 +8,8 @@ const findAllUsed = async (page,pageSize,userId) => {
     return await usedDao.findAllUsed(page,pageSize,userId);
 }
 
-const findUsedById = async (id) => {
-    return await usedDao.findUsedById(id)
+const findUsedById = async (id,userId) => {
+    return await usedDao.findUsedById(id,userId)
 }
 
 const updateUsed = async (id, data) => {
