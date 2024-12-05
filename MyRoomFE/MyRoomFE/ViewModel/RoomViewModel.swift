@@ -14,15 +14,22 @@ class RoomViewModel: ObservableObject {
 	@Published var locations: [Location] = []
 	@Published var message: String = ""
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
-	
+	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
+	let homeId = UserDefaults.standard.value(forKey: "homeId") as! Int
 	
 	// CRUD
 	
 	// 1. Create
 	/// 1-1) Create Room
+	func makeHome(homeName: String) {
+		let url = "\(endPoint)/home"
+		
+	}
+	
+	/// 1-2) Create Room
 	func addRoom(roomName: String, roomDesc: String) async {
 		let url = "\(endPoint)/rooms"
-		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc, "userId": sampleUserId]
+		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc, "homeId": homeId]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
 //			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(RoomResponse.self).value
@@ -36,23 +43,22 @@ class RoomViewModel: ObservableObject {
 			}
 		}
 	}
-	/// 1-2) Create Location
+	/// 1-3) Create Location
 	func addLocation(locationName: String, locationDesc: String, roomId: Int) async {
 		let url = "\(endPoint)/locations"
 		let params: [String: Any] = ["locationName": locationName, "locationDesc": locationDesc, "roomId": roomId]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			print("addLocation Complete")
+			log("addLocation Complete")
 		} catch {
-			print("Error: \(error)")
+			log("Error: \(error)", trait: .error)
 		}
 	}
 	
 	// 2. Read
 	/// 2. Read Rooms/Locations
 	func fetchRooms() async {
-		print("endPoint: \(endPoint)")
-		let url = "\(endPoint)/rooms/list/\(sampleUserId)"
+		let url = "\(endPoint)/rooms/list/\(homeId)"
 		do {
 			let response = try await AF.request(url, method: .get).serializingDecodable(RoomResponse.self).value
 			DispatchQueue.main.async {
@@ -78,9 +84,9 @@ class RoomViewModel: ObservableObject {
 		]
 		do {
 			let response = try await AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			print("editRoom Complete")
+			log("editRoom Complete")
 		} catch {
-			print("editRoom Error: \(error)")
+			log("editRoom Error: \(error)", trait: .error)
 		}
 	}
 	/// 3-2) Update Location

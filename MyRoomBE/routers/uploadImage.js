@@ -20,6 +20,7 @@ const azureStoreage = new MulterAzureStorage({
   blobName: resolveBlobName,
   containerAccessLevel: "blob",
 });
+
 const upload = multer({
   storage: azureStoreage,
   limits: { fileSize: 1024 * 1024 * 100 },

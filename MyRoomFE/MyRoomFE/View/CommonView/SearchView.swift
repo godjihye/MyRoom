@@ -37,7 +37,7 @@ struct SearchView: View {
 												} label: {
 													Image(systemName: "xmark")
 												}
-
+												
 											}
 											.padding(.all, 8)
 											.overlay(RoundedRectangle(cornerRadius: 20).stroke(.gray))
