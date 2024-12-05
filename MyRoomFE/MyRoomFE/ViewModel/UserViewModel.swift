@@ -15,12 +15,13 @@ class UserViewModel: ObservableObject {
 	@Published var isLoginError = false
 	@Published var message: String = ""
 	@Published var isJoinShowing = false
+	@Published var userList: [User] = []
 	
 	init() {
 		self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
 	}
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
-	
+	//MARK: - ME
 	// 1. Login
 	func login(userName: String, password: String) {
 		SVProgressHUD.show()
@@ -120,4 +121,7 @@ class UserViewModel: ObservableObject {
 			}
 		}
 	}
+	
+	//MARK: - MATE
+	
 }

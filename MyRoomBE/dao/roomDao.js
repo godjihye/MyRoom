@@ -4,10 +4,10 @@ const models = require("../models");
 const createRoom = async (data) => {
   return await models.Room.create(data);
 };
-// 2. userId가 id인 유저의 방 전체 조회
+// 2. homeId가 id인 유저의 방 전체 조회
 const findAllRoom = async (id) => {
   return await models.Room.findAll({
-    where: { userId: id },
+    where: { homeId: id },
   });
 };
 // 3. room의 id가 id인 방 조회
@@ -36,7 +36,7 @@ const getAllRoom = async (id) => {
         as: "locations",
         attributes: ["id", "locationName", "locationDesc", "roomId"],
       },
-      where: { userId: id },
+      where: { homeId: id },
     });
   } catch (error) {
     console.log(error);

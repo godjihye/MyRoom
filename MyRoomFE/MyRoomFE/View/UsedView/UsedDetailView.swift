@@ -177,6 +177,6 @@ func dateFormatter(dateString:String) -> String{
 
 #Preview {
 		let used = UsedViewModel()
-		UsedDetailView(isFavorite:.constant(false), used: userSample, photos: photoData).environmentObject(used)
+		UsedDetailView(isFavorite:.constant(false), used: sampleUsed, photos: photoData).environmentObject(used)
 //    UsedDetailView(used: userSample, photos: photoData)
 }
