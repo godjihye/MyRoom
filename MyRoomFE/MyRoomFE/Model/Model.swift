@@ -7,7 +7,8 @@
 
 import Foundation
 
-//MARK: ITEM
+//MARK: - ITEM(물건)
+
 struct Item: Codable,Identifiable, Equatable {
 	let id: Int
 	let itemName: String
@@ -26,28 +27,34 @@ struct Item: Codable,Identifiable, Equatable {
 	let itemPhoto: [ItemPhoto]?
 	let location: Item_Location?
 }
+
 struct ItemPhoto: Codable, Identifiable,Equatable {
 	let id: Int
 	let photo: String
 }
+
 struct Item_Location: Codable,Equatable {
 	let locationName: String
 	let room: Item_Room
 }
+
 struct Item_Room: Codable,Equatable {
 	let roomName: String
 }
+
 struct ItemResponse: Codable {
 	let documents: [Item]
 }
 
-//MARK: ROOM AND LOCATION
+//MARK: - ROOM AND LOCATION (방/위치)
+
 struct Location: Identifiable, Codable, Hashable {
 	let id: Int
 	let locationName: String
 	let locationDesc: String
 	let roomId: Int
 }
+
 struct Room: Identifiable, Codable, Equatable, Hashable {
 	static func == (lhs: Room, rhs: Room) -> Bool {
 		return lhs.id == rhs.id
@@ -55,7 +62,7 @@ struct Room: Identifiable, Codable, Equatable, Hashable {
 	let id: Int
 	let roomName: String
 	let roomDesc: String
-	let userId: Int
+	let homeId: Int
 	let createdAt: String
 	let updatedAt: String
 	let locations: [Location]
@@ -65,7 +72,8 @@ struct RoomResponse:Codable {
 	let documents: [Room]
 }
 
-//MARK: POST
+//MARK: - POST(커뮤니티 게시글)
+
 struct Post: Identifiable,Codable,Equatable {
 	let id: Int
 	let title: String
@@ -102,15 +110,23 @@ struct Comment: Identifiable ,Codable{
 	var date:String
 }
 
-//MARK: USER
+//MARK: - HOME(집)
+struct Home: Codable, Equatable {
+	let id: Int
+	let homeName: String
+	let homeDesc: String
+}
+
+//MARK: - USER(사용자)
+
 struct User : Codable,Equatable {
 	let id: Int
 	let userName: String
 	let nickname:String
 	let userImage:String?
-	let mateId: Int?
 	let createdAt: String
 	let updatedAt: String
+	let homeId: Int
 }
 
 struct SignUp: Codable {
@@ -126,7 +142,8 @@ struct SignIn: Codable {
 	let message: String
 }
 
-//MARK: USED
+//MARK: - USED(중고거래물건)
+
 struct Used: Identifiable,Codable,Equatable {
 	let id: Int
 	let usedTitle: String
@@ -182,6 +199,7 @@ struct UsedFavData:Identifiable,Codable, Equatable {
 	let userId:Int
 }
 
+//MARK: - API Response
 struct ApiResponse: Error, Decodable {
 	let success: String?
 	let message: String

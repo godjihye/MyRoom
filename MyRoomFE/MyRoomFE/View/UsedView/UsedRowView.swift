@@ -85,5 +85,5 @@ struct UsedRowView: View {
 }
 
 #Preview {
-		UsedRowView(used: userSample)
+		UsedRowView(used: sampleUsed)
 }
