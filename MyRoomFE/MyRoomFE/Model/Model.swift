@@ -203,6 +203,21 @@ struct UsedFavData:Identifiable,Codable, Equatable {
 }
 
 
+//채팅
+struct Message: Identifiable {
+    let id: String
+    let senderId: String
+    let text: String
+    let timestamp: Double
+}
+
+struct ChatRoom: Identifiable {
+    var id: String       // roomId
+    var roomName: String     // 채팅방 이름
+}
+
+
+
 //
 //  common.swift
 //  MyRoomFE

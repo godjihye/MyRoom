@@ -21,16 +21,21 @@ class UsedViewModel:ObservableObject {
     private var page = 1
     @AppStorage("token") var token:String?
     let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
-    func fetchUseds() {
-        //        guard !isLoading else { return }
-        //        isLoading = true
-        let url = "\(endPoint)/useds/4?page=1&pageSize=10"
-        //        guard let token = self.token else { return }
-        //        let params:Parameters = ["page":self.page, "size":size]
-        //        let headers:HTTPHeaders = ["Authorization": "Bearer \(token)"]
+    
+    func fetchUseds(size:Int = 10) {
         
-        AF.request(url,method: .get).response { response in
-            
+        guard !isLoading else { return }
+        isLoading = true
+        let url = "\(endPoint)/useds/4"
+        //        guard let token = self.token else { return }
+        let params:Parameters = ["page":self.page, "size":size]
+        //        let headers:HTTPHeaders = ["Authorization": "Bearer \(token)"]
+  
+        AF.request(url,method: .get,parameters: params).response { response in
+            defer {
+                    self.isLoading = false // 요청 종료 시 반드시 false로 변경
+                    SVProgressHUD.dismiss()
+                }
             if let statusCode = response.response?.statusCode {
                 switch statusCode {
                 case 200..<300:
@@ -68,6 +73,8 @@ class UsedViewModel:ObservableObject {
                     self.isAlertShowing = true
                     self.message = "네트워크 오류입니다."
                 }
+                self.isLoading = false
+                SVProgressHUD.dismiss()
             }
         }
         //		AF.request(url).responseDecodable(of: UsedRoot.self) { response in
@@ -75,29 +82,26 @@ class UsedViewModel:ObservableObject {
         //		}
     }
     
-    //좋아요
-//    func toggleFavorite(userId:Int, usedId:Int,isFavorite:Bool) async {
-//        print("toggke gogo")
-//        let url = "\(endPoint)/useds/\(usedId)/favorite"
-//        let method: HTTPMethod = isFavorite ? .delete : .post
-//        let action = isFavorite ? "remove" : "add"
-//        let params:Parameters = ["action":action,"userId":userId]
-//        
-//        do {
-//            let response =  try await AF.request(url,method: method,parameters: params, encoding: JSONEncoding.default).serializingDecodable(Used.self).value
-//            log("toggleFavorite Complete ", trait: .success)
-//        } catch {
-//            
-//            log("toggleFavorite: \(error.localizedDescription)", trait: .error)
-//            
-//        }
-//        
-//                AF.request(url).responseDecodable(of: Used.self) { response in
-//                    print(response)
-//                }
-//        
-//    }
+    // 글상세
+    func fetchDetailUsed(usedId : Int,userId:Int) async throws -> Used{
+        let url = "\(endPoint)/useds/detail/\(usedId)/\(userId)"
+        do {
+            let response = try await AF.request(url, method: .get, encoding: JSONEncoding.default).serializingData().value
+            
+            // JSON 디코딩
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let usedDetail = try decoder.decode(Used.self, from: response)
+            
+            log("fetchDetailUsed Complete! \(usedDetail)", trait: .success)
+            return usedDetail
+        } catch {
+            log("fetchDetailUsed Error: \(error.localizedDescription)", trait: .error)
+            throw error
+        }
+    }
     
+    //좋아요
     func toggleFavorite(userId:Int, usedId:Int,isFavorite:Bool, completion: @escaping (Bool) -> Void) {
             print("toggke gogo")
             let url = "\(endPoint)/useds/\(usedId)/favorite"
@@ -109,9 +113,10 @@ class UsedViewModel:ObservableObject {
                 switch response.result {
                 case .success:
                     completion(true) // 성공 시 true 전달
+                    log("UsedToggleFavorite Complete ", trait: .success)
                 case .failure(let error):
-                    print("Error: \(error.localizedDescription)")
                     completion(false) // 실패 시 false 전달
+                    log("UsedToggleFavorite: \(error.localizedDescription)", trait: .error)
                 }
             }
         }
@@ -143,7 +148,7 @@ class UsedViewModel:ObservableObject {
     }
     
     // 글 등록
-    func addUsed(selectedImages:[UIImage],usedTitle:String,usedPrice:Int,usedContent:String,selectMyItem:Item?) {
+    func addUsed(selectedImages:[UIImage],usedTitle:String,usedPrice:Int,usedContent:String,selectMyItem:Item?,completion: @escaping (Bool) -> Void) {
         let usedData: [String: Any?] = [
             "usedTitle": usedTitle,
             "usedPrice": usedPrice,
@@ -182,7 +187,13 @@ class UsedViewModel:ObservableObject {
             "Content-Type": "multipart/form-data"
         ]
         AF.upload(multipartFormData: formData, to: url,headers: headers).response { response in
-            print("update start \(response)")
+            switch response.result {
+            case .success:
+                completion(true) // 성공 시 true 전달
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+                completion(false) // 실패 시 false 전달
+            }
             
         }
         //		AF.request(url).responseDecodable(of: Used.self) { response in

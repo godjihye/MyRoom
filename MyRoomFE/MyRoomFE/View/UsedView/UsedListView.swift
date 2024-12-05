@@ -9,15 +9,15 @@ import SwiftUI
 
 struct UsedListView: View {
     @EnvironmentObject var usedVM:UsedViewModel
-//    @Binding var isFavorite:Bool
+    
     var body: some View {
         
         NavigationSplitView {
             ScrollView{
                 LazyVStack{
-                    ForEach(usedVM.useds) { used in
+                    ForEach($usedVM.useds) { $used in
                         NavigationLink() {
-                            UsedDetailView(used: used, photos: used.images)
+                            UsedDetailView(used: $used, photos: used.images)
                                 .onAppear {
                                     Task{
                                         await usedVM.updateViewCnt(usedId: used.id)

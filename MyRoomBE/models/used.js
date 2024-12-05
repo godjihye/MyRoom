@@ -45,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     usedThumbnail: DataTypes.STRING,
     itemName: DataTypes.STRING,
     itemDesc: DataTypes.STRING,
+    isFavorite: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Used',

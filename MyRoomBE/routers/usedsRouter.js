@@ -15,7 +15,7 @@ router.post(
 
 router.post("/", usedController.createUsed);
 router.get("/:userId", usedController.findAllUsed); //userId
-router.get("/detail/:id", usedController.findUsedById);
+router.get("/detail/:id/:userId", usedController.findUsedById);
 router.put("/:id", usedController.updateUsed);
 router.delete("/:id", usedController.deleteUsed);
 
