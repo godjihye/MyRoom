@@ -21,12 +21,12 @@ class UsedViewModel:ObservableObject {
     private var page = 1
     @AppStorage("token") var token:String?
     let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
-    
+  	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
     func fetchUseds(size:Int = 10) {
         
         guard !isLoading else { return }
         isLoading = true
-        let url = "\(endPoint)/useds/4"
+        let url = "\(endPoint)/useds/\(userId)"
         //        guard let token = self.token else { return }
         let params:Parameters = ["page":self.page, "size":size]
         //        let headers:HTTPHeaders = ["Authorization": "Bearer \(token)"]
@@ -159,7 +159,7 @@ class UsedViewModel:ObservableObject {
             "purchasePrice": selectMyItem?.price,
             "itemName" : selectMyItem?.itemName,
             "itemDesc" : selectMyItem?.desc,
-            "userId" : 4,
+						"userId" : userId,
             "usedUrl" :selectMyItem?.url,
         ]
         
