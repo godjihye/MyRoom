@@ -6,27 +6,27 @@
 //
 
 import SwiftUI
-let items: Item? =
-    Item(
-                id: 1,
-                itemName: "아이폰 13",
-                purchaseDate: "2023-11-15",
-                expiryDate: "2024-11-15",
-                url: "https://example.com/item/1",
-                photo: "iphone_13_image",
-                desc: "상태 좋은 아이폰 13, 128GB, 흰색",
-                color: "흰색",
-                isFav: true,
-                price: 550000,
-                openDate: "2023-11-15",
-                locationId: 101,
-                createdAt: "2023-11-15",
-                updatedAt: "2023-12-01",
-                itemPhotos: [
-                    ItemPhoto(id: 1, photo: "https://example.com/images/iphone_13_1.jpg"),
-                    ItemPhoto(id: 2, photo: "https://example.com/images/iphone_13_2.jpg")
-                ],
-                location: MyRoomFE.Item_Location(locationName: "화장대", room: MyRoomFE.Item_Room(roomName: "jh")))
+//let items: Item? =
+//    Item(
+//                id: 1,
+//                itemName: "아이폰 13",
+//                purchaseDate: "2023-11-15",
+//                expiryDate: "2024-11-15",
+//                url: "https://example.com/item/1",
+//                photo: "iphone_13_image",
+//                desc: "상태 좋은 아이폰 13, 128GB, 흰색",
+//                color: "흰색",
+//                isFav: true,
+//                price: 550000,
+//                openDate: "2023-11-15",
+//                locationId: 101,
+//                createdAt: "2023-11-15",
+//                updatedAt: "2023-12-01",
+//                itemPhotos: [
+//                    ItemPhoto(id: 1, photo: "https://example.com/images/iphone_13_1.jpg"),
+//                    ItemPhoto(id: 2, photo: "https://example.com/images/iphone_13_2.jpg")
+//                ],
+//                location: MyRoomFE.Item_Location(locationName: "화장대", room: MyRoomFE.Item_Room(roomName: "jh")))
 struct UsedItemListView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var itemVM: ItemViewModel
@@ -58,5 +58,5 @@ struct UsedItemListView: View {
 
 #Preview {
     let itemVM = ItemViewModel()
-    UsedItemListView(selectMyItem:.constant(items), isMyItemPresented: .constant(true)).environmentObject(itemVM)
+	UsedItemListView(selectMyItem:.constant(sampleItem), isMyItemPresented: .constant(true)).environmentObject(itemVM)
 }
