@@ -13,14 +13,15 @@ import SVProgressHUD
 class UserViewModel: ObservableObject {
 	@Published var isLoggedIn = false
 	@Published var isLoginError = false
-	@Published var message: String = ""
 	@Published var isJoinShowing = false
 	@Published var userList: [User] = []
-	
+	@Published var message: String = ""
+	@Published var isHaveHome = true
 	init() {
 		self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
 	}
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
+	
 	//MARK: - ME
 	// 1. Login
 	func login(userName: String, password: String) {
@@ -39,6 +40,12 @@ class UserViewModel: ObservableObject {
 							UserDefaults.standard.set(signIn.user.userName, forKey: "userName")
 							UserDefaults.standard.set(signIn.user.id, forKey: "userId")
 							UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
+							if let homeId = signIn.user.homeId {
+								UserDefaults.standard.set(homeId, forKey: "homeId")
+							} else {
+								self.isHaveHome = false
+							}
+							log("login user: \(signIn)")
 						} catch let error {
 							self.isLoginError = true
 							self.message = error.localizedDescription

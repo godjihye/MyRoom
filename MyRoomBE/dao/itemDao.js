@@ -100,8 +100,8 @@ const findAllFavItem = async (id) => {
           {
             model: models.Room,
             as: "room",
-            attributes: ["roomName", "userId"],
-            where: { userId: id },
+            attributes: ["roomName", "homeId"],
+            where: { homeId: id },
             required: true,
           },
         ],
