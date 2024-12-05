@@ -82,8 +82,8 @@ struct UsedRowView: View {
         }
     }
 }
-
-#Preview {
-		UsedRowView(used: sampleUsed)
-
-}
+//
+//#Preview {
+//		UsedRowView(used: )
+//
+//}

@@ -196,13 +196,13 @@ struct UsedDetailView: View {
                     .background(Color.btn)
                     .cornerRadius(8)
                     .padding(.horizontal,10)
-                    .sheet(isPresented: $isChatViewPresented) {
-                        if let roomId = roomId,
-                           let loginUser = loginUser,
-                           let usedUser = usedUser {
-                            ChatView(roomId: roomId, loginUser: loginUser, usedUser: usedUser).environmentObject(chatVM)
-                        }
-                    }
+//                    .sheet(isPresented: $isChatViewPresented) {
+//                        if let roomId = roomId,
+//                           let loginUser = loginUser,
+//                           let usedUser = usedUser {
+//                            ChatView(roomId: roomId, loginUser: loginUser, usedUser: usedUser).environmentObject(chatVM)
+//                        }
+//                    }
             }
             .frame(height: 40)
         }
@@ -233,9 +233,9 @@ struct UsedDetailView: View {
 
 
 
-
-#Preview {
-		let used = UsedViewModel()
-		UsedDetailView(isFavorite:.constant(false), used: sampleUsed, photos: photoData).environmentObject(used)
-//    UsedDetailView(used: userSample, photos: photoData)
-}
+//
+//#Preview {
+//		let used = UsedViewModel()
+//		UsedDetailView(isFavorite:.constant(false), used: sampleUsed, photos: photoData).environmentObject(used)
+////    UsedDetailView(used: userSample, photos: photoData)
+//}
