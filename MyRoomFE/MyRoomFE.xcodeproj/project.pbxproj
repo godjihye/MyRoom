@@ -71,6 +71,9 @@
 		B8E916462D016C6F00345B89 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E916452D016C6F00345B89 /* MyPageView.swift */; };
 		B8E916482D016C8300345B89 /* ProfileRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E916472D016C8300345B89 /* ProfileRow.swift */; };
 		B8E9164A2D016C8F00345B89 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E916492D016C8F00345B89 /* ProfileView.swift */; };
+		B8E916D72D018AF100345B89 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E916D62D018AF100345B89 /* RegisterView.swift */; };
+		B8E916D92D018B4500345B89 /* String+Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E916D82D018B4500345B89 /* String+Validate.swift */; };
+		B8E916DD2D0192E900345B89 /* MakeHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E916DC2D0192E900345B89 /* MakeHomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -138,6 +141,9 @@
 		B8E916452D016C6F00345B89 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		B8E916472D016C8300345B89 /* ProfileRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRow.swift; sourceTree = "<group>"; };
 		B8E916492D016C8F00345B89 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		B8E916D62D018AF100345B89 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		B8E916D82D018B4500345B89 /* String+Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Validate.swift"; sourceTree = "<group>"; };
+		B8E916DC2D0192E900345B89 /* MakeHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +167,7 @@
 				B86F34A42CF96F920040BB33 /* LogManager.swift */,
 				B89D55252CFE9F8B00DEE4AC /* String+AzureStorageURL.swift */,
 				B86F34A52CF96F920040BB33 /* UIApplication+KeyboardExtension.swift */,
+				B8E916D82D018B4500345B89 /* String+Validate.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -307,6 +314,8 @@
 				B8E916452D016C6F00345B89 /* MyPageView.swift */,
 				B8E916472D016C8300345B89 /* ProfileRow.swift */,
 				B8E916492D016C8F00345B89 /* ProfileView.swift */,
+				B8E916D62D018AF100345B89 /* RegisterView.swift */,
+				B8E916DC2D0192E900345B89 /* MakeHomeView.swift */,
 			);
 			path = UserView;
 			sourceTree = "<group>";
@@ -428,8 +437,10 @@
 				B86F34F32CF96F920040BB33 /* ImagePicker.swift in Sources */,
 				B86F34F42CF96F920040BB33 /* SearchBar.swift in Sources */,
 				B89D55262CFE9F8B00DEE4AC /* String+AzureStorageURL.swift in Sources */,
+				B8E916D72D018AF100345B89 /* RegisterView.swift in Sources */,
 				B86F34F52CF96F920040BB33 /* SearchView.swift in Sources */,
 				B86F34F62CF96F920040BB33 /* TabItemView.swift in Sources */,
+				B8E916D92D018B4500345B89 /* String+Validate.swift in Sources */,
 				B86F34F72CF96F920040BB33 /* WideButton.swift in Sources */,
 				B86F34F82CF96F920040BB33 /* AddItemView.swift in Sources */,
 				B86F34F92CF96F920040BB33 /* AdditionalPhotosView.swift in Sources */,
@@ -444,6 +455,7 @@
 				B86F35012CF96F920040BB33 /* ItemDetailView.swift in Sources */,
 				B86F35022CF96F920040BB33 /* ItemListView.swift in Sources */,
 				B86F35032CF96F920040BB33 /* ItemRowView.swift in Sources */,
+				B8E916DD2D0192E900345B89 /* MakeHomeView.swift in Sources */,
 				B86F35042CF96F920040BB33 /* PostAddView.swift in Sources */,
 				B86F35052CF96F920040BB33 /* PostDetailView.swift in Sources */,
 				B89D55282CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift in Sources */,
