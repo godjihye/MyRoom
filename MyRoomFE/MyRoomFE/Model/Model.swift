@@ -75,40 +75,50 @@ struct RoomResponse:Codable {
 //MARK: - POST(커뮤니티 게시글)
 
 struct Post: Identifiable,Codable,Equatable {
-	let id: Int
-	let title: String
-	let content: String
-	let nickName: String
-	let userImage:String
-	let thumbnail: String
-	let user: User
-	let postFavCnt: Int
-	let postViewCnt: Int
-	let images: [PostPhotoData]
+    let id: Int
+    let postTitle: String
+    let postContent: String
+    let postThumbnail: String
+    
+    let user: User
+    
+    let postFav: [PostFavData]?
+    var isFavorite:Bool
+    let postFavCnt: Int
+    let postViewCnt: Int
+    
+    let updatedAt:String
+    let createdAt:String
+    
+    let images: [PostPhotoData]
+    
+    mutating func toggleFavorite() {
+        isFavorite.toggle()
+    }
+    
+    mutating func setFavorite(_ value: Bool) {
+        isFavorite = value
+    }
 }
 
 struct PostRoot: Codable{
-	let success: Bool
-	let posts: [Post]
-	let message: String
-}
-
-struct PostPhotos: Codable,Equatable {
-	let images: [UsedPhotoData]
+    let success: Bool
+    let posts: [Post]
+    let message: String
 }
 
 struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
-	let id:Int
-	let image:String
+    let id:Int
+    let image:String
 }
 
-struct Comment: Identifiable ,Codable{
-	var id:Int
-	var comment: String
-	var userImage:String
-	var nickName:String
-	var date:String
+struct PostFavData:Identifiable,Codable, Equatable {
+    let id:Int
+    let postId:Int
+    let userId:Int
 }
+
+
 
 //MARK: - HOME(집)
 struct Home: Codable, Equatable {
@@ -126,7 +136,7 @@ struct User : Codable,Equatable {
 	let userImage:String?
 	let createdAt: String
 	let updatedAt: String
-	let homeId: Int
+	let homeId: Int?
 }
 
 struct SignUp: Codable {
@@ -142,46 +152,41 @@ struct SignIn: Codable {
 	let message: String
 }
 
-//MARK: - USED(중고거래물건)
+
+//MARK: -Used
 
 struct Used: Identifiable,Codable,Equatable {
-	let id: Int
-	let usedTitle: String
-	let usedPrice: Int
-	let usedDesc: String
-	let user: User
-	let usedUrl: String?
-	let usedStatus: Int
-	let usedPurchaseDate: String?
-	let usedExpiryDate: String?
-	let usedOpenDate: String?
-	let purchasePrice: Int?
-	let usedFavCnt: Int
-	let usedViewCnt: Int
-	let usedChatCnt: Int
-	let images: [UsedPhotoData]
-	let usedThumbnail: String
-	var isFavorite:Bool
-	let usedFav: [UsedFavData]?
-	let updatedAt: String
-	
-	mutating func toggleFavorite() {
-		isFavorite.toggle()
-	}
-	
-	mutating func setFavorite(_ value: Bool) {
-		isFavorite = value
-	}
-}
-
-struct UsedRoot: Codable{
-	//    let success: Bool
-	let useds: [Used]
-	//    let message: String
-}
-
-struct UsedPhotos: Codable,Equatable {
-	let images: [UsedPhotoData]
+    
+    let id: Int
+    let usedTitle: String
+    let usedPrice: Int
+    let usedDesc: String
+    let user: User
+    let usedUrl: String?
+    let usedStatus: Int
+    
+    let usedPurchaseDate: String?
+    let usedExpiryDate: String?
+    let usedOpenDate: String?
+    let purchasePrice: Int?
+    
+    let usedFavCnt: Int
+    let usedViewCnt: Int
+    let usedChatCnt: Int
+    
+    let images: [UsedPhotoData]
+    let usedThumbnail: String
+    var isFavorite:Bool
+    let usedFav: [UsedFavData]?
+    let updatedAt: String
+    
+    mutating func toggleFavorite() {
+        isFavorite.toggle()
+    }
+    
+    mutating func setFavorite(_ value: Bool) {
+        isFavorite = value
+    }
 }
 
 struct UsedPhotoData:Identifiable,Codable, Equatable, Hashable  {
@@ -199,8 +204,33 @@ struct UsedFavData:Identifiable,Codable, Equatable {
 	let userId:Int
 }
 
+struct UsedRoot: Codable{
+	//    let success: Bool
+	let useds: [Used]
+	//    let message: String
+}
+
 //MARK: - API Response
 struct ApiResponse: Error, Decodable {
 	let success: String?
 	let message: String
+}
+
+
+//채팅
+struct Message: Identifiable {
+    let id: String
+    let senderId: String
+    let text: String
+    let timestamp: Double
+}
+
+struct ChatRoom: Identifiable {
+    var id: String       // roomId
+    var roomName: String     // 채팅방 이름
+}
+
+
+struct APIError: Codable {
+    let message: String
 }
