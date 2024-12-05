@@ -1,3 +1,5 @@
 {
+  "appService.defaultWebAppToDeploy": "/subscriptions/2a769e9c-bc20-4df8-92cb-ae25de0da5af/resourceGroups/rg-myroom/providers/Microsoft.Web/sites/appbe-myroom/slots/myroomprod",
+  "appService.deploySubpath": ".",
   "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"]
 }

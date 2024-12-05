@@ -23,6 +23,7 @@ app.use("/items", itemRouter);
 app.use("/posts", postRouter);
 app.use("/users", userRouter);
 app.use("/useds", usedRouter);
+
 app.use((_, res) => {
   res.status(404).json({ success: false, token: "", message: "요청이 잘못됨" });
 });

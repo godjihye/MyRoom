@@ -1,3 +1,6 @@
+// locationService.js
+// 방 안의 가구 등 위치 Service
+
 const locationDao = require("../dao/locationDao");
 
 // 1. Location 생성

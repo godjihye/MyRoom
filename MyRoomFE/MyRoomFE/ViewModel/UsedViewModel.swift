@@ -58,7 +58,7 @@ class UsedViewModel:ObservableObject {
 					if let data = response.data {
 						do {
 							self.isAlertShowing = true
-							let apiError = try JSONDecoder().decode(APIError.self, from: data)
+							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
 							self.message = apiError.message
 						} catch let error {
 							self.isAlertShowing = true
@@ -150,7 +150,7 @@ class UsedViewModel:ObservableObject {
 							print("JSON response: \(json)") }
 						do {
 							self.isAlertShowing = true
-							let apiError = try JSONDecoder().decode(APIError.self, from: data)
+							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
 							self.message = apiError.message
 						} catch let error {
 							self.isAlertShowing = true

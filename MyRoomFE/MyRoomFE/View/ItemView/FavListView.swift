@@ -24,12 +24,6 @@ struct FavListView: View {
 							.bold()
 							.padding(.top)
 						Spacer()
-//						Button {
-//						} label: {
-//							Image(systemName: "plus")
-//								.font(.title)
-//								.bold()
-//						}
 					}
 					.padding(.horizontal)
 					

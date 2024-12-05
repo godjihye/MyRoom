@@ -5,6 +5,7 @@ const { Op } = require("sequelize"); // Sequelize operators 가져오기
 const createItem = async (data) => {
   return await models.Item.create(data);
 };
+
 // 2. Item 전체 조회
 const findAllItem = async (id) => {
   return await models.Item.findAll({
@@ -32,10 +33,12 @@ const findAllItem = async (id) => {
     ],
   });
 };
+
 // 3. Item 상세 조회
 const findItem = async (id) => {
   return await models.Item.findByPk(id);
 };
+
 // 3-1. Item 이름으로 상세 조회 (포함 검색)
 const findItemByName = async (id, data) => {
   return await models.Item.findAll({
@@ -138,6 +141,35 @@ const findAllItemByUserId = async (id) => {
   });
 };
 
+const uploadAdditionalPhotos = async (photoData, itemId) => {
+  const transaction = await models.sequelize.transaction();
+  try {
+    const photos = [];
+    for (const field in photoData) {
+      if (Array.isArray(photoData[field])) {
+        photoData[field].forEach((photo) => {
+          photos.push({
+            photo: photo.blobName,
+            itemId: itemId,
+          });
+        });
+      }
+    }
+    await models.ItemPhoto.bulkCreate(photos, { transaction });
+    await transaction.commit();
+    return photos;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+const deleteAdditionalPhoto = async (id) => {
+  return models.ItemPhoto.destroy({
+    where: { id },
+  });
+};
+
 module.exports = {
   createItem,
   findAllItem,
@@ -147,4 +179,6 @@ module.exports = {
   updateItem,
   findAllFavItem,
   findAllItemByUserId,
+  uploadAdditionalPhotos,
+  deleteAdditionalPhoto,
 };

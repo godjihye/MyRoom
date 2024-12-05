@@ -10,7 +10,7 @@ import SwiftUI
 struct ItemDetailImageView: View {
 	@Environment(\.dismiss) private var dismiss
 	@State private var isZoomed: Bool = false
-	@State var selectedPhoto: String
+	@State var selectedPhoto: String = ""
 	var itemPhotos: [ItemPhoto]
 	
 	var body: some View {
@@ -30,41 +30,42 @@ struct ItemDetailImageView: View {
 					.padding(.bottom, 20)
 				}
 				.padding()
-				
 				Spacer()
 				
-				AsyncImage(url: URL(string: selectedPhoto)) { image in
-						image
-							.resizable()
-							.aspectRatio(contentMode: isZoomed ? .fill : .fit)
-							.frame(maxWidth: .infinity, maxHeight: 400)
-							.onTapGesture {
-								withAnimation {
-									isZoomed.toggle()
-								}
+				AsyncImage(url: URL(string: selectedPhoto.addingURLPrefix())) { image in
+					image
+						.resizable()
+						.aspectRatio(contentMode: isZoomed ? .fill : .fit)
+						.frame(maxWidth: .infinity)
+						.onTapGesture {
+							withAnimation {
+								isZoomed.toggle()
 							}
-							.cornerRadius(10)
-					} placeholder: {
-						ProgressView()
-					}
-				
+						}
+				} placeholder: {
+					ProgressView()
+				}
+				.padding(.bottom, 50)
 				Spacer()
 				
 				ScrollView(.horizontal) {
 					HStack {
 						ForEach(itemPhotos) { photo in
-							AsyncImage(url: URL(string: photo.photo)) { image in
-								image.image?.resizable()
+							AsyncImage(url: URL(string: photo.photo.addingURLPrefix())) { image in
+								image.image?
+									.resizable()
+									.aspectRatio(contentMode: .fill)
 									.frame(width: 50, height: 50)
+									.clipped()
 									.overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray).opacity(0.5))
 							}
 							.onTapGesture {
 								selectedPhoto = photo.photo
-								print("selectedPhoto changed!")
 							}
 						}
 					}
 				}
+				.padding()
 			}
 			.navigationBarHidden(true)
 		}

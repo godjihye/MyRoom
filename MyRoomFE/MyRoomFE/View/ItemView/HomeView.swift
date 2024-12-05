@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+	@EnvironmentObject var userVM: UserViewModel
 	@State private var selectedTab: Int = 0
 	@State private var isSearchActive: Bool = false
 	
@@ -39,6 +40,13 @@ struct HomeView: View {
 										SearchButton()
 								}
 						}
+					ToolbarItem(placement: .topBarLeading) {
+						Button {
+							userVM.logout()
+						} label: {
+							Image(systemName: "rectangle.portrait.and.arrow.right")
+						}
+					}
 				}
 			}
 		}
@@ -84,5 +92,6 @@ struct SearchButton: View {
 #Preview {
 	let roomVM = RoomViewModel()
 	let itemVM = ItemViewModel()
-	HomeView().environmentObject(roomVM).environmentObject(itemVM)
+	let userVM = UserViewModel()
+	HomeView().environmentObject(roomVM).environmentObject(itemVM).environmentObject(userVM)
 }

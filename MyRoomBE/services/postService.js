@@ -1,31 +1,32 @@
-const postDao = require("../dao/postDao")
+// postService.js
+// Post(게시글) Service
+
+const postDao = require("../dao/postDao");
 
 const createPost = async (data) => {
-	return await postDao.createPost(data);
-}
-
-
+  return await postDao.createPost(data);
+};
 
 const findPostById = async (id) => {
-    return await postDao.findPostById(id);
-  };
-  
-  const findAllPost = async () => {
-    return await postDao.findAllPost();
-  };
+  return await postDao.findPostById(id);
+};
 
-  const updatePost = async (id, data) => {
-    return await postDao.updatePost(id, data);
-  };
+const findAllPost = async () => {
+  return await postDao.findAllPost();
+};
 
-  const deletePost = async (id) => {
-    return await postDao.deletePost(id);
-  }
+const updatePost = async (id, data) => {
+  return await postDao.updatePost(id, data);
+};
 
-module.exports = { 
-      createPost,
+const deletePost = async (id) => {
+  return await postDao.deletePost(id);
+};
+
+module.exports = {
+  createPost,
   findPostById,
   findAllPost,
   updatePost,
   deletePost,
-}
+};

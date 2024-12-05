@@ -15,7 +15,7 @@ struct ItemRowView: View {
 	var body: some View {
 		HStack {
 			if let photo = item.photo {
-				AsyncImage(url: URL(string: photo)) { image in
+				AsyncImage(url: URL(string: photo.addingURLPrefix())) { image in
 					image
 						.resizable()
 						.scaledToFill()
@@ -29,7 +29,7 @@ struct ItemRowView: View {
 				Text(item.itemName)
 					.font(.headline)
 				if isSearch {
-					Text("\(item.location.room.roomName)의 \(item.location.locationName)에 있습니다.")
+					Text("\(item.location!.room.roomName)의 \(item.location!.locationName)에 있습니다.")
 				} else {
 					if let desc = item.desc {
 						Text(desc)
