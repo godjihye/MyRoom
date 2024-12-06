@@ -14,12 +14,15 @@ class UserViewModel: ObservableObject {
 	@Published var isLoggedIn = false
 	@Published var isLoginError = false
 	@Published var isJoinShowing = false
-	@Published var userList: [User] = []
+	@Published var isMakeHomeError = false
+	@Published var userInfo: User?
 	@Published var message: String = ""
 	@Published var isHaveHome = true
+	
 	init() {
 		self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
 	}
+	
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	
 	//MARK: - ME
@@ -40,12 +43,13 @@ class UserViewModel: ObservableObject {
 							UserDefaults.standard.set(signIn.user.userName, forKey: "userName")
 							UserDefaults.standard.set(signIn.user.id, forKey: "userId")
 							UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
+							log("homeId: \(signIn.user.homeId)")
 							if let homeId = signIn.user.homeId {
 								UserDefaults.standard.set(homeId, forKey: "homeId")
 							} else {
 								self.isHaveHome = false
 							}
-							log("login user: \(signIn)")
+							log("UserDefaults.standard : \(UserDefaults.standard.integer(forKey: "homeId"))")
 						} catch let error {
 							self.isLoginError = true
 							self.message = error.localizedDescription
@@ -63,7 +67,7 @@ class UserViewModel: ObservableObject {
 					}
 				default:
 					self.isLoginError = true
-					self.message = "알 수 없는 에러 발생"
+					self.message = "서버 연결에 실패했습니다.\n잠시 후 다시 시도해주세요."
 				}
 			}
 		}
@@ -129,6 +133,77 @@ class UserViewModel: ObservableObject {
 		}
 	}
 	
-	//MARK: - MATE
+	// 4. fetch User
+	func fetchUser() {
+		let url = "\(endPoint)/users"
+		let userId = UserDefaults.standard.integer(forKey: "userId")
+		log("userId: \(userId)")
+		let params: Parameters = ["userId": userId]
+	}
+	//MARK: - HOME
+	// 1. Create Home
+	func makeHome(homeName: String, homeDesc: String?) {
+		SVProgressHUD.show()
+		let userId = UserDefaults.standard.value(forKey: "userId") as! Int
+		let url = "\(endPoint)/home/\(userId)"
+		let params: Parameters = ["homeName": homeName, "homeDesc": homeDesc ?? ""]
+
+		AF.request(url, method: .post, parameters: params).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data {
+						do {
+							let home = try JSONDecoder().decode(Home.self, from: data)
+							UserDefaults.standard.set(home.id, forKey: "homeId")
+							log("home: \(home)")
+							//log("homeId: \(self.homeId)")
+							self.isHaveHome = true
+						} catch let error {
+							self.isMakeHomeError = true
+							self.message = error.localizedDescription
+						}
+					}
+				case 300..<600:
+					self.isMakeHomeError = true
+					self.message = "인증 오류입니다."
+				default:
+					self.isMakeHomeError = true
+					self.message = "서버 연결에 실패했습니다.\n잠시 후 다시 시도해주세요."
+				}
+			}
+			SVProgressHUD.dismiss()
+		}
+	}
+	// 2. Join Home With InviteCode
+	func joinHome(inviteCode: String?) {
+		let userId = UserDefaults.standard.integer(forKey: "userId")
+		let url = "\(endPoint)/home/inviteCode/\(userId)"
+		let params: Parameters = ["inviteCode": inviteCode]
+		AF.request(url, method: .post, parameters: params).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data{
+						do {
+							let root = try JSONDecoder().decode(HomeRoot.self, from: data)
+							UserDefaults.standard.set(root.home.id, forKey: "homeId")
+							self.message = root.message
+						} catch let error {
+							self.isMakeHomeError = true
+							self.message = error.localizedDescription
+						}
+					}
+				case 300..<600:
+					self.isMakeHomeError = true
+					self.message = "집을 찾을 수 없습니다."
+				default:
+					self.isMakeHomeError = true
+					self.message = "서버 연결에 실패했습니다.\n잠시 후 다시 시도해주세요."
+					
+				}
+			}
+		}
+	}
 	
 }

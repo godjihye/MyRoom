@@ -33,7 +33,7 @@ const findItem = async (req, res) => {
 const findItemByName = async (req, res) => {
   try {
     const item = await itemService.findItemByName(
-      req.body.userId,
+      req.body.homeId,
       req.body.query
     );
 
@@ -61,15 +61,15 @@ const updateItem = async (req, res) => {
 };
 const findAllFavItem = async (req, res) => {
   try {
-    const result = await itemService.findAllFavItem(req.params.userId);
+    const result = await itemService.findAllFavItem(req.params.homeId);
     res.status(200).json({ documents: result });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 };
-const findAllItemByUserId = async (req, res) => {
+const findAllItemByHomeId = async (req, res) => {
   try {
-    const result = await itemService.findAllItemByUserId(req.params.userId);
+    const result = await itemService.findAllItemByUserId(req.params.homeId);
     res.status(200).json({ documents: result });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -128,7 +128,7 @@ module.exports = {
   deleteItem,
   updateItem,
   findAllFavItem,
-  findAllItemByUserId,
+  findAllItemByHomeId,
   updateAdditionalPhotos,
   deleteAdditionalPhoto,
 };

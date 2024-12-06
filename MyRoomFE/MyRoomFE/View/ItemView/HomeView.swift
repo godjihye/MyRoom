@@ -15,39 +15,52 @@ struct HomeView: View {
 	var body: some View {
 		NavigationStack {
 			VStack(spacing: 0) {
-				// Tab Bar
-				HStack(spacing: 0) {
-					TabButton(title: "홈", isSelected: selectedTab == 0) {
-						selectedTab = 0
-					}
-					TabButton(title: "즐겨찾기", isSelected: selectedTab == 1) {
-						selectedTab = 1
-					}
-				}
-				// Tab View
-				TabView(selection: $selectedTab) {
-					HomeListView()
-						.frame(maxWidth: .infinity, maxHeight: .infinity)
-						.tag(0)
-					FavListView()
-						.frame(maxWidth: .infinity, maxHeight: .infinity)
-						.tag(1)
-				}
-				
-				.toolbar {
-						ToolbarItem(placement: .principal) {
-								NavigationLink(destination: SearchView()) {
-										SearchButton()
-								}
-						}
-					ToolbarItem(placement: .topBarLeading) {
-						Button {
-							userVM.logout()
-						} label: {
-							Image(systemName: "rectangle.portrait.and.arrow.right")
+				if UserDefaults.standard.integer(forKey: "homeId") < 1 {
+					VStack {
+						Text("물건 정보를 저장하시려면 집 등록을 해야합니다.")
+						NavigationLink(destination: MakeHomeView()) {
+							Text("집 등록하기")
 						}
 					}
 				}
+				else {
+					// Tab Bar
+					HStack(spacing: 0) {
+						TabButton(title: "홈", isSelected: selectedTab == 0) {
+							selectedTab = 0
+						}
+						TabButton(title: "즐겨찾기", isSelected: selectedTab == 1) {
+							selectedTab = 1
+						}
+					}
+					// Tab View
+					TabView(selection: $selectedTab) {
+						HomeListView()
+							.frame(maxWidth: .infinity, maxHeight: .infinity)
+							.tag(0)
+						FavListView()
+							.frame(maxWidth: .infinity, maxHeight: .infinity)
+							.tag(1)
+					}
+					
+				}
+			}
+			.toolbar {
+				ToolbarItem(placement: .principal) {
+					NavigationLink(destination: SearchView()) {
+						SearchButton()
+					}
+				}
+				ToolbarItem(placement: .topBarLeading) {
+					Button {
+						userVM.logout()
+					} label: {
+						Image(systemName: "rectangle.portrait.and.arrow.right")
+					}
+				}
+			}
+			.onAppear {
+				log("UserDefault : \(UserDefaults.standard.integer(forKey: "homeId"))")
 			}
 		}
 	}

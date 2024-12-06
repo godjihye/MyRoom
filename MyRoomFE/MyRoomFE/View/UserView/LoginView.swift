@@ -23,15 +23,19 @@ struct LoginView: View {
 	@State private var pwOffset: CGFloat = 0
 	@State private var pwcheckOffset: CGFloat = 0
 	var body: some View {
-		VStack {
+		VStack(alignment: .leading) {
 			Text(isRegister ? "회원가입" : "로그인")
 				.font(.largeTitle)
 				.fontWeight(.bold)
-			VStack {
-				CustomTextField(icon: "person.fill", placeholder: "이메일(예시: myroom@gmail.com)", text: $email)
+			//MARK: - TextField
+			VStack(alignment: .leading) {
+				Text("이메일 *")
+					.fontWeight(.bold)
+				CustomTextField(icon: "person.fill", placeholder: "예) myroom@gmail.com", text: $email)
 					.onChange(of: email) { oldValue, newValue in
 						isVaildEmail = true
 					}
+				// 유효한 이메일인지 검증
 				if !isVaildEmail {
 					Text("이메일 형식으로 입력해주세요.")
 						.font(.footnote)
@@ -46,10 +50,14 @@ struct LoginView: View {
 						})
 						.padding(.leading, 5)
 				}
-				CustomTextField(icon: "lock.fill", placeholder: "비밀번호 (8자 이상으로 입력해주세요.)", text: $password1, isSecured: true)
+				
+				Text("비밀번호 *")
+					.fontWeight(.bold)
+				CustomTextField(icon: "lock.fill", placeholder: "영문, 숫자 조합 8~16자", text: $password1, isSecured: true)
 					.onChange(of: password1) { oldValue, newValue in
 						isVaildPW = true
 					}
+				// 유효한 비밀번호인지 검증
 				if !isVaildPW {
 					Text("8자 이상 입력해주세요.")
 						.font(.footnote)
@@ -64,11 +72,15 @@ struct LoginView: View {
 						})
 						.padding(.leading, 5)
 				}
+				
 				if isRegister {
+					Text("비밀번호 확인 *")
+						.fontWeight(.bold)
 					CustomTextField(icon: "lock.fill", placeholder: "비밀번호 확인", text: $password2, isSecured: true)
 						.onChange(of: password2) { oldValue, newValue in
 							isEqualPW = password1.isEqualPW(newValue)
 						}
+					// 비밀번호, 비밀번호 확인이 같은지 검증
 					if !isEqualPW {
 						Text("비밀번호가 틀립니다.")
 							.font(.footnote)
@@ -86,7 +98,9 @@ struct LoginView: View {
 					CustomTextField(icon: "person.fill", placeholder: "닉네임(2자 이상 입력해주세요.)", text: $nickname)
 				}
 			}
-
+			.padding(.vertical)
+			//MARK: - 로그인, 회원가입 버튼
+			// 회원 가입인 경우
 			if isRegister {
 				WideImageButton(icon: "person.badge.plus", title: "회원가입", backgroundColor: .green) {
 					if !email.textFieldValidatorEmail() {
@@ -99,7 +113,6 @@ struct LoginView: View {
 						userVM.signUp(userName: email, password: password1, nickname: nickname)
 					}
 				}
-				.padding()
 				.disabled(email.isEmpty || password1.isEmpty || nickname.isEmpty)
 				.alert("회원가입", isPresented: $userVM.isJoinShowing) {
 					Button("확인") {
@@ -124,24 +137,27 @@ struct LoginView: View {
 						userVM.login(userName: email, password: password1)
 					}
 				}
-				.padding()
 				.alert("로그인", isPresented: $userVM.isLoginError) {
-					Button("확인") {
+					Button("확인", role:.cancel) {
 						userVM.isLoginError = false
 					}
 				} message: {
 					Text(userVM.message)
 				}
-				Button {
-					isRegister = true
-				} label: {
-					Text("회원가입하기")
+				HStack {
+					Text("아직 회원이 아니신가요?")
+						.foregroundStyle(.secondary)
+					Button {
+						isRegister = true
+					} label: {
+						Text("회원가입하기")
+					}
 				}
 			}
 		}
+		.padding()
 	}
 }
-
 
 #Preview {
 	let userVM = UserViewModel()

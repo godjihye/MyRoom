@@ -9,6 +9,7 @@ const userController = require("../controllers/userController");
 
 router.post("/sign-in", userController.login);
 router.post("/sign-up", userController.createUser);
+router.patch("/update/");
 router.delete("/:userId", userController.deleteUser);
 module.exports = router;
 
