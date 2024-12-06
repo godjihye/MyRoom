@@ -56,8 +56,8 @@ const findItemByName = async (id, data) => {
           {
             model: models.Room,
             as: "room",
-            attributes: ["roomName", "userId"],
-            where: { userId: id },
+            attributes: ["roomName"],
+            where: { homeId: id },
             required: true,
           },
         ],
@@ -129,8 +129,8 @@ const findAllItemByUserId = async (id) => {
           {
             model: models.Room,
             as: "room",
-            attributes: ["roomName", "userId"],
-            where: { userId: id },
+            attributes: ["roomName", "homeId"],
+            where: { homeId: id },
             required: true,
           },
         ],

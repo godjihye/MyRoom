@@ -9,37 +9,36 @@ import SwiftUI
 
 struct EntryView: View {
 	@EnvironmentObject var userVM: UserViewModel
+	@EnvironmentObject var roomVM: RoomViewModel
 	var body: some View {
 		if userVM.isLoggedIn {
-			if userVM.isHaveHome {
-				TabView {
-					HomeView()
-						.environmentObject(RoomViewModel()).environmentObject(ItemViewModel())
-						.tabItem {
-							Image(systemName: "house")
-							Text("홈")
-						}
-					UsedListView().environmentObject(UsedViewModel())
-						.tabItem {
-							Image(systemName: "plus")
-							Text("중고거래")
-						}
-					PostListView().environmentObject(PostViewModel())
-						.tabItem {
-							Image(systemName: "person.3.fill")
-							Text("커뮤니티")
-						}
-					//ChatView(roomId: "soojeong",loginUser: "soojoeng",usedUser: "hangang").environmentObject(ChatViewModel())
-					Text("채팅")
-						.tabItem {
-							Text("chatTEST")
-						}
-					MyPageView()
-						.tabItem {
-							Image(systemName: "person.fill")
-							Text("마이페이지")
-						}
-				}
+			TabView {
+				HomeView()
+					.environmentObject(RoomViewModel()).environmentObject(ItemViewModel())
+					.tabItem {
+						Image(systemName: "house")
+						Text("홈")
+					}
+				UsedListView().environmentObject(UsedViewModel())
+					.tabItem {
+						Image(systemName: "plus")
+						Text("중고거래")
+					}
+				PostListView().environmentObject(PostViewModel())
+					.tabItem {
+						Image(systemName: "person.3.fill")
+						Text("커뮤니티")
+					}
+				//ChatView(roomId: "soojeong",loginUser: "soojoeng",usedUser: "hangang").environmentObject(ChatViewModel())
+				Text("채팅")
+					.tabItem {
+						Text("chatTEST")
+					}
+				MyPageView()
+					.tabItem {
+						Image(systemName: "person.fill")
+						Text("마이페이지")
+					}
 			}
 		} else {
 			LoginView()

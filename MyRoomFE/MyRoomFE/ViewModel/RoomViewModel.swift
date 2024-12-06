@@ -8,23 +8,22 @@
 import Foundation
 import Alamofire
 import SwiftUICore
-
+import SVProgressHUD
 class RoomViewModel: ObservableObject {
 	@Published var rooms: [Room] = []
 	@Published var locations: [Location] = []
 	@Published var message: String = ""
+	@Published var isHaveHome = true
+	@Published var isMakeHomeError: Bool = false
+	@Published var isFetchError: Bool = false
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
-	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
-	//let homeId = UserDefaults.standard.value(forKey: "homeId") as! Int
-	let homeId = 1
+	let userId = UserDefaults.standard.integer(forKey: "userId")
+	let homeId = UserDefaults.standard.integer(forKey: "homeId")
+	
 	// CRUD
 	
 	// 1. Create
-	/// 1-1) Create Room
-	func makeHome(homeName: String) {
-		let url = "\(endPoint)/home"
-		
-	}
+	
 	
 	/// 1-2) Create Room
 	func addRoom(roomName: String, roomDesc: String) async {
@@ -32,8 +31,8 @@ class RoomViewModel: ObservableObject {
 		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc, "homeId": homeId]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
-//			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(RoomResponse.self).value
-//			self.rooms = response.documents
+			//			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(RoomResponse.self).value
+			//			self.rooms = response.documents
 			log("addRoom() Complete", trait: .success)
 		} catch {
 			if let afError = error as? AFError {
@@ -62,13 +61,21 @@ class RoomViewModel: ObservableObject {
 		do {
 			let response = try await AF.request(url, method: .get).serializingDecodable(RoomResponse.self).value
 			DispatchQueue.main.async {
-				self.rooms = response.documents;
-				self.locations = response.documents.flatMap { $0.locations }
+
+					self.rooms = response.documents
+					self.locations = response.documents.flatMap { $0.locations}
+				
 			}
 		} catch {
 			if let afError = error as? AFError {
+				DispatchQueue.main.async {
+					self.isFetchError = true
+					self.message = afError.localizedDescription
+				}
 				log("fetchRooms AF Error: \(afError.localizedDescription)", trait: .error)
 			} else {
+				isFetchError = true
+				message = error.localizedDescription
 				log("fetchRooms Unexpected Error: \(error.localizedDescription)", trait: .error)
 			}
 		}
@@ -121,5 +128,5 @@ class RoomViewModel: ObservableObject {
 			log("removeLocation Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
+	
 }
-

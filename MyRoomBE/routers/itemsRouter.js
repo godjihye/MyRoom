@@ -21,7 +21,7 @@ router.post("/search", itemController.findItemByName);
 router.delete("/:itemId", itemController.deleteItem);
 router.patch("/:itemId", upload.single("photo"));
 router.patch("/:itemId", itemController.updateItem);
-router.get("/fav/:userId", itemController.findAllFavItem);
-router.get("/allItem/:userId", itemController.findAllItemByUserId);
+router.get("/fav/:homeId", itemController.findAllFavItem);
+router.get("/allItem/:homeId", itemController.findAllItemByHomeId);
 
 module.exports = router;

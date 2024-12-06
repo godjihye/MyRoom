@@ -66,6 +66,22 @@ struct Room: Identifiable, Codable, Equatable, Hashable {
 	let createdAt: String
 	let updatedAt: String
 	let locations: [Location]
+	/*
+	// CodingKey를 사용해 locations가 빈 배열인 경우를 처리할 수 있다.
+	enum CodingKeys: String, CodingKey {
+		case id, roomName, roomDesc, homeId, createdAt, updatedAt, locations
+	}
+	
+	// 이니셜라이저에서 빈 배열로 기본값 처리
+	init(id: Int, roomName: String, roomDesc: String, homeId: Int, createdAt: String, updatedAt: String, locations: [Location]? = []) {
+		self.id = id
+		self.roomName = roomName
+		self.roomDesc = roomDesc
+		self.homeId = homeId
+		self.createdAt = createdAt
+		self.updatedAt = updatedAt
+		self.locations = locations ?? [] // 빈 배열로 기본값 설정
+	}*/
 }
 
 struct RoomResponse:Codable {
@@ -78,54 +94,54 @@ struct PostUser: Codable,Equatable {
 	let userImage: String?
 }
 struct Post: Identifiable,Codable,Equatable {
-    let id: Int
-    let postTitle: String
-    let postContent: String
-    let postThumbnail: String
-    
-    let user: PostUser
-    
-    let postFav: [PostFavData]?
-    var isFavorite:Bool
-    let postFavCnt: Int
-    let postViewCnt: Int
-    
-    let updatedAt:String
-    let createdAt:String
-    
-    let images: [PostPhotoData]
-    
-    mutating func toggleFavorite() {
-        isFavorite.toggle()
-    }
-    
-    mutating func setFavorite(_ value: Bool) {
-        isFavorite = value
-    }
+	let id: Int
+	let postTitle: String
+	let postContent: String
+	let postThumbnail: String
+	
+	let user: PostUser
+	
+	let postFav: [PostFavData]?
+	var isFavorite:Bool
+	let postFavCnt: Int
+	let postViewCnt: Int
+	
+	let updatedAt:String
+	let createdAt:String
+	
+	let images: [PostPhotoData]
+	
+	mutating func toggleFavorite() {
+		isFavorite.toggle()
+	}
+	
+	mutating func setFavorite(_ value: Bool) {
+		isFavorite = value
+	}
 }
 
 struct PostRoot: Codable{
-    let success: Bool
-    let posts: [Post]
-    let message: String
+	let success: Bool
+	let posts: [Post]
+	let message: String
 }
 
 struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
-    let id:Int
-    let image:String
+	let id:Int
+	let image:String
 }
 
 struct PostFavData:Identifiable,Codable, Equatable {
-    let id:Int
-    let postId:Int
-    let userId:Int
+	let id:Int
+	let postId:Int
+	let userId:Int
 }
 struct Comment: Identifiable ,Codable{
-		var id:Int
-		var comment: String
-		var userImage:String
-		var nickName:String
-		var date:String
+	var id:Int
+	var comment: String
+	var userImage:String
+	var nickName:String
+	var date:String
 }
 
 
@@ -134,8 +150,16 @@ struct Home: Codable, Equatable {
 	let id: Int
 	let homeName: String
 	let homeDesc: String
+	let updatedAt: String
+	let createdAt: String
+	let inviteCode: Int?
 }
 
+struct HomeRoot: Codable {
+	let message: String
+	let success: Bool
+	let home: Home
+}
 //MARK: - USER(사용자)
 
 struct User : Codable,Equatable {
@@ -146,8 +170,12 @@ struct User : Codable,Equatable {
 	let createdAt: String
 	let updatedAt: String
 	let homeId: Int?
+	let mates: [MateUser]?
 }
-
+struct MateUser: Codable, Equatable {
+	let userImage: String
+	let nickName: String
+}
 struct SignUp: Codable {
 	let success: Bool
 	let user: User
@@ -165,37 +193,37 @@ struct SignIn: Codable {
 //MARK: -Used
 
 struct Used: Identifiable,Codable,Equatable {
-    
-    let id: Int
-    let usedTitle: String
-    let usedPrice: Int
-    let usedDesc: String
+	
+	let id: Int
+	let usedTitle: String
+	let usedPrice: Int
+	let usedDesc: String
 	let user: PostUser
-    let usedUrl: String?
-    let usedStatus: Int
-    
-    let usedPurchaseDate: String?
-    let usedExpiryDate: String?
-    let usedOpenDate: String?
-    let purchasePrice: Int?
-    
-    let usedFavCnt: Int
-    let usedViewCnt: Int
-    let usedChatCnt: Int
-    
-    let images: [UsedPhotoData]
-    let usedThumbnail: String
-    var isFavorite:Bool
-    let usedFav: [UsedFavData]?
-    let updatedAt: String
-    
-    mutating func toggleFavorite() {
-        isFavorite.toggle()
-    }
-    
-    mutating func setFavorite(_ value: Bool) {
-        isFavorite = value
-    }
+	let usedUrl: String?
+	let usedStatus: Int
+	
+	let usedPurchaseDate: String?
+	let usedExpiryDate: String?
+	let usedOpenDate: String?
+	let purchasePrice: Int?
+	
+	let usedFavCnt: Int
+	let usedViewCnt: Int
+	let usedChatCnt: Int
+	
+	let images: [UsedPhotoData]
+	let usedThumbnail: String
+	var isFavorite:Bool
+	let usedFav: [UsedFavData]?
+	let updatedAt: String
+	
+	mutating func toggleFavorite() {
+		isFavorite.toggle()
+	}
+	
+	mutating func setFavorite(_ value: Bool) {
+		isFavorite = value
+	}
 }
 
 struct UsedPhotoData:Identifiable,Codable, Equatable, Hashable  {
@@ -228,18 +256,18 @@ struct ApiResponse: Error, Decodable {
 
 //채팅
 struct Message: Identifiable {
-    let id: String
-    let senderId: String
-    let text: String
-    let timestamp: Double
+	let id: String
+	let senderId: String
+	let text: String
+	let timestamp: Double
 }
 
 struct ChatRoom: Identifiable {
-    var id: String       // roomId
-    var roomName: String     // 채팅방 이름
+	var id: String       // roomId
+	var roomName: String     // 채팅방 이름
 }
 
 
 struct APIError: Codable {
-    let message: String
+	let message: String
 }

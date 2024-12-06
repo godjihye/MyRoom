@@ -16,13 +16,13 @@ class ItemViewModel: ObservableObject {
 	@Published var searchResultItems: [Item] = []
 	@Published var isAddShowing: Bool = false
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
-	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
-	
+	let userId = UserDefaults.standard.integer(forKey: "userId")
+	let homeId = UserDefaults.standard.integer(forKey: "homeId")
 	//MARK: - CRUD
 	// 1. Create Item
 	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async throws -> ItemResponse {
 		let url = "\(endPoint)/items"
-		let userId = UserDefaults.standard.integer(forKey: "userId")
+		
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
 		
 		guard let image, let imageData = image.jpegData(compressionQuality: 0.2) else {
@@ -83,7 +83,7 @@ class ItemViewModel: ObservableObject {
 	}
 	/// 2-2. Read Fav Items (All location)
 	func fetchFavItems() async {
-		let url = "\(endPoint)/items/fav/\(userId)"
+		let url = "\(endPoint)/items/fav/\(homeId)"
 		do {
 			let response = try await AF.request(url,method: .get).serializingDecodable(ItemResponse.self).value
 			DispatchQueue.main.async { self.favItems = response.documents }
@@ -243,7 +243,7 @@ class ItemViewModel: ObservableObject {
 	func searchItem(query: String?) async {
 		guard let query = query else { return }
 		let url = "\(endPoint)/items/search"
-		let params: Parameters = ["userId": userId,"query": query]
+		let params: Parameters = ["homeId": homeId,"query": query]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(ItemResponse.self).value
 			DispatchQueue.main.async { self.searchResultItems = response.documents }
