@@ -15,8 +15,8 @@ class RoomViewModel: ObservableObject {
 	@Published var message: String = ""
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
-	let homeId = UserDefaults.standard.value(forKey: "homeId") as! Int
-	
+//	let homeId = UserDefaults.standard.value(forKey: "homeId") as! Int
+	let homeId = 1
 	// CRUD
 	
 	// 1. Create

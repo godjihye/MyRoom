@@ -74,7 +74,6 @@ const findAllUsed = async(page,pageSize,userId) => {
             {
               model: models.User,           // 조인할 모델 (Post)
               as: 'user',           // alias (선택 사항)
-              attributes: ['nickname','userImage'], // 가져올 필드 (선택 사항)
             }
             ,
             {

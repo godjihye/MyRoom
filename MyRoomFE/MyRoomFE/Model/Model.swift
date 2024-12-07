@@ -232,8 +232,9 @@ struct Message: Identifiable {
 }
 
 struct ChatRoom: Identifiable {
-    var id: String       // roomId
-    var roomName: String     // 채팅방 이름
+    var id: String
+    var roomName: String
+    var participants: [String]
 }
 
 

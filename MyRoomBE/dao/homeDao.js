@@ -7,7 +7,7 @@ const createHome = async (userId,data) => {
     const homeId = home.id
 
     const homeUser = await models.User.update(homeId,{
-        where: { userId },
+        where: { id : userId },
     }
     )
 
