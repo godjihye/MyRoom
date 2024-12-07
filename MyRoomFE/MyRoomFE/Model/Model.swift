@@ -46,6 +46,7 @@ struct ItemResponse: Codable {
 	let documents: [Item]
 }
 
+
 //MARK: - ROOM AND LOCATION (방/위치)
 
 struct Location: Identifiable, Codable, Hashable {
@@ -66,33 +67,20 @@ struct Room: Identifiable, Codable, Equatable, Hashable {
 	let createdAt: String
 	let updatedAt: String
 	let locations: [Location]
-	/*
-	// CodingKey를 사용해 locations가 빈 배열인 경우를 처리할 수 있다.
-	enum CodingKeys: String, CodingKey {
-		case id, roomName, roomDesc, homeId, createdAt, updatedAt, locations
-	}
-	
-	// 이니셜라이저에서 빈 배열로 기본값 처리
-	init(id: Int, roomName: String, roomDesc: String, homeId: Int, createdAt: String, updatedAt: String, locations: [Location]? = []) {
-		self.id = id
-		self.roomName = roomName
-		self.roomDesc = roomDesc
-		self.homeId = homeId
-		self.createdAt = createdAt
-		self.updatedAt = updatedAt
-		self.locations = locations ?? [] // 빈 배열로 기본값 설정
-	}*/
 }
 
 struct RoomResponse:Codable {
 	let documents: [Room]
 }
 
+
 //MARK: - POST(커뮤니티 게시글)
+
 struct PostUser: Codable,Equatable {
 	let nickname: String
 	let userImage: String?
 }
+
 struct Post: Identifiable,Codable,Equatable {
 	let id: Int
 	let postTitle: String
@@ -146,6 +134,7 @@ struct Comment: Identifiable ,Codable{
 
 
 //MARK: - HOME(집)
+
 struct Home: Codable, Equatable {
 	let id: Int
 	let homeName: String
@@ -160,6 +149,8 @@ struct HomeRoot: Codable {
 	let success: Bool
 	let home: Home
 }
+
+
 //MARK: - USER(사용자)
 
 struct User : Codable,Equatable {
@@ -172,10 +163,12 @@ struct User : Codable,Equatable {
 	let homeId: Int?
 	let mates: [MateUser]?
 }
+
 struct MateUser: Codable, Equatable {
 	let userImage: String
 	let nickName: String
 }
+
 struct SignUp: Codable {
 	let success: Bool
 	let user: User
@@ -193,7 +186,6 @@ struct SignIn: Codable {
 //MARK: -Used
 
 struct Used: Identifiable,Codable,Equatable {
-	
 	let id: Int
 	let usedTitle: String
 	let usedPrice: Int
@@ -201,16 +193,13 @@ struct Used: Identifiable,Codable,Equatable {
 	let user: PostUser
 	let usedUrl: String?
 	let usedStatus: Int
-	
 	let usedPurchaseDate: String?
 	let usedExpiryDate: String?
 	let usedOpenDate: String?
 	let purchasePrice: Int?
-	
 	let usedFavCnt: Int
 	let usedViewCnt: Int
 	let usedChatCnt: Int
-	
 	let images: [UsedPhotoData]
 	let usedThumbnail: String
 	var isFavorite:Bool
@@ -220,7 +209,6 @@ struct Used: Identifiable,Codable,Equatable {
 	mutating func toggleFavorite() {
 		isFavorite.toggle()
 	}
-	
 	mutating func setFavorite(_ value: Bool) {
 		isFavorite = value
 	}
@@ -247,14 +235,9 @@ struct UsedRoot: Codable{
 	//    let message: String
 }
 
-//MARK: - API Response
-struct ApiResponse: Error, Decodable {
-	let success: String?
-	let message: String
-}
 
+//MARK: - Chat
 
-//채팅
 struct Message: Identifiable {
 	let id: String
 	let senderId: String
@@ -267,6 +250,13 @@ struct ChatRoom: Identifiable {
 	var roomName: String     // 채팅방 이름
 }
 
+
+//MARK: - API Response
+
+struct ApiResponse: Error, Decodable {
+	let success: String?
+	let message: String
+}
 
 struct APIError: Codable {
 	let message: String

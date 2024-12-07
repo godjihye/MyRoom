@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ProfileView: View {
 	@EnvironmentObject var userVM: UserViewModel
+	
 	let userId = UserDefaults.standard.integer(forKey: "userId")
-	//	let thumbnail: String? = UserDefaults.
+	
 	var body: some View {
 		
 		GeometryReader { reader in
@@ -19,6 +20,7 @@ struct ProfileView: View {
 					.frame(height: reader.size.height / 3)
 					.frame(maxWidth: .infinity)
 					.foregroundStyle(.accent)
+				//MARK: - User Image
 				//FIXME: - User Image 등록
 				if let userImage = userVM.userInfo?.userImage {
 					AsyncImage(url: URL(string: userImage)) { image in
@@ -38,11 +40,13 @@ struct ProfileView: View {
 						.overlay(Circle().stroke(.gray).opacity(0.5))
 						.padding(.top, -100)
 				}
+				//MARK: - User Nickname
 				if let nickname = userVM.userInfo?.nickname {
 					Text(nickname)
 						.font(.title2)
 						.bold()
 				}
+				//MARK: - 계정 생성일, 최근 수정일
 				if let createdAt = userVM.userInfo?.createdAt,
 					 let updatedAt = userVM.userInfo?.updatedAt {
 					Label {
@@ -56,10 +60,8 @@ struct ProfileView: View {
 						Text("최근 수정일")
 					}
 				}
-				
+				//MARK: - Mate Users
 				ProfileRow(user: sampleUser)
-				
-				
 			}
 			.onAppear {
 				if userVM.userInfo == nil {

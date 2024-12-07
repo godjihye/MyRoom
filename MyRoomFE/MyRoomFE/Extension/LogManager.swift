@@ -7,7 +7,6 @@
 
 import Foundation
 
-// LogTrait 열거형 정의
 enum LogTrait: String {
 	case app = "☄️"
 	case verbose = "🔍"
@@ -18,7 +17,6 @@ enum LogTrait: String {
 	case error = "🔥"
 }
 
-// 로그 함수 정의
 func log(_ message: String,
 				 trait: LogTrait = .info,
 				 function: String = #function,
