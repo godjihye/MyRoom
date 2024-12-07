@@ -3,7 +3,7 @@
 //  MyRoomFE
 //
 //  Created by jhshin on 12/6/24.
-//
+//  User 중 homeId가 없으면 이 뷰로 온다.
 
 import SwiftUI
 
@@ -16,7 +16,6 @@ struct EnterHomeView: View {
 					.fontWeight(.bold)
 				Spacer()
 				VStack {
-					// JoinHomeView
 					NavigationLink(destination: JoinHomeView()) {
 						WideButtonLabel(title: "초대 코드로 입장하기", backgroundColor: .accent)
 					}

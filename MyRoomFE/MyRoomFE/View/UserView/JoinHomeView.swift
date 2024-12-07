@@ -9,7 +9,9 @@ import SwiftUI
 
 struct JoinHomeView: View {
 	@EnvironmentObject var userVM: UserViewModel
+	
 	@State private var inviteCode = ""
+	
     var body: some View {
 			VStack(alignment: .leading) {
 				Text("초대코드로 입장")

@@ -10,15 +10,18 @@ import SwiftUI
 struct MakeHomeView: View {
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject var userVM: UserViewModel
+	
 	@State var homeName: String = ""
 	@State var homeDesc: String = ""
 	@State var isValidHomeName: Bool = false
 	@State private var homeNameOffset: CGFloat = 0
+	
 	var body: some View {
-		VStack {
+		VStack(alignment: .leading) {
 			Text("집 생성하기")
 				.font(.largeTitle)
 				.fontWeight(.bold)
+			
 			VStack(alignment: .leading) {
 				Text("집 이름 *")
 					.fontWeight(.bold)
@@ -42,7 +45,6 @@ struct MakeHomeView: View {
 				CustomTextField(icon: "house.fill", placeholder: "집 설명을 입력해주세요.(선택)", text: $homeDesc)
 			}
 			.padding(.vertical)
-			
 			WideButton(title: "저장", backgroundColor: .accent) {
 				if homeName.count > 1 {
 						userVM.makeHome(homeName: homeName, homeDesc: homeDesc)
@@ -52,6 +54,9 @@ struct MakeHomeView: View {
 				}
 				isValidHomeName = true
 			}
+			
+			
+			Text("")
 		}
 		.padding()
 	}
