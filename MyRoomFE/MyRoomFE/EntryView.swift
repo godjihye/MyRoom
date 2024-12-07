@@ -28,8 +28,7 @@ struct EntryView: View {
                         Image(systemName: "person.3.fill")
                         Text("커뮤니티")
                     }
-                //ChatView(roomId: "soojeong",loginUser: "soojoeng",usedUser: "hangang").environmentObject(ChatViewModel())
-				Text("채팅")
+                ChatListView(usedUser: "").environmentObject(ChatViewModel())
                     .tabItem {
                         Text("chatTEST")
                     }
