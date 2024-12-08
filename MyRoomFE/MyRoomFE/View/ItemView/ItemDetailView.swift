@@ -63,12 +63,12 @@ struct ItemDetailView: View {
 					.font(.headline)
 				HStack {
 					if let purchaseDate = item.purchaseDate {
-						Label("구매일: \(dateToString(purchaseDate))", systemImage: "calendar.badge.clock")
+						Label("구매일: \(purchaseDate.dateToString())", systemImage: "calendar.badge.clock")
 							.font(.subheadline)
 					}
 					Spacer()
 					if let expiryDate = item.expiryDate {
-						Label("유통기한: \(dateToString(expiryDate))", systemImage: "hourglass")
+						Label("유통기한: \(expiryDate.dateToString())", systemImage: "hourglass")
 							.font(.subheadline)
 							.foregroundColor(.red)
 					}
@@ -102,12 +102,12 @@ struct ItemDetailView: View {
 					}
 				}
 				HStack {
-					Text("아이템 생성일: \(dateToString(item.createdAt))")
+					Text("아이템 생성일: \(item.createdAt.dateToString())")
 						.font(.caption)
 						.foregroundColor(.secondary)
 					
 					if item.createdAt != item.updatedAt {
-						Text("(수정: \(dateToString(item.updatedAt)))")
+						Text("(수정: \(item.updatedAt.dateToString()))")
 							.font(.caption)
 							.foregroundColor(.secondary)
 					}
@@ -122,7 +122,7 @@ struct ItemDetailView: View {
 				ToolbarItem(placement: .topBarTrailing) {
 					Menu {
 						NavigationLink("편집") {
-							AddItemView(isEditMode: true, existingItem: item)
+							AddItemWithAIView(isEditMode: true, existingItem: item)
 						}
 						Button("삭제") {
 							isShowingDeleteAlert = true

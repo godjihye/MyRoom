@@ -52,9 +52,50 @@ const updateUser = async (id, data) => {
   return await userDao.updateUser(id, data);
 };
 
+const findUserById = async (id) => {
+  try {
+    // 1. ID로 사용자 조회 (비밀번호 제외)
+    const user = await userDao.getUserByIDExcludePW(id);
+    if (!user) {
+      throw new Error('사용자를 찾을 수 없습니다.');
+    }
+
+    // 2. 해당 사용자의 mates 조회
+    const mates = await userDao.findMates(user.homeId);
+
+    // 3. user 객체에 mates 추가
+    const userData = user.toJSON();
+    userData.mates = mates;
+
+    // 4. 결과 반환
+    return userData;
+  } catch (error) {
+    throw new Error(error.message); // 예외 발생 시 에러 던지기
+  }
+};
+
+const findUserByUserName = async(userName) => {
+  let user = await userDao.getUserByUserNameExcludePW(userName);
+  if (!user) {
+    const nickname = makeUniqueNickname()
+    user = await userDao.createUser({userName: userName, nickname: nickname});
+  }
+  const token = jwt.sign({ userId: user.id }, secret, {
+    expiresIn: expiresIn,
+  });
+  return {token, user}
+}
+
+function makeUniqueNickname() {
+  const randomNum = Math.floor(Math.random()*1000)
+  return "마루미" + randomNum
+}
+
 module.exports = {
   login,
   createUser,
   deleteUser,
   updateUser,
+  findUserById,
+  findUserByUserName
 };

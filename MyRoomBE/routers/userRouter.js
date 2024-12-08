@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
+const upload = require("./uploadImage");
 const jwt = require("jsonwebtoken");
 const { RequestPolicyOptions } = require("@azure/storage-blob");
 const secret = process.env.JWT_SECRET;
@@ -9,8 +9,12 @@ const userController = require("../controllers/userController");
 
 router.post("/sign-in", userController.login);
 router.post("/sign-up", userController.createUser);
-router.patch("/update/");
+router.patch("/:userId", upload.single("userImage"));
+router.patch("/:userId", userController.updateUser);
+router.get("/info/:userId", userController.findUser);
+router.post("/social/login", userController.socialLogin);
 router.delete("/:userId", userController.deleteUser);
+router.post("/social/signup", userController.socialSignUp);
 module.exports = router;
 
 // router.post("/regist-apns", async (req, res, next) => {

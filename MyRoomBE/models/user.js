@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "fav",
       });
-
       User.belongsTo(models.Home, {
         foreignKey: "homeId",
         as: "homeUser",

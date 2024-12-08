@@ -1,7 +1,11 @@
 const homeDao = require("../dao/homeDao");
 const userDao = require("../dao/userDao");
+
 const createHome = async (userId, data) => {
-  return await homeDao.createHome(userId, data);
+  let home = await homeDao.createHome(userId, data);
+  const inviteCode = generateCode(home.id);
+  home.inviteCode = inviteCode;
+  return home;
 };
 
 const findHomeByPK = async (id) => {
@@ -48,10 +52,16 @@ const joinHomeWithInviteCode = async (id, code) => {
     throw new Error("집을 찾을 수 없습니다.");
   }
 };
+
+const findInviteCode = async(id) => {
+ return await homeDao.findInviteCode(id);
+}
+
 module.exports = {
   createHome,
   findHomeByPK,
   updateHome,
   generateInviteCode,
   joinHomeWithInviteCode,
+  findInviteCode
 };

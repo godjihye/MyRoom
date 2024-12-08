@@ -15,6 +15,10 @@
 		0B9CB6262D04227800FA1075 /* KakaoSDKCertCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0B9CB6252D04227800FA1075 /* KakaoSDKCertCore */; };
 		0B9CB6282D04227800FA1075 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 0B9CB6272D04227800FA1075 /* KakaoSDKCommon */; };
 		0B9CB62A2D04235000FA1075 /* SignInWithKakaoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9CB6292D04235000FA1075 /* SignInWithKakaoView.swift */; };
+		0BBB8ECA2D048D4900DF692C /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */; };
+		0BBB8ECC2D04A5AF00DF692C /* ChangePWView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */; };
+		0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */; };
+		0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */; };
 		B86A23F92D02CBF7007D69D3 /* EnterHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23F82D02CBF7007D69D3 /* EnterHomeView.swift */; };
 		B86A23FB2D02D20F007D69D3 /* WideButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23FA2D02D20F007D69D3 /* WideButtonLabel.swift */; };
 		B86A23FF2D02D3E7007D69D3 /* JoinHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23FE2D02D3E7007D69D3 /* JoinHomeView.swift */; };
@@ -133,6 +137,10 @@
 		0B9CB61B2D041F8E00FA1075 /* MyRoomFE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyRoomFE.entitlements; sourceTree = "<group>"; };
 		0B9CB61C2D041FFB00FA1075 /* SignInWithAppleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleView.swift; sourceTree = "<group>"; };
 		0B9CB6292D04235000FA1075 /* SignInWithKakaoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithKakaoView.swift; sourceTree = "<group>"; };
+		0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePWView.swift; sourceTree = "<group>"; };
+		0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewModel.swift; sourceTree = "<group>"; };
+		0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipartFormData+AppendOptionalValue.swift"; sourceTree = "<group>"; };
 		B86A23F82D02CBF7007D69D3 /* EnterHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHomeView.swift; sourceTree = "<group>"; };
 		B86A23FA2D02D20F007D69D3 /* WideButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideButtonLabel.swift; sourceTree = "<group>"; };
 		B86A23FE2D02D3E7007D69D3 /* JoinHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinHomeView.swift; sourceTree = "<group>"; };
@@ -259,6 +267,7 @@
 				B89D55252CFE9F8B00DEE4AC /* String+AzureStorageURL.swift */,
 				B86F34A52CF96F920040BB33 /* UIApplication+KeyboardExtension.swift */,
 				B8E916D82D018B4500345B89 /* String+Validate.swift */,
+				0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -375,6 +384,7 @@
 			children = (
 				B8E917A62D01A63700345B89 /* ChatViewModel.swift */,
 				B86F34D72CF96F920040BB33 /* ItemViewModel.swift */,
+				0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */,
 				B86F34D82CF96F920040BB33 /* PostViewModel.swift */,
 				B86F34D92CF96F920040BB33 /* RoomViewModel.swift */,
 				B86F34DA2CF96F920040BB33 /* UsedViewModel.swift */,
@@ -410,6 +420,8 @@
 				0B9CB6292D04235000FA1075 /* SignInWithKakaoView.swift */,
 				0B9CB61C2D041FFB00FA1075 /* SignInWithAppleView.swift */,
 				B8E916452D016C6F00345B89 /* MyPageView.swift */,
+				0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */,
+				0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */,
 				B8E916472D016C8300345B89 /* ProfileRow.swift */,
 				B8E916492D016C8F00345B89 /* ProfileView.swift */,
 				B8E916DC2D0192E900345B89 /* MakeHomeView.swift */,
@@ -569,6 +581,7 @@
 				B86F34E92CF96F920040BB33 /* Sample.swift in Sources */,
 				B86F34EA2CF96F920040BB33 /* CommentAddView.swift in Sources */,
 				B86F34EB2CF96F920040BB33 /* CommentListView.swift in Sources */,
+				0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */,
 				0B9CB6192D030EAA00FA1075 /* LoginView.swift in Sources */,
 				B86F34EC2CF96F920040BB33 /* CommentRowView.swift in Sources */,
 				B86F34ED2CF96F920040BB33 /* FullScreenImageView.swift in Sources */,
@@ -588,6 +601,7 @@
 				B89D55262CFE9F8B00DEE4AC /* String+AzureStorageURL.swift in Sources */,
 				B86F34F52CF96F920040BB33 /* SearchView.swift in Sources */,
 				B86F34F62CF96F920040BB33 /* TabItemView.swift in Sources */,
+				0BBB8ECC2D04A5AF00DF692C /* ChangePWView.swift in Sources */,
 				B8E916D92D018B4500345B89 /* String+Validate.swift in Sources */,
 				B86F34F72CF96F920040BB33 /* WideButton.swift in Sources */,
 				B86F34F82CF96F920040BB33 /* AddItemView.swift in Sources */,
@@ -617,6 +631,7 @@
 				B86A23FB2D02D20F007D69D3 /* WideButtonLabel.swift in Sources */,
 				B86F350B2CF96F920040BB33 /* UsedItemRowView.swift in Sources */,
 				B86F351F2CF9709C0040BB33 /* WideImageButton.swift in Sources */,
+				0BBB8ECA2D048D4900DF692C /* ProfileEditView.swift in Sources */,
 				B86F350C2CF96F920040BB33 /* UsedListView.swift in Sources */,
 				B86F350D2CF96F920040BB33 /* UsedRowView.swift in Sources */,
 				B86F350E2CF96F920040BB33 /* UsedWebView.swift in Sources */,
@@ -627,6 +642,7 @@
 				B86F35132CF96F920040BB33 /* UserViewModel.swift in Sources */,
 				B86F35142CF96F920040BB33 /* ContentView.swift in Sources */,
 				B86F35152CF96F920040BB33 /* EntryView.swift in Sources */,
+				0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */,
 				B86F35162CF96F920040BB33 /* MyRoomFEApp.swift in Sources */,
 				B8E916462D016C6F00345B89 /* MyPageView.swift in Sources */,
 			);
@@ -765,10 +781,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyRoomFE/Preview Content\"";
+				DEVELOPMENT_TEAM = 8YXQMG6LKS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyRoomFE/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This will be used to upload photos to profile, posts, items";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -779,7 +798,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kr.or.womanup.nambu.sjh.MyRoomFE;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.or.womanup.nambu.sjh.MyRoom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -796,10 +815,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyRoomFE/Preview Content\"";
+				DEVELOPMENT_TEAM = 8YXQMG6LKS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyRoomFE/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This will be used to upload photos to profile, posts, items";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -810,7 +832,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kr.or.womanup.nambu.sjh.MyRoomFE;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.or.womanup.nambu.sjh.MyRoom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

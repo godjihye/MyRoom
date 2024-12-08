@@ -18,7 +18,7 @@ struct HomeView: View {
 				if UserDefaults.standard.integer(forKey: "homeId") < 1 {
 					VStack {
 						Text("물건 정보를 저장하시려면 집 등록을 해야합니다.")
-						NavigationLink(destination: MakeHomeView()) {
+						NavigationLink(destination: EnterHomeView()) {
 							Text("집 등록하기")
 						}
 					}
