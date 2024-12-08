@@ -39,7 +39,7 @@ struct AddItemWithAIView: View {
 	@State private var showImagePicker: Bool = false
 	@State private var isPhotosPickerPresented: Bool = false
 	@State private var isCamera: Bool = false
-	
+	@State private var isItemThumbnailChanged: Bool = false
 	@State private var isVisionRecog: Bool = false
 	@State private var recognizedText: [String] = []
 	
@@ -56,14 +56,13 @@ struct AddItemWithAIView: View {
 		self.isEditMode = isEditMode
 		self.existingItem = existingItem
 		self.locationId = locationId
-		
 		_itemName = State(initialValue: existingItem?.itemName ?? "")
 		_itemDesc = State(initialValue: existingItem?.desc ?? "")
 		_itemPrice = State(initialValue: existingItem?.price.map { "\($0)" } ?? "")
 		_itemUrl = State(initialValue: existingItem?.url ?? "")
-		_purchaseDate = State(initialValue: stringToDate(existingItem?.purchaseDate))
-		_expiryDate = State(initialValue: stringToDate(existingItem?.expiryDate))
-		_openDate = State(initialValue: stringToDate(existingItem?.openDate))
+		_purchaseDate = State(initialValue: (existingItem?.purchaseDate!.stringToDate()) ?? Date())
+		_expiryDate = State(initialValue: (existingItem?.expiryDate!.stringToDate()) ?? Date())
+		_openDate = State(initialValue: (existingItem?.openDate!.stringToDate()) ?? Date())
 		_selectedLocationId = State(initialValue: existingItem?.locationId ?? locationId)
 		_itemColor = State(initialValue: existingItem?.color ?? "")
 	}
@@ -90,8 +89,17 @@ struct AddItemWithAIView: View {
 			.onChange(of: itemThumbnail ?? UIImage(), { oldValue, newValue in
 				recognizeText(from: newValue)
 			})
+			.onChange(of: itemThumbnail, { oldValue, newValue in
+				log("isItemThumbnailChanged: \(isItemThumbnailChanged)")
+			})
 			.onChange(of: additionalItems, { oldValue, newValue in handleAdditionalItemsChange() })
-			.alert(message, isPresented: $showAlert) { Button("확인", role: .cancel) { } }
+			.alert(isEditMode ? "아이템 편집" : "새로운 아이템 추가", isPresented: $itemVM.isShowingAlert) {
+				Button("확인", role: .cancel) {
+					dismiss()
+				}
+			} message: {
+				Text(itemVM.message)
+			}
 		}
 	}
 	
@@ -121,10 +129,12 @@ struct AddItemWithAIView: View {
 				Button("포토 앨범") {
 					isCamera = false
 					showImagePicker = true
+					isItemThumbnailChanged = true
 				}
 				Button("카메라") {
 					isCamera = true
 					showImagePicker = true
+					isItemThumbnailChanged = true
 				}
 			}
 		}
@@ -156,31 +166,27 @@ struct AddItemWithAIView: View {
 				}
 			}
 			.pickerStyle(MenuPickerStyle())
-			TextField("Price", text: $itemPrice)
+			TextField("가격", text: $itemPrice)
 				.keyboardType(.decimalPad)
-			TextField("URL", text: $itemUrl)
+			TextField("구매 링크", text: $itemUrl)
 				.keyboardType(.URL)
 		}
 	}
 	
 	private var additionalInfoSection: some View {
 		Section(header: Text("추가 정보")) {
-			DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
-			DatePicker("Expiry Date", selection: $expiryDate, displayedComponents: .date)
-			DatePicker("Open Date", selection: $openDate, displayedComponents: .date)
+			DatePicker("구매일자", selection: $purchaseDate, displayedComponents: .date)
+			DatePicker("유통기한", selection: $expiryDate, displayedComponents: .date)
+			DatePicker("개봉일", selection: $openDate, displayedComponents: .date)
 		}
 	}
-	
-//	private var additionalImagesSection: some View {
-//		AddAdditionalPhotosView()
-//	}
 	
 	// MARK: - Toolbar
 	
 	private var toolbarContent: some ToolbarContent {
 		ToolbarItemGroup(placement: .navigationBarTrailing) {
 			Button("저장") { log("isSaveButtonDisabled:\(isSaveButtonDisabled)");saveItem() }
-				.disabled(isSaveButtonDisabled) // true	이면 save disabled
+				.disabled(isSaveButtonDisabled)
 		}
 	}
 	
@@ -222,26 +228,52 @@ struct AddItemWithAIView: View {
 	}
 	
 	private func saveItem() {
-		Task {
-				let newItem = try? await itemVM.addItem(
-					itemName: itemName,
-					purchaseDate: purchaseDate.description,
-					expiryDate: expiryDate.description,
-					itemUrl: itemUrl,
-					image: itemThumbnail,
-					desc: itemDesc,
-					color: itemColor,
-					price: Int(itemPrice),
-					openDate: openDate.description,
-					locationId: selectedLocationId
-				)
-//			await itemVM.fetchItems(locationId: selectedLocationId)
-			dismiss()
+		if isEditMode, let item = existingItem {
+			itemVM.editItem(
+				itemId: item.id,
+				itemName: item.itemName == itemName ? nil : itemName,
+				purchaseDate: areDatesEqual(purchaseDate, (item.purchaseDate!.stringToDate())) ? nil : purchaseDate.description,
+				expiryDate: areDatesEqual(expiryDate, (item.expiryDate!.stringToDate())) ? nil : expiryDate.description,
+				itemUrl: item.url == itemUrl ? nil : itemUrl,
+				image: isItemThumbnailChanged ? itemThumbnail : nil,
+				desc: item.desc == itemDesc ? nil : itemDesc,
+				color: item.color == itemColor ? nil : itemColor,
+				price: item.price == Int(itemPrice) ? nil : Int(itemPrice),
+				openDate: areDatesEqual(openDate, (item.openDate!.stringToDate())) ? nil : openDate.description,
+				locationId: item.locationId == selectedLocationId ? nil : selectedLocationId
+			)
+		} else {
+			itemVM.addItem(
+				itemName: itemName,
+				purchaseDate: purchaseDate.description,
+				expiryDate: expiryDate.description,
+				itemUrl: itemUrl,
+				image: itemThumbnail,
+				desc: itemDesc,
+				color: itemColor,
+				price: Int(itemPrice),
+				openDate: openDate.description,
+				locationId: selectedLocationId
+			)
 		}
+		
 	}
-	
+
 	private var isSaveButtonDisabled: Bool {
-		itemName.isEmpty || selectedLocationId == 0
+		if let existingItem = existingItem {
+			let isUnchanged = itemName == existingItem.itemName &&
+			!isItemThumbnailChanged &&
+			itemDesc == existingItem.desc &&
+			Int(itemPrice) == existingItem.price &&
+			itemUrl == existingItem.url ?? "" &&
+			areDatesEqual(purchaseDate, (existingItem.purchaseDate!.stringToDate())) &&
+			areDatesEqual(expiryDate, (existingItem.expiryDate!.stringToDate())) &&
+			areDatesEqual(openDate, (existingItem.openDate!.stringToDate())) &&
+			selectedLocationId == existingItem.locationId &&
+			itemColor == existingItem.color
+			return isUnchanged
+		}
+		return itemName.isEmpty || selectedLocationId == 0
 	}
 	
 	private func areDatesEqual(_ date1: Date, _ date2: Date) -> Bool {

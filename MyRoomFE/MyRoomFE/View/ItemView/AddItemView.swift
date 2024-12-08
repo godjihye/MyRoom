@@ -4,269 +4,42 @@
 //
 //  Created by jhshin on 11/19/24.
 //
-//
 
 import SwiftUI
-import Foundation
-import _PhotosUI_SwiftUI
 
 struct AddItemView: View {
-	@EnvironmentObject var itemVM: ItemViewModel
-	@EnvironmentObject var roomVM: RoomViewModel
-	@Environment(\.dismiss) private var dismiss
-	
-	// Item 기본 정보
-	@State private var itemName: String
-	@State private var itemThumbnail: UIImage?
-	
-	// Item 추가 정보
-	@State private var itemDesc: String
-	@State private var itemPrice: String
-	@State private var itemUrl: String
-	@State private var purchaseDate: Date
-	@State private var expiryDate: Date
-	@State private var openDate: Date
-	@State private var selectedLocationId: Int
-	@State private var itemColor: String
-	
-	@State private var additionalItems: [PhotosPickerItem] = []
-	@State private var additionalPhotos: [UIImage] = []
-	
-	@State private var showAlert = false
-	@State private var message = ""
-	
-	@State private var isShowingImageSource: Bool = false
-	@State private var showImagePicker: Bool = false
-	@State private var isPhotosPickerPresented: Bool = false
-	@State private var isCamera: Bool = false
-	@State private var isItemThumbnailChanged: Bool = false
-	
-	private let maxImageCount = 20
-	let isEditMode: Bool
-	let existingItem: Item?
-	let locationId: Int
-	
-	init(
-		isEditMode: Bool = false,
-		existingItem: Item? = nil,
-		locationId: Int = 0
-	) {
-		self.isEditMode = isEditMode
-		self.existingItem = existingItem
-		self.locationId = locationId
+		@EnvironmentObject var itemVM: ItemViewModel
+		@StateObject private var viewModel: ItemDetailsViewModel
+		@Environment(\.dismiss) private var dismiss
 		
-		_itemName = State(initialValue: existingItem?.itemName ?? "")
-		_itemDesc = State(initialValue: existingItem?.desc ?? "")
-		_itemPrice = State(initialValue: existingItem?.price.map { "\($0)" } ?? "")
-		_itemUrl = State(initialValue: existingItem?.url ?? "")
-		_purchaseDate = State(initialValue: stringToDate(existingItem?.purchaseDate))
-		_expiryDate = State(initialValue: stringToDate(existingItem?.expiryDate))
-		_openDate = State(initialValue: stringToDate(existingItem?.openDate))
-		_selectedLocationId = State(initialValue: existingItem?.locationId ?? locationId)
-		_itemColor = State(initialValue: existingItem?.color ?? "")
-	}
-	
-	var body: some View {
-		NavigationStack {
-			Form {
-				imageSection
-				basicInfoSection
-				additionalInfoSection
-				//additionalImagesSection
-			}
-			.navigationTitle(isEditMode ? "아이템 편집" : "새로운 아이템 추가")
-			.toolbar { toolbarContent }
-			.sheet(isPresented: $showImagePicker) {
-				if isCamera {
-					CameraPicker(image: $itemThumbnail, sourceType: .camera)
-				} else {
-					ImagePicker(image: $itemThumbnail)
-				}
-			}
-			.task { await roomVM.fetchRooms() }
-			.onAppear { loadInitialImages() }
-			.onChange(of: itemThumbnail, { oldValue, newValue in
-				log("isItemThumbnailChanged: \(isItemThumbnailChanged)")
-			})
-			.onChange(of: additionalItems, { oldValue, newValue in handleAdditionalItemsChange() })
-			.alert(message, isPresented: $showAlert) { Button("확인", role: .cancel) { } }
-		}
-	}
-	
-	// MARK: - Form Sections
-	
-	private var imageSection: some View {
-		Section(header: Text("Image")) {
-			Group {
-				if let image = itemThumbnail {
-					Image(uiImage: image)
-						.resizable()
-						.scaledToFit()
-						.frame(height: 200)
-						.cornerRadius(10)
-				} else {
-					Image(systemName: "photo")
-						.resizable()
-						.scaledToFit()
-						.frame(height: 200)
-						.cornerRadius(10)
-				}
-			}
-			Button("사진 선택 / 변경") {
-				isShowingImageSource = true
-			}
-			.confirmationDialog("사진 소스 선택", isPresented: $isShowingImageSource, titleVisibility: .visible) {
-				Button("포토 앨범") {
-					isCamera = false
-					showImagePicker = true
-					isItemThumbnailChanged = true
-				}
-				Button("카메라") {
-					isCamera = true
-					showImagePicker = true
-					isItemThumbnailChanged = true
-				}
-			}
-		}
-	}
-	
-	private var basicInfoSection: some View {
-		Section(header: Text("기본 정보")) {
-			TextField("아이템 이름", text: $itemName)
-			TextField("아이템 설명", text: $itemDesc)
-			Picker("아이템 위치", selection: $selectedLocationId) {
-				ForEach(roomVM.locations) { location in
-					Text(location.locationName).tag(location.id)
-				}
-			}
-			.pickerStyle(MenuPickerStyle())
-			TextField("Price", text: $itemPrice)
-				.keyboardType(.decimalPad)
-			TextField("URL", text: $itemUrl)
-				.keyboardType(.URL)
-		}
-	}
-	
-	private var additionalInfoSection: some View {
-		Section(header: Text("추가 정보")) {
-			DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
-			DatePicker("Expiry Date", selection: $expiryDate, displayedComponents: .date)
-			DatePicker("Open Date", selection: $openDate, displayedComponents: .date)
-		}
-	}
-	
-//	private var additionalImagesSection: some View {
-//		AddAdditionalPhotosView(itemId: )
-//	}
-	
-	// MARK: - Toolbar
-	
-	private var toolbarContent: some ToolbarContent {
-		ToolbarItemGroup(placement: .navigationBarTrailing) {
-			Button("저장") { log("isSaveButtonDisabled:\(isSaveButtonDisabled)");saveItem() }
-				.disabled(isSaveButtonDisabled) // true	이면 save disabled
-		}
-	}
-	
-	// MARK: - Helper Methods
-	
-	private func loadInitialImages() {
-		if let strUrl = existingItem?.photo, let url = URL(string: strUrl.addingURLPrefix()) {
-			Task {
-				if let data = try? await URLSession.shared.data(from: url).0,
-					 let uiImage = UIImage(data: data) {
-					DispatchQueue.main.async { itemThumbnail = uiImage }
-				}
-			}
+		init(isEditMode: Bool = false, existingItem: Item? = nil, locationId: Int = 0) {
+				_viewModel = StateObject(wrappedValue: ItemDetailsViewModel(existingItem: existingItem, isEditMode: isEditMode, locationId: locationId))
 		}
 		
-		if let strUrls = existingItem?.itemPhoto {
-			Task {
-				for strUrl in strUrls {
-					if let url = URL(string: strUrl.photo.addingURLPrefix()),
-						 let data = try? await URLSession.shared.data(from: url).0,
-						 let uiImage = UIImage(data: data) {
-						DispatchQueue.main.async { additionalPhotos.append(uiImage) }
-					}
+		var body: some View {
+				NavigationStack {
+						Form {
+								Section(header: Text("기본 정보")) {
+										TextField("아이템 이름", text: $viewModel.itemName)
+										TextField("아이템 설명", text: $viewModel.itemDesc)
+										TextField("가격", text: $viewModel.itemPrice)
+												.keyboardType(.decimalPad)
+								}
+						}
+						.navigationTitle(viewModel.isEditMode ? "아이템 편집" : "새로운 아이템 추가")
+						.toolbar {
+								ToolbarItem(placement: .navigationBarTrailing) {
+										Button("저장") {
+												viewModel.saveItem(itemVM: itemVM)
+												dismiss()
+										}
+										.disabled(viewModel.isSaveButtonDisabled)
+								}
+						}
 				}
-			}
 		}
-	}
-	
-	private func handleAdditionalItemsChange() {
-		Task {
-			additionalPhotos = []
-			for item in additionalItems {
-				if let data = try? await item.loadTransferable(type: Data.self),
-					 let uiImage = UIImage(data: data) {
-					additionalPhotos.append(uiImage)
-				}
-			}
-		}
-	}
-	
-	private func saveItem() {
-		Task {
-			if isEditMode, let item = existingItem {
-				await itemVM.editItem(
-					itemId: item.id,
-					itemName: item.itemName == itemName ? nil : itemName,
-					purchaseDate: areDatesEqual(purchaseDate, stringToDate(item.purchaseDate)) ? nil : purchaseDate.description,
-					expiryDate: areDatesEqual(expiryDate, stringToDate(item.expiryDate)) ? nil : expiryDate.description,
-					itemUrl: item.url == itemUrl ? nil : itemUrl,
-					image: isItemThumbnailChanged ? itemThumbnail : nil,
-					desc: item.desc == itemDesc ? nil : itemDesc,
-					color: item.color == itemColor ? nil : itemColor,
-					price: item.price == Int(itemPrice) ? nil : Int(itemPrice),
-					openDate: areDatesEqual(openDate, stringToDate(item.openDate)) ? nil : openDate.description,
-					locationId: item.locationId == selectedLocationId ? nil : selectedLocationId
-				)
-				await itemVM.addAdditionalPhotos(images: additionalPhotos, itemId: item.id)
-			} else {
-				let newItem = try? await itemVM.addItem(
-					itemName: itemName,
-					purchaseDate: purchaseDate.description,
-					expiryDate: expiryDate.description,
-					itemUrl: itemUrl,
-					image: itemThumbnail,
-					desc: itemDesc,
-					color: itemColor,
-					price: Int(itemPrice) ?? 0,
-					openDate: openDate.description,
-					locationId: selectedLocationId
-				)
-				if let newId = newItem?.documents.first?.id {
-					await itemVM.addAdditionalPhotos(images: additionalPhotos, itemId: newId)
-				}
-			}
-			await itemVM.fetchItems(locationId: selectedLocationId)
-			dismiss()
-		}
-	}
-	
-	private var isSaveButtonDisabled: Bool {
-		guard let existingItem = existingItem else { return true }
-		log("\(itemUrl) != \(existingItem.url)")
-		let isUnchanged = itemName == existingItem.itemName &&
-		!isItemThumbnailChanged &&
-		itemDesc == existingItem.desc &&
-		Int(itemPrice) == existingItem.price &&
-		itemUrl == existingItem.url ?? "" &&
-		areDatesEqual(purchaseDate, stringToDate(existingItem.purchaseDate)) &&
-		areDatesEqual(expiryDate, stringToDate(existingItem.expiryDate)) &&
-		areDatesEqual(openDate, stringToDate(existingItem.openDate)) &&
-		selectedLocationId == existingItem.locationId &&
-		itemColor == existingItem.color
-		return isEditMode ? isUnchanged : itemName.isEmpty || selectedLocationId == 0
-	}
-	
-	private func areDatesEqual(_ date1: Date, _ date2: Date) -> Bool {
-		let calendar = Calendar.current
-		return calendar.isDate(date1, equalTo: date2, toGranularity: .day)
-	}
-	
-	
 }
+
 
 #Preview {
 	AddItemView().environmentObject(RoomViewModel())

@@ -10,6 +10,7 @@ import KakaoSDKCommon
 import KakaoSDKUser
 
 struct SignInWithKakaoView: View {
+	@EnvironmentObject var userVM: UserViewModel
 	var body: some View {
 		VStack{
 			Button {
@@ -29,6 +30,7 @@ struct SignInWithKakaoView: View {
 			} else {
 				if let id = user?.id {
 					print("===> kakao 로그인 성공 kakao_user_id: \(id)")
+					userVM.socialLogin(userName: id.description)
 				}
 			}
 		}
@@ -40,9 +42,20 @@ struct SignInWithKakaoView: View {
 			UserApi.shared.loginWithKakaoTalk { token, error in
 				if let error {
 					print(error.localizedDescription)
-				} else {
-					print(token!)
-					fetchUserInfo()
+				}
+				//				} else {
+				//					print(token!)
+				//					fetchUserInfo()
+				//				}
+				UserApi.shared.me() { (user, error) in
+					if let error = error {
+						print(error)
+					} else {
+						if let user = user, let id = user.id {
+								userVM.socialLogin(userName: id.description)
+							log("===============================userVM.socialLogin(userName: id.description)=====================================")
+						}
+					}
 				}
 			}
 		} else {
@@ -60,5 +73,5 @@ struct SignInWithKakaoView: View {
 }
 
 #Preview {
-    SignInWithKakaoView()
+	SignInWithKakaoView()
 }

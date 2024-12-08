@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct JoinHomeView: View {
+	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject var userVM: UserViewModel
 	
 	@State private var inviteCode = ""
@@ -21,9 +22,9 @@ struct JoinHomeView: View {
 				WideButton(title: "입장", backgroundColor: .accent) {
 					userVM.joinHome(inviteCode: inviteCode)
 				}
-				.alert("방 입장", isPresented: $userVM.isMakeHomeError) {
+				.alert("방 입장", isPresented: $userVM.isMakeHomeAlert) {
 					Button("확인", role: .cancel) {
-						
+						dismiss()
 					}
 				} message: {
 					Text(userVM.message)

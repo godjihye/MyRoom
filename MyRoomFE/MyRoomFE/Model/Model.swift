@@ -46,6 +46,11 @@ struct ItemResponse: Codable {
 	let documents: [Item]
 }
 
+struct ItemRoot: Codable {
+	let success: Bool
+	let message: String
+	let item: Item
+}
 
 //MARK: - ROOM AND LOCATION (방/위치)
 
@@ -138,10 +143,10 @@ struct Comment: Identifiable ,Codable{
 struct Home: Codable, Equatable {
 	let id: Int
 	let homeName: String
-	let homeDesc: String
+	let homeDesc: String?
 	let updatedAt: String
 	let createdAt: String
-	let inviteCode: Int?
+	let inviteCode: String
 }
 
 struct HomeRoot: Codable {
@@ -150,26 +155,30 @@ struct HomeRoot: Codable {
 	let home: Home
 }
 
+struct InviteCode: Codable {
+	let inviteCode: String
+}
 
 //MARK: - USER(사용자)
 
 struct User : Codable,Equatable {
 	let id: Int
 	let userName: String
-	let nickname:String
-	let userImage:String?
+	let nickname: String
+	let userImage: String?
 	let createdAt: String
 	let updatedAt: String
 	let homeId: Int?
 	let mates: [MateUser]?
 }
 
-struct MateUser: Codable, Equatable {
-	let userImage: String
-	let nickName: String
+struct MateUser: Codable, Equatable, Identifiable {
+	let id: Int
+	let userImage: String?
+	let nickname: String
 }
 
-struct SignUp: Codable {
+struct UserInfo: Codable {
 	let success: Bool
 	let user: User
 	let message: String

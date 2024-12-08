@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
 	var body: some View {
+		
 		NavigationStack {
 			VStack {
 				Image("logo-light")
@@ -19,6 +20,7 @@ struct LoginView: View {
 				}
 			}
 		}
+		
 	}
 }
 

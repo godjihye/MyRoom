@@ -41,9 +41,14 @@ const isExistInviteCode = async (data) => {
   });
 };
 
+// 초대 코드 조회
+const findInviteCode = async(id)=> {
+  return await models.Home.findOne({attributes: ['inviteCode'], where: {id}})
+}
 module.exports = {
   createHome,
   findHomeByPK,
   updateHome,
   isExistInviteCode,
+  findInviteCode
 };

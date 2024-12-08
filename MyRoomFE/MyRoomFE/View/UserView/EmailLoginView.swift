@@ -27,11 +27,11 @@ struct EmailLoginView: View {
 	var body: some View {
 		VStack(alignment: .leading) {
 			VStack(alignment: .leading) {
-				Text("이메일로")
-				Text(isRegister ? "회원가입" : "로그인")
+				Text(isRegister ? "이메일로 회원가입" : "이메일로 로그인")
 			}
 			.font(.largeTitle)
 			.fontWeight(.bold)
+			Spacer()
 			//MARK: - TextField
 			VStack(alignment: .leading) {
 				Text("이메일 *")
@@ -132,7 +132,7 @@ struct EmailLoginView: View {
 						isEqualPW = false
 					} else if nickname.count < 2{
 						isVaildNick = false
-					}else {
+					} else {
 						userVM.signUp(userName: email, password: password1, nickname: nickname)
 					}
 				}
@@ -177,6 +177,7 @@ struct EmailLoginView: View {
 					}
 				}
 			}
+			Spacer()
 		}
 		.padding()
 	}

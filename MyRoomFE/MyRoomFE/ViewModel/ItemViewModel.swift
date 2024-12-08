@@ -8,61 +8,83 @@
 import SwiftUI
 import Alamofire
 
+
 class ItemViewModel: ObservableObject {
+	
 	@Published var items: [Item] = []
 	@Published var favItems: [Item] = []
 	@Published var message: String = ""
 	@Published var isShowingAlert: Bool = false
 	@Published var searchResultItems: [Item] = []
 	@Published var isAddShowing: Bool = false
+	
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	let userId = UserDefaults.standard.integer(forKey: "userId")
 	let homeId = UserDefaults.standard.integer(forKey: "homeId")
+	
 	//MARK: - CRUD
-	// 1. Create Item
-	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) async throws -> ItemResponse {
+	//MARK: - 1. Create Item
+	func addItem(itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, isFav: Bool? = false, price: Int?, openDate: String?, locationId: Int?) {
 		let url = "\(endPoint)/items"
 		
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
 		
 		guard let image, let imageData = image.jpegData(compressionQuality: 0.2) else {
-			throw NSError(domain: "addItem", code: 1, userInfo: [NSLocalizedDescriptionKey: "Image cannot be nil"])
+			return
 		}
 		guard let itemName = itemName,
 					let locationId = locationId,
 					let isFav = isFav else {
-			throw NSError(domain: "addItem", code: 2, userInfo: [NSLocalizedDescriptionKey: "Required parameters are missing"])
+			return
 		}
 		
-		var formData = MultipartFormData()
+		let formData = MultipartFormData()
 		formData.append(imageData, withName: "photo", fileName: "itemPhoto.jpg", mimeType: "image/jpeg")
-		addFormData(formData: formData, optionalString: itemName, withName: "itemName")
-		addFormData(formData: formData, optionalString: purchaseDate, withName: "purchaseDate")
-		addFormData(formData: formData, optionalString: expiryDate, withName: "expiryDate")
-		addFormData(formData: formData, optionalString: itemUrl, withName: "itemUrl")
-		addFormData(formData: formData, optionalString: desc, withName: "desc")
-		addFormData(formData: formData, optionalString: color, withName: "color")
-		addFormData(formData: formData, optionalString: openDate, withName: "openDate")
-		addFormData(formData: formData, optionalString: isFav.description, withName: "isFav")
-		addFormData(formData: formData, optionalString: price?.description, withName: "price")
-//		if let price = price {
-//			formData.append(price.description.data(using: .utf8)!, withName: "price")
-//		}
-		addFormData(formData: formData, optionalString: locationId.description, withName: "locationId")
-		//formData.append(locationId.description.data(using: .utf8)!, withName: "locationId")
+		addFormData(formData: formData, optionalValue: itemName, withName: "itemName")
+		addFormData(formData: formData, optionalValue: purchaseDate, withName: "purchaseDate")
+		addFormData(formData: formData, optionalValue: expiryDate, withName: "expiryDate")
+		addFormData(formData: formData, optionalValue: itemUrl, withName: "itemUrl")
+		addFormData(formData: formData, optionalValue: desc, withName: "desc")
+		addFormData(formData: formData, optionalValue: color, withName: "color")
+		addFormData(formData: formData, optionalValue: openDate, withName: "openDate")
+		addFormData(formData: formData, optionalValue: isFav, withName: "isFav")
+		addFormData(formData: formData, optionalValue: price, withName: "price")
+		addFormData(formData: formData, optionalValue: locationId, withName: "locationId")
 		
-		let dataTask = AF.upload(multipartFormData: formData, to: url, headers: headers).serializingDecodable(ItemResponse.self)
-		
-		do {
-			let response = try await dataTask.value
-			return response
-		} catch {
-			throw error
+		AF.upload(multipartFormData: formData, to: url, headers: headers).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					do {
+						guard let data = response.data else { return }
+						let root = try JSONDecoder().decode(ItemRoot.self, from: data)
+						self.isShowingAlert = true
+						self.message = root.message
+					} catch let error {
+						self.isShowingAlert = true
+						self.message = "에러가 발생했습니다.\n\(error.localizedDescription)"
+					}
+				case 300..<600:
+					self.isShowingAlert = true
+					if let data = response.data {
+						do {
+							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
+							self.message = apiError.message
+						} catch let error {
+							self.message = error.localizedDescription
+						}
+					}
+				default:
+					self.isShowingAlert = true
+					self.message = "서버 연결에 실패했습니다.\n잠시 후 다시 시도해주세요."
+				}
+			}
 		}
 	}
 	
 	
-	// 2. Read Items
+	//MARK: - 2. Read Items
+	
 	/// 2-1. Read All Items (location)
 	func fetchItems(locationId: Int) async {
 		let url = "\(endPoint)/items/\(locationId)"
@@ -81,6 +103,7 @@ class ItemViewModel: ObservableObject {
 			}
 		}
 	}
+	
 	/// 2-2. Read Fav Items (All location)
 	func fetchFavItems() async {
 		let url = "\(endPoint)/items/fav/\(homeId)"
@@ -94,10 +117,9 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	//FIXME: -Update Item Optional Field
-	// 3. Update Item (** patch)
-	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) async {
+	//MARK: - 3. Update Item (** patch)
+	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) {
 		
-		log("itemId: \(itemId), itemName: \(itemName), purchaseDate: \(purchaseDate), expiryDate: \(expiryDate), itemUrl: \(itemUrl), image: \(image), desc: \(desc), color: \(color), price\(price), openDate: \(openDate), locationId:\(locationId)")
 		let url = "\(endPoint)/items/\(itemId)"
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
 		
@@ -144,15 +166,39 @@ class ItemViewModel: ObservableObject {
 			formData.append(locationId.description.data(using: .utf8)!, withName: "locationId")
 			log("formData appended! locationId")
 		}
-		do {
-			let response = try await AF.upload(multipartFormData: formData, to: url, method: .patch, headers: headers).serializingDecodable(ApiResponse.self).value
-			self.message = response.message
-		} catch {
-//			self.message = "물건 정보를 수정하는데 실패했습니다."
+		AF.upload(multipartFormData: formData, to: url, method: .patch, headers: headers).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					do {
+						guard let data = response.data else { return }
+						let root = try JSONDecoder().decode(ItemRoot.self, from: data)
+						self.isShowingAlert = true
+						self.message = root.message
+					} catch let error {
+						self.isShowingAlert = true
+						self.message = "에러가 발생했습니다.\n\(error.localizedDescription)"
+					}
+				case 300..<600:
+					self.isShowingAlert = true
+					if let data = response.data {
+						do {
+							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
+							self.message = apiError.message
+						} catch let error {
+							self.message = error.localizedDescription
+						}
+					}
+				default:
+					self.isShowingAlert = true
+					self.message = "서버 연결에 실패했습니다.\n잠시 후 다시 시도해주세요."
+					
+				}
+			}
 		}
 	}
 	
-	// 4. Delete Item
+	//MARK: - 4. Delete Item
 	func removeItem(itemId: Int) async {
 		let url = "\(endPoint)/items/\(itemId)"
 		do {
@@ -178,7 +224,7 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
-	// 추가 사진 등록
+	//MARK: - 추가 사진
 	func addAdditionalPhotos(images: [UIImage]?, itemId: Int?) async {
 		guard let images, let itemId else {return}
 		if images.isEmpty {return}
@@ -225,7 +271,6 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
-	// 추가 사진 삭제
 	func removeAdditionalPhoto(photoId: Int) {
 		let url = "\(endPoint)/items/additionalPhoto/\(photoId)"
 		AF.request(url, method: .delete).response { response in
@@ -239,7 +284,7 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
-	// Search Item
+	//MARK: - Search Item
 	func searchItem(query: String?) async {
 		guard let query = query else { return }
 		let url = "\(endPoint)/items/search"
@@ -256,15 +301,9 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
-	// Clear Search Result
 	func clearSearchResult() {
 		searchResultItems.removeAll()
 	}
 }
 
-//MARK: - Helper Method
 
-private func addFormData(formData: MultipartFormData, optionalString: String?, withName: String) {
-	guard let str = optionalString else { return }
-	formData.append(str.data(using: .utf8)!, withName: withName)
-}

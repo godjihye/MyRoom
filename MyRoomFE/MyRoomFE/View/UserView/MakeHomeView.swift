@@ -13,7 +13,7 @@ struct MakeHomeView: View {
 	
 	@State var homeName: String = ""
 	@State var homeDesc: String = ""
-	@State var isValidHomeName: Bool = false
+	@State var isValidHomeName: Bool = true
 	@State private var homeNameOffset: CGFloat = 0
 	
 	var body: some View {
@@ -26,7 +26,7 @@ struct MakeHomeView: View {
 				Text("집 이름 *")
 					.fontWeight(.bold)
 				CustomTextField(icon: "house.fill", placeholder: "집 이름을 입력해주세요.(필수)", text: $homeName)
-				if isValidHomeName {
+				if !isValidHomeName {
 					Text("집 이름 작성은 필수입니다.")
 						.font(.footnote)
 						.fontWeight(.bold)
@@ -46,17 +46,20 @@ struct MakeHomeView: View {
 			}
 			.padding(.vertical)
 			WideButton(title: "저장", backgroundColor: .accent) {
+				log("homeName.count: \(homeName.count)")
 				if homeName.count > 1 {
 						userVM.makeHome(homeName: homeName, homeDesc: homeDesc)
-					if UserDefaults.standard.integer(forKey: "homeId") > 0 {
-						dismiss()
-					}
+				} else {
+					isValidHomeName = false
 				}
-				isValidHomeName = true
 			}
-			
-			
-			Text("")
+			.alert("집 등록", isPresented: $userVM.showAlert) {
+				Button("확인", role: .cancel) {
+					dismiss()
+				}
+			} message: {
+				Text(userVM.message)
+			}
 		}
 		.padding()
 	}

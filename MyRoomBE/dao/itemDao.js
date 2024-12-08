@@ -74,11 +74,12 @@ const deleteItem = async (id) => {
 };
 // 5. Item 수정
 const updateItem = async (id, data) => {
-  return await models.Item.update(data, {
+  await models.Item.update(data, {
     where: {
       id,
     },
   });
+  return await models.Item.findOne({where: {id}})
 };
 // 6. Fav Item 조회
 const findAllFavItem = async (id) => {

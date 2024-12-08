@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct CustomTextField:View {
-		var icon: String
+		var icon: String?
 		var placeholder: String
 	 
 		@Binding var text: String
 		var isSecured:Bool = false
 		var body: some View {
 				HStack {
+					if let icon {
 						Image(systemName: icon)
-								.foregroundColor(.gray)
+							.foregroundColor(.gray)
+					}
 						if isSecured {
 								SecureField(placeholder, text: $text)
 										.autocapitalization(.none)
