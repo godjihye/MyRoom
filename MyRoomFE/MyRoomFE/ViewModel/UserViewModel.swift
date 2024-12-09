@@ -45,6 +45,8 @@ class UserViewModel: ObservableObject {
 							UserDefaults.standard.set(signIn.user.userName, forKey: "userName")
 							UserDefaults.standard.set(signIn.user.id, forKey: "userId")
 							UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
+                            UserDefaults.standard.set(signIn.user.userImage, forKey: "userImage")
+                            UserDefaults.standard.set(signIn.user.nickname, forKey: "nickName")
 							if let homeId = signIn.user.homeId {
 								UserDefaults.standard.set(homeId, forKey: "homeId")
 							} else {
@@ -90,6 +92,8 @@ class UserViewModel: ObservableObject {
 							UserDefaults.standard.set(signIn.user.userName, forKey: "userName")
 							UserDefaults.standard.set(signIn.user.id, forKey: "userId")
 							UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
+							UserDefaults.standard.set(signIn.user.userImage, forKey: "userImage")
+                            UserDefaults.standard.set(signIn.user.nickname, forKey: "nickName")
 							if let homeId = signIn.user.homeId {
 								UserDefaults.standard.set(homeId, forKey: "homeId")
 							}
