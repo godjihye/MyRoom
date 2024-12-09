@@ -25,6 +25,9 @@
 		B82E1BA12D06D3E5005BB2D4 /* onCustomTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1BA02D06D3E5005BB2D4 /* onCustomTapGesture.swift */; };
 		B82E1BA32D06D3F5005BB2D4 /* CustomTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1BA22D06D3F5005BB2D4 /* CustomTapGesture.swift */; };
 		B82E1BA52D06D425005BB2D4 /* UsedAddToDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1BA42D06D425005BB2D4 /* UsedAddToDetailView.swift */; };
+		B82E1BA82D06D4DC005BB2D4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B82E1BA72D06D4DC005BB2D4 /* FirebaseAuth */; };
+		B82E1BAA2D06D4DC005BB2D4 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = B82E1BA92D06D4DC005BB2D4 /* FirebaseCore */; };
+		B82E1BAC2D06D4DC005BB2D4 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = B82E1BAB2D06D4DC005BB2D4 /* FirebaseDatabase */; };
 		B86A23F92D02CBF7007D69D3 /* EnterHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23F82D02CBF7007D69D3 /* EnterHomeView.swift */; };
 		B86A23FB2D02D20F007D69D3 /* WideButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23FA2D02D20F007D69D3 /* WideButtonLabel.swift */; };
 		B86A23FF2D02D3E7007D69D3 /* JoinHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23FE2D02D3E7007D69D3 /* JoinHomeView.swift */; };
@@ -209,6 +212,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B82E1BAC2D06D4DC005BB2D4 /* FirebaseDatabase in Frameworks */,
 				0B9CB6262D04227800FA1075 /* KakaoSDKCertCore in Frameworks */,
 				B88C0A2C2CF954F9007844E4 /* SVProgressHUD in Frameworks */,
 				0B9CB6222D04227800FA1075 /* KakaoSDKAuth in Frameworks */,
@@ -216,6 +220,8 @@
 				B88C0A292CF95406007844E4 /* Alamofire in Frameworks */,
 				0B9CB6282D04227800FA1075 /* KakaoSDKCommon in Frameworks */,
 				0B9CB6242D04227800FA1075 /* KakaoSDKCert in Frameworks */,
+				B82E1BAA2D06D4DC005BB2D4 /* FirebaseCore in Frameworks */,
+				B82E1BA82D06D4DC005BB2D4 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +483,9 @@
 				0B9CB6232D04227800FA1075 /* KakaoSDKCert */,
 				0B9CB6252D04227800FA1075 /* KakaoSDKCertCore */,
 				0B9CB6272D04227800FA1075 /* KakaoSDKCommon */,
+				B82E1BA72D06D4DC005BB2D4 /* FirebaseAuth */,
+				B82E1BA92D06D4DC005BB2D4 /* FirebaseCore */,
+				B82E1BAB2D06D4DC005BB2D4 /* FirebaseDatabase */,
 			);
 			productName = MyRoomFE;
 			productReference = B89A1B552CE5D432001AA7AE /* MyRoomFE.app */;
@@ -510,6 +519,7 @@
 				B88C0A272CF95406007844E4 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				B88C0A2A2CF954F9007844E4 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
 				0B9CB61E2D04227800FA1075 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				B82E1BA62D06D4DC005BB2D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B89A1B562CE5D432001AA7AE /* Products */;
@@ -847,6 +857,14 @@
 				minimumVersion = 2.23.0;
 			};
 		};
+		B82E1BA62D06D4DC005BB2D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.6.0;
+			};
+		};
 		B88C0A272CF95406007844E4 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -890,6 +908,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0B9CB61E2D04227800FA1075 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKCommon;
+		};
+		B82E1BA72D06D4DC005BB2D4 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B82E1BA62D06D4DC005BB2D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		B82E1BA92D06D4DC005BB2D4 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B82E1BA62D06D4DC005BB2D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		B82E1BAB2D06D4DC005BB2D4 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B82E1BA62D06D4DC005BB2D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
 		};
 		B88C0A282CF95406007844E4 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

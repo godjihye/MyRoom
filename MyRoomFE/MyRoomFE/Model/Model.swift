@@ -205,7 +205,7 @@ struct Used: Identifiable,Codable,Equatable {
 	let usedTitle: String
 	let usedPrice: Int
 	let usedDesc: String
-	let user: PostUser
+	let user: User
 	let usedUrl: String?
 	let usedStatus: Int
 	let usedPurchaseDate: String?
