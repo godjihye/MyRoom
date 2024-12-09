@@ -72,6 +72,6 @@ struct PostRowView: View {
 }
 
 
-#Preview {
-    PostRowView(post:samplePost)
-}
+//#Preview {
+//    PostRowView(post:samplePost)
+//}

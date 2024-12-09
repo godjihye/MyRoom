@@ -1,12 +1,13 @@
 const models = require("../models");
 
 // write
-const createPost = async (postData, photoData) => {
+const createPost = async (postData, photoData, buttonData) => {
   const transaction = await models.sequelize.transaction();
   const userId = postData.userId;
   console.log(postData);
 
   try {
+    //1. 본문 저장
     const newPost = await models.Post.create(
       postData,
       { transaction },
@@ -15,20 +16,45 @@ const createPost = async (postData, photoData) => {
     const postId = newPost.id;
 
     const photos = [];
+    const buttons = [];
 
+    // 2. 사진 데이터 처리 (이미지와 버튼 저장)
     for (const field in photoData) {
       if (Array.isArray(photoData[field])) {
-        photoData[field].forEach((photo) => {
+        for (const photo of photoData[field]) {
           if (photo.fieldname == "image") {
-            photos.push({
-              image: photo.blobName,
-              postId: postId, // Link to the newly created 'Used' record
-            });
+            // 2.1. PostPhoto 테이블에 이미지 정보 저장
+            const newPhoto = await models.PostPhoto.create(
+              {
+                image: photo.blobName,
+                postId: postId,
+              },
+              { transaction }
+            );
+
+            // 2.2. 해당 이미지에 대한 버튼 데이터 처리
+            if (buttonData) {
+              try {
+                buttonData.forEach((button) => {
+                  // 2. PostPhotoButton 테이블에 버튼 정보 저장
+                  buttons.push({
+                    postPhotoId: newPhoto.id, // PostPhoto와 연결
+                    positionX: button.positionX,
+                    positionY: button.positionY,
+                    itemUrl: button.itemUrl, // 버튼 URL 저장
+                  });
+                });
+              } catch (error) {
+                console.error("Invalid JSON in buttonData:", error);
+              }
+            }
           }
-        });
+        }
       }
     }
-    await models.PostPhoto.bulkCreate(photos, { transaction });
+
+    // 3. 버튼 데이터 일괄 저장
+    await models.ButtonData.bulkCreate(buttons, { transaction });
 
     await transaction.commit();
 
@@ -37,17 +63,23 @@ const createPost = async (postData, photoData) => {
         {
           model: models.User,
           as: "user",
-          //attributes: ['nickname','userImage'],
+          attributes: ["nickname", "userImage"],
         },
         {
           model: models.PostPhoto,
           as: "images",
           attributes: ["id", "image"],
+          include: [
+            {
+              model: models.ButtonData,
+              as: "btnData",
+            },
+          ],
         },
         {
           model: models.PostFav,
           as: "postFav",
-          where: { postId: postId },
+          where: { userId },
           required: false, //left join
         },
       ],
@@ -78,19 +110,26 @@ const findAllPost = async (page, pageSize, userId) => {
     order: [["createdAt", "DESC"]],
     include: [
       {
-        model: models.User, // 조인할 모델 (Post)
-        as: "user", // alias (선택 사항)
-        attributes: ["nickname", "userImage"], // 가져올 필드 (선택 사항)
+        model: models.User,
+        as: "user",
+        attributes: ["nickname", "userImage"],
       },
       {
         model: models.PostPhoto,
         as: "images",
+        attributes: ["id", "image"],
+        include: [
+          {
+            model: models.ButtonData,
+            as: "btnData",
+          },
+        ],
       },
       {
         model: models.PostFav,
         as: "postFav",
         where: { userId },
-        required: false, // LEFT OUTER JOIN
+        required: false, //left join
       },
     ],
     attributes: {

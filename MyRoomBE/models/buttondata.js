@@ -3,32 +3,28 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class PostPhoto extends Model {
+  class ButtonData extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      PostPhoto.belongsTo(models.Post,{
-        foreignKey:"postId",
-        onDelete: "CASCADE",
-        as:"images"
-      })
-
-      PostPhoto.hasMany(models.ButtonData,{
+      ButtonData.belongsTo(models.PostPhoto,{
         foreignKey:"postPhotoId",
+        onDelete: "CASCADE",
         as:"btnData"
       })
     }
   }
-  PostPhoto.init({
-    image: DataTypes.STRING,
-    postId: DataTypes.INTEGER
+  ButtonData.init({
+    positionX: DataTypes.DOUBLE,
+    positionY: DataTypes.DOUBLE,
+    itemUrl: DataTypes.STRING,
+    postPhotoId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'PostPhoto',
+    modelName: 'ButtonData',
   });
-  return PostPhoto;
+  return ButtonData;
 };

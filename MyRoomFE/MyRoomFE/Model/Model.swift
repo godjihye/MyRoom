@@ -81,36 +81,31 @@ struct RoomResponse:Codable {
 
 //MARK: - POST(커뮤니티 게시글)
 
-struct PostUser: Codable,Equatable {
-	let nickname: String
-	let userImage: String?
-}
-
 struct Post: Identifiable,Codable,Equatable {
-	let id: Int
-	let postTitle: String
-	let postContent: String
-	let postThumbnail: String
-	
-	let user: PostUser
-	
-	let postFav: [PostFavData]?
-	var isFavorite:Bool
-	let postFavCnt: Int
-	let postViewCnt: Int
-	
-	let updatedAt:String
-	let createdAt:String
-	
-	let images: [PostPhotoData]
-	
-	mutating func toggleFavorite() {
-		isFavorite.toggle()
-	}
-	
-	mutating func setFavorite(_ value: Bool) {
-		isFavorite = value
-	}
+    let id: Int
+    let postTitle: String
+    let postContent: String
+    let postThumbnail: String
+    
+    let user: User
+    
+    let postFav: [PostFavData]?
+    var isFavorite:Bool
+    let postFavCnt: Int
+    let postViewCnt: Int
+    
+    let updatedAt:String
+    let createdAt:String
+    
+    let images: [PostPhotoData]
+    
+    mutating func toggleFavorite() {
+        isFavorite.toggle()
+    }
+    
+    mutating func setFavorite(_ value: Bool) {
+        isFavorite = value
+    }
 }
 
 struct PostRoot: Codable{
@@ -120,8 +115,16 @@ struct PostRoot: Codable{
 }
 
 struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
-	let id:Int
-	let image:String
+    let id:Int
+    let image:String
+    let buttons:[ButtonData]?
+}
+
+struct ButtonData: Identifiable, Codable, Equatable, Hashable {
+    let id: Int
+    let positionX: CGFloat
+    let positionY: CGFloat
+    let itemUrl: String
 }
 
 struct PostFavData:Identifiable,Codable, Equatable {
@@ -249,18 +252,19 @@ struct UsedRoot: Codable{
 
 
 //MARK: - Chat
-
 struct Message: Identifiable {
-	let id: String
-	let senderId: String
-	let text: String
-	let timestamp: Double
+    let id: String
+    let senderId: String
+    let text: String
+    let timestamp: Double
 }
 
 struct ChatRoom: Identifiable {
-	var id: String       // roomId
-	var roomName: String     // 채팅방 이름
+    var id: String
+    var roomName: String
+    var participants: [String]
 }
+
 
 
 //MARK: - API Response
@@ -269,7 +273,6 @@ struct ApiResponse: Error, Decodable {
 	let success: String?
 	let message: String
 }
-
 struct APIError: Codable {
 	let message: String
 }
