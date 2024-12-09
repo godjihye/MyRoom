@@ -34,7 +34,7 @@ class UsedViewModel:ObservableObject {
   
         AF.request(url,method: .get,parameters: params).response { response in
             defer {
-                    self.isLoading = false // 요청 종료 시 반드시 false로 변경
+                    self.isLoading = false
                     SVProgressHUD.dismiss()
                 }
             if let statusCode = response.response?.statusCode {

@@ -82,6 +82,8 @@ struct Post: Identifiable,Codable,Equatable {
     
     let user: User
     
+    let itemUrl:[String]?
+    
     let postFav: [PostFavData]?
     var isFavorite:Bool
     let postFavCnt: Int
@@ -110,6 +112,14 @@ struct PostRoot: Codable{
 struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
     let id:Int
     let image:String
+    let buttons:[ButtonData]?
+}
+
+struct ButtonData: Identifiable, Codable, Equatable, Hashable {
+    let id: Int
+    let positionX: CGFloat
+    let positionY: CGFloat
+    let itemUrl: String
 }
 
 struct PostFavData:Identifiable,Codable, Equatable {

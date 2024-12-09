@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B15D9A3B2D056DF400FA0253 /* PostAddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A3A2D056DF400FA0253 /* PostAddPhotoView.swift */; };
+		B15D9A3D2D05A96500FA0253 /* onCustomTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A3C2D05A94400FA0253 /* onCustomTapGesture.swift */; };
+		B15D9A3F2D05A9C800FA0253 /* CustomTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A3E2D05A9BE00FA0253 /* CustomTapGesture.swift */; };
 		B1A4BB3F2D022B11005DF894 /* UsedAddToDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4BB3E2D022B11005DF894 /* UsedAddToDetailView.swift */; };
 		B1A4BB422D02871E005DF894 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B1A4BB412D02871E005DF894 /* FirebaseAnalytics */; };
 		B1A4BB442D02871E005DF894 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = B1A4BB432D02871E005DF894 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -107,6 +110,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B15D9A3A2D056DF400FA0253 /* PostAddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddPhotoView.swift; sourceTree = "<group>"; };
+		B15D9A3C2D05A94400FA0253 /* onCustomTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onCustomTapGesture.swift; sourceTree = "<group>"; };
+		B15D9A3E2D05A9BE00FA0253 /* CustomTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTapGesture.swift; sourceTree = "<group>"; };
 		B1A4BB3E2D022B11005DF894 /* UsedAddToDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedAddToDetailView.swift; sourceTree = "<group>"; };
 		B1A4BB712D02DA11005DF894 /* ChatRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRowView.swift; sourceTree = "<group>"; };
 		B86F34A22CF96F920040BB33 /* Array+RawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+RawRepresentable.swift"; sourceTree = "<group>"; };
@@ -222,6 +228,8 @@
 		B86F34A62CF96F920040BB33 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B15D9A3E2D05A9BE00FA0253 /* CustomTapGesture.swift */,
+				B15D9A3C2D05A94400FA0253 /* onCustomTapGesture.swift */,
 				B86F34A22CF96F920040BB33 /* Array+RawRepresentable.swift */,
 				B86F34A32CF96F920040BB33 /* DateFormatter.swift */,
 				B86F34A42CF96F920040BB33 /* LogManager.swift */,
@@ -306,6 +314,7 @@
 				B86F34CA2CF96F920040BB33 /* PostDetailView.swift */,
 				B86F34CB2CF96F920040BB33 /* PostListView.swift */,
 				B86F34CC2CF96F920040BB33 /* PostRowView.swift */,
+				B15D9A3A2D056DF400FA0253 /* PostAddPhotoView.swift */,
 			);
 			path = PostView;
 			sourceTree = "<group>";
@@ -537,6 +546,7 @@
 				B8E917A52D01A60D00345B89 /* ChatListView.swift in Sources */,
 				B86F34F02CF96F920040BB33 /* CustomTextField.swift in Sources */,
 				B8E9164A2D016C8F00345B89 /* ProfileView.swift in Sources */,
+				B15D9A3D2D05A96500FA0253 /* onCustomTapGesture.swift in Sources */,
 				B86F34F22CF96F920040BB33 /* ImgUploadRectBtn.swift in Sources */,
 				B86F34F32CF96F920040BB33 /* ImagePicker.swift in Sources */,
 				B86F34F42CF96F920040BB33 /* SearchBar.swift in Sources */,
@@ -550,6 +560,7 @@
 				B86F34F82CF96F920040BB33 /* AddItemView.swift in Sources */,
 				B86F34F92CF96F920040BB33 /* AdditionalPhotosView.swift in Sources */,
 				B86F34FA2CF96F920040BB33 /* AddLocationView.swift in Sources */,
+				B15D9A3F2D05A9C800FA0253 /* CustomTapGesture.swift in Sources */,
 				B86F34FB2CF96F920040BB33 /* AddRoomView.swift in Sources */,
 				B86F34FC2CF96F920040BB33 /* FavItemRow.swift in Sources */,
 				B8C3F1C52D0021CC004F8C44 /* AddItemWithAIView.swift in Sources */,
@@ -563,6 +574,7 @@
 				B8E916DD2D0192E900345B89 /* MakeHomeView.swift in Sources */,
 				B86F35042CF96F920040BB33 /* PostAddView.swift in Sources */,
 				B86F35052CF96F920040BB33 /* PostDetailView.swift in Sources */,
+				B15D9A3B2D056DF400FA0253 /* PostAddPhotoView.swift in Sources */,
 				B89D55282CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift in Sources */,
 				B86F35062CF96F920040BB33 /* PostListView.swift in Sources */,
 				B1A4BB722D02DA11005DF894 /* ChatRowView.swift in Sources */,
