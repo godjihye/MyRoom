@@ -6,7 +6,13 @@ const createItem = async (req, res) => {
   console.log(`req.filename: ${req.filename}`);
   try {
     const item = await itemService.createItem(itemData);
-    res.status(201).json({ success: true, message: "아이템을 성공적으로 등록했습니다.", item: item });
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "아이템을 성공적으로 등록했습니다.",
+        item: item,
+      });
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false, error: e.message });
@@ -52,9 +58,18 @@ const deleteItem = async (req, res) => {
   }
 };
 const updateItem = async (req, res) => {
+  const itemData = req.body;
+  itemData.photo = req.filename;
+
   try {
-    const result = await itemService.updateItem(req.params.itemId, req.body);
-    res.status(200).json({ success: true, message: "아이템을 성공적으로 수정했습니다.", item: result });
+    const result = await itemService.updateItem(req.params.itemId, itemData);
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "아이템을 성공적으로 수정했습니다.",
+        item: result,
+      });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

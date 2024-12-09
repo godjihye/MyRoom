@@ -208,25 +208,26 @@ class UserViewModel: ObservableObject {
 	// 5. update User
 	func editUser(userImage: UIImage?, nickname: String?) {
 		let userId = UserDefaults.standard.integer(forKey: "userId")
-		let url = "\(endPoint)/users/\(userId)"
+		let uploadURL = "\(endPoint)/users/upload"
+		let patchURL = "\(endPoint)/users/\(userId)"
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
 		let formData = MultipartFormData()
-		
+		var uploadImageUrl: String?
 		if let userImage, let imageData = userImage.jpegData(compressionQuality: 0.8) {
 			formData.append(imageData, withName: "userImage", fileName: "userImage.jpg", mimeType: "image/jpeg")
 			log("formData image appended")
 		}
 		addFormData(formData: formData, optionalValue: nickname, withName: "nickname")
-		AF.upload(multipartFormData: formData, to: url, method: .patch, headers: headers).response { response in
+		AF.upload(multipartFormData: formData, to: patchURL, headers: headers).response { response in
 			if let statusCode = response.response?.statusCode {
 				switch statusCode {
 				case 200..<300:
 					do {
-						guard let data = response.data else {return}
-						let root = try JSONDecoder().decode(UserInfo.self, from: data)
-						self.isJoinShowing = true
-						self.message = root.message
-						self.userInfo = root.user
+						guard let data = response.data, let responseString = String(data: data, encoding: .utf8) else {return}
+						log("responseString: \(responseString)")
+						let root = try JSONDecoder().decode(ImageUpload.self, from: data)
+						log("upload image success")
+						uploadImageUrl = root.imageUrl
 					} catch let error {
 						log("decode error: \(error.localizedDescription)")
 					}
@@ -237,6 +238,34 @@ class UserViewModel: ObservableObject {
 				}
 			}
 		}
+//		if let nickname = nickname, let userImageUrl = uploadImageUrl {
+//			let params: Parameters = ["nickname": nickname, "userImage": userImageUrl]
+//			AF.request(patchURL, method: .patch, parameters: params).response { response in
+//				if let statusCode = response.response?.statusCode {
+//					switch statusCode {
+//					case 200..<300:
+//						do {
+//							guard let data = response.data else {return}
+//							let root = try JSONDecoder().decode(UserInfo.self, from: data)
+//							self.userInfo = root.user
+//							self.message = root.message
+//							self.showAlert = true
+//						} catch let error {
+//							log("decode error: \(error)")
+//						}
+//					case 300..<500:
+//						do {
+//							guard let data = response.data else {return}
+//							let res = try JSONDecoder().decode(ApiResponse.self, from: data)
+//						}catch let error{
+//							log("error decode error: \(error)")
+//						}
+//					default:
+//						log("서버ㅓ 오류")
+//					}
+//				}
+//			}
+//		}
 		
 	}
 	//MARK: - HOME
@@ -326,6 +355,31 @@ class UserViewModel: ObservableObject {
 					log("300..<500")
 				default:
 					log("network error")
+				}
+			}
+		}
+	}
+	
+	// 초대코드 재발행
+	func refreshInviteCode() {
+		let homeId = UserDefaults.standard.integer(forKey: "homeId")
+		let url = "\(endPoint)/home/inviteCode/refresh/\(homeId)"
+		AF.request(url, method: .get).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data {
+						do {
+							let res = try JSONDecoder().decode(InviteCode.self, from: data)
+							self.inviteCode = res.inviteCode
+						}catch let error {
+							log("decode error")
+						}
+					}
+				case 300..<500:
+					log("statusCode is 300..<500")
+				default:
+					log("success")
 				}
 			}
 		}

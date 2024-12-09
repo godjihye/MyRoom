@@ -57,7 +57,7 @@ const findUserById = async (id) => {
     // 1. ID로 사용자 조회 (비밀번호 제외)
     const user = await userDao.getUserByIDExcludePW(id);
     if (!user) {
-      throw new Error('사용자를 찾을 수 없습니다.');
+      throw new Error("사용자를 찾을 수 없습니다.");
     }
 
     // 2. 해당 사용자의 mates 조회
@@ -74,21 +74,21 @@ const findUserById = async (id) => {
   }
 };
 
-const findUserByUserName = async(userName) => {
+const findUserByUserName = async (userName) => {
   let user = await userDao.getUserByUserNameExcludePW(userName);
   if (!user) {
-    const nickname = makeUniqueNickname()
-    user = await userDao.createUser({userName: userName, nickname: nickname});
+    const nickname = makeUniqueNickname();
+    user = await userDao.createUser({ userName: userName, nickname: nickname });
   }
   const token = jwt.sign({ userId: user.id }, secret, {
     expiresIn: expiresIn,
   });
-  return {token, user}
-}
+  return { token, user };
+};
 
 function makeUniqueNickname() {
-  const randomNum = Math.floor(Math.random()*1000)
-  return "마루미" + randomNum
+  const randomNum = Math.floor(Math.random() * 1000);
+  return "마루미" + randomNum;
 }
 
 module.exports = {
@@ -97,5 +97,5 @@ module.exports = {
   deleteUser,
   updateUser,
   findUserById,
-  findUserByUserName
+  findUserByUserName,
 };

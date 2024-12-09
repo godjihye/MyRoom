@@ -191,6 +191,9 @@ struct SignIn: Codable {
 	let message: String
 }
 
+struct ImageUpload: Codable {
+	let imageUrl: String
+}
 
 //MARK: -Used
 

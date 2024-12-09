@@ -258,6 +258,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B82E1B962D06803B005BB2D4 /* SignInView */ = {
+			isa = PBXGroup;
+			children = (
+				0B9CB6182D030EAA00FA1075 /* LoginView.swift */,
+				B86F351C2CF970130040BB33 /* EmailLoginView.swift */,
+				0B9CB6292D04235000FA1075 /* SignInWithKakaoView.swift */,
+				0B9CB61C2D041FFB00FA1075 /* SignInWithAppleView.swift */,
+			);
+			path = SignInView;
+			sourceTree = "<group>";
+		};
+		B82E1B972D06805F005BB2D4 /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				B8E916452D016C6F00345B89 /* MyPageView.swift */,
+				B8E916492D016C8F00345B89 /* ProfileView.swift */,
+				B8E916472D016C8300345B89 /* ProfileRow.swift */,
+				0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */,
+				0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */,
+			);
+			path = ProfileView;
+			sourceTree = "<group>";
+		};
+		B82E1B982D06806F005BB2D4 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				B8E916DC2D0192E900345B89 /* MakeHomeView.swift */,
+				B86A23FE2D02D3E7007D69D3 /* JoinHomeView.swift */,
+				B86A23F82D02CBF7007D69D3 /* EnterHomeView.swift */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
 		B86F34A62CF96F920040BB33 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -415,18 +448,9 @@
 		B86F351B2CF970040040BB33 /* UserView */ = {
 			isa = PBXGroup;
 			children = (
-				B86F351C2CF970130040BB33 /* EmailLoginView.swift */,
-				0B9CB6182D030EAA00FA1075 /* LoginView.swift */,
-				0B9CB6292D04235000FA1075 /* SignInWithKakaoView.swift */,
-				0B9CB61C2D041FFB00FA1075 /* SignInWithAppleView.swift */,
-				B8E916452D016C6F00345B89 /* MyPageView.swift */,
-				0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */,
-				0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */,
-				B8E916472D016C8300345B89 /* ProfileRow.swift */,
-				B8E916492D016C8F00345B89 /* ProfileView.swift */,
-				B8E916DC2D0192E900345B89 /* MakeHomeView.swift */,
-				B86A23F82D02CBF7007D69D3 /* EnterHomeView.swift */,
-				B86A23FE2D02D3E7007D69D3 /* JoinHomeView.swift */,
+				B82E1B982D06806F005BB2D4 /* HomeView */,
+				B82E1B972D06805F005BB2D4 /* ProfileView */,
+				B82E1B962D06803B005BB2D4 /* SignInView */,
 			);
 			path = UserView;
 			sourceTree = "<group>";

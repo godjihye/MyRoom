@@ -19,8 +19,11 @@ router.get("/:locationId", itemController.findAllItem);
 router.get("/detail/:itemId", itemController.findItem);
 router.post("/search", itemController.findItemByName);
 router.delete("/:itemId", itemController.deleteItem);
-router.patch("/:itemId", upload.single("photo"));
-router.patch("/:itemId", itemController.updateItem);
+
+router.post("/edit/:itemId", upload.single("photo"));
+router.post("/edit/:itemId", itemController.updateItem);
+
+// router.patch("/:itemId", itemController.updateItem);
 router.get("/fav/:homeId", itemController.findAllFavItem);
 router.get("/allItem/:homeId", itemController.findAllItemByHomeId);
 

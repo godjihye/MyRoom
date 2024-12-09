@@ -1,5 +1,5 @@
 const models = require("../models");
-const { Op } = require("sequelize"); // Sequelize operators 가져오기
+const { Op } = require("sequelize"); // Sequelize operators 가져오기 - search
 
 // 1. Item 생성
 const createItem = async (data) => {
@@ -79,7 +79,7 @@ const updateItem = async (id, data) => {
       id,
     },
   });
-  return await models.Item.findOne({where: {id}})
+  return await models.Item.findOne({ where: { id } });
 };
 // 6. Fav Item 조회
 const findAllFavItem = async (id) => {
