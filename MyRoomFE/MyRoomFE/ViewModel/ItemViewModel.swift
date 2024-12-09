@@ -57,6 +57,7 @@ class ItemViewModel: ObservableObject {
 				case 200..<300:
 					do {
 						guard let data = response.data else { return }
+						log("\(String(data:data, encoding: .utf8))")
 						let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 						self.isShowingAlert = true
 						self.message = root.message
@@ -120,7 +121,7 @@ class ItemViewModel: ObservableObject {
 	//MARK: - 3. Update Item (** patch)
 	func editItem(itemId: Int, itemName: String?, purchaseDate: String?, expiryDate: String?, itemUrl: String?, image: UIImage?, desc: String?, color: String?, price: Int?, openDate: String?, locationId: Int?) {
 		
-		let url = "\(endPoint)/items/\(itemId)"
+		let url = "\(endPoint)/items/edit/\(itemId)"
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
 		
 		let formData = MultipartFormData()
@@ -166,7 +167,7 @@ class ItemViewModel: ObservableObject {
 			formData.append(locationId.description.data(using: .utf8)!, withName: "locationId")
 			log("formData appended! locationId")
 		}
-		AF.upload(multipartFormData: formData, to: url, method: .patch, headers: headers).response { response in
+		AF.upload(multipartFormData: formData, to: url, headers: headers).response { response in
 			if let statusCode = response.response?.statusCode {
 				switch statusCode {
 				case 200..<300:
@@ -213,14 +214,43 @@ class ItemViewModel: ObservableObject {
 	func updateItemFav(itemId: Int, itemFav: Bool) async {
 		let url = "\(endPoint)/items/\(itemId)"
 		let params: Parameters = [
-			"isFav": !itemFav
+			"isFav": itemFav
 		]
-		do {
-			let response = try await AF.request(url, method: .patch, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			log("updateItemFav complete! \(response.description)", trait: .success)
-		} catch {
-			log("updateItemFav Error", trait: .error)
-			log("do-try-catch error!", trait: .error)
+		log(" isFav 는 \(!itemFav)에서 \(itemFav)로 변경되어야 함")
+		let response = AF.request(url, method: .patch, parameters: params, encoding: JSONEncoding.default).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data {
+						do {
+							let root = try JSONDecoder().decode(ItemRoot.self, from: data)
+							log("root.item.isfav로 변경됨: \(root.item.isFav)")
+							self.isShowingAlert = true
+							DispatchQueue.main.async {
+								self.favItems.append(root.item)
+							}
+							self.message = root.message
+						} catch let error {
+							self.isShowingAlert = true
+							self.message = error.localizedDescription
+						}
+					}
+				case 300..<500:
+					if let data = response.data {
+						do {
+							let res = try JSONDecoder().decode(ApiResponse.self, from: data)
+							self.isShowingAlert = true
+							self.message = res.message
+						} catch let error {
+							self.isShowingAlert = true
+							self.message = error.localizedDescription
+						}
+					}
+				default:
+					self.isShowingAlert = true
+					self.message = "network error"
+				}
+			}
 		}
 	}
 	

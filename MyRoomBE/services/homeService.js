@@ -68,8 +68,8 @@ const findInviteCode = async (id) => {
 
 // 6. 초대코드 재발급
 const refreshInviteCode = async (id) => {
-  const inviteCode = await generateCode(id);
-  console.log(inviteCode);
+  const inviteCode = await generateInviteCode(id);
+
   return inviteCode;
 };
 

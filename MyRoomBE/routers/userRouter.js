@@ -7,15 +7,24 @@ const secret = process.env.JWT_SECRET;
 
 const userController = require("../controllers/userController");
 
+// 1. 로그인
 router.post("/sign-in", userController.login);
+
+// 2. 회원가입
 router.post("/sign-up", userController.createUser);
-router.post("/:userId", upload.single("userImage"));
-router.post("/:userId", userController.uploadImage);
-router.patch("/:userId", userController.updateUser);
-router.get("/info/:userId", userController.findUser);
+
+// 3. 소셜 로그인
 router.post("/social/login", userController.socialLogin);
+
+// 4. 회원정보 조회
+router.get("/info/:userId", userController.findUser);
+
+// 5. 회원정보 수정
+router.post("/:userId", upload.single("userImage"));
+router.post("/:userId", userController.updateUser);
+
+// 6. 회원탈퇴
 router.delete("/:userId", userController.deleteUser);
-router.post("/social/signup", userController.socialSignUp);
 
 module.exports = router;
 

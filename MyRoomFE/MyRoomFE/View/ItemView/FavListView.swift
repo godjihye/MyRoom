@@ -18,37 +18,46 @@ struct FavListView: View {
 		NavigationStack {
 			ScrollView {
 				VStack {
-					HStack {
-						Text("Fav List ✨")
-							.font(.title)
-							.bold()
-							.padding(.top)
-						Spacer()
-					}
-					.padding(.horizontal)
-					
-					if !itemVM.favItems.isEmpty {
-						LazyVGrid(columns: columns, spacing: 16) {
-							ForEach(itemVM.favItems) { item in
-								if item.isFav {
-									NavigationLink {
-										ItemDetailView(item: item)
-									} label: {
-										FavItemRow(item: item)
-									}
-								}
-							}
-						}
-					} else { Text("Fav에 추가된 아이템이 없습니다.")
-						.padding(.top, 250)}
+					titleView
+					list
 				}
 			}
 			.frame(maxWidth: .infinity)
 			.background(Color.background)
 			.task {
-				if itemVM.favItems.isEmpty {
-					await itemVM.fetchFavItems()
+				await itemVM.fetchFavItems()
+			}
+		}
+	}
+	
+	private var titleView: some View {
+		HStack {
+			Text("Fav List ✨")
+				.font(.title)
+				.bold()
+				.padding(.top)
+			Spacer()
+		}
+		.padding(.horizontal)
+	}
+	
+	private var list: some View {
+		Group {
+			if !itemVM.favItems.isEmpty {
+				LazyVGrid(columns: columns, spacing: 16) {
+					ForEach(itemVM.favItems) { item in
+						if item.isFav {
+							NavigationLink {
+								ItemDetailView(item: item)
+							} label: {
+								FavItemRow(item: item)
+							}
+						}
+					}
 				}
+			} else {
+				Text("Fav에 추가된 아이템이 없습니다.")
+					.padding(.top, 250)
 			}
 		}
 	}

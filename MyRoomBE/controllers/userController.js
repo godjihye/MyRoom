@@ -1,6 +1,9 @@
+// userController.js
+//
+
 const userService = require("../services/userService");
 
-// 1. 로그인
+// 1. Login
 const login = async (req, res) => {
   try {
     const { token, user } = await userService.login(req.body);
@@ -12,7 +15,7 @@ const login = async (req, res) => {
   }
 };
 
-// 2. 회원가입
+// 2. Register
 const createUser = async (req, res) => {
   try {
     const newUser = await userService.createUser(req.body);
@@ -26,20 +29,32 @@ const createUser = async (req, res) => {
   }
 };
 
-// 4. 회원 탈퇴
-const deleteUser = async (req, res) => {
+// 3. Social Login (apple, kakao)
+const socialLogin = async (req, res) => {
   try {
-    const result = await userService.deleteUser(req.params.userId);
+    const { token, user } = await userService.socialLogin(req.body.userName);
     res
       .status(200)
-      .json({ success: true, message: "회원 탈퇴가 완료되었습니다." });
+      .json({ success: true, message: "social login success", token, user });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ success: false, message: e.message });
   }
 };
 
-// 5. 회원 정보 수정
-const uploadImage = async (req, res) => {
+// 4. Find User By PK
+const findUser = async (req, res) => {
+  try {
+    const user = await userService.findUserById(req.params.userId);
+    res
+      .status(200)
+      .json({ success: true, message: "회원 정보 조회 성공", user: user });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+};
+
+// 5. Update User Info
+const updateUser = async (req, res) => {
   const userData = req.body;
   userData.userImage = req.filename;
   const userId = req.params.userId;
@@ -55,62 +70,23 @@ const uploadImage = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+// 6. Delete User
+const deleteUser = async (req, res) => {
   try {
-    const newData = await userService.updateUser(req.params.userId, req.body);
-    console.log(req.body);
-    res.status(200).json({
-      success: true,
-      message: "회원 정보가 수정되었습니다.",
-      user: newData,
-    });
-  } catch (e) {
-    res.status(500).json({ success: false, error: e.message });
-  }
-};
-
-const findUser = async (req, res) => {
-  try {
-    const user = await userService.findUserById(req.params.userId);
+    const result = await userService.deleteUser(req.params.userId);
     res
       .status(200)
-      .json({ success: true, message: "회원 정보 조회 성공", user: user });
+      .json({ success: true, message: "회원 탈퇴가 완료되었습니다." });
   } catch (e) {
-    res.status(500).json({ success: false, error: e.message });
-  }
-};
-
-const socialLogin = async (req, res) => {
-  try {
-    const { token, user } = await userService.findUserByUserName(
-      req.body.userName
-    );
-    res
-      .status(200)
-      .json({ success: true, message: "Login Successful", token, user });
-  } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
-  }
-};
-
-const socialSignUp = async (req, res) => {
-  try {
-    const data = await userService.socialSignUp(req.body.email);
-    res
-      .status(200)
-      .json({ success: true, message: "카카오 회원가입 성공", user: data });
-  } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ error: e.message });
   }
 };
 
 module.exports = {
   login,
   createUser,
-  deleteUser,
-  uploadImage,
-  updateUser,
-  findUser,
   socialLogin,
-  socialSignUp,
+  findUser,
+  updateUser,
+  deleteUser,
 };

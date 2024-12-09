@@ -10,7 +10,7 @@ const createLocation = async (req, res) => {
   }
 };
 
-// 2. Room하나의 Location 전체 조회
+// 2-1. Find Location By RoomId
 const findAllLocation = async (req, res) => {
   try {
     const locations = await locationService.findAllLocation(req.params.roomId);
@@ -20,7 +20,7 @@ const findAllLocation = async (req, res) => {
   }
 };
 
-//3. Location 상세 조회
+// 2-2. Find Location By PK
 const findLocation = async (req, res) => {
   try {
     const location = await locationService.findLocation(req.params.locationId);
@@ -30,17 +30,7 @@ const findLocation = async (req, res) => {
   }
 };
 
-// 4. Location 삭제
-const deleteLocation = async (req, res) => {
-  try {
-    await locationService.deleteLocation(req.params.locationId);
-    res.status(202).json({ success: "true" });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-};
-
-// 5. Location 수정
+// 3. Update Location
 const updateLocation = async (req, res) => {
   try {
     const result = await locationService.updateLocation(
@@ -53,10 +43,11 @@ const updateLocation = async (req, res) => {
   }
 };
 
-const findList = async (req, res) => {
+// 4. Delete Location
+const deleteLocation = async (req, res) => {
   try {
-    const result = await locationService.findList(req.param.userId);
-    res.status(200).json({ documents: result });
+    await locationService.deleteLocation(req.params.locationId);
+    res.status(202).json({ success: "true" });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -66,7 +57,6 @@ module.exports = {
   createLocation,
   findAllLocation,
   findLocation,
-  deleteLocation,
   updateLocation,
-  findList,
+  deleteLocation,
 };

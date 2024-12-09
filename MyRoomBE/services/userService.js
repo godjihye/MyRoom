@@ -13,7 +13,7 @@ const createHash = async (password, saltRound) => {
   return hashed;
 };
 
-// 1. login
+// 1. Login
 const login = async (data) => {
   const { userName, password } = data;
   const user = await userDao.getUserByUserName(userName);
@@ -30,7 +30,7 @@ const login = async (data) => {
   return { token, user };
 };
 
-// 2. createUser
+// 2. Register
 const createUser = async (data) => {
   const existUser = await userDao.getUserByUserName(data.userName);
   if (!existUser) {
@@ -41,43 +41,13 @@ const createUser = async (data) => {
     throw new Error("이미 존재하는 아이디입니다.");
   }
 };
-// 3. logout
 
-// 4. deleteUser
-const deleteUser = async (id) => {
-  return await userDao.deleteUser(id);
-};
-// 5. updateUser
-const updateUser = async (id, data) => {
-  return await userDao.updateUser(id, data);
-};
-
-const findUserById = async (id) => {
-  try {
-    // 1. ID로 사용자 조회 (비밀번호 제외)
-    const user = await userDao.getUserByIDExcludePW(id);
-    if (!user) {
-      throw new Error("사용자를 찾을 수 없습니다.");
-    }
-
-    // 2. 해당 사용자의 mates 조회
-    const mates = await userDao.findMates(user.homeId);
-
-    // 3. user 객체에 mates 추가
-    const userData = user.toJSON();
-    userData.mates = mates;
-
-    // 4. 결과 반환
-    return userData;
-  } catch (error) {
-    throw new Error(error.message); // 예외 발생 시 에러 던지기
-  }
-};
-
-const findUserByUserName = async (userName) => {
+// 3. Social Login
+const socialLogin = async (userName) => {
   let user = await userDao.getUserByUserNameExcludePW(userName);
+  // 소셜 로그인 계정 정보가 db에 없으면 계정 생성
   if (!user) {
-    const nickname = makeUniqueNickname();
+    const nickname = makeRandomNickname();
     user = await userDao.createUser({ userName: userName, nickname: nickname });
   }
   const token = jwt.sign({ userId: user.id }, secret, {
@@ -86,7 +56,34 @@ const findUserByUserName = async (userName) => {
   return { token, user };
 };
 
-function makeUniqueNickname() {
+// 4. Find User By PK
+const findUserById = async (id) => {
+  try {
+    const user = await userDao.getUserByIDExcludePW(id);
+    if (!user) {
+      throw new Error("사용자를 찾을 수 없습니다.");
+    }
+    const mates = await userDao.findMates(user.homeId);
+    const userData = user.toJSON();
+    userData.mates = mates;
+    return userData;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// 5. Update User Info
+const updateUser = async (id, data) => {
+  return await userDao.updateUser(id, data);
+};
+
+// 6. Delete User
+const deleteUser = async (id) => {
+  return await userDao.deleteUser(id);
+};
+
+// Nickname with Random Number
+function makeRandomNickname() {
   const randomNum = Math.floor(Math.random() * 1000);
   return "마루미" + randomNum;
 }
@@ -94,8 +91,8 @@ function makeUniqueNickname() {
 module.exports = {
   login,
   createUser,
-  deleteUser,
-  updateUser,
+  socialLogin,
   findUserById,
-  findUserByUserName,
+  updateUser,
+  deleteUser,
 };
