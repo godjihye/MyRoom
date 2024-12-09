@@ -39,6 +39,7 @@ struct ProfileRow: View {
 			if let userImage = mate?.userImage {
 				AsyncImage(url: URL(string: userImage.addingURLPrefix())) { image in
 					image.resizable()
+						.aspectRatio(contentMode: .fill)
 						.frame(width: 60, height: 60)
 						.clipShape(Circle())
 				} placeholder: {

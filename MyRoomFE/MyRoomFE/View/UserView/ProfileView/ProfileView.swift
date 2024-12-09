@@ -45,8 +45,8 @@ struct ProfileView: View {
 			if let userImage = userVM.userInfo?.userImage {
 				AsyncImage(url: URL(string: userImage.addingURLPrefix())) { image in
 					image.image?.resizable()
-						.frame(width: 150, height: 150)
 						.aspectRatio(contentMode: .fill)
+						.frame(width: 150, height: 150)
 						.clipShape(.circle)
 						.overlay(Circle().stroke(.gray).opacity(0.8))
 						.padding(.top, -100)
@@ -130,6 +130,13 @@ struct ProfileView: View {
 						Text(isCopySuccess ? "복사완료" : "복사하기")
 					}
 					.foregroundStyle(isCopySuccess ? .red : .accent)
+					.buttonStyle(.bordered)
+					Button {
+						userVM.refreshInviteCode()
+					} label: {
+						 Text("코드 재발급")
+					}
+					.foregroundStyle(.secondary)
 					.buttonStyle(.bordered)
 				}
 			}

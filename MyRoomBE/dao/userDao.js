@@ -5,17 +5,42 @@ const getUserByUserName = async (data) => {
   return await models.User.findOne({ where: { userName: data } });
 };
 
-const getUserByIDExcludePW = async(id)=> {
-  return await models.User.findOne({ attributes: ['id', 'userName', 'nickname', 'homeId', 'userImage', 'createdAt', 'updatedAt'], where: { id } });
-}
+const getUserByIDExcludePW = async (id) => {
+  return await models.User.findOne({
+    attributes: [
+      "id",
+      "userName",
+      "nickname",
+      "homeId",
+      "userImage",
+      "createdAt",
+      "updatedAt",
+    ],
+    where: { id },
+  });
+};
 
-const getUserByUserNameExcludePW = async(userName) => {
-  return await models.User.findOne({ attributes: ['id', 'userName', 'nickname', 'homeId', 'userImage', 'createdAt', 'updatedAt'], where: { userName } });
-}
+const getUserByUserNameExcludePW = async (userName) => {
+  return await models.User.findOne({
+    attributes: [
+      "id",
+      "userName",
+      "nickname",
+      "homeId",
+      "userImage",
+      "createdAt",
+      "updatedAt",
+    ],
+    where: { userName },
+  });
+};
 // id: homeId
-const findMates = async(id)=> {
-  return await models.User.findAll({attributes: ['id','userImage', 'nickname'], where: { homeId: id}})
-}
+const findMates = async (id) => {
+  return await models.User.findAll({
+    attributes: ["id", "userImage", "nickname"],
+    where: { homeId: id },
+  });
+};
 // 2. 회원 가입
 const createUser = async (data) => {
   return await models.User.create(data);
@@ -34,7 +59,17 @@ const updateUser = async (id, data) => {
     where: { id },
   });
   return await models.User.findOne({
-    attributes: ['id', 'userName', 'nickname', 'homeId', 'userImage', 'createdAt', 'updatedAt'], where: { id }})
+    attributes: [
+      "id",
+      "userName",
+      "nickname",
+      "homeId",
+      "userImage",
+      "createdAt",
+      "updatedAt",
+    ],
+    where: { id },
+  });
 };
 
 module.exports = {

@@ -74,17 +74,28 @@ const joinHomeWithInviteCode = async (req, res) => {
   }
 };
 
-const findInviteCode = async(req, res)=> {
+const findInviteCode = async (req, res) => {
   try {
-    const {inviteCode} = await homeService.findInviteCode(req.params.homeId)
+    const { inviteCode } = await homeService.findInviteCode(req.params.homeId);
 
-      res.status(200).json({inviteCode})
-    
+    res.status(200).json({ inviteCode });
+
     //res.status(404).json({error: "home not found"})
-  } catch(e) {
-    res.status(500).json({error: e.message})
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
-}
+};
+
+const refreshInviteCode = async (req, res) => {
+  try {
+    const inviteCode = await homeService.refreshInviteCode(req.params.homeId);
+    console.log(inviteCode);
+    res.status(200).json({ inviteCode: inviteCode });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+};
+
 module.exports = {
   createHome,
   findHomeByPK,
@@ -92,4 +103,5 @@ module.exports = {
   generateInviteCode,
   joinHomeWithInviteCode,
   findInviteCode,
+  refreshInviteCode,
 };
