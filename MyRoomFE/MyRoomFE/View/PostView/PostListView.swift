@@ -51,6 +51,11 @@ struct PostListView: View {
                     }
                 }
             }
+            .refreshable {
+                postVM.page = 1
+                postVM.posts.removeAll()
+                await postVM.fetchPosts() 
+            }
         } detail: {
             Text("커뮤니티게시판")
         }

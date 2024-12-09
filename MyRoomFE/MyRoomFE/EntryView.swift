@@ -32,6 +32,7 @@ struct EntryView: View {
                     .tabItem {
                         Text("chatTEST")
                     }
+                
 			}
 		} else {
 			LoginView()
