@@ -20,6 +20,11 @@
 		0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */; };
 		0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */; };
 		B82E1B9A2D06BB11005BB2D4 /* HeartAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B992D06BB11005BB2D4 /* HeartAnimationView.swift */; };
+		B82E1B9D2D06D373005BB2D4 /* ChatRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B9C2D06D373005BB2D4 /* ChatRowView.swift */; };
+		B82E1B9F2D06D38C005BB2D4 /* PostAddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */; };
+		B82E1BA12D06D3E5005BB2D4 /* onCustomTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1BA02D06D3E5005BB2D4 /* onCustomTapGesture.swift */; };
+		B82E1BA32D06D3F5005BB2D4 /* CustomTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1BA22D06D3F5005BB2D4 /* CustomTapGesture.swift */; };
+		B82E1BA52D06D425005BB2D4 /* UsedAddToDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1BA42D06D425005BB2D4 /* UsedAddToDetailView.swift */; };
 		B86A23F92D02CBF7007D69D3 /* EnterHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23F82D02CBF7007D69D3 /* EnterHomeView.swift */; };
 		B86A23FB2D02D20F007D69D3 /* WideButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23FA2D02D20F007D69D3 /* WideButtonLabel.swift */; };
 		B86A23FF2D02D3E7007D69D3 /* JoinHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23FE2D02D3E7007D69D3 /* JoinHomeView.swift */; };
@@ -119,6 +124,11 @@
 		0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewModel.swift; sourceTree = "<group>"; };
 		0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipartFormData+AppendOptionalValue.swift"; sourceTree = "<group>"; };
 		B82E1B992D06BB11005BB2D4 /* HeartAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartAnimationView.swift; sourceTree = "<group>"; };
+		B82E1B9C2D06D373005BB2D4 /* ChatRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRowView.swift; sourceTree = "<group>"; };
+		B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddPhotoView.swift; sourceTree = "<group>"; };
+		B82E1BA02D06D3E5005BB2D4 /* onCustomTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onCustomTapGesture.swift; sourceTree = "<group>"; };
+		B82E1BA22D06D3F5005BB2D4 /* CustomTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTapGesture.swift; sourceTree = "<group>"; };
+		B82E1BA42D06D425005BB2D4 /* UsedAddToDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedAddToDetailView.swift; sourceTree = "<group>"; };
 		B86A23F82D02CBF7007D69D3 /* EnterHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHomeView.swift; sourceTree = "<group>"; };
 		B86A23FA2D02D20F007D69D3 /* WideButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideButtonLabel.swift; sourceTree = "<group>"; };
 		B86A23FE2D02D3E7007D69D3 /* JoinHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinHomeView.swift; sourceTree = "<group>"; };
@@ -199,37 +209,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8E917982D01A55C00345B89 /* FirebasePerformance in Frameworks */,
-				B8E9177A2D01A50F00345B89 /* FirebaseAppDistribution-Beta in Frameworks */,
 				0B9CB6262D04227800FA1075 /* KakaoSDKCertCore in Frameworks */,
-				B8E9178E2D01A55C00345B89 /* FirebaseFunctionsCombine-Community in Frameworks */,
-				B8E9177E2D01A55C00345B89 /* FirebaseAuthCombine-Community in Frameworks */,
 				B88C0A2C2CF954F9007844E4 /* SVProgressHUD in Frameworks */,
-				B8E9179C2D01A55C00345B89 /* FirebaseStorage in Frameworks */,
-				B8E9178A2D01A55C00345B89 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				0B9CB6222D04227800FA1075 /* KakaoSDKAuth in Frameworks */,
-				B8E917762D01A50F00345B89 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				0B9CB6202D04227800FA1075 /* KakaoSDK in Frameworks */,
 				B88C0A292CF95406007844E4 /* Alamofire in Frameworks */,
-				B8E917942D01A55C00345B89 /* FirebaseMLModelDownloader in Frameworks */,
-				B8E917822D01A55C00345B89 /* FirebaseCrashlytics in Frameworks */,
-				B8E917A02D01A55C00345B89 /* FirebaseVertexAI in Frameworks */,
-				B8E917962D01A55C00345B89 /* FirebaseMessaging in Frameworks */,
-				B8E917922D01A55C00345B89 /* FirebaseInstallations in Frameworks */,
-				B8E917842D01A55C00345B89 /* FirebaseDatabase in Frameworks */,
 				0B9CB6282D04227800FA1075 /* KakaoSDKCommon in Frameworks */,
-				B8E917722D01A50F00345B89 /* FirebaseAnalytics in Frameworks */,
-				B8E917802D01A55C00345B89 /* FirebaseCore in Frameworks */,
-				B8E917902D01A55C00345B89 /* FirebaseInAppMessaging-Beta in Frameworks */,
 				0B9CB6242D04227800FA1075 /* KakaoSDKCert in Frameworks */,
-				B8E917782D01A50F00345B89 /* FirebaseAppCheck in Frameworks */,
-				B8E9178C2D01A55C00345B89 /* FirebaseFunctions in Frameworks */,
-				B8E9179A2D01A55C00345B89 /* FirebaseRemoteConfig in Frameworks */,
-				B8E917742D01A50F00345B89 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
-				B8E9177C2D01A55C00345B89 /* FirebaseAuth in Frameworks */,
-				B8E9179E2D01A55C00345B89 /* FirebaseStorageCombine-Community in Frameworks */,
-				B8E917862D01A55C00345B89 /* FirebaseDynamicLinks in Frameworks */,
-				B8E917882D01A55C00345B89 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,15 +258,15 @@
 		B86F34A62CF96F920040BB33 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				B15D9A3E2D05A9BE00FA0253 /* CustomTapGesture.swift */,
-				B15D9A3C2D05A94400FA0253 /* onCustomTapGesture.swift */,
 				B86F34A22CF96F920040BB33 /* Array+RawRepresentable.swift */,
 				B86F34A32CF96F920040BB33 /* DateFormatter.swift */,
 				B86F34A42CF96F920040BB33 /* LogManager.swift */,
 				B89D55252CFE9F8B00DEE4AC /* String+AzureStorageURL.swift */,
 				B86F34A52CF96F920040BB33 /* UIApplication+KeyboardExtension.swift */,
+				B82E1BA22D06D3F5005BB2D4 /* CustomTapGesture.swift */,
 				B8E916D82D018B4500345B89 /* String+Validate.swift */,
 				0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */,
+				B82E1BA02D06D3E5005BB2D4 /* onCustomTapGesture.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -357,11 +343,11 @@
 		B86F34CD2CF96F920040BB33 /* PostView */ = {
 			isa = PBXGroup;
 			children = (
+				B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */,
 				B86F34C92CF96F920040BB33 /* PostAddView.swift */,
 				B86F34CA2CF96F920040BB33 /* PostDetailView.swift */,
 				B86F34CB2CF96F920040BB33 /* PostListView.swift */,
 				B86F34CC2CF96F920040BB33 /* PostRowView.swift */,
-				B15D9A3A2D056DF400FA0253 /* PostAddPhotoView.swift */,
 			);
 			path = PostView;
 			sourceTree = "<group>";
@@ -370,13 +356,13 @@
 			isa = PBXGroup;
 			children = (
 				B86F34CE2CF96F920040BB33 /* UsedAddView.swift */,
+				B82E1BA42D06D425005BB2D4 /* UsedAddToDetailView.swift */,
 				B86F34CF2CF96F920040BB33 /* UsedDetailView.swift */,
 				B86F34D02CF96F920040BB33 /* UsedItemListView.swift */,
 				B86F34D12CF96F920040BB33 /* UsedItemRowView.swift */,
 				B86F34D22CF96F920040BB33 /* UsedListView.swift */,
 				B86F34D32CF96F920040BB33 /* UsedRowView.swift */,
 				B86F34D42CF96F920040BB33 /* UsedWebView.swift */,
-				B1A4BB3E2D022B11005DF894 /* UsedAddToDetailView.swift */,
 			);
 			path = UsedView;
 			sourceTree = "<group>";
@@ -459,8 +445,8 @@
 			isa = PBXGroup;
 			children = (
 				B8E917A12D01A60D00345B89 /* ChatListView.swift */,
+				B82E1B9C2D06D373005BB2D4 /* ChatRowView.swift */,
 				B8E917A22D01A60D00345B89 /* ChatView.swift */,
-				B1A4BB712D02DA11005DF894 /* ChatRowView.swift */,
 			);
 			name = ChatView;
 			path = MyRoomFE/View/ChatView;
@@ -486,30 +472,6 @@
 			packageProductDependencies = (
 				B88C0A282CF95406007844E4 /* Alamofire */,
 				B88C0A2B2CF954F9007844E4 /* SVProgressHUD */,
-				B8E917712D01A50F00345B89 /* FirebaseAnalytics */,
-				B8E917732D01A50F00345B89 /* FirebaseAnalyticsOnDeviceConversion */,
-				B8E917752D01A50F00345B89 /* FirebaseAnalyticsWithoutAdIdSupport */,
-				B8E917772D01A50F00345B89 /* FirebaseAppCheck */,
-				B8E917792D01A50F00345B89 /* FirebaseAppDistribution-Beta */,
-				B8E9177B2D01A55C00345B89 /* FirebaseAuth */,
-				B8E9177D2D01A55C00345B89 /* FirebaseAuthCombine-Community */,
-				B8E9177F2D01A55C00345B89 /* FirebaseCore */,
-				B8E917812D01A55C00345B89 /* FirebaseCrashlytics */,
-				B8E917832D01A55C00345B89 /* FirebaseDatabase */,
-				B8E917852D01A55C00345B89 /* FirebaseDynamicLinks */,
-				B8E917872D01A55C00345B89 /* FirebaseFirestore */,
-				B8E917892D01A55C00345B89 /* FirebaseFirestoreCombine-Community */,
-				B8E9178B2D01A55C00345B89 /* FirebaseFunctions */,
-				B8E9178D2D01A55C00345B89 /* FirebaseFunctionsCombine-Community */,
-				B8E9178F2D01A55C00345B89 /* FirebaseInAppMessaging-Beta */,
-				B8E917912D01A55C00345B89 /* FirebaseInstallations */,
-				B8E917932D01A55C00345B89 /* FirebaseMLModelDownloader */,
-				B8E917952D01A55C00345B89 /* FirebaseMessaging */,
-				B8E917972D01A55C00345B89 /* FirebasePerformance */,
-				B8E917992D01A55C00345B89 /* FirebaseRemoteConfig */,
-				B8E9179B2D01A55C00345B89 /* FirebaseStorage */,
-				B8E9179D2D01A55C00345B89 /* FirebaseStorageCombine-Community */,
-				B8E9179F2D01A55C00345B89 /* FirebaseVertexAI */,
 				0B9CB61F2D04227800FA1075 /* KakaoSDK */,
 				0B9CB6212D04227800FA1075 /* KakaoSDKAuth */,
 				0B9CB6232D04227800FA1075 /* KakaoSDKCert */,
@@ -547,7 +509,6 @@
 			packageReferences = (
 				B88C0A272CF95406007844E4 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				B88C0A2A2CF954F9007844E4 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
-				B8E917702D01A50F00345B89 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				0B9CB61E2D04227800FA1075 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -596,6 +557,7 @@
 				B86F34ED2CF96F920040BB33 /* FullScreenImageView.swift in Sources */,
 				B86A23F92D02CBF7007D69D3 /* EnterHomeView.swift in Sources */,
 				B86F351D2CF970130040BB33 /* EmailLoginView.swift in Sources */,
+				B82E1BA12D06D3E5005BB2D4 /* onCustomTapGesture.swift in Sources */,
 				B8E917A72D01A63700345B89 /* ChatViewModel.swift in Sources */,
 				B86F34EE2CF96F920040BB33 /* AddItemDatePicker.swift in Sources */,
 				B86F34EF2CF96F920040BB33 /* AddItemTextField.swift in Sources */,
@@ -604,7 +566,6 @@
 				B86F34F02CF96F920040BB33 /* CustomTextField.swift in Sources */,
 				B86A23FF2D02D3E7007D69D3 /* JoinHomeView.swift in Sources */,
 				B8E9164A2D016C8F00345B89 /* ProfileView.swift in Sources */,
-				B15D9A3D2D05A96500FA0253 /* onCustomTapGesture.swift in Sources */,
 				B86F34F22CF96F920040BB33 /* ImgUploadRectBtn.swift in Sources */,
 				B86F34F32CF96F920040BB33 /* ImagePicker.swift in Sources */,
 				B86F34F42CF96F920040BB33 /* SearchBar.swift in Sources */,
@@ -614,17 +575,16 @@
 				0BBB8ECC2D04A5AF00DF692C /* ChangePWView.swift in Sources */,
 				B8E916D92D018B4500345B89 /* String+Validate.swift in Sources */,
 				B86F34F72CF96F920040BB33 /* WideButton.swift in Sources */,
-				B1A4BB3F2D022B11005DF894 /* UsedAddToDetailView.swift in Sources */,
 				B86F34F82CF96F920040BB33 /* AddItemView.swift in Sources */,
 				B86F34F92CF96F920040BB33 /* AdditionalPhotosView.swift in Sources */,
 				B86F34FA2CF96F920040BB33 /* AddLocationView.swift in Sources */,
-				B15D9A3F2D05A9C800FA0253 /* CustomTapGesture.swift in Sources */,
 				B86F34FB2CF96F920040BB33 /* AddRoomView.swift in Sources */,
 				B86F34FC2CF96F920040BB33 /* FavItemRow.swift in Sources */,
 				B8C3F1C52D0021CC004F8C44 /* AddItemWithAIView.swift in Sources */,
 				B86F34FD2CF96F920040BB33 /* FavListView.swift in Sources */,
 				0B9CB61D2D041FFB00FA1075 /* SignInWithAppleView.swift in Sources */,
 				B86F34FE2CF96F920040BB33 /* HomeListView.swift in Sources */,
+				B82E1B9F2D06D38C005BB2D4 /* PostAddPhotoView.swift in Sources */,
 				B86F34FF2CF96F920040BB33 /* HomeView.swift in Sources */,
 				B86F35002CF96F920040BB33 /* ItemDetailImageView.swift in Sources */,
 				B86F35012CF96F920040BB33 /* ItemDetailView.swift in Sources */,
@@ -634,10 +594,8 @@
 				0B9CB62A2D04235000FA1075 /* SignInWithKakaoView.swift in Sources */,
 				B86F35042CF96F920040BB33 /* PostAddView.swift in Sources */,
 				B86F35052CF96F920040BB33 /* PostDetailView.swift in Sources */,
-				B15D9A3B2D056DF400FA0253 /* PostAddPhotoView.swift in Sources */,
 				B89D55282CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift in Sources */,
 				B86F35062CF96F920040BB33 /* PostListView.swift in Sources */,
-				B1A4BB722D02DA11005DF894 /* ChatRowView.swift in Sources */,
 				B86F35072CF96F920040BB33 /* PostRowView.swift in Sources */,
 				B86F35082CF96F920040BB33 /* UsedAddView.swift in Sources */,
 				B86F35092CF96F920040BB33 /* UsedDetailView.swift in Sources */,
@@ -645,6 +603,7 @@
 				B86A23FB2D02D20F007D69D3 /* WideButtonLabel.swift in Sources */,
 				B86F350B2CF96F920040BB33 /* UsedItemRowView.swift in Sources */,
 				B86F351F2CF9709C0040BB33 /* WideImageButton.swift in Sources */,
+				B82E1BA52D06D425005BB2D4 /* UsedAddToDetailView.swift in Sources */,
 				0BBB8ECA2D048D4900DF692C /* ProfileEditView.swift in Sources */,
 				B86F350C2CF96F920040BB33 /* UsedListView.swift in Sources */,
 				B86F350D2CF96F920040BB33 /* UsedRowView.swift in Sources */,
@@ -654,11 +613,13 @@
 				B86F35112CF96F920040BB33 /* RoomViewModel.swift in Sources */,
 				B86F35122CF96F920040BB33 /* UsedViewModel.swift in Sources */,
 				B86F35132CF96F920040BB33 /* UserViewModel.swift in Sources */,
+				B82E1BA32D06D3F5005BB2D4 /* CustomTapGesture.swift in Sources */,
 				B86F35142CF96F920040BB33 /* ContentView.swift in Sources */,
 				B86F35152CF96F920040BB33 /* EntryView.swift in Sources */,
 				0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */,
 				B86F35162CF96F920040BB33 /* MyRoomFEApp.swift in Sources */,
 				B8E916462D016C6F00345B89 /* MyPageView.swift in Sources */,
+				B82E1B9D2D06D373005BB2D4 /* ChatRowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
