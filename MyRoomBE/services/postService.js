@@ -3,8 +3,8 @@
 
 const postDao = require("../dao/postDao");
 
-const createPost = async (postData, photoData) => {
-  return await postDao.createPost(postData, photoData);
+const createPost = async (postData, photoData, buttonData) => {
+  return await postDao.createPost(postData, photoData, buttonData);
 };
 
 const findPostById = async (id) => {

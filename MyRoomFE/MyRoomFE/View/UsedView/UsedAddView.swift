@@ -31,11 +31,11 @@ struct UsedAddView: View {
     
     @State var isCompleted : Bool = false
     
-    @State var usedTitle : String = "title"
-    @State var usedPrice : Int  = 1000
-    @State var usedContent : String  = "내용"
+    @State var usedTitle : String = "제목"
+    @State var usedPrice : Int = 1000
+    @State var usedContent : String = "네고 정중히 사양합니다"
     
-//    let onRegister: (Item) -> Void 
+    //    let onRegister: (Item) -> Void
     
     var body: some View {
         ScrollView {
@@ -178,13 +178,19 @@ struct UsedAddView: View {
                         .font(.headline)
                         .foregroundColor(.gray)
                         .padding(.horizontal)
-                    TextField("판매아이템에 대한 자세한 설명을 적어주세요", text: $usedContent)
+                    if usedContent.isEmpty {
+                        Text("판매 아이템에 대한 자세한 설명을 적어주세요")
+                            .foregroundColor(.gray)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 12)
+                    }
+                    TextEditor(text: $usedContent)
                         .frame(height: 200)
                         .focused($contentIsFocused)
-                        .padding()
-                        .background(Color.white) // 카드 배경
-                        .cornerRadius(16) // 둥근 모서리
-                        .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4) // 그림자
+                        .padding(4)
+                        .background(Color.white)
+                        .cornerRadius(16)
+                        .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
                         .padding(.horizontal)
                         .overlay(
                             contentError != nil ?
@@ -220,9 +226,7 @@ struct UsedAddView: View {
                 contentError = nil
             }
             usedVM.addUsed(selectedImages: selectedImages, usedTitle: usedTitle, usedPrice: usedPrice, usedContent: usedContent, selectMyItem: selectMyItem) { success in
-                if success {
-                    isCompleted.toggle()
-                }
+                
             }
         }.padding()
     }
@@ -271,8 +275,8 @@ struct UsedAddView: View {
 
 
 
-#Preview {
-    let used = UsedViewModel()
-    UsedAddView().environmentObject(used)
-    
-}
+//#Preview {
+//    let used = UsedViewModel()
+//    UsedAddView().environmentObject(used)
+//
+//}
