@@ -12,6 +12,7 @@ struct HomeListView: View {
 	@State private var isShowingAddRoomView: Bool = false
 	@State private var isShowingAddLocationView: Bool = false
 	@State private var isShowingAlert: Bool = false
+	@State private var isShowingMakeHomeView: Bool = false
 	@State private var removeRoomId: Int = 0
 	@State private var isShowingAlertRemove: Bool = false
 	
@@ -73,6 +74,7 @@ struct HomeListView: View {
 									}
 								}
 							}
+							
 						}
 					}
 					.refreshable {
@@ -80,7 +82,7 @@ struct HomeListView: View {
 							await roomVM.fetchRooms()
 						}
 					}
-				} else {
+				} else if roomVM.isFetchError {
 					VStack {
 						Text("서버 연결을 확인해주세요!")
 						Button("다시 시도하기") {
@@ -90,6 +92,13 @@ struct HomeListView: View {
 						}
 					}
 					.padding(.top, 250)
+				} else {
+					Text("등록된 집이 없습니다.")
+					Button {
+						isShowingMakeHomeView = true
+					} label: {
+						Text("집 등록하기")
+					}
 				}
 				Spacer()
 			}

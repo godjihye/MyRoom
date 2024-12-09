@@ -2,15 +2,17 @@ const express = require("express");
 const roomController = require("../controllers/roomController");
 const router = express.Router();
 
-// 1. Room 생성
+// 1. Create Room
 router.post("/", roomController.createRoom);
-// 2. 한 유저의 Room 전체 조회
-router.get("/:userId", roomController.findAllRoom);
-// 3. Room 상세 조회
+// 2-1. Find Rooms By HomeId
+router.get("/:homeId", roomController.findAllRoom);
+// 2-2. Find Room By PK
 router.get("/detail/:roomId", roomController.findRoom);
-// 4. Room 삭제
-router.delete("/:roomId", roomController.deleteRoom);
-// 5. Room 수정
+// 2-3.Find Rooms By HomeId And Location Info
+router.get("/list/:homeId", roomController.getAllRoom);
+// 3. Update Room
 router.put("/:roomId", roomController.updateRoom);
-router.get("/list/:userId", roomController.getAllRoom);
+// 4. Delete Room
+router.delete("/:roomId", roomController.deleteRoom);
+
 module.exports = router;

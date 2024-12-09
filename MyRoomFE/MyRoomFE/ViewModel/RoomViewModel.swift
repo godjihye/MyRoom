@@ -8,32 +8,43 @@
 import Foundation
 import Alamofire
 import SwiftUICore
-
+import SVProgressHUD
 class RoomViewModel: ObservableObject {
 	@Published var rooms: [Room] = []
 	@Published var locations: [Location] = []
 	@Published var message: String = ""
+	@Published var isHaveHome = true
+	@Published var isMakeHomeError: Bool = false
+	@Published var isFetchError: Bool = false
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
-	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
-	let homeId = UserDefaults.standard.value(forKey: "homeId") as! Int
+	let userId = UserDefaults.standard.integer(forKey: "userId")
 	
 	// CRUD
 	
 	// 1. Create
 	/// 1-1) Create Room
-	func makeHome(homeName: String) {
-		let url = "\(endPoint)/home"
-		
-	}
-	
-	/// 1-2) Create Room
-	func addRoom(roomName: String, roomDesc: String) async {
+	func addRoom(roomName: String, roomDesc: String?) async {
 		let url = "\(endPoint)/rooms"
-		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc, "homeId": homeId]
+		let homeId = UserDefaults.standard.integer(forKey: "homeId")
+		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc ?? "", "homeId": homeId]
+		/*
+		AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data {
+						do {
+							let apiResponse = JSONDecoder().decode(<#T##type: Decodable.Type##Decodable.Type#>, from: <#T##Data#>)
+						}
+					}
+				}
+			}
+		}
+		 */
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
-//			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(RoomResponse.self).value
-//			self.rooms = response.documents
+			//			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(RoomResponse.self).value
+			//			self.rooms = response.documents
 			log("addRoom() Complete", trait: .success)
 		} catch {
 			if let afError = error as? AFError {
@@ -43,7 +54,7 @@ class RoomViewModel: ObservableObject {
 			}
 		}
 	}
-	/// 1-3) Create Location
+	/// 1-2) Create Location
 	func addLocation(locationName: String, locationDesc: String, roomId: Int) async {
 		let url = "\(endPoint)/locations"
 		let params: [String: Any] = ["locationName": locationName, "locationDesc": locationDesc, "roomId": roomId]
@@ -58,17 +69,24 @@ class RoomViewModel: ObservableObject {
 	// 2. Read
 	/// 2. Read Rooms/Locations
 	func fetchRooms() async {
+		let homeId = UserDefaults.standard.integer(forKey: "homeId")
 		let url = "\(endPoint)/rooms/list/\(homeId)"
 		do {
 			let response = try await AF.request(url, method: .get).serializingDecodable(RoomResponse.self).value
 			DispatchQueue.main.async {
-				self.rooms = response.documents;
-				self.locations = response.documents.flatMap { $0.locations }
+				self.rooms = response.documents
+				self.locations = response.documents.flatMap { $0.locations}
 			}
 		} catch {
 			if let afError = error as? AFError {
+				DispatchQueue.main.async {
+					self.isFetchError = true
+					self.message = afError.localizedDescription
+				}
 				log("fetchRooms AF Error: \(afError.localizedDescription)", trait: .error)
 			} else {
+				isFetchError = true
+				message = error.localizedDescription
 				log("fetchRooms Unexpected Error: \(error.localizedDescription)", trait: .error)
 			}
 		}
@@ -121,5 +139,5 @@ class RoomViewModel: ObservableObject {
 			log("removeLocation Error: \(error.localizedDescription)", trait: .error)
 		}
 	}
+	
 }
-

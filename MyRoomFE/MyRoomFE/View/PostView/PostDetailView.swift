@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let postPhotoData = [PostPhotoData(id: 1, image: "test1.jpeg"),PostPhotoData(id: 2, image: "test2.jpeg")]
+//let postPhotoData = [PostPhotoData(id: 1, image: "test1.jpeg"),PostPhotoData(id: 2, image: "test2.jpeg")]
 
 struct PostDetailView: View {
     @EnvironmentObject var postVM:PostViewModel
@@ -102,7 +102,7 @@ struct PostDetailView: View {
     }
 }
 
-#Preview {
-    let post = PostViewModel()
-    PostDetailView(post: samplePost, photos: postPhotoData).environmentObject(post)
-}
+//#Preview {
+//    let post = PostViewModel()
+//    PostDetailView(post: samplePost, photos: postPhotoData).environmentObject(post)
+//}

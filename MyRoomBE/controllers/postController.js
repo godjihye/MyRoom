@@ -2,20 +2,23 @@ const postService = require("../services/postService");
 
 const createPost = async (req, res) => {
   console.log("postCreate start~~~~~~~~");
-  const data = req.body.postData;
-  const postData = JSON.parse(data);
+  const postData = req.body.postData;
+  const buttonData = req.body.buttonData
+  const jsonPostData = JSON.parse(postData);
+  const jsonButtonData = JSON.parse(buttonData);
   // const postData = req.body
 
   const photoData = req.files;
 
-  console.log("photo", photoData);
+  console.log("buttonData2",jsonButtonData)
+  
   const thumbnailBlobName = photoData.postThumbnail.find(
     (item) => item.fieldname === "postThumbnail"
   ).blobName;
-  postData.postThumbnail = thumbnailBlobName; //postThumbnail 추가
-
+  jsonPostData.postThumbnail = thumbnailBlobName; //postThumbnail 추가
+  console.log("photo", photoData);
   try {
-    const post = await postService.createPost(postData, photoData);
+    const post = await postService.createPost(jsonPostData, photoData,jsonButtonData);
     res.status(201).json({ post: post });
   } catch (e) {
     res.status(500).json({ error: e.message });

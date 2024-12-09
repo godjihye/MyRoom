@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Alamofire
-
+import SVProgressHUD
 
 
 
@@ -15,20 +15,28 @@ class PostViewModel:ObservableObject {
     @Published var posts:[Post]=[]  //무한스크롤
     @Published var images:[String] = []
     
+    //postAddView
+    @Published var buttonPositions: [[CGPoint]] = [] // 각 이미지별 버튼 위치 배열
+    @Published var buttonItemUrls: [[String]] = [] //각 버튼별 itemUrl 배열
+    
     @Published var message = ""
     @Published var isAlertShowing = false
     @Published var isAddShowing = false
     @Published var isFetchError = false
-    let endPoint = "http://localhost:3000"
+    private var isLoading = false
     
-    private var page = 1
+    let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
+    let userId = UserDefaults.standard.value(forKey: "userId") as! Int
+    
+    var page = 1
     
     //커뮤니티 등록
-    func addPost(selectedImages:[UIImage], postTitle:String, postContent:String ) async {
+    func addPost(selectedImages:[UIImage], postTitle:String, postContent:String,selectItemUrl:[[String]]?,buttonPositions:[[CGPoint]]? ) async {
         let postData: [String:Any?] = [
             "postTitle" : postTitle,
             "postContent" : postContent,
-            "userId" : 1
+            "userId" : userId,
+            
         ]
         
         guard let postDataJson = try? JSONSerialization.data(withJSONObject: postData, options: []) else {
@@ -36,8 +44,35 @@ class PostViewModel:ObservableObject {
             return
         }
         
+        //buttonData 처리
+        var postButtonData: [[String: Any]] = []
+        
+        if let itemUrls = selectItemUrl, let positions = buttonPositions,
+           itemUrls.count == positions.count {
+            
+            for (index, urls) in itemUrls.enumerated() {
+                for (buttonIndex, itemUrl) in urls.enumerated() {
+                    if positions.indices.contains(index),
+                       positions[index].indices.contains(buttonIndex) {
+                        let position = positions[index][buttonIndex]
+                        postButtonData.append([
+                            "positionX": "\(position.x)",
+                            "positionY": "\(position.y)",
+                            "itemUrl": itemUrl
+                        ])
+                    }
+                }
+            }
+        }
+        
+        guard let postButtonDataJson = try? JSONSerialization.data(withJSONObject: postButtonData, options: []) else {
+            print("Failed to encode postButtonData to JSON")
+            return
+        }
+       
         let formData = MultipartFormData()
         formData.append(postDataJson, withName: "postData",mimeType: "application/json")
+        formData.append(postButtonDataJson, withName: "buttonData", mimeType: "application/json")
         
         for (index, image) in selectedImages.enumerated() {
             if let imageData = image.jpegData(compressionQuality: 0.8) {
@@ -48,6 +83,8 @@ class PostViewModel:ObservableObject {
                 if index == 0 {formData.append(imageData, withName: "postThumbnail",fileName: "thumbnail_\(UUID().uuidString).jpeg",mimeType: "image/jpeg") }
             }
         }
+        
+        
         
         let postRegistUrl = "\(endPoint)/posts"
         let headers: HTTPHeaders = [
@@ -61,38 +98,60 @@ class PostViewModel:ObservableObject {
     
     
     // 커뮤니티 검색
-    func fetchPosts() async {
-        print("post fetch start===========")
-        let postUrl = "\(endPoint)/posts/4?page=1&pageSize=10"
+    func fetchPosts(size:Int = 10) async {
+        print("fetchPosts start===========")
         
-        do{
-            let reponse = try await AF.request(postUrl,method: .get).serializingDecodable(PostRoot.self).value
-            
-            if self.posts.isEmpty {
-                self.isAlertShowing = true
-                self.message = "커뮤니티 게시글이 없습니다"
-            }
-            
-            DispatchQueue.main.async {
-                self.posts.append(contentsOf: reponse.posts)
-                self.page += 1
-            }
-            log("fetchPosts Complete", trait: .success)
-        }catch{
-            if let afError = error as? AFError {
-                log("AFError: \(afError.localizedDescription)", trait: .error)
-            } else {
-                log("UnexpectedError: \(error.localizedDescription)", trait: .error)
-            }
-        }
+        guard !isLoading else { return }
+        isLoading = true
+        let postUrl = "\(endPoint)/posts/\(userId)"
+        let params:Parameters = ["page":self.page, "size":size]
         
-        AF.request(postUrl).responseDecodable(of: PostRoot.self) { response in
-            if let jsonData = response.data {
-                if let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) {
-                    print("JSON response: \(json)") }
+        AF.request(postUrl,method:.get,parameters: params).response { response in
+            defer {
+                self.isLoading = false
+                SVProgressHUD.dismiss()
             }
             
-            print(response)
+            if let statusCode = response.response?.statusCode {
+                switch statusCode {
+                case 200..<300:
+                    if let data =
+                        response.data {
+                        do {
+                            let root = try JSONDecoder().decode(PostRoot.self, from: data)
+                            DispatchQueue.main.async {
+                                self.posts.append(contentsOf: root.posts)
+                            }
+                            self.page += 1
+                            if self.posts.isEmpty {
+                                self.isAlertShowing = true
+                                self.message = "커뮤니티 게시글이 없습니다"
+                            }
+                            log("fetchPosts Complete", trait: .success)
+                        }catch let error{
+                            self.isAlertShowing = true
+                            self.message = error.localizedDescription
+                            log("fetchPosts UnexpectedError: \(error.localizedDescription)", trait: .error)
+                        }
+                    }
+                case 300..<500:
+                    if let data = response.data {
+                        do {
+                            self.isAlertShowing = true
+                            let apiError = try JSONDecoder().decode(APIError.self, from: data)
+                            self.message = apiError.message
+                        } catch let error {
+                            self.isAlertShowing = true
+                            self.message = error.localizedDescription
+                        }
+                    }
+                default:
+                    self.isAlertShowing = true
+                    self.message = "네트워크 오류입니다."
+                }
+                self.isLoading = false
+                SVProgressHUD.dismiss()
+            }
         }
     }
     
