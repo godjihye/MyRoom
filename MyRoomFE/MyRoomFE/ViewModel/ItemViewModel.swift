@@ -105,7 +105,22 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
-	/// 2-2. Read Fav Items (All location)
+	//2-2. Find All Items By HomeId
+	func fetchAllItem() async {
+		let url = "\(endPoint)/items/allItem/\(homeId)"
+		do {
+			let response = try await AF.request(url, method: .get)
+				.serializingDecodable(ItemResponse.self).value
+			DispatchQueue.main.async {
+				self.items = response.documents
+			}
+			log("fetchAllItem Complete", trait: .success)
+		} catch {
+			log("fetchAllItem Error: \(error.localizedDescription)", trait: .error)
+		}
+	}
+	
+	/// 2-3. Read Fav Items (All location)
 	func fetchFavItems() async {
 		let url = "\(endPoint)/items/fav/\(homeId)"
 		do {

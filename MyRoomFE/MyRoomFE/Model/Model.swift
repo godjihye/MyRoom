@@ -80,14 +80,17 @@ struct RoomResponse:Codable {
 
 
 //MARK: - POST(커뮤니티 게시글)
-
+struct PostUser: Codable,Equatable {
+	let nickname: String
+	let userImage: String
+}
 struct Post: Identifiable,Codable,Equatable {
     let id: Int
     let postTitle: String
     let postContent: String
     let postThumbnail: String
     
-    let user: User
+    let user: PostUser
     
     let postFav: [PostFavData]?
     var isFavorite:Bool

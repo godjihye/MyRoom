@@ -39,9 +39,11 @@ struct ProfileView: View {
 	private var userInfoImage: some View {
 		Group {
 			Rectangle()
-				.frame(height: 200)
+				.frame(height: 270)
 				.frame(maxWidth: .infinity)
 				.foregroundStyle(.accent)
+				.opacity(0.3)
+				.offset(y: -70)
 			if let userImage = userVM.userInfo?.userImage {
 				AsyncImage(url: URL(string: userImage.addingURLPrefix())) { image in
 					image.image?.resizable()
@@ -49,16 +51,17 @@ struct ProfileView: View {
 						.frame(width: 150, height: 150)
 						.clipShape(.circle)
 						.overlay(Circle().stroke(.gray).opacity(0.8))
-						.padding(.top, -100)
+						.padding(.top, -170)
 				}
 			} else {
 				Image(systemName: "person.circle.fill")
-					.resizable()
-					.frame(width: 150, height: 150)
-					.aspectRatio(contentMode: .fill)
-					.clipShape(.circle)
-					.overlay(Circle().stroke(.gray).opacity(0.8))
-					.padding(.top, -100)
+						.resizable()
+						.frame(width: 150, height: 150)
+						.aspectRatio(contentMode: .fill)
+						.clipShape(Circle())
+						.overlay(Circle().stroke(Color.gray).opacity(0.8))
+						.background(Circle().fill(Color.accent))
+						.padding(.top, -170)
 			}
 		}
 	}
@@ -101,7 +104,6 @@ struct ProfileView: View {
 			showProfileEditView = true
 		}
 		.padding(.horizontal)
-		.padding(.bottom)
 	}
 	//MARK: - Mate Users
 	private var mateList: some View {
@@ -111,12 +113,19 @@ struct ProfileView: View {
 				.font(.title3)
 				.bold()
 				.padding()
-
-			Button {
-				userVM.getInviteCode()
-				showInviteCode = true
-			} label: {
-				Text("동거인 추가하기")
+			if UserDefaults.standard.integer(forKey: "homeId") > 0 {
+				Button {
+					userVM.getInviteCode()
+					showInviteCode = true
+				} label: {
+					Text("동거인 추가하기")
+						.padding(.bottom)
+				}
+			} else {
+				Text("집을 먼저 등록해야 동거인 추가가 가능합니다.")
+					.font(.headline)
+					.foregroundStyle(.indigo)
+					.padding(.bottom)
 			}
 			
 			if showInviteCode && userVM.inviteCode != "" {
@@ -143,8 +152,10 @@ struct ProfileView: View {
 			
 			if let mates = userVM.userInfo?.mates {
 				ForEach(mates) { mate in
-					ProfileRow(mate: mate)
-						.padding(.horizontal)
+					if mate.id != userId {
+						ProfileRow(mate: mate)
+							.padding(.horizontal)
+					}
 				}
 			} else {
 				Text("추가된 동거인이 없습니다.")
@@ -152,11 +163,15 @@ struct ProfileView: View {
 		}
 	}
 	private var logoutBtn: some View {
-		Button {
-			userVM.logout()
-		} label: {
-			Text("로그아웃하기")
-				.foregroundStyle(.gray)
+		VStack {
+			Divider()
+			Button {
+				userVM.logout()
+			} label: {
+				Text("로그아웃하기")
+					.foregroundStyle(.gray)
+					.padding()
+			}
 		}
 	}
 }

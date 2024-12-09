@@ -10,22 +10,9 @@ import AuthenticationServices
 
 struct SignInWithAppleView: View {
 	@EnvironmentObject var userVM: UserViewModel
-	// @State var userId: String?
-	// @State var fullName: PersonNameComponents?
 	@State var email: String?
 	
 	var body: some View {
-		
-		//				if let userId {
-		//					VStack {
-		//						Text("UserId: \(userId)")
-		//						if let email {
-		//							Text("Email: \(email)")
-		//						}
-		//						if let fullName {
-		//							Text("FullName: \(fullName.familyName!) \(fullName.givenName!)")
-		//						}
-		//					}
 		if let email {
 			Text(email)
 		}
@@ -43,6 +30,7 @@ struct SignInWithAppleView: View {
 			if let credential = auth.credential as? ASAuthorizationAppleIDCredential {
 				// self.userId = credential.user
 				self.email = credential.email
+				log("email: \(credential.email)")
 				if let email = self.email {
 					userVM.socialLogin(userName: email)
 				}
