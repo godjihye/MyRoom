@@ -3,35 +3,36 @@
 
 const roomDao = require("../dao/roomDao");
 
-// 1. Room 생성
+// 1. Create Room
 const createRoom = async (data) => {
   return await roomDao.createRoom(data);
 };
-// 2. 한 유저의 Room 전체 조회
+// 2-1. Find Rooms By HomeId
 const findAllRoom = async (id) => {
   return await roomDao.findAllRoom(id);
 };
-// 3. Room 상세 조회
+// 2-2. Find Room By PK
 const findRoom = async (id) => {
   return await roomDao.findRoom(id);
 };
-// 4. Room 삭제
-const deleteRoom = async (id) => {
-  return await roomDao.deleteRoom(id);
+// 2-3.Find Rooms By HomeId And Location Info
+const getAllRoom = async (id) => {
+  return await roomDao.getAllRoom(id);
 };
-// 5. Room 수정
+// 3. Update Room
 const updateRoom = async (id, data) => {
   return await roomDao.updateRoom(id, data);
 };
-const getAllRoom = async (id) => {
-  return await roomDao.getAllRoom(id);
+// 4. Delete Room
+const deleteRoom = async (id) => {
+  return await roomDao.deleteRoom(id);
 };
 
 module.exports = {
   createRoom,
   findAllRoom,
   findRoom,
-  deleteRoom,
-  updateRoom,
   getAllRoom,
+  updateRoom,
+  deleteRoom,
 };

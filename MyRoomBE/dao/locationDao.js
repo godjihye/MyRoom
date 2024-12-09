@@ -1,44 +1,37 @@
 const { where } = require("sequelize");
 const models = require("../models");
 
-// 1. Location 생성
+// 1. Create Location
 const createLocation = async (data) => {
   return await models.Location.create(data);
 };
-// 2. Location 전체 조회
+// 2-1. Find Location By RoomId
 const findAllLocation = async (id) => {
   return await models.Location.findAll({
     where: { roomId: id },
   });
 };
-// 3. Location 상세 조회
+// 2-2. Find Location By PK
 const findLocation = async (id) => {
   return await models.Location.findByPk(id);
 };
-// 4. Location 삭제
-const deleteLocation = async (id) => {
-  return await models.Location.destroy({
-    where: { id },
-  });
-};
-// 5. Location 수정
+// 3. Update Location
 const updateLocation = async (id, data) => {
   return await models.Location.update(data, {
     where: { id },
   });
 };
-const findList = async (id) => {
-  return await models.Location.findAll({
-    where: {
-      id,
-    },
+// 4. Delete Location
+const deleteLocation = async (id) => {
+  return await models.Location.destroy({
+    where: { id },
   });
 };
+
 module.exports = {
   createLocation,
   findAllLocation,
   findLocation,
-  deleteLocation,
   updateLocation,
-  findList,
+  deleteLocation,
 };

@@ -19,6 +19,7 @@
 		0BBB8ECC2D04A5AF00DF692C /* ChangePWView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */; };
 		0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */; };
 		0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */; };
+		B82E1B9A2D06BB11005BB2D4 /* HeartAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B992D06BB11005BB2D4 /* HeartAnimationView.swift */; };
 		B86A23F92D02CBF7007D69D3 /* EnterHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23F82D02CBF7007D69D3 /* EnterHomeView.swift */; };
 		B86A23FB2D02D20F007D69D3 /* WideButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23FA2D02D20F007D69D3 /* WideButtonLabel.swift */; };
 		B86A23FF2D02D3E7007D69D3 /* JoinHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86A23FE2D02D3E7007D69D3 /* JoinHomeView.swift */; };
@@ -141,6 +142,7 @@
 		0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePWView.swift; sourceTree = "<group>"; };
 		0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewModel.swift; sourceTree = "<group>"; };
 		0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipartFormData+AppendOptionalValue.swift"; sourceTree = "<group>"; };
+		B82E1B992D06BB11005BB2D4 /* HeartAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartAnimationView.swift; sourceTree = "<group>"; };
 		B86A23F82D02CBF7007D69D3 /* EnterHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHomeView.swift; sourceTree = "<group>"; };
 		B86A23FA2D02D20F007D69D3 /* WideButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideButtonLabel.swift; sourceTree = "<group>"; };
 		B86A23FE2D02D3E7007D69D3 /* JoinHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinHomeView.swift; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 				B86F34BA2CF96F920040BB33 /* WideButton.swift */,
 				B86F351E2CF9709C0040BB33 /* WideImageButton.swift */,
 				B86A23FA2D02D20F007D69D3 /* WideButtonLabel.swift */,
+				B82E1B992D06BB11005BB2D4 /* HeartAnimationView.swift */,
 			);
 			path = CommonView;
 			sourceTree = "<group>";
@@ -604,6 +607,7 @@
 				B86F34E82CF96F920040BB33 /* Model.swift in Sources */,
 				B86F34E92CF96F920040BB33 /* Sample.swift in Sources */,
 				B86F34EA2CF96F920040BB33 /* CommentAddView.swift in Sources */,
+				B82E1B9A2D06BB11005BB2D4 /* HeartAnimationView.swift in Sources */,
 				B86F34EB2CF96F920040BB33 /* CommentListView.swift in Sources */,
 				0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */,
 				0B9CB6192D030EAA00FA1075 /* LoginView.swift in Sources */,

@@ -28,9 +28,9 @@ const findHomeByPK = async (id) => {
 };
 
 //홈 수정
-const updateHome = async (homeId, data) => {
+const updateHome = async (id, data) => {
   return await models.Home.update(data, {
-    where: { id: homeId },
+    where: { id },
   });
 };
 
@@ -42,13 +42,16 @@ const isExistInviteCode = async (data) => {
 };
 
 // 초대 코드 조회
-const findInviteCode = async(id)=> {
-  return await models.Home.findOne({attributes: ['inviteCode'], where: {id}})
-}
+const findInviteCode = async (id) => {
+  return await models.Home.findOne({
+    attributes: ["inviteCode"],
+    where: { id },
+  });
+};
 module.exports = {
   createHome,
   findHomeByPK,
   updateHome,
   isExistInviteCode,
-  findInviteCode
+  findInviteCode,
 };

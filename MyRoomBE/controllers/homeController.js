@@ -96,6 +96,14 @@ const refreshInviteCode = async (req, res) => {
   }
 };
 
+const deleteHome = async (req, res) => {
+  try {
+    const result = await homeService.deleteHome(req.params.homeId);
+    res.status(200).json({ success: true, message: "홈 삭제 완료" });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+};
 module.exports = {
   createHome,
   findHomeByPK,
@@ -104,4 +112,5 @@ module.exports = {
   joinHomeWithInviteCode,
   findInviteCode,
   refreshInviteCode,
+  deleteHome,
 };

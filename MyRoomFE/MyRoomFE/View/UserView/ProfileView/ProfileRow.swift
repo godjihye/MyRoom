@@ -56,6 +56,7 @@ struct ProfileRow: View {
 	}
 	
 	private var userNickname: some View {
+		
 		HStack {
 			if let nickname = mate?.nickname, let id = mate?.id {
 				Text(nickname)
@@ -64,6 +65,7 @@ struct ProfileRow: View {
 					.font(.footnote)
 					.foregroundStyle(.secondary)
 			}
+			
 		}
 	}
 	
@@ -74,7 +76,7 @@ struct ProfileRow: View {
 		} label: {
 			Text("방출")
 		}
-
+		
 	}
 }
 
