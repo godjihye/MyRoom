@@ -1,6 +1,9 @@
+// userController.js
+//
+
 const userService = require("../services/userService");
 
-// 1. 로그인
+// 1. Login
 const login = async (req, res) => {
   try {
     const { token, user } = await userService.login(req.body);
@@ -12,7 +15,7 @@ const login = async (req, res) => {
   }
 };
 
-// 2. 회원가입
+// 2. Register
 const createUser = async (req, res) => {
   try {
     const newUser = await userService.createUser(req.body);
@@ -26,7 +29,48 @@ const createUser = async (req, res) => {
   }
 };
 
-// 4. 회원 탈퇴
+// 3. Social Login (apple, kakao)
+const socialLogin = async (req, res) => {
+  try {
+    const { token, user } = await userService.socialLogin(req.body.userName);
+    res
+      .status(200)
+      .json({ success: true, message: "social login success", token, user });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+};
+
+// 4. Find User By PK
+const findUser = async (req, res) => {
+  try {
+    const user = await userService.findUserById(req.params.userId);
+    res
+      .status(200)
+      .json({ success: true, message: "회원 정보 조회 성공", user: user });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+};
+
+// 5. Update User Info
+const updateUser = async (req, res) => {
+  const userData = req.body;
+  userData.userImage = req.filename;
+  const userId = req.params.userId;
+  try {
+    const user = await userService.updateUser(userId, userData);
+    res.status(201).json({
+      success: true,
+      message: "이미지가 성공적으로 업로드되었습니다.",
+      user,
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+};
+
+// 6. Delete User
 const deleteUser = async (req, res) => {
   try {
     const result = await userService.deleteUser(req.params.userId);
@@ -38,20 +82,11 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// 5. 회원 정보 수정
-const updateUser = async (req, res) => {
-  try {
-    const newData = await userService.updateUser(req.params.id, req.body);
-    res
-      .status(200)
-      .json({ success: true, message: "회원 정보가 수정되었습니다." });
-  } catch (e) {
-    res.status(500).json({ success: false, error: e.message });
-  }
-};
 module.exports = {
   login,
   createUser,
-  deleteUser,
+  socialLogin,
+  findUser,
   updateUser,
+  deleteUser,
 };

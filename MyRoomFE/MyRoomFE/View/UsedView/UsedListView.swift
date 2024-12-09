@@ -17,7 +17,7 @@ struct UsedListView: View {
                 LazyVStack{
                     ForEach($usedVM.useds) { $used in
                         NavigationLink() {
-                            UsedDetailView(used: $used, photos: used.images)
+                            UsedDetailView(used: $used, photos: used.images).environmentObject(ChatViewModel())
                                 .onAppear {
                                     Task{
                                         await usedVM.updateViewCnt(usedId: used.id)
@@ -34,7 +34,9 @@ struct UsedListView: View {
                     }.listStyle(.plain)
                         .navigationTitle("중고거래")
                     
-                }.onAppear {
+                }
+                
+                .onAppear {
                     usedVM.fetchUseds()
                 }.toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -54,7 +56,13 @@ struct UsedListView: View {
                     }
                 }
                 
-            }.alert("판매목록", isPresented: $usedVM.isFetchError) {
+            }
+            .refreshable {
+                usedVM.page = 1
+                usedVM.useds.removeAll() 
+                usedVM.fetchUseds() // 새로 고침 시 데이터를 불러오는 함수 호출
+            }
+            .alert("판매목록", isPresented: $usedVM.isFetchError) {
                 Button("OK"){}
             } message: {
                 Text(usedVM.message)
@@ -67,7 +75,7 @@ struct UsedListView: View {
     }
 }
 
-#Preview {
-    let used = UsedViewModel()
-    UsedListView().environmentObject(used)
-}
+//#Preview {
+//    let used = UsedViewModel()
+//    UsedListView().environmentObject(used)
+//}

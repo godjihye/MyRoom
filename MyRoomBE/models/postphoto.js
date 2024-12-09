@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         as:"images"
       })
+
+      PostPhoto.hasMany(models.ButtonData,{
+        foreignKey:"postPhotoId",
+        as:"btnData"
+      })
     }
   }
   PostPhoto.init({

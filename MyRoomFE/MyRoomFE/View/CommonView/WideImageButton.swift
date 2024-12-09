@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WideImageButton: View {
-		var icon: String
+		var icon: String = ""
 		var title: String
 		var backgroundColor: Color
 		var borderColor: Color = .clear
@@ -17,22 +17,7 @@ struct WideImageButton: View {
 		
 		var body: some View {
 				Button(action: action) {
-						HStack {
-								Image(systemName: icon)
-										.foregroundColor(textColor)
-								
-								Text(title)
-										.font(.headline)
-										.foregroundColor(textColor)
-						}
-						.frame(maxWidth: .infinity)
-						.padding()
-						.background(backgroundColor)
-						.cornerRadius(10)
-						.overlay(
-								RoundedRectangle(cornerRadius: 10)
-										.stroke(borderColor, lineWidth: borderColor == .clear ? 0 : 1)
-						)
+					WideButtonLabel(icon: icon, title: title, backgroundColor: backgroundColor)
 				}
 		}
 }

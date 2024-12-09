@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EntryView: View {
 	@EnvironmentObject var userVM: UserViewModel
+	@EnvironmentObject var roomVM: RoomViewModel
 	var body: some View {
 		if userVM.isLoggedIn {
 			TabView {
@@ -18,21 +19,21 @@ struct EntryView: View {
 						Image(systemName: "house")
 						Text("홈")
 					}
-                UsedListView().environmentObject(UsedViewModel())
-                    .tabItem {
-                        Image(systemName: "plus")
-                        Text("중고거래")
-                    }
-                PostListView().environmentObject(PostViewModel())
-                    .tabItem {
-                        Image(systemName: "person.3.fill")
-                        Text("커뮤니티")
-                    }
-                //ChatView(roomId: "soojeong",loginUser: "soojoeng",usedUser: "hangang").environmentObject(ChatViewModel())
-				Text("채팅")
-                    .tabItem {
-                        Text("chatTEST")
-                    }
+				UsedListView().environmentObject(UsedViewModel())
+					.tabItem {
+						Image(systemName: "plus")
+						Text("중고거래")
+					}
+				PostListView().environmentObject(PostViewModel())
+					.tabItem {
+						Image(systemName: "person.3.fill")
+						Text("커뮤니티")
+					}
+				MyPageView()
+					.tabItem {
+						Image(systemName: "person.fill")
+						Text("마이페이지")
+					}
 			}
 		} else {
 			LoginView()
@@ -46,7 +47,7 @@ struct EntryView: View {
 	let roomVM = RoomViewModel()
 	let itemVM = ItemViewModel()
 	let userVM = UserViewModel()
-    let usedVM = UsedViewModel()
-    let postVM = PostViewModel()
-    EntryView().environmentObject(roomVM).environmentObject(itemVM).environmentObject(usedVM).environmentObject(postVM).environmentObject(userVM)
+	let usedVM = UsedViewModel()
+	let postVM = PostViewModel()
+	EntryView().environmentObject(roomVM).environmentObject(itemVM).environmentObject(usedVM).environmentObject(postVM).environmentObject(userVM)
 }

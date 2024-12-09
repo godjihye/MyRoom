@@ -24,12 +24,12 @@ struct UsedDetailView: View {
     @State private var selectedPhotoIndex: Int = 0
     @State private var isPhotoViewerPresented: Bool = false
     
-    @StateObject private var chatVM = ChatViewModel()
+    @EnvironmentObject var chatVM: ChatViewModel
     @State private var isChatViewPresented = false
     @State private var roomId: String?
-    @State private var loginUser:String?
+    @State private var loginUser:String = UserDefaults.standard.value(forKey: "nickName") as! String
     @State private var usedUser:String?
-    @State private var loginUserImg:String?
+    @State private var loginUserImg:String = UserDefaults.standard.value(forKey: "userImage") as! String
     @State private var usedUserImg:String?
     
     
@@ -147,14 +147,16 @@ struct UsedDetailView: View {
                 .onAppear {
                     selectedStatus = used.usedStatus
                     usedUser  = used.user.nickname
-                    loginUser = "soojeong"
                     if let userImg = used.user.userImage {
                         usedUserImg = "\(azuerTarget)\(userImg)"
                     }else {
                         usedUserImg = ""
                     }
-                    loginUserImg = ""
-                    
+                    if let loginImg = UserDefaults.standard.value(forKey: "userImage") as? String {
+                        loginUserImg = loginImg
+                    }else {
+                        loginUserImg = ""
+                    }
                 }
             HStack(spacing: 20){
                 Button {
@@ -179,13 +181,12 @@ struct UsedDetailView: View {
                 Text("\(used.usedPrice)").font(.title2)
                 Spacer()
                 Button {
-                    if let loginUser,
-                       let usedUser,
-                       let loginUserImg,
-                       let usedUserImg {
-                        roomId = generateRoomId(user1: loginUser, user2: usedUser)
-                        if let unwrappedRoomId = roomId {
-                            chatVM.createChatRoom(roomId: unwrappedRoomId, loginUser: loginUser, usedUser: usedUser,loginUserImg: loginUserImg,usedUserImg: usedUserImg, roomName: used.usedTitle)
+                    if let usedUser {
+                        roomId = generateRoomId(user1: loginUser, user2: usedUser,usedTitle : used.usedTitle)
+                        if let unwrappingRoomId = roomId {
+                            chatVM.roomIdChk(roomId: unwrappingRoomId) { exist in
+                                chatVM.createChatRoom(roomId: unwrappingRoomId, loginUser: loginUser, usedUser: usedUser,loginUserImg: loginUserImg ?? "",usedUserImg: usedUserImg ?? "", roomName: used.usedTitle)
+                            }
                         }
                     }
                     isChatViewPresented.toggle()
@@ -196,13 +197,12 @@ struct UsedDetailView: View {
                     .background(Color.btn)
                     .cornerRadius(8)
                     .padding(.horizontal,10)
-//                    .sheet(isPresented: $isChatViewPresented) {
-//                        if let roomId = roomId,
-//                           let loginUser = loginUser,
-//                           let usedUser = usedUser {
-//                            ChatView(roomId: roomId, loginUser: loginUser, usedUser: usedUser).environmentObject(chatVM)
-//                        }
-//                    }
+                    .sheet(isPresented: $isChatViewPresented) {
+                        if let roomId = roomId,
+                           let usedUser = usedUser {
+                            ChatView(roomId: roomId, loginUser: loginUser,otherUserImg: usedUserImg)
+                        }
+                    }
             }
             .frame(height: 40)
         }
@@ -222,14 +222,17 @@ struct UsedDetailView: View {
             }
             return "Invalid Date"
         }
+    
+    //채팅방ID 생성
+    func generateRoomId(user1: String, user2: String,usedTitle:String) -> String {
+        let sortedIds = [usedTitle,user1, user2].sorted()
+        let result = sortedIds.map { $0.replacingOccurrences(of: "[.\\#$\\[\\]]", with: "", options: .regularExpression) }.joined()
+        print("generateRoomId completd : \(result)")
         
-        //채팅방ID 생성
-        func generateRoomId(user1: String, user2: String) -> String {
-            let sortedIds = [user1, user2].sorted()
-            return sortedIds.joined(separator: "_")
-        }
-        
+        return result
     }
+    
+}
 
 
 

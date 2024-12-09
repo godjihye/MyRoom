@@ -18,22 +18,24 @@ class UsedViewModel:ObservableObject {
     @Published var isAddShowing = false
     @Published var isFetchError = false
     private var isLoading = false
-    private var page = 1
+    var page = 1
     @AppStorage("token") var token:String?
     let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
+
+    let userId = UserDefaults.standard.value(forKey: "userId") as! Int
     
     func fetchUseds(size:Int = 10) {
         
         guard !isLoading else { return }
         isLoading = true
-        let url = "\(endPoint)/useds/4"
+        let url = "\(endPoint)/useds/\(userId)"
         //        guard let token = self.token else { return }
         let params:Parameters = ["page":self.page, "size":size]
         //        let headers:HTTPHeaders = ["Authorization": "Bearer \(token)"]
   
         AF.request(url,method: .get,parameters: params).response { response in
             defer {
-                    self.isLoading = false // 요청 종료 시 반드시 false로 변경
+                    self.isLoading = false
                     SVProgressHUD.dismiss()
                 }
             if let statusCode = response.response?.statusCode {
@@ -46,7 +48,9 @@ class UsedViewModel:ObservableObject {
                         
                         do {
                             let root = try JSONDecoder().decode(UsedRoot.self, from: data)
-                            self.useds.append(contentsOf: root.useds)
+                            DispatchQueue.main.async {
+                                self.useds.append(contentsOf: root.useds)
+                            }
                             self.page += 1
                             if self.useds.isEmpty {
                                 self.isAlertShowing = true
@@ -159,7 +163,7 @@ class UsedViewModel:ObservableObject {
             "purchasePrice": selectMyItem?.price,
             "itemName" : selectMyItem?.itemName,
             "itemDesc" : selectMyItem?.desc,
-            "userId" : 4,
+			"userId" : userId,
             "usedUrl" :selectMyItem?.url,
         ]
         

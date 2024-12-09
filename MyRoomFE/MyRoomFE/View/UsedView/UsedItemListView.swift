@@ -29,34 +29,36 @@ import SwiftUI
 //                location: MyRoomFE.Item_Location(locationName: "화장대", room: MyRoomFE.Item_Room(roomName: "jh")))
 struct UsedItemListView: View {
     @Environment(\.dismiss) private var dismiss
+    
     @EnvironmentObject var itemVM: ItemViewModel
     @State var isShowingAddItemView: Bool = false
     
     @Binding var selectMyItem: Item?
     @Binding var isMyItemPresented:Bool
-   
-		
+    
+    
     let columns = [
-            GridItem(.flexible()), // 첫 번째 열
-            GridItem(.flexible()), // 두 번째 열
-            GridItem(.flexible())
-        ]
-		var body: some View {
-            ScrollView{
-                LazyVGrid(columns: columns) {
-                    ForEach(itemVM.items) { item in
-                        UsedItemRowView(selectedItem: $selectMyItem, isMyItemPresented: $isMyItemPresented, item: item)
-                    }
-                }.task {
-                        await itemVM.fetchItems(locationId: 62)
-                    print(itemVM)
+        GridItem(.flexible()), // 첫 번째 열
+        GridItem(.flexible()), // 두 번째 열
+        GridItem(.flexible())
+    ]
+    var body: some View {
+        ScrollView{
+            LazyVGrid(columns: columns) {
+                ForEach(itemVM.items) { item in
+                    UsedItemRowView(selectedItem: $selectMyItem,
+                                    isMyItemPresented: $isMyItemPresented,item: item).environmentObject(itemVM)
                 }
-                
+            }.task {
+                await itemVM.fetchItems(locationId: 62)
+                print(itemVM)
             }
-		}
+            
+        }
+    }
 }
 
-#Preview {
-    let itemVM = ItemViewModel()
-	UsedItemListView(selectMyItem:.constant(sampleItem), isMyItemPresented: .constant(true)).environmentObject(itemVM)
-}
+//#Preview {
+//    let itemVM = ItemViewModel()
+//    UsedItemListView(selectMyItem:.constant(sampleItem), postIsMyItemPresented: .constant(true), usedIsMyItemPresented: .constant(true)).environmentObject(itemVM).environmentObject(PostViewModel())
+//}
