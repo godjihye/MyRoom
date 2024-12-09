@@ -19,26 +19,21 @@ struct EntryView: View {
 						Image(systemName: "house")
 						Text("홈")
 					}
-                UsedListView().environmentObject(UsedViewModel())
-                    .tabItem {
-                        Image(systemName: "plus")
-                        Text("중고거래")
-                    }
-                PostListView().environmentObject(PostViewModel())
-                    .tabItem {
-                        Image(systemName: "person.3.fill")
-                        Text("커뮤니티")
-                    }
-                ChatListView(usedUser: "").environmentObject(ChatViewModel())
-                    .tabItem {
-                        Text("chatTEST")
-                    }
-                MyPageView()
+				UsedListView().environmentObject(UsedViewModel())
+					.tabItem {
+						Image(systemName: "plus")
+						Text("중고거래")
+					}
+				PostListView().environmentObject(PostViewModel())
+					.tabItem {
+						Image(systemName: "person.3.fill")
+						Text("커뮤니티")
+					}
+				MyPageView()
 					.tabItem {
 						Image(systemName: "person.fill")
 						Text("마이페이지")
 					}
-
 			}
 		} else {
 			LoginView()
