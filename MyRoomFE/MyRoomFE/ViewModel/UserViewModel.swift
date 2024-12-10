@@ -121,17 +121,20 @@ class UserViewModel: ObservableObject {
 		SVProgressHUD.dismiss()
 	}
 	// 1-1. Logout
-	func logout() {
-		SVProgressHUD.show()
-		isLoggedIn = false
-		UserDefaults.standard.removeObject(forKey: "token")
-		UserDefaults.standard.removeObject(forKey: "userName")
-		UserDefaults.standard.removeObject(forKey: "userId")
-		UserDefaults.standard.removeObject(forKey: "isLoggedIn")
-		UserDefaults.standard.removeObject(forKey: "homeId")
-		
-		SVProgressHUD.dismiss()
-	}
+    func logout() {
+            SVProgressHUD.show()
+            isLoggedIn = false
+            UserDefaults.standard.removeObject(forKey: "token")
+            UserDefaults.standard.removeObject(forKey: "userName")
+            UserDefaults.standard.removeObject(forKey: "userId")
+            UserDefaults.standard.removeObject(forKey: "isLoggedIn")
+            UserDefaults.standard.removeObject(forKey: "homeId")
+            UserDefaults.standard.removeObject(forKey: "userImage")
+            UserDefaults.standard.removeObject(forKey: "nickName")
+            UserDefaults.standard.removeObject(forKey: "homeId")
+            userInfo = nil
+            SVProgressHUD.dismiss()
+        }
 	
 	// 2. Register
 	func signUp(userName: String, password: String, nickname: String) {
