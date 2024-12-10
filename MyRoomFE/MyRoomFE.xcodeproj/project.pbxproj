@@ -19,6 +19,7 @@
 		0BBB8ECC2D04A5AF00DF692C /* ChangePWView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */; };
 		0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */; };
 		0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */; };
+		B15D9A552D06ED7900FA0253 /* PostWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A542D06ED7900FA0253 /* PostWebView.swift */; };
 		B82E1B9A2D06BB11005BB2D4 /* HeartAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B992D06BB11005BB2D4 /* HeartAnimationView.swift */; };
 		B82E1B9D2D06D373005BB2D4 /* ChatRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B9C2D06D373005BB2D4 /* ChatRowView.swift */; };
 		B82E1B9F2D06D38C005BB2D4 /* PostAddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */; };
@@ -126,6 +127,7 @@
 		0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePWView.swift; sourceTree = "<group>"; };
 		0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewModel.swift; sourceTree = "<group>"; };
 		0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipartFormData+AppendOptionalValue.swift"; sourceTree = "<group>"; };
+		B15D9A542D06ED7900FA0253 /* PostWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWebView.swift; sourceTree = "<group>"; };
 		B82E1B992D06BB11005BB2D4 /* HeartAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartAnimationView.swift; sourceTree = "<group>"; };
 		B82E1B9C2D06D373005BB2D4 /* ChatRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRowView.swift; sourceTree = "<group>"; };
 		B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddPhotoView.swift; sourceTree = "<group>"; };
@@ -228,6 +230,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B15D9A562D08135B00FA0253 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		B82E1B962D06803B005BB2D4 /* SignInView */ = {
 			isa = PBXGroup;
 			children = (
@@ -354,6 +363,7 @@
 				B86F34CA2CF96F920040BB33 /* PostDetailView.swift */,
 				B86F34CB2CF96F920040BB33 /* PostListView.swift */,
 				B86F34CC2CF96F920040BB33 /* PostRowView.swift */,
+				B15D9A542D06ED7900FA0253 /* PostWebView.swift */,
 			);
 			path = PostView;
 			sourceTree = "<group>";
@@ -376,6 +386,7 @@
 		B86F34D62CF96F920040BB33 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B15D9A562D08135B00FA0253 /* New Group */,
 				B8E917A32D01A60D00345B89 /* ChatView */,
 				B86F351B2CF970040040BB33 /* UserView */,
 				B86F34B02CF96F920040BB33 /* CommentView */,
@@ -625,6 +636,7 @@
 				B86F35132CF96F920040BB33 /* UserViewModel.swift in Sources */,
 				B82E1BA32D06D3F5005BB2D4 /* CustomTapGesture.swift in Sources */,
 				B86F35142CF96F920040BB33 /* ContentView.swift in Sources */,
+				B15D9A552D06ED7900FA0253 /* PostWebView.swift in Sources */,
 				B86F35152CF96F920040BB33 /* EntryView.swift in Sources */,
 				0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */,
 				B86F35162CF96F920040BB33 /* MyRoomFEApp.swift in Sources */,

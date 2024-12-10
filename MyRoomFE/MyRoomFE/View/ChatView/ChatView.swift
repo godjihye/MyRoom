@@ -5,7 +5,11 @@ struct ChatView: View {
     @State private var newMessage = ""
     @State var roomId: String
     @State var loginUser: String
-    @State var otherUserImg: String?
+    
+    @State var otherUser:String?
+
+    var chat: ChatRoom?
+    let azuerTarget = Bundle.main.object(forInfoDictionaryKey: "AZURESTORAGE") as! String
     
     var body: some View {
         VStack {
@@ -29,28 +33,36 @@ struct ChatView: View {
                             }
                         } else {
                             
-                            HStack {
-                                if let url = URL(string: otherUserImg ?? "") {
-                                    AsyncImage(url: url) { image in
-                                        image.resizable()
-                                            .scaledToFill()
+                                HStack {
+                                    
+                                    if let imageUrl = chatVM.userImages[otherUser ?? ""], let url = URL(string: "\(azuerTarget)\(imageUrl)") {
+                                        AsyncImage(url: url) { image in
+                                            image.resizable()
+                                                .scaledToFill()
+                                                .frame(width: 40, height: 40)
+                                                .clipShape(Circle())
+                                        } placeholder: {
+                                            ProgressView()
+                                                .progressViewStyle(CircularProgressViewStyle())
+                                                .frame(width: 40, height: 40)
+                                        }
+                                    } else {
+                                        Image(systemName: "person.circle")
+                                            .resizable()
+                                            .scaledToFit()
                                             .frame(width: 40, height: 40)
                                             .clipShape(Circle())
-                                    } placeholder: {
-                                        ProgressView()
-                                            .progressViewStyle(CircularProgressViewStyle())
-                                            .frame(width: 40, height: 40)
                                     }
                                 }
-                                Text(message.text)
-                                    .padding()
-                                    .background(Color.gray.opacity(0.2))
-                                    .cornerRadius(10)
-                                    .foregroundColor(.black)
-                                    .frame(maxWidth: 250, alignment: .leading)
-                            }
-                            Spacer()
+                            
+                            Text(message.text)
+                                .padding()
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(10)
+                                .foregroundColor(.black)
+                                .frame(maxWidth: 250, alignment: .leading)
                         }
+                        Spacer()
                     }
                     .padding(.horizontal)
                 }
@@ -78,6 +90,10 @@ struct ChatView: View {
         .onAppear {
             chatVM.fetchMessages(roomId: roomId)
             chatVM.fetchRoomName(roomId: roomId, currentUserId: loginUser)
+            
+            if let chat = chat {
+                otherUser = chat.participants.first(where: { $0 != loginUser })
+            }
         }
     }
 }
