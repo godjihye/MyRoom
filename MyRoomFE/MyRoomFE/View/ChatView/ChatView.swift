@@ -35,7 +35,7 @@ struct ChatView: View {
                             
                                 HStack {
                                     
-                                    if let imageUrl = chatVM.userImages[otherUser ?? ""], let url = URL(string: "\(azuerTarget)\(imageUrl)") {
+																	if let imageUrl = chatVM.userImages[otherUser ?? ""], let url = URL(string: "\(imageUrl.addingURLPrefix())") {
                                         AsyncImage(url: url) { image in
                                             image.resizable()
                                                 .scaledToFill()
@@ -56,11 +56,12 @@ struct ChatView: View {
                                 }
                             
                             Text(message.text)
+														.lineLimit(nil)
                                 .padding()
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(10)
                                 .foregroundColor(.black)
-                                .frame(maxWidth: 250, alignment: .leading)
+																.frame(maxWidth: 250, maxHeight: .infinity, alignment: .leading)
                         }
                         Spacer()
                     }
