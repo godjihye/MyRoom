@@ -3,20 +3,20 @@
 
 const commentDao = require("../dao/commentDao");
 
-const createComment = async (data) => {
-  return await commentDao.createComment(data);
+const createComment = async (comment, parentId, postId, userId) => {
+  return await commentDao.createComment(comment, parentId, postId, userId);
 };
 
-const createReply = async (data) => {
-  return await commentDao.createReply(data);
+const createReply = async (comment, parentId, postId, userId ) => {
+  return await commentDao.createReply(comment, parentId, postId, userId );
 };
 
-const findAllComment = async (data) => {
-  return await commentDao.findAllComment(data);
+const findAllComment = async (postId) => {
+  return await commentDao.findAllComment(postId);
 };
 
-const updateComment = async (id, data) => {
-  return await commentDao.updateComment(id, data);
+const updateComment = async (id, commnet) => {
+  return await commentDao.updateComment(id, commnet);
 };
 
 const deleteCommnet = async (id) => {

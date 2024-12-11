@@ -135,14 +135,25 @@ struct PostFavData:Identifiable,Codable, Equatable {
 	let postId:Int
 	let userId:Int
 }
+
+//MARK: - COMMENT(댓글)
+
 struct Comment: Identifiable ,Codable{
-	var id:Int
-	var comment: String
-	var userImage:String
-	var nickName:String
-	var date:String
+	let id:Int
+	let comment: String
+    let user:CommentUser
+    var replies: [Comment]?
+	let updatedAt:String
 }
 
+struct CommentRoot :Codable{
+    let comments : [Comment]
+}
+
+struct CommentUser : Codable {
+    let nickname: String
+    let userImage: String?
+}
 
 //MARK: - HOME(집)
 
