@@ -82,6 +82,26 @@ const deleteUser = async (id) => {
   return await userDao.deleteUser(id);
 };
 
+// 7. Change Password
+const changePW = async (id, data) => {
+  try {
+    const { originPW, newPW } = data;
+    const user = await userDao.getUserByID(id);
+    if (!user) {
+      throw new Error("유저를 찾을 수 없습니다.");
+    }
+    const isPasswordValid = bcrypt.hash(originPW, user.password);
+    if (!isPasswordValid) {
+      throw new Error("패스워드가 틀립니다.");
+    }
+    const newPassword = await createHash(newPW, 10);
+    const newData = { password: newPassword };
+    await userDao.updateUser(id, newData);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 // Nickname with Random Number
 function makeRandomNickname() {
   const randomNum = Math.floor(Math.random() * 1000);
@@ -95,4 +115,5 @@ module.exports = {
   findUserById,
   updateUser,
   deleteUser,
+  changePW,
 };

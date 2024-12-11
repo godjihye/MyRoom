@@ -15,14 +15,26 @@ struct ProfileView: View {
 	let userId = UserDefaults.standard.integer(forKey: "userId")
 	
 	var body: some View {
-		
-		ScrollView {
-			userInfoImage
-			userInfoText
-			editInfoBtn
-			mateList
-			logoutBtn
+		NavigationSplitView {
+			ScrollView {
+				userInfoImage
+				userInfoText
+				editInfoBtn
+				mateList
+				//chatList
+				logoutBtn
+				deleteUser
+			}
+		} detail: {
+			Text("프로필")
 		}
+		.alert("회원 탈퇴", isPresented: $userVM.showAlert, actions: {
+			Button("확인", role: .cancel) {
+				
+			}
+		}, message: {
+			Text(userVM.message)
+		})
 		.onAppear {
 			if userVM.userInfo == nil {
 				userVM.fetchUser()
@@ -55,13 +67,13 @@ struct ProfileView: View {
 				}
 			} else {
 				Image(systemName: "person.circle.fill")
-						.resizable()
-						.frame(width: 150, height: 150)
-						.aspectRatio(contentMode: .fill)
-						.clipShape(Circle())
-						.overlay(Circle().stroke(Color.gray).opacity(0.8))
-						.background(Circle().fill(Color.accent))
-						.padding(.top, -170)
+					.resizable()
+					.frame(width: 150, height: 150)
+					.aspectRatio(contentMode: .fill)
+					.clipShape(Circle())
+					.overlay(Circle().stroke(Color.gray).opacity(0.8))
+					.background(Circle().fill(Color.accent))
+					.padding(.top, -170)
 			}
 		}
 	}
@@ -143,7 +155,7 @@ struct ProfileView: View {
 					Button {
 						userVM.refreshInviteCode()
 					} label: {
-						 Text("코드 재발급")
+						Text("코드 재발급")
 					}
 					.foregroundStyle(.secondary)
 					.buttonStyle(.bordered)
@@ -162,6 +174,18 @@ struct ProfileView: View {
 			}
 		}
 	}
+	
+//	private var chatList:some View {
+//		VStack{
+//			Divider()
+//			NavigationLink(destination: ChatListView().environmentObject(ChatViewModel())) {
+//				Text("💬 채팅목록")
+//					.font(.title3)
+//					.bold()
+//					.padding()
+//			}
+//		}
+//	}
 	private var logoutBtn: some View {
 		VStack {
 			Divider()
@@ -172,6 +196,13 @@ struct ProfileView: View {
 					.foregroundStyle(.gray)
 					.padding()
 			}
+		}
+	}
+	private var deleteUser: some View {
+		Button {
+			userVM.deleteUser()
+		} label: {
+			Text("회원 탈퇴")
 		}
 	}
 }

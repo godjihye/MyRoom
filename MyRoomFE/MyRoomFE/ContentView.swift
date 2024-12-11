@@ -8,11 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
+	@State var isLaunching: Bool = true
+	var body: some View {
+		if isLaunching {
+			SplashView()
+				.onAppear {
+					DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+						isLaunching = false
+					}
+				}
+		} else {
 			EntryView().environmentObject(UserViewModel()).environmentObject(RoomViewModel())
-    }
+		}
+	}
 }
-
+struct SplashView: View {
+	
+	var body: some View {
+		Image("logo")
+			.resizable()
+			.frame(width: 100, height: 80)
+	}
+}
 #Preview {
-    ContentView()
+	ContentView()
 }

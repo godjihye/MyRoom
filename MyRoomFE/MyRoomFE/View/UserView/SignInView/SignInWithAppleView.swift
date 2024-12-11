@@ -18,7 +18,6 @@ struct SignInWithAppleView: View {
 		}
 		SignInWithAppleButton(.continue, onRequest: configureRequest, onCompletion: handleAuthorization)
 			.frame(height: 60)
-			.padding(.horizontal)
 	}
 	
 	func configureRequest(_ request: ASAuthorizationAppleIDRequest) {
@@ -30,11 +29,9 @@ struct SignInWithAppleView: View {
 			if let credential = auth.credential as? ASAuthorizationAppleIDCredential {
 				// self.userId = credential.user
 				self.email = credential.email
-				log("email: \(credential.email)")
 				if let email = self.email {
 					userVM.socialLogin(userName: email)
 				}
-				// self.fullName = credential.fullName
 			}
 		case .failure(let error):
 			print("Failed Sign in \(error.localizedDescription)")

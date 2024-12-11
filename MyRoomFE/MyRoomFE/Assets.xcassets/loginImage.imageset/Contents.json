@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "Image.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -9,7 +10,6 @@
       "scale" : "2x"
     },
     {
-      "filename" : "스크린샷 2024-11-11 14.23.16 1.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

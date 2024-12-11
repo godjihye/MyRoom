@@ -27,9 +27,9 @@ struct UsedDetailView: View {
     @EnvironmentObject var chatVM: ChatViewModel
     @State private var isChatViewPresented = false
     @State private var roomId: String?
-    @State private var loginUser:String = UserDefaults.standard.value(forKey: "nickName") as! String
+    @State private var loginUser:String? = UserDefaults.standard.value(forKey: "nickName") as? String
     @State private var usedUser:String?
-    @State private var loginUserImg:String = UserDefaults.standard.value(forKey: "userImage") as! String
+    @State private var loginUserImg:String? = UserDefaults.standard.value(forKey: "userImage") as? String
     @State private var usedUserImg:String?
     
     
@@ -181,7 +181,7 @@ struct UsedDetailView: View {
                 Text("\(used.usedPrice)").font(.title2)
                 Spacer()
                 Button {
-                    if let usedUser {
+                    if let usedUser, let loginUser {
                         roomId = generateRoomId(user1: loginUser, user2: usedUser,usedTitle : used.usedTitle)
                         if let unwrappingRoomId = roomId {
                             chatVM.roomIdChk(roomId: unwrappingRoomId) { exist in
@@ -199,7 +199,8 @@ struct UsedDetailView: View {
                     .padding(.horizontal,10)
                     .sheet(isPresented: $isChatViewPresented) {
                         if let roomId = roomId,
-                           let usedUser = usedUser {
+                           let usedUser = usedUser,
+											let loginUser {
                             ChatView(roomId: roomId, loginUser: loginUser,otherUserImg: usedUserImg)
                         }
                     }

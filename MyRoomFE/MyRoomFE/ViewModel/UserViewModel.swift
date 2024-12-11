@@ -203,17 +203,22 @@ class UserViewModel: ObservableObject {
 	
 	//MARK: - User Status Change
 	// 1. delete
-	func deleteUser(userId: Int) {
+	func deleteUser() {
+		
+		let userId = UserDefaults.standard.integer(forKey: "userId")
 		let url = "\(endPoint)/users/\(userId)"
+		
 		AF.request(url, method: .delete).response { response in
-			guard let statusCode = response.response?.statusCode else { return }
-			switch statusCode{
-			case 200..<300:
-				self.message = "회원 탈퇴가 완료되었습니다."
-			default:
-				self.message = "회원 탈퇴에 실패했습니다."
+			do {
+				guard let data = response.data else {return}
+				let resp = try JSONDecoder().decode(ApiResponse.self, from: data)
+				self.showAlert = true
+				self.message = resp.message
+			} catch {
+				log("decode error")
 			}
 		}
+		logout()
 	}
 	
 	func editUser(userImage: UIImage?, nickname: String?) {
