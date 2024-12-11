@@ -123,6 +123,7 @@ struct PostDetailView: View {
                 HStack {
                     Text(post.postContent).padding(.horizontal,10)
                 }
+                CommentListView(postId: post.id).environmentObject(CommentViewModel())
             }
         }.background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
             .navigationTitle("글 상세")

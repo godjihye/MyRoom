@@ -20,6 +20,7 @@
 		0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */; };
 		0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */; };
 		B15D9A552D06ED7900FA0253 /* PostWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A542D06ED7900FA0253 /* PostWebView.swift */; };
+		B15D9A582D083C0600FA0253 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A572D083C0600FA0253 /* CommentViewModel.swift */; };
 		B82E1B9A2D06BB11005BB2D4 /* HeartAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B992D06BB11005BB2D4 /* HeartAnimationView.swift */; };
 		B82E1B9D2D06D373005BB2D4 /* ChatRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B9C2D06D373005BB2D4 /* ChatRowView.swift */; };
 		B82E1B9F2D06D38C005BB2D4 /* PostAddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */; };
@@ -38,7 +39,6 @@
 		B86F34E72CF96F920040BB33 /* UIApplication+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34A52CF96F920040BB33 /* UIApplication+KeyboardExtension.swift */; };
 		B86F34E82CF96F920040BB33 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34A72CF96F920040BB33 /* Model.swift */; };
 		B86F34E92CF96F920040BB33 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34A82CF96F920040BB33 /* Sample.swift */; };
-		B86F34EA2CF96F920040BB33 /* CommentAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34AC2CF96F920040BB33 /* CommentAddView.swift */; };
 		B86F34EB2CF96F920040BB33 /* CommentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34AD2CF96F920040BB33 /* CommentListView.swift */; };
 		B86F34EC2CF96F920040BB33 /* CommentRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34AE2CF96F920040BB33 /* CommentRowView.swift */; };
 		B86F34ED2CF96F920040BB33 /* FullScreenImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34AF2CF96F920040BB33 /* FullScreenImageView.swift */; };
@@ -128,6 +128,7 @@
 		0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewModel.swift; sourceTree = "<group>"; };
 		0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipartFormData+AppendOptionalValue.swift"; sourceTree = "<group>"; };
 		B15D9A542D06ED7900FA0253 /* PostWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWebView.swift; sourceTree = "<group>"; };
+		B15D9A572D083C0600FA0253 /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 		B82E1B992D06BB11005BB2D4 /* HeartAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartAnimationView.swift; sourceTree = "<group>"; };
 		B82E1B9C2D06D373005BB2D4 /* ChatRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRowView.swift; sourceTree = "<group>"; };
 		B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddPhotoView.swift; sourceTree = "<group>"; };
@@ -144,7 +145,6 @@
 		B86F34A72CF96F920040BB33 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		B86F34A82CF96F920040BB33 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		B86F34AA2CF96F920040BB33 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B86F34AC2CF96F920040BB33 /* CommentAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAddView.swift; sourceTree = "<group>"; };
 		B86F34AD2CF96F920040BB33 /* CommentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentListView.swift; sourceTree = "<group>"; };
 		B86F34AE2CF96F920040BB33 /* CommentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRowView.swift; sourceTree = "<group>"; };
 		B86F34AF2CF96F920040BB33 /* FullScreenImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageView.swift; sourceTree = "<group>"; };
@@ -306,10 +306,8 @@
 		B86F34B02CF96F920040BB33 /* CommentView */ = {
 			isa = PBXGroup;
 			children = (
-				B86F34AC2CF96F920040BB33 /* CommentAddView.swift */,
 				B86F34AD2CF96F920040BB33 /* CommentListView.swift */,
 				B86F34AE2CF96F920040BB33 /* CommentRowView.swift */,
-				B86F34AF2CF96F920040BB33 /* FullScreenImageView.swift */,
 			);
 			path = CommentView;
 			sourceTree = "<group>";
@@ -319,6 +317,7 @@
 			children = (
 				B86F34B12CF96F920040BB33 /* AddItemDatePicker.swift */,
 				B86F34B22CF96F920040BB33 /* AddItemTextField.swift */,
+				B86F34AF2CF96F920040BB33 /* FullScreenImageView.swift */,
 				B86F34B32CF96F920040BB33 /* CustomTextField.swift */,
 				B86F34B52CF96F920040BB33 /* ImgUploadRectBtn.swift */,
 				B86F34B62CF96F920040BB33 /* ImagePicker.swift */,
@@ -408,6 +407,7 @@
 				B86F34D92CF96F920040BB33 /* RoomViewModel.swift */,
 				B86F34DA2CF96F920040BB33 /* UsedViewModel.swift */,
 				B86F34DB2CF96F920040BB33 /* UserViewModel.swift */,
+				B15D9A572D083C0600FA0253 /* CommentViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -569,7 +569,6 @@
 				B86F34E72CF96F920040BB33 /* UIApplication+KeyboardExtension.swift in Sources */,
 				B86F34E82CF96F920040BB33 /* Model.swift in Sources */,
 				B86F34E92CF96F920040BB33 /* Sample.swift in Sources */,
-				B86F34EA2CF96F920040BB33 /* CommentAddView.swift in Sources */,
 				B82E1B9A2D06BB11005BB2D4 /* HeartAnimationView.swift in Sources */,
 				B86F34EB2CF96F920040BB33 /* CommentListView.swift in Sources */,
 				0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */,
@@ -617,6 +616,7 @@
 				B86F35052CF96F920040BB33 /* PostDetailView.swift in Sources */,
 				B89D55282CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift in Sources */,
 				B86F35062CF96F920040BB33 /* PostListView.swift in Sources */,
+				B15D9A582D083C0600FA0253 /* CommentViewModel.swift in Sources */,
 				B86F35072CF96F920040BB33 /* PostRowView.swift in Sources */,
 				B86F35082CF96F920040BB33 /* UsedAddView.swift in Sources */,
 				B86F35092CF96F920040BB33 /* UsedDetailView.swift in Sources */,

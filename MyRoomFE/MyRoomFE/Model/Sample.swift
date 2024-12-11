@@ -23,3 +23,8 @@ let sampleItemPhoto = [MyRoomFE.ItemPhoto(id: 1, photo: "https://encrypted-tbn0.
 
 //let samplePost = Post(id: 1, postTitle: "7평원룸 수납꿀팁", postContent: "수납침대를 이용하여 자주쓰지 않는 물건들을 안보이도록 정리해요 정말쉽죠 한번 같이해봐요 이렇게 쉬울수가없어요 돈만있음 다할 수 있습니다", postThumbnail: "test1.jpeg", user: sampleUser, itemUrl: ["naver.com"], postFav: [PostFavData(id: 1,postId: 4, userId: 4)],isFavorite:false, postFavCnt: 280, postViewCnt: 728,updatedAt: "2024-11-24T05:51:54.322Z",createdAt: "2024-11-24T05:51:54.322Z", images: [PostPhotoData(id: 1, image: "test1.jpeg"),PostPhotoData(id: 2, image: "test2.jpeg")])
 
+let testURLs = [
+             URL(string: "https://sayangpaysj.blob.core.windows.net/yangpa/test1"),
+             URL(string: "https://sayangpaysj.blob.core.windows.net/yangpa/test2"),
+             URL(string: "https://sayangpaysj.blob.core.windows.net/yangpa/test3")
+     ].compactMap({ $0 })  // compactMap을 사용하여 nil 제거
