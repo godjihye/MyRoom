@@ -6,18 +6,21 @@ module.exports = (sequelize, DataTypes) => {
       Comment.belongsTo(models.Post, {
         foreignKey: "id",
         onDelete: "CASCADE",
+        as:"postComments"
       });
       Comment.belongsTo(models.User, {
-        foreignKey: "id",
+        foreignKey: "userId",
         onDelete: "CASCADE",
+        as:"user"
       });
       Comment.hasMany(models.Comment, {
         foreignKey: "parentId",
         as: "replies",
+        onDelete: 'SET NULL'
       });
       Comment.belongsTo(models.Comment, {
         foreignKey: "parentId",
-        onDelete: "CASCADE",
+        as: 'parent'
       });
     }
   }
@@ -26,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       postId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       comment: DataTypes.STRING,
-      commentGroup: DataTypes.INTEGER,
       parentId: DataTypes.INTEGER,
     },
     {

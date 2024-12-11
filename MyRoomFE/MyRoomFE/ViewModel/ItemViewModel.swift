@@ -109,7 +109,7 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
-	//2-2. Find All Items By HomeId
+	/// 2-2. Find All Items By HomeId
 	func fetchAllItem() async {
 		let url = "\(endPoint)/items/allItem/\(homeId)"
 		do {
@@ -365,5 +365,6 @@ class ItemViewModel: ObservableObject {
 	}
 	
 }
+
 
 

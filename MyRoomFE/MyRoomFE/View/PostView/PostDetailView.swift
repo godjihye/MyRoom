@@ -18,6 +18,7 @@ struct PostDetailView: View {
     @State private var isWebViewPresented = false
     @State private var selectedPhotoIndex: Int = 0
     @State private var isPhotoViewerPresented: Bool = false
+    @State private var isPostWebViewPresented:Bool = false
     
     let azuerTarget = Bundle.main.object(forInfoDictionaryKey: "AZURESTORAGE") as! String
     var body: some View {
@@ -26,15 +27,41 @@ struct PostDetailView: View {
                 TabView {
                     ForEach(Array(photos.enumerated()), id: \.element) { index, photo in
                         let strURL = "\(azuerTarget)\(photo.image)"
+                        
                         if let url = URL(string: strURL) {
                             AsyncImage(url: url) { image in
-                                image.resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 400, height: 400)
-                                    .onTapGesture {
-                                        selectedPhotoIndex = index
-                                        isPhotoViewerPresented = true
+                                ZStack {
+                                    image.resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 400, height: 400)
+                                        .onTapGesture {
+                                            selectedPhotoIndex = index
+                                            isPhotoViewerPresented = true
+                                        }
+                                    
+                                    if let buttons = photo.btnData {
+                                        ForEach(buttons, id: \.self) { button in
+                                            Button(action: {
+                                                // 버튼을 클릭했을 때의 동작 (예: 버튼 URL 열기)
+                                                isPostWebViewPresented.toggle()
+                                            }) {
+                                                Circle()
+                                                    .fill(Color.blue)
+                                                    .frame(width: 20, height: 20)
+                                                    .overlay(
+                                                        Text("+")
+                                                            .foregroundColor(.white)
+                                                            .font(.system(size: 16))
+                                                    )
+                                            }
+                                            .position(x: button.positionX, y: button.positionY)
+                                            .sheet(isPresented: $isPostWebViewPresented) {
+                                                PostWebView(url: URL(string:  button.itemUrl ?? "")!)
+                                                    .edgesIgnoringSafeArea(.all)
+                                            }
+                                        }
                                     }
+                                }
                             } placeholder: {
                                 Image(systemName: "photo").resizable().frame(width: 200, height: 200)
                             }
@@ -46,6 +73,7 @@ struct PostDetailView: View {
                         let photoURLs = photos.map { URL(string: "\(azuerTarget)\($0.image)")! }
                         FullScreenImageView(imageURLs: photoURLs, selectedIndex: selectedPhotoIndex)
                     }
+                
                 HStack{
                     let strURL = "\(azuerTarget)\(post.user.userImage ?? "")"
                     if let url = URL(string: strURL) {
@@ -71,7 +99,7 @@ struct PostDetailView: View {
                                 post.isFavorite.toggle()
                                 print("after : \(post.isFavorite)")
                             }
-                           
+                            
                         }
                         
                     } label: {
@@ -95,6 +123,7 @@ struct PostDetailView: View {
                 HStack {
                     Text(post.postContent).padding(.horizontal,10)
                 }
+                CommentListView(postId: post.id).environmentObject(CommentViewModel())
             }
         }.background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
             .navigationTitle("글 상세")

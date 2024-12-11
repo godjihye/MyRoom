@@ -87,8 +87,8 @@ struct RoomResponse:Codable {
 
 //MARK: - POST(커뮤니티 게시글)
 struct PostUser: Codable,Equatable {
-	let nickname: String
-	let userImage: String
+    let nickname: String
+    let userImage: String
 }
 struct Post: Identifiable,Codable,Equatable {
     let id: Int
@@ -126,7 +126,7 @@ struct PostRoot: Codable{
 struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
     let id:Int
     let image:String
-    let buttons:[ButtonData]?
+    let btnData:[ButtonData]?
 }
 
 struct ButtonData: Identifiable, Codable, Equatable, Hashable {
@@ -141,14 +141,25 @@ struct PostFavData:Identifiable,Codable, Equatable {
 	let postId:Int
 	let userId:Int
 }
+
+//MARK: - COMMENT(댓글)
+
 struct Comment: Identifiable ,Codable{
-	var id:Int
-	var comment: String
-	var userImage:String
-	var nickName:String
-	var date:String
+	let id:Int
+	let comment: String
+    let user:CommentUser
+    var replies: [Comment]?
+	let updatedAt:String
 }
 
+struct CommentRoot :Codable{
+    let comments : [Comment]
+}
+
+struct CommentUser : Codable {
+    let nickname: String
+    let userImage: String?
+}
 
 //MARK: - HOME(집)
 
@@ -272,6 +283,7 @@ struct ChatRoom: Identifiable {
     var id: String
     var roomName: String
     var participants: [String]
+    var imageUrls: [String: String]
 }
 
 
