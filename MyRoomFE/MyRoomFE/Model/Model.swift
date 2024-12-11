@@ -18,7 +18,7 @@ struct Item: Codable,Identifiable, Equatable {
 	let photo: String?
 	let desc: String?
 	let color: String?
-	let isFav: Bool
+	let isFav: Bool 
 	let price: Int?
 	let openDate: String?
 	let locationId: Int
@@ -50,6 +50,12 @@ struct ItemRoot: Codable {
 	let success: Bool
 	let message: String
 	let item: Item
+}
+
+struct AdditionalPhotosRoot: Decodable {
+	let success: Bool
+	let message: String
+	let photos: ItemPhoto
 }
 
 //MARK: - ROOM AND LOCATION (방/위치)
@@ -273,7 +279,7 @@ struct ChatRoom: Identifiable {
 //MARK: - API Response
 
 struct ApiResponse: Error, Decodable {
-	let success: String?
+	let success: Bool
 	let message: String
 }
 struct APIError: Codable {

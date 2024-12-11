@@ -16,55 +16,76 @@ struct HomeView: View {
 		NavigationStack {
 			VStack(spacing: 0) {
 				if UserDefaults.standard.integer(forKey: "homeId") < 1 {
-					VStack {
-						Text("물건 정보를 저장하시려면 집 등록을 해야합니다.")
-						NavigationLink(destination: EnterHomeView()) {
-							Text("집 등록하기")
-						}
-					}
+					enterHomeBtn
 				}
 				else {
-					// Tab Bar
-					HStack(spacing: 0) {
-						TabButton(title: "홈", isSelected: selectedTab == 0) {
-							selectedTab = 0
-						}
-						TabButton(title: "즐겨찾기", isSelected: selectedTab == 1) {
-							selectedTab = 1
-						}
-					}
-					// Tab View
-					TabView(selection: $selectedTab) {
-						HomeListView()
-							.frame(maxWidth: .infinity, maxHeight: .infinity)
-							.tag(0)
-						FavListView()
-							.frame(maxWidth: .infinity, maxHeight: .infinity)
-							.tag(1)
-					}
-					
+					tabbarView
+					tabviews
 				}
 			}
 			.toolbar {
-				ToolbarItem(placement: .principal) {
-					NavigationLink(destination: SearchView()) {
-						SearchButton()
-					}
-				}
-				ToolbarItem(placement: .topBarLeading) {
-					Button {
-						userVM.logout()
-					} label: {
-						Image(systemName: "rectangle.portrait.and.arrow.right")
-					}
+				toolbarItems
+			}
+		}
+	}
+	private var enterHomeBtn: some View {
+		VStack {
+			Text("물건 정보를 저장하려면 집 등록을 해야합니다.")
+				.font(.headline)
+				.padding()
+			NavigationLink(destination: EnterHomeView()) {
+				Text("🏡 집 등록하기")
+					.font(.system(size: 20))
+					.bold()
+			}
+		}
+		.padding(.top, -100)
+	}
+	private var tabbarView: some View {
+		HStack(spacing: 0) {
+			TabButton(title: "홈", isSelected: selectedTab == 0) {
+				selectedTab = 0
+			}
+			TabButton(title: "즐겨찾기", isSelected: selectedTab == 1) {
+				selectedTab = 1
+			}
+		}
+	}
+	private var tabviews: some View {
+		TabView(selection: $selectedTab) {
+			HomeListView()
+				.frame(maxWidth: .infinity, maxHeight: .infinity)
+				.tag(0)
+			FavListView()
+				.frame(maxWidth: .infinity, maxHeight: .infinity)
+				.tag(1)
+		}
+	}
+	private var toolbarItems: some ToolbarContent {
+		Group {
+			ToolbarItem(placement: .principal) {
+				NavigationLink(destination: SearchView()) {
+					SearchButton()
 				}
 			}
-			.onAppear {
-				log("UserDefault : \(UserDefaults.standard.integer(forKey: "homeId"))")
+			ToolbarItem(placement: .topBarLeading) {
+				Button {
+					userVM.logout()
+				} label: {
+					Image(systemName: "rectangle.portrait.and.arrow.right")
+				}
+			}
+			ToolbarItem(placement: .topBarTrailing) {
+				Button {
+					
+				} label: {
+					Image(systemName: "square.and.arrow.up")
+				}
 			}
 		}
 	}
 }
+
 struct TabButton: View {
 	let title: String
 	let isSelected: Bool

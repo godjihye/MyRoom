@@ -113,7 +113,7 @@ struct ItemListView: View {
 						if !itemVM.items.isEmpty {
 								List(itemVM.items) { item in
 										NavigationLink {
-												ItemDetailView(item: item)
+											ItemDetailView(item: item)
 										} label: {
 												ItemRowView(item: item)
 										}
@@ -129,9 +129,7 @@ struct ItemListView: View {
 		}
 		
 		private var noItemsView: some View {
-				Button("아이템이 없네요...") {
-						// 아이템 추가 화면 띄우기
-				}
+				Text("아이템이 없네요...")
 				.padding(.top, 200)
 		}
 		

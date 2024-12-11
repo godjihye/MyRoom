@@ -7,6 +7,11 @@ const getUserByUserName = async (data) => {
   return await models.User.findOne({ where: { userName: data } });
 };
 
+// 1-2. Find User By PK
+const getUserByID = async (id) => {
+  return await models.User.findOne({ where: { id } });
+};
+
 // 1-2. Find User Exclude PW By PK
 const getUserByIDExcludePW = async (id) => {
   return await models.User.findOne({
@@ -85,6 +90,7 @@ const findMates = async (id) => {
 
 module.exports = {
   getUserByUserName,
+  getUserByID,
   getUserByIDExcludePW,
   getUserByUserNameExcludePW,
   createUser,

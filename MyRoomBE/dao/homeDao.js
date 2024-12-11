@@ -29,9 +29,10 @@ const findHomeByPK = async (id) => {
 
 //홈 수정
 const updateHome = async (id, data) => {
-  return await models.Home.update(data, {
+  await models.Home.update(data, {
     where: { id },
   });
+  return models.Home.findByPk(id);
 };
 
 // 초대 코드

@@ -27,24 +27,8 @@ class RoomViewModel: ObservableObject {
 		let url = "\(endPoint)/rooms"
 		let homeId = UserDefaults.standard.integer(forKey: "homeId")
 		let params: [String: Any] = ["roomName": roomName, "roomDesc": roomDesc ?? "", "homeId": homeId]
-		/*
-		AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).response { response in
-			if let statusCode = response.response?.statusCode {
-				switch statusCode {
-				case 200..<300:
-					if let data = response.data {
-						do {
-							let apiResponse = JSONDecoder().decode(<#T##type: Decodable.Type##Decodable.Type#>, from: <#T##Data#>)
-						}
-					}
-				}
-			}
-		}
-		 */
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
-			//			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(RoomResponse.self).value
-			//			self.rooms = response.documents
 			log("addRoom() Complete", trait: .success)
 		} catch {
 			if let afError = error as? AFError {

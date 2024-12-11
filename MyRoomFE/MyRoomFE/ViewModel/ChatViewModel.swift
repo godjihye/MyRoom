@@ -18,7 +18,7 @@ class ChatViewModel: ObservableObject {
 		private var roomIdMapping: [String: String] = [:]
 		
 		private let db = Database.database().reference()
-		var currentUser = UserDefaults.standard.value(forKey: "nickName") as! String
+		var currentUser = UserDefaults.standard.value(forKey: "nickName")
 		
 		//roomId 유무 체크
 		func roomIdChk(roomId: String, completion: @escaping (Bool) -> Void) {

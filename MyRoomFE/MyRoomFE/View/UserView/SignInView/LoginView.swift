@@ -12,15 +12,23 @@ struct LoginView: View {
 		
 		NavigationStack {
 			VStack {
-				Image("logo-light")
-				SignInWithAppleView()
-				SignInWithKakaoView()
+				Image("logo")
+					.resizable()
+					.frame(width: 100, height: 80)
+					.padding(.top, -80)
+				socialLoginView
 				NavigationLink(destination: EmailLoginView()) {
 					Text("이메일로 로그인하기")
 				}
 			}
 		}
-		
+	}
+	private var socialLoginView: some View {
+		VStack {
+			SignInWithAppleView()
+			SignInWithKakaoView()
+		}
+		.padding()
 	}
 }
 
