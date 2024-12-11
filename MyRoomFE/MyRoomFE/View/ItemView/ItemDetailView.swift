@@ -11,13 +11,17 @@ struct ItemDetailView: View {
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject var roomVM: RoomViewModel
 	@EnvironmentObject var itemVM: ItemViewModel
+	
 	@State private var isShowingDeleteAlert: Bool = false
 	@State private var isFav: Bool
-	let item: Item
+	
+	var item: Item
+	
 	init(item: Item) {
-		self.item = item
-		self._isFav = State(initialValue: item.isFav)
+			self.item = item
+			self._isFav = State(initialValue: item.isFav) // State 초기화
 	}
+	
 	var body: some View {
 		NavigationStack {
 			VStack(alignment: .leading, spacing: 16) {
@@ -36,10 +40,11 @@ struct ItemDetailView: View {
 			.toolbar(content: {
 				toolbarContent
 			})
-			
+			.onAppear(perform: {
+				itemVM.setCurrentItem(item: item)
+			})
 			.alert("좋아요", isPresented: $itemVM.isShowingAlert, actions: {
 				Button("확인", role: .cancel){}
-
 			}, message: {
 				Text(itemVM.message)
 			})

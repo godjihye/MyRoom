@@ -16,4 +16,5 @@ router.post("/inviteCode/:userId", homeController.joinHomeWithInviteCode);
 router.put("/:id", homeController.updateHome);
 // 4. Delete Home
 router.delete("/:id", homeController.deleteHome);
+
 module.exports = router;

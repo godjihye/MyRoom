@@ -12,93 +12,21 @@ struct HomeListView: View {
 	@State private var isShowingAddRoomView: Bool = false
 	@State private var isShowingAddLocationView: Bool = false
 	@State private var isShowingAlert: Bool = false
-	@State private var isShowingMakeHomeView: Bool = false
 	@State private var removeRoomId: Int = 0
 	@State private var isShowingAlertRemove: Bool = false
 	
 	var body: some View {
 		NavigationStack {
 			VStack {
-				// title
-				HStack {
-					Text("Home")
-						.font(.title)
-						.bold()
-					Spacer()
-					Menu {
-						Button("방 추가하기") {
-							self.isShowingAddRoomView = true
-						}
-						Button("위치 추가하기"){
-							self.isShowingAddLocationView = true
-						}
-					} label: {
-						Image(systemName: "plus")
-							.font(.title2)
-							.bold()
-					}
-				}
-				.padding()
 				
-				// Room - Location List
+				titleView
+				
 				if !roomVM.rooms.isEmpty {
-					List {
-						ForEach(roomVM.rooms) { (room: Room) in
-							Section(header: HStack {
-								Text(room.roomName)
-								Spacer()
-								NavigationLink("편집") {
-									AddRoomView(title: "방 정보 편집", roomName: room.roomName, roomDesc: room.roomDesc) { roomName, roomDesc in
-										Task {
-											await roomVM.editRoom(roomId: room.id, roomName: roomName, roomDesc: roomDesc)
-											await roomVM.fetchRooms()
-										}
-									}
-								}
-								.font(.system(size: 15))
-								.foregroundStyle(.secondary)
-								Button {
-									isShowingAlert = true
-									removeRoomId = room.id
-								} label: {
-									Text("삭제")
-										.font(.system(size: 15))
-										.foregroundStyle(.red)
-								}
-							}) {
-								ForEach(room.locations) { location in
-									NavigationLink {
-										ItemListView(location: location)
-									} label: {
-										Text(location.locationName)
-									}
-								}
-							}
-							
-						}
-					}
-					.refreshable {
-						Task {
-							await roomVM.fetchRooms()
-						}
-					}
+					listView
 				} else if roomVM.isFetchError {
-					VStack {
-						Text("서버 연결을 확인해주세요!")
-						Button("다시 시도하기") {
-							Task {
-								await roomVM.fetchRooms()
-							}
-						}
-					}
-					.padding(.top, 250)
+					fetchErrorView
 				} else {
-					Text("등록된 집이 없습니다.")
-					Button {
-						isShowingMakeHomeView = true
-					} label: {
-						Text("집 등록하기")
-					}
+					emptyRoomView
 				}
 				Spacer()
 			}
@@ -134,6 +62,93 @@ struct HomeListView: View {
 		.task {
 			await roomVM.fetchRooms()
 		}
+	}
+	private var titleView: some View {
+		HStack {
+			Text("Home")
+				.font(.title)
+				.bold()
+			Spacer()
+			Menu {
+				Button("방 추가하기") {
+					self.isShowingAddRoomView = true
+				}
+				Button("위치 추가하기"){
+					self.isShowingAddLocationView = true
+				}
+			} label: {
+				Image(systemName: "plus")
+					.font(.title2)
+					.bold()
+			}
+		}
+		.padding()
+	}
+	
+	private var listView: some View {
+		List {
+			ForEach(roomVM.rooms) { (room: Room) in
+				Section(header: HStack {
+					Text(room.roomName)
+					Spacer()
+					NavigationLink("편집") {
+						AddRoomView(title: "방 정보 편집", roomName: room.roomName, roomDesc: room.roomDesc) { roomName, roomDesc in
+							Task {
+								await roomVM.editRoom(roomId: room.id, roomName: roomName, roomDesc: roomDesc)
+								await roomVM.fetchRooms()
+							}
+						}
+					}
+					.font(.system(size: 15))
+					.foregroundStyle(.secondary)
+					Button {
+						isShowingAlert = true
+						removeRoomId = room.id
+					} label: {
+						Text("삭제")
+							.font(.system(size: 15))
+							.foregroundStyle(.red)
+					}
+				}) {
+					ForEach(room.locations) { location in
+						NavigationLink {
+							ItemListView(location: location)
+						} label: {
+							Text(location.locationName)
+						}
+					}
+				}
+				
+			}
+		}
+		.refreshable {
+			Task {
+				await roomVM.fetchRooms()
+			}
+		}
+	}
+	
+	private var fetchErrorView: some View {
+		VStack {
+			Text("서버 연결을 확인해주세요!")
+			Button("다시 시도하기") {
+				Task {
+					await roomVM.fetchRooms()
+				}
+			}
+		}
+		.padding(.top, 250)
+	}
+	private var emptyRoomView: some View {
+		VStack {
+			Text("등록된 방이 없습니다.")
+			Button {
+				isShowingAddRoomView = true
+			} label: {
+				Text("새로운 방 추가하기")
+			}
+		}
+		.padding(.top, 250)
 	}
 }
 

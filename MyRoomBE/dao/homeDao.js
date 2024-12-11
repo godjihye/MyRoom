@@ -5,7 +5,7 @@ const createHome = async (userId, data) => {
   const home = await models.Home.create(data);
   const homeId = home.id;
 
-  const homeUser = await models.User.update(
+  await models.User.update(
     { homeId },
     {
       where: { id: userId },
@@ -29,9 +29,10 @@ const findHomeByPK = async (id) => {
 
 //홈 수정
 const updateHome = async (id, data) => {
-  return await models.Home.update(data, {
+  await models.Home.update(data, {
     where: { id },
   });
+  return models.Home.findByPk(id);
 };
 
 // 초대 코드

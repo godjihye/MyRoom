@@ -18,7 +18,7 @@ struct Item: Codable,Identifiable, Equatable {
 	let photo: String?
 	let desc: String?
 	let color: String?
-	let isFav: Bool
+	let isFav: Bool 
 	let price: Int?
 	let openDate: String?
 	let locationId: Int
@@ -52,6 +52,12 @@ struct ItemRoot: Codable {
 	let item: Item
 }
 
+struct AdditionalPhotosRoot: Decodable {
+	let success: Bool
+	let message: String
+	let photos: ItemPhoto
+}
+
 //MARK: - ROOM AND LOCATION (방/위치)
 
 struct Location: Identifiable, Codable, Hashable {
@@ -80,14 +86,17 @@ struct RoomResponse:Codable {
 
 
 //MARK: - POST(커뮤니티 게시글)
-
+struct PostUser: Codable,Equatable {
+    let nickname: String
+    let userImage: String
+}
 struct Post: Identifiable,Codable,Equatable {
     let id: Int
     let postTitle: String
     let postContent: String
     let postThumbnail: String
     
-    let user: User
+    let user: PostUser
     
     let postFav: [PostFavData]?
     var isFavorite:Bool
@@ -117,7 +126,7 @@ struct PostRoot: Codable{
 struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
     let id:Int
     let image:String
-    let buttons:[ButtonData]?
+    let btnData:[ButtonData]?
 }
 
 struct ButtonData: Identifiable, Codable, Equatable, Hashable {
@@ -132,14 +141,25 @@ struct PostFavData:Identifiable,Codable, Equatable {
 	let postId:Int
 	let userId:Int
 }
+
+//MARK: - COMMENT(댓글)
+
 struct Comment: Identifiable ,Codable{
-	var id:Int
-	var comment: String
-	var userImage:String
-	var nickName:String
-	var date:String
+	let id:Int
+	let comment: String
+    let user:CommentUser
+    var replies: [Comment]?
+	let updatedAt:String
 }
 
+struct CommentRoot :Codable{
+    let comments : [Comment]
+}
+
+struct CommentUser : Codable {
+    let nickname: String
+    let userImage: String?
+}
 
 //MARK: - HOME(집)
 
@@ -263,6 +283,7 @@ struct ChatRoom: Identifiable {
     var id: String
     var roomName: String
     var participants: [String]
+    var imageUrls: [String: String]
 }
 
 
@@ -270,7 +291,7 @@ struct ChatRoom: Identifiable {
 //MARK: - API Response
 
 struct ApiResponse: Error, Decodable {
-	let success: String?
+	let success: Bool
 	let message: String
 }
 struct APIError: Codable {

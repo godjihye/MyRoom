@@ -13,10 +13,15 @@ class ItemViewModel: ObservableObject {
 	
 	@Published var items: [Item] = []
 	@Published var favItems: [Item] = []
+	@Published var currentItem: Item?
 	@Published var message: String = ""
 	@Published var isShowingAlert: Bool = false
 	@Published var searchResultItems: [Item] = []
 	@Published var isAddShowing: Bool = false
+	
+	// ALERT STATE VARIABLES
+	@Published var isShowingAlertAddAdditionalPhotos: Bool = false
+	@Published var addAdditionalPhotosMessage: String = ""
 	
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	let userId = UserDefaults.standard.integer(forKey: "userId")
@@ -57,7 +62,6 @@ class ItemViewModel: ObservableObject {
 				case 200..<300:
 					do {
 						guard let data = response.data else { return }
-						log("\(String(data:data, encoding: .utf8))")
 						let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 						self.isShowingAlert = true
 						self.message = root.message
@@ -105,7 +109,22 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
-	/// 2-2. Read Fav Items (All location)
+	/// 2-2. Find All Items By HomeId
+	func fetchAllItem() async {
+		let url = "\(endPoint)/items/allItem/\(homeId)"
+		do {
+			let response = try await AF.request(url, method: .get)
+				.serializingDecodable(ItemResponse.self).value
+			DispatchQueue.main.async {
+				self.items = response.documents
+			}
+			log("fetchAllItem Complete", trait: .success)
+		} catch {
+			log("fetchAllItem Error: \(error.localizedDescription)", trait: .error)
+		}
+	}
+	
+	/// 2-3. Read Fav Items (All location)
 	func fetchFavItems() async {
 		let url = "\(endPoint)/items/fav/\(homeId)"
 		do {
@@ -255,6 +274,8 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	//MARK: - 추가 사진
+	//	@Published var isShowingAlertAddAdditionalPhotos: Bool = false
+//	@Published var addAdditionalPhotosMessage: String = ""
 	func addAdditionalPhotos(images: [UIImage]?, itemId: Int?) async {
 		guard let images, let itemId else {return}
 		if images.isEmpty {return}
@@ -272,9 +293,12 @@ class ItemViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let root = try JSONDecoder().decode(ItemResponse.self, from: data)
+							let root = try JSONDecoder().decode(AdditionalPhotosRoot.self, from: data)
+							self.isShowingAlertAddAdditionalPhotos = true
+							self.addAdditionalPhotosMessage = root.message
 							log("addAdditionalPhotos", trait: .success)
 						} catch{
+							
 							if let afError = error as? AFError {
 								log("AFError: \(afError.localizedDescription)", trait: .error)
 							} else {
@@ -287,14 +311,15 @@ class ItemViewModel: ObservableObject {
 						do {
 							self.isAddShowing = true
 							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
-							self.message = apiError.message
+							self.isShowingAlertAddAdditionalPhotos = true
+							self.addAdditionalPhotosMessage = apiError.message
 						} catch let error {
-							self.isAddShowing = true
-							self.message = error.localizedDescription
+							self.isShowingAlertAddAdditionalPhotos = true
+							self.addAdditionalPhotosMessage = error.localizedDescription
 						}
 					}
 				default:
-					self.isAddShowing = true
+					self.isShowingAlertAddAdditionalPhotos = true
 					self.message = "네트워크 오류입니다."
 				}
 			}
@@ -318,7 +343,7 @@ class ItemViewModel: ObservableObject {
 	func searchItem(query: String?) async {
 		guard let query = query else { return }
 		let url = "\(endPoint)/items/search"
-		let params: Parameters = ["homeId": homeId,"query": query]
+		let params: Parameters = ["homeId": homeId, "query": query]
 		do {
 			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(ItemResponse.self).value
 			DispatchQueue.main.async { self.searchResultItems = response.documents }
@@ -334,6 +359,12 @@ class ItemViewModel: ObservableObject {
 	func clearSearchResult() {
 		searchResultItems.removeAll()
 	}
+	
+	func setCurrentItem(item: Item) {
+		currentItem = item
+	}
+	
 }
+
 
 

@@ -11,15 +11,20 @@ import SwiftUI
 import SVProgressHUD
 
 class UserViewModel: ObservableObject {
-	@Published var isLoggedIn = false
-	@Published var isLoginError = false
-	@Published var isJoinShowing = false
-	@Published var isMakeHomeAlert = false
-	@Published var userInfo: User?
+	
+	@Published var isLoggedIn: Bool = false
+	@Published var isLoginError: Bool = false
+	@Published var isJoinShowing: Bool = false
+	
+	@Published var isMakeHomeAlert: Bool = false
+	
 	@Published var message: String = ""
-	@Published var showAlert = false
-	@Published var isHaveHome = false
+	@Published var showAlert: Bool = false
+	
+	@Published var isHaveHome: Bool = false
 	@Published var inviteCode: String = ""
+	
+	@Published var userInfo: User?
 	
 	init() {
 		self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
@@ -27,8 +32,8 @@ class UserViewModel: ObservableObject {
 	
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	
-	//MARK: - ME
-	// 1. Login
+	//MARK: - Login / Register
+	
 	func login(userName: String, password: String) {
 		SVProgressHUD.show()
 		let url = "\(endPoint)/users/sign-in"
@@ -45,8 +50,8 @@ class UserViewModel: ObservableObject {
 							UserDefaults.standard.set(signIn.user.userName, forKey: "userName")
 							UserDefaults.standard.set(signIn.user.id, forKey: "userId")
 							UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
-                            UserDefaults.standard.set(signIn.user.userImage, forKey: "userImage")
-                            UserDefaults.standard.set(signIn.user.nickname, forKey: "nickName")
+							UserDefaults.standard.set(signIn.user.userImage, forKey: "userImage")
+							UserDefaults.standard.set(signIn.user.nickname, forKey: "nickName")
 							if let homeId = signIn.user.homeId {
 								UserDefaults.standard.set(homeId, forKey: "homeId")
 							} else {
@@ -93,7 +98,7 @@ class UserViewModel: ObservableObject {
 							UserDefaults.standard.set(signIn.user.id, forKey: "userId")
 							UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
 							UserDefaults.standard.set(signIn.user.userImage, forKey: "userImage")
-                            UserDefaults.standard.set(signIn.user.nickname, forKey: "nickName")
+							UserDefaults.standard.set(signIn.user.nickname, forKey: "nickName")
 							if let homeId = signIn.user.homeId {
 								UserDefaults.standard.set(homeId, forKey: "homeId")
 							}
@@ -120,20 +125,7 @@ class UserViewModel: ObservableObject {
 		}
 		SVProgressHUD.dismiss()
 	}
-	// 1-1. Logout
-	func logout() {
-		SVProgressHUD.show()
-		isLoggedIn = false
-		UserDefaults.standard.removeObject(forKey: "token")
-		UserDefaults.standard.removeObject(forKey: "userName")
-		UserDefaults.standard.removeObject(forKey: "userId")
-		UserDefaults.standard.removeObject(forKey: "isLoggedIn")
-		UserDefaults.standard.removeObject(forKey: "homeId")
-		
-		SVProgressHUD.dismiss()
-	}
 	
-	// 2. Register
 	func signUp(userName: String, password: String, nickname: String) {
 		SVProgressHUD.show()
 		let url = "\(endPoint)/users/sign-up"
@@ -169,21 +161,21 @@ class UserViewModel: ObservableObject {
 		SVProgressHUD.dismiss()
 	}
 	
-	// 3. 회원 탈퇴
-	func deleteUser(userId: Int) {
-		let url = "\(endPoint)/users/\(userId)"
-		AF.request(url, method: .delete).response { response in
-			guard let statusCode = response.response?.statusCode else { return }
-			switch statusCode{
-			case 200..<300:
-				self.message = "회원 탈퇴가 완료되었습니다."
-			default:
-				self.message = "회원 탈퇴에 실패했습니다."
-			}
-		}
+	func logout() {
+		SVProgressHUD.show()
+		isLoggedIn = false
+		UserDefaults.standard.removeObject(forKey: "token")
+		UserDefaults.standard.removeObject(forKey: "userName")
+		UserDefaults.standard.removeObject(forKey: "userId")
+		UserDefaults.standard.removeObject(forKey: "isLoggedIn")
+		UserDefaults.standard.removeObject(forKey: "homeId")
+		UserDefaults.standard.removeObject(forKey: "userImage")
+		UserDefaults.standard.removeObject(forKey: "nickName")
+		UserDefaults.standard.removeObject(forKey: "homeId")
+		userInfo = nil
+		SVProgressHUD.dismiss()
 	}
 	
-	// 4. fetch User
 	func fetchUser() {
 		let userId = UserDefaults.standard.integer(forKey: "userId")
 		let url = "\(endPoint)/users/info/\(userId)"
@@ -209,14 +201,31 @@ class UserViewModel: ObservableObject {
 		}
 	}
 	
-	// 5. update User
+	//MARK: - User Status Change
+	// 1. delete
+	func deleteUser() {
+		
+		let userId = UserDefaults.standard.integer(forKey: "userId")
+		let url = "\(endPoint)/users/\(userId)"
+		
+		AF.request(url, method: .delete).response { response in
+			do {
+				guard let data = response.data else {return}
+				let resp = try JSONDecoder().decode(ApiResponse.self, from: data)
+				self.showAlert = true
+				self.message = resp.message
+			} catch {
+				log("decode error")
+			}
+		}
+		logout()
+	}
+	
 	func editUser(userImage: UIImage?, nickname: String?) {
 		let userId = UserDefaults.standard.integer(forKey: "userId")
-		let uploadURL = "\(endPoint)/users/upload"
 		let patchURL = "\(endPoint)/users/\(userId)"
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
 		let formData = MultipartFormData()
-		var uploadImageUrl: String?
 		if let userImage, let imageData = userImage.jpegData(compressionQuality: 0.8) {
 			formData.append(imageData, withName: "userImage", fileName: "userImage.jpg", mimeType: "image/jpeg")
 			log("formData image appended")
@@ -231,7 +240,6 @@ class UserViewModel: ObservableObject {
 						log("responseString: \(responseString)")
 						let root = try JSONDecoder().decode(ImageUpload.self, from: data)
 						log("upload image success")
-						uploadImageUrl = root.imageUrl
 					} catch let error {
 						log("decode error: \(error.localizedDescription)")
 					}
@@ -242,36 +250,9 @@ class UserViewModel: ObservableObject {
 				}
 			}
 		}
-//		if let nickname = nickname, let userImageUrl = uploadImageUrl {
-//			let params: Parameters = ["nickname": nickname, "userImage": userImageUrl]
-//			AF.request(patchURL, method: .patch, parameters: params).response { response in
-//				if let statusCode = response.response?.statusCode {
-//					switch statusCode {
-//					case 200..<300:
-//						do {
-//							guard let data = response.data else {return}
-//							let root = try JSONDecoder().decode(UserInfo.self, from: data)
-//							self.userInfo = root.user
-//							self.message = root.message
-//							self.showAlert = true
-//						} catch let error {
-//							log("decode error: \(error)")
-//						}
-//					case 300..<500:
-//						do {
-//							guard let data = response.data else {return}
-//							let res = try JSONDecoder().decode(ApiResponse.self, from: data)
-//						}catch let error{
-//							log("error decode error: \(error)")
-//						}
-//					default:
-//						log("서버ㅓ 오류")
-//					}
-//				}
-//			}
-//		}
-		
 	}
+	
+	
 	//MARK: - HOME
 	// 1. Create Home
 	func makeHome(homeName: String, homeDesc: String?) {
@@ -279,7 +260,7 @@ class UserViewModel: ObservableObject {
 		let userId = UserDefaults.standard.value(forKey: "userId") as! Int
 		let url = "\(endPoint)/home/\(userId)"
 		let params: Parameters = ["homeName": homeName, "homeDesc": homeDesc ?? ""]
-
+		
 		AF.request(url, method: .post, parameters: params).response { response in
 			if let statusCode = response.response?.statusCode {
 				switch statusCode {
@@ -306,6 +287,7 @@ class UserViewModel: ObservableObject {
 			SVProgressHUD.dismiss()
 		}
 	}
+	
 	// 2. Join Home With InviteCode
 	func joinHome(inviteCode: String?) {
 		let userId = UserDefaults.standard.integer(forKey: "userId")
@@ -338,6 +320,7 @@ class UserViewModel: ObservableObject {
 		}
 	}
 	
+	// 3. 초대코드 조회
 	func getInviteCode() {
 		let homeId = UserDefaults.standard.integer(forKey: "homeId")
 		log("homeId: \(homeId)")
@@ -364,7 +347,7 @@ class UserViewModel: ObservableObject {
 		}
 	}
 	
-	// 초대코드 재발행
+	// 4. 초대코드 재발행
 	func refreshInviteCode() {
 		let homeId = UserDefaults.standard.integer(forKey: "homeId")
 		let url = "\(endPoint)/home/inviteCode/refresh/\(homeId)"
@@ -376,8 +359,8 @@ class UserViewModel: ObservableObject {
 						do {
 							let res = try JSONDecoder().decode(InviteCode.self, from: data)
 							self.inviteCode = res.inviteCode
-						}catch let error {
-							log("decode error")
+						} catch let error {
+							log("decode error: \(error)")
 						}
 					}
 				case 300..<500:
