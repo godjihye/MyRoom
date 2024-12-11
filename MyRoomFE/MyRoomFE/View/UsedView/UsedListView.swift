@@ -14,6 +14,7 @@ struct UsedListView: View {
         
         NavigationSplitView {
             ScrollView{
+                
                 LazyVStack{
                     ForEach($usedVM.useds) { $used in
                         NavigationLink() {

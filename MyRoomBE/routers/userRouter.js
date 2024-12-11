@@ -26,6 +26,7 @@ router.post("/:userId", userController.updateUser);
 // 6. 회원탈퇴
 router.delete("/:userId", userController.deleteUser);
 
+router.patch("/:userId", userController.changePW);
 module.exports = router;
 
 // router.post("/regist-apns", async (req, res, next) => {

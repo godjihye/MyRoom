@@ -4,8 +4,7 @@ const userDao = require("../dao/userDao");
 // 1. home 생성
 const createHome = async (userId, data) => {
   let home = await homeDao.createHome(userId, data);
-  const inviteCode = generateCode(home.id);
-  home.inviteCode = inviteCode;
+  const inviteCode = generateInviteCode(home.id);
   return home;
 };
 

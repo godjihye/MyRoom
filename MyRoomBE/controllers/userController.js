@@ -82,6 +82,26 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const changePW = async (req, res) => {
+  const userId = req.params.userId;
+
+  const originPW = req.body.originPW;
+  const newPW = req.body.newPW;
+
+  try {
+    await userService.changePW(userId, req.body);
+    // console.log(result);
+    res.status(200).json({ success: true, message: "비밀번호 변경 성공" });
+    // if (!result) {
+    //   res
+    //     .status(404)
+    //     .json({ success: false, message: "기존 비밀번호가 틀립니다." });
+    // }
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+};
+
 module.exports = {
   login,
   createUser,
@@ -89,4 +109,5 @@ module.exports = {
   findUser,
   updateUser,
   deleteUser,
+  changePW,
 };
