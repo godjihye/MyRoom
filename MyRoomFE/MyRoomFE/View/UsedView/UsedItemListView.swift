@@ -50,7 +50,7 @@ struct UsedItemListView: View {
                                     isMyItemPresented: $isMyItemPresented,item: item).environmentObject(itemVM)
                 }
             }.task {
-                await itemVM.fetchItems(locationId: 62)
+                await itemVM.fetchAllItem()
                 print(itemVM)
             }
             

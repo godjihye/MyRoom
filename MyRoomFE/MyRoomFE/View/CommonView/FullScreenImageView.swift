@@ -6,11 +6,7 @@
 //
 
 import SwiftUI
-let testURLs = [
-			 URL(string: "https://sayangpaysj.blob.core.windows.net/yangpa/test1"),
-			 URL(string: "https://sayangpaysj.blob.core.windows.net/yangpa/test2"),
-			 URL(string: "https://sayangpaysj.blob.core.windows.net/yangpa/test3")
-	 ].compactMap({ $0 })  // compactMap을 사용하여 nil 제거
+
 	 
 struct FullScreenImageView: View {
 		let imageURLs: [URL]
@@ -50,8 +46,8 @@ struct FullScreenImageView: View {
 		}
 }
 
-#Preview {
-	 
-		FullScreenImageView(imageURLs: testURLs, selectedIndex: 0)
-		
-}
+//#Preview {
+//	 
+//		FullScreenImageView(imageURLs: testURLs, selectedIndex: 0)
+//		
+//}
