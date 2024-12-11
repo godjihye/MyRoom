@@ -3,9 +3,9 @@ const userDao = require("../dao/userDao");
 
 // 1. home 생성
 const createHome = async (userId, data) => {
-  let home = await homeDao.createHome(userId, data);
-  const inviteCode = generateInviteCode(home.id);
-  return home;
+  const home = await homeDao.createHome(userId, data);
+  const newHome = await generateInviteCode(home.id);
+  return newHome;
 };
 
 // 2. home의 id로 home 찾기
@@ -34,8 +34,8 @@ const generateInviteCode = async (id) => {
       isUnique = true;
     }
   }
-  await homeDao.updateHome(id, { inviteCode });
-  return inviteCode;
+  const home = await homeDao.updateHome(id, { inviteCode });
+  return home;
 };
 
 // 중복 x 코드 생성
