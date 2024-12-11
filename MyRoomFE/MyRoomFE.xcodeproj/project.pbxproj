@@ -242,13 +242,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B15D9A562D08135B00FA0253 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		B82E1B962D06803B005BB2D4 /* SignInView */ = {
 			isa = PBXGroup;
 			children = (
@@ -399,7 +392,6 @@
 			isa = PBXGroup;
 			children = (
 				B8BF24CF2D08621D00E19D31 /* WelcomeView */,
-				B15D9A562D08135B00FA0253 /* New Group */,
 				B8E917A32D01A60D00345B89 /* ChatView */,
 				B86F351B2CF970040040BB33 /* UserView */,
 				B86F34B02CF96F920040BB33 /* CommentView */,
