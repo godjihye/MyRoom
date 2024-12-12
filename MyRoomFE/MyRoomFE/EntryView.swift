@@ -29,16 +29,16 @@ struct EntryView: View {
 						Image(systemName: "person.3.fill")
 						Text("커뮤니티")
 					}
+				ChatListView().environmentObject(ChatViewModel())
+					.tabItem {
+						Image(systemName: "ellipsis.message.fill")
+						Text("채팅목록")
+					}
 				MyPageView()
 					.tabItem {
 						Image(systemName: "person.fill")
 						Text("마이페이지")
 					}
-                CommentListView(postId: 36).environmentObject(CommentViewModel())
-                    .tabItem {
-                        Image(systemName: "person.3.fill")
-                        Text("댓글text")
-                    }
 			}
 		} else {
 			LoginView()
