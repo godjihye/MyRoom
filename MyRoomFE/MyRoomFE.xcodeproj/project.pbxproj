@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B1BA3362D0A880C00BA2B8C /* MyPageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1BA3352D0A880C00BA2B8C /* MyPageRow.swift */; };
+		0B1BA3382D0A8C0F00BA2B8C /* MateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1BA3372D0A8C0F00BA2B8C /* MateListView.swift */; };
 		0B9CB6192D030EAA00FA1075 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9CB6182D030EAA00FA1075 /* LoginView.swift */; };
 		0B9CB61D2D041FFB00FA1075 /* SignInWithAppleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9CB61C2D041FFB00FA1075 /* SignInWithAppleView.swift */; };
 		0B9CB6202D04227800FA1075 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 0B9CB61F2D04227800FA1075 /* KakaoSDK */; };
@@ -125,6 +127,8 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
+		0B1BA3352D0A880C00BA2B8C /* MyPageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageRow.swift; sourceTree = "<group>"; };
+		0B1BA3372D0A8C0F00BA2B8C /* MateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateListView.swift; sourceTree = "<group>"; };
 		0B9CB6182D030EAA00FA1075 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		0B9CB61B2D041F8E00FA1075 /* MyRoomFE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyRoomFE.entitlements; sourceTree = "<group>"; };
 		0B9CB61C2D041FFB00FA1075 /* SignInWithAppleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleView.swift; sourceTree = "<group>"; };
@@ -261,6 +265,8 @@
 				B8E916472D016C8300345B89 /* ProfileRow.swift */,
 				0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */,
 				0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */,
+				0B1BA3352D0A880C00BA2B8C /* MyPageRow.swift */,
+				0B1BA3372D0A8C0F00BA2B8C /* MateListView.swift */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -656,6 +662,8 @@
 				B86F350F2CF96F920040BB33 /* ItemViewModel.swift in Sources */,
 				B86F35102CF96F920040BB33 /* PostViewModel.swift in Sources */,
 				B86F35112CF96F920040BB33 /* RoomViewModel.swift in Sources */,
+				0B1BA3362D0A880C00BA2B8C /* MyPageRow.swift in Sources */,
+				0B1BA3382D0A8C0F00BA2B8C /* MateListView.swift in Sources */,
 				B86F35122CF96F920040BB33 /* UsedViewModel.swift in Sources */,
 				B86F35132CF96F920040BB33 /* UserViewModel.swift in Sources */,
 				B82E1BA32D06D3F5005BB2D4 /* CustomTapGesture.swift in Sources */,
