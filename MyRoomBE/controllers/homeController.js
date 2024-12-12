@@ -56,7 +56,6 @@ const generateInviteCode = async (req, res) => {
     });
   } catch (e) {
     res.status(500).json({ success: false, message: "알 수 없는 오류" });
-    console.log(e);
   }
 };
 
@@ -89,7 +88,6 @@ const findInviteCode = async (req, res) => {
 const refreshInviteCode = async (req, res) => {
   try {
     const inviteCode = await homeService.refreshInviteCode(req.params.homeId);
-    console.log(inviteCode);
     res.status(200).json({ inviteCode: inviteCode });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
