@@ -16,7 +16,6 @@ struct MyRoomFEApp: App {
 	init() {
 		// kakao sdk 초기화
 		let kakaoNativeAppKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APP_KEY") as? String ?? ""
-		log("kakaoNativeAppKey 457fb67fb4ee80db55d5029c418dad02 == \(kakaoNativeAppKey)")
 		KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
 	}
 	var body: some Scene {

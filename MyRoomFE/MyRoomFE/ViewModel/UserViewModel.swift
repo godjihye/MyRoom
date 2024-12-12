@@ -188,6 +188,8 @@ class UserViewModel: ObservableObject {
 							log("response.data = \(data.description)")
 							let root = try JSONDecoder().decode(UserInfo.self, from: data)
 							self.userInfo = root.user
+							log("createdAt: \(root.user.createdAt)")
+							log("updatedAt: \(root.user.updatedAt)")
 						}
 					} catch let error {
 						log("decode error: \(error.localizedDescription)")
