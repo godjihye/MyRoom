@@ -42,9 +42,11 @@ struct ChatView: View {
                                                 .frame(width: 40, height: 40)
                                                 .clipShape(Circle())
                                         } placeholder: {
-                                            ProgressView()
-                                                .progressViewStyle(CircularProgressViewStyle())
-                                                .frame(width: 40, height: 40)
+																					Image(systemName: "person.circle")
+																							.resizable()
+																							.scaledToFit()
+																							.frame(width: 40, height: 40)
+																							.clipShape(Circle())
                                         }
                                     } else {
                                         Image(systemName: "person.circle")

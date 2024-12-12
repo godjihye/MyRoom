@@ -77,7 +77,6 @@ const deleteUser = async (id) => {
 
 // Find Mates
 const findMates = async (id) => {
-  console.log(`id: ${id}`);
   if (id == 0 || id == null) {
     return;
   }
