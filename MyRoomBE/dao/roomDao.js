@@ -31,7 +31,6 @@ const getAllRoom = async (id) => {
       where: { homeId: id },
     });
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

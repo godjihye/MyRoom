@@ -253,7 +253,33 @@ class UserViewModel: ObservableObject {
 			}
 		}
 	}
-	
+	func changepw(cpw: String?, npw: String?) {
+		SVProgressHUD.show()
+		log("changepw 와쩌염")
+		guard let cpw, let npw else { return }
+		let userId = UserDefaults.standard.integer(forKey: "userId")
+		let url = "\(endPoint)/users/changepw/\(userId)"
+		let params: Parameters = ["cpw": cpw, "npw": npw]
+		AF.request(url, method: .post, parameters: params).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200...500:
+					if let data = response.data{
+						do {
+							let root = try JSONDecoder().decode(ApiResponse.self, from: data)
+							self.message = root.message
+							self.showAlert = true
+						} catch {
+							log("Decoding error")
+						}
+					}
+				default:
+					log("머징?")
+				}
+			}
+		}
+		SVProgressHUD.dismiss()
+	}
 	
 	//MARK: - HOME
 	// 1. Create Home
@@ -374,3 +400,4 @@ class UserViewModel: ObservableObject {
 		}
 	}
 }
+

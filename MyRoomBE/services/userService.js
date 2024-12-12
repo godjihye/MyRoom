@@ -9,7 +9,6 @@ const expiresIn = "10y";
 
 const createHash = async (password, saltRound) => {
   let hashed = await bcrypt.hash(password, saltRound);
-  console.log(hashed);
   return hashed;
 };
 
@@ -20,7 +19,7 @@ const login = async (data) => {
   if (!user) {
     throw new Error("유저를 찾을 수 없습니다.");
   }
-  const isPasswordValid = bcrypt.hash(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     throw new Error("패스워드가 틀립니다.");
   }
@@ -85,16 +84,16 @@ const deleteUser = async (id) => {
 // 7. Change Password
 const changePW = async (id, data) => {
   try {
-    const { originPW, newPW } = data;
+    const { cpw, npw } = data;
     const user = await userDao.getUserByID(id);
     if (!user) {
       throw new Error("유저를 찾을 수 없습니다.");
     }
-    const isPasswordValid = bcrypt.hash(originPW, user.password);
+    const isPasswordValid = await bcrypt.compare(cpw, user.password);
     if (!isPasswordValid) {
       throw new Error("패스워드가 틀립니다.");
     }
-    const newPassword = await createHash(newPW, 10);
+    const newPassword = await createHash(npw, 10);
     const newData = { password: newPassword };
     await userDao.updateUser(id, newData);
   } catch (error) {
