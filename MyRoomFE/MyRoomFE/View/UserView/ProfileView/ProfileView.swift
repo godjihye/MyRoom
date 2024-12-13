@@ -94,6 +94,7 @@ struct ProfileView: View {
 			}
 		}
 		.padding(.top, -20)
+		.padding(.bottom, 20)
 	}
 	//MARK: - Mate Users
 	private var mateList: some View {
