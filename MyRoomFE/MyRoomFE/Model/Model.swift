@@ -91,7 +91,7 @@ struct RoomResponse:Codable {
 //MARK: - POST(커뮤니티 게시글)
 struct PostUser: Codable,Equatable {
     let nickname: String
-    let userImage: String
+    let userImage: String?
 }
 struct Post: Identifiable,Codable,Equatable {
     let id: Int
