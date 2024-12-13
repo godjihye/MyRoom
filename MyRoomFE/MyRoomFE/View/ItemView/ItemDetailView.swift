@@ -18,25 +18,31 @@ struct ItemDetailView: View {
 	var item: Item
 	
 	init(item: Item) {
-			self.item = item
-			self._isFav = State(initialValue: item.isFav) // State 초기화
+		self.item = item
+		self._isFav = State(initialValue: item.isFav) // State 초기화
 	}
 	
 	var body: some View {
 		NavigationStack {
-			VStack(alignment: .leading, spacing: 16) {
-				itemImage
-				itemNameAndHeart
-				itemLocation
-				itemPurchaseAndExpiry
-				itemDesc
-				itemPriceAndColor
-				itemCreatedAtAndUpdatedAt
-				AdditionalPhotosView(itemPhotos: item.itemPhoto, itemId: item.id)
-				Spacer()
+			ScrollView{
+				VStack(alignment: .leading, spacing: 18) {
+					itemImage
+					itemNameAndHeart
+					itemCreatedAtAndUpdatedAt
+					Divider()
+					itemLocation
+					itemUrl
+					Divider()
+					itemPriceAndColor
+					itemDesc
+					itemPurchaseAndExpiry
+					Divider()
+					
+					AdditionalPhotosView(itemPhotos: item.itemPhoto, itemId: item.id)
+					Spacer()
+				}
+				.padding()
 			}
-			.frame(maxWidth: .infinity, maxHeight: .infinity)
-			.padding()
 			.toolbar(content: {
 				toolbarContent
 			})
@@ -51,7 +57,6 @@ struct ItemDetailView: View {
 			.navigationTitle("아이템 상세 조회")
 			.navigationBarTitleDisplayMode(.inline)
 		}
-		.background(Color.background)
 	}
 	
 	private var itemImage: some View {
@@ -60,8 +65,7 @@ struct ItemDetailView: View {
 				AsyncImage(url: URL(string: photo.addingURLPrefix())) { image in
 					image
 						.resizable()
-						.scaledToFill()
-						.frame(width: 300, height: 300)
+						.aspectRatio(contentMode: .fill)
 						.frame(maxWidth: .infinity)
 						.cornerRadius(10)
 						.overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray).opacity(0.2))
@@ -98,7 +102,7 @@ struct ItemDetailView: View {
 					.resizable()
 					.frame(width: 30, height: 30)
 					.foregroundStyle(isFav ? .red : .gray)
-					
+				
 			}
 		}
 	}
@@ -124,19 +128,25 @@ struct ItemDetailView: View {
 	}
 	
 	private var itemDesc: some View {
-		Group {
+		
+		
+		VStack(alignment: .leading) {
 			if let desc = item.desc, !desc.isEmpty {
-				VStack(alignment: .leading) {
-					Label("아이템 설명", systemImage: "tag.fill")
-						.font(.subheadline)
-						.foregroundColor(.primary)
-					Text(desc)
-						.font(.body)
-						.foregroundColor(.secondary)
-						.padding(.top, 8)
-				}
+				Label("아이템 설명", systemImage: "tag.fill")
+					.font(.subheadline)
+					.foregroundColor(.primary)
+				
+				Text(desc)
+					.font(.system(size: 15))
+					.padding()
+					.frame(maxWidth: .infinity, alignment: .leading)
+					.background {
+						RoundedRectangle(cornerRadius: 10)
+							.fill(Color.background)
+					}
 			}
 		}
+		
 	}
 	
 	private var itemPriceAndColor: some View {
@@ -174,6 +184,23 @@ struct ItemDetailView: View {
 		}
 	}
 	
+	private var itemUrl: some View {
+		Group {
+			if let strUrl = item.url, let url = URL(string: strUrl) {
+				Link(destination: url) {
+					Text("구매 링크로 가기")
+						.foregroundStyle(.blue)
+				}
+			} else {
+				if let url = URL(string: "https://search.shopping.naver.com/search/all?bt=-1&frm=NVSCPRO&query=\(item.itemName)") {
+					Link(destination: url) {
+						Text("등록한 URL이 없어요.\n네이버 가격비교로 가기")
+							.foregroundStyle(.blue)
+					}
+				}
+			}
+		}
+	}
 	private var toolbarContent: some ToolbarContent {
 		Group {
 			ToolbarItem(placement: .topBarTrailing) {
@@ -201,10 +228,6 @@ struct ItemDetailView: View {
 			}
 		}
 	}
-	
-
-
-	
 }
 
 // Helper: Convert HEX Color to SwiftUI Color
@@ -222,3 +245,9 @@ extension Color {
 	}
 }
 
+
+#Preview {
+	let itemVM = ItemViewModel()
+	let roomVM = RoomViewModel()
+	ItemDetailView(item: sampleItem).environmentObject(itemVM).environmentObject(roomVM)
+}

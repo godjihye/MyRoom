@@ -14,13 +14,11 @@ struct HomeListView: View {
 	@State private var isShowingAlert: Bool = false
 	@State private var removeRoomId: Int = 0
 	@State private var isShowingAlertRemove: Bool = false
-	
+	let homeName = UserDefaults.standard.string(forKey: "homeName")
 	var body: some View {
 		NavigationStack {
 			VStack {
-				
 				titleView
-				
 				if !roomVM.rooms.isEmpty {
 					listView
 				} else if roomVM.isFetchError {
@@ -65,7 +63,9 @@ struct HomeListView: View {
 	}
 	private var titleView: some View {
 		HStack {
-			Text("Home")
+			//FIXME: - Home name으로 수정
+			
+			Text(homeName ?? "Home")
 				.font(.title)
 				.bold()
 			Spacer()

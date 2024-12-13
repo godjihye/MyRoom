@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ProfileEditView: View {
+	
 	@Environment(\.dismiss) private var dismiss
-	@EnvironmentObject var userViewModel: UserViewModel
+	@EnvironmentObject var userVM: UserViewModel
+	
 	@State private var isImageSourcePickerPresented: Bool = false
 	@State private var isCamera: Bool = false
 	@State private var isImagePickerPresented: Bool = false
+	
 	@State private var selectedThumbnail: UIImage?
 	@State private var newNickname: String = ""
 	
@@ -30,19 +33,21 @@ struct ProfileEditView: View {
 				nicknameSection
 				changePasswordLink
 				Spacer()
+				saveInfo
 			}
-			.toolbar(content: toolbarItems)
+			.navigationTitle("프로필 수정")
+			// .toolbar(content: toolbarItems)
 			.sheet(isPresented: $isImagePickerPresented) {
 				imagePickerView
 			}
-			.alert("회원정보 수정", isPresented: $userViewModel.isJoinShowing, actions: {
+			.alert("회원정보 수정", isPresented: $userVM.isJoinShowing, actions: {
 				Button(role: .cancel) {
 					dismiss()
 				} label: {
 					Text("확인")
 				}
 			}, message: {
-				Text(userViewModel.message)
+				Text(userVM.message)
 			})
 			.padding()
 		}
@@ -136,28 +141,28 @@ struct ProfileEditView: View {
 	}
 	
 	// MARK: - Toolbar Items
-	private func toolbarItems() -> some ToolbarContent {
-		Group {
-			ToolbarItem(placement: .topBarTrailing) {
-				Button {
-					userViewModel.editUser(userImage: selectedThumbnail, nickname: newNickname == user.nickname ? nil : newNickname)
-				} label: {
-					Text("완료")
-				}
-			}
-			ToolbarItem(placement: .principal) {
-				Text("프로필 수정")
-					.bold()
-			}
-			ToolbarItem(placement: .topBarLeading) {
-				Button {
-					dismiss()
-				} label: {
-					Image(systemName: "xmark")
-				}
-			}
-		}
-	}
+//	private func toolbarItems() -> some ToolbarContent {
+//		Group {
+//			ToolbarItem(placement: .topBarTrailing) {
+//				Button {
+//					userViewModel.editUser(userImage: selectedThumbnail, nickname: newNickname == user.nickname ? nil : newNickname)
+//				} label: {
+//					Text("완료")
+//				}
+//			}
+//			ToolbarItem(placement: .principal) {
+//				Text("프로필 수정")
+//					.bold()
+//			}
+//			ToolbarItem(placement: .topBarLeading) {
+//				Button {
+//					dismiss()
+//				} label: {
+//					Image(systemName: "xmark")
+//				}
+//			}
+//		}
+//	}
 	
 	// MARK: - Image Picker View
 	private var imagePickerView: some View {
@@ -167,6 +172,13 @@ struct ProfileEditView: View {
 			} else {
 				ImagePicker(image: $selectedThumbnail)
 			}
+		}
+	}
+	
+	// MARK: - Save Button
+	private var saveInfo: some View {
+		WideButton(title: "변경사항 저장", backgroundColor: .accent) {
+			userVM.editUser(userImage: selectedThumbnail, nickname: newNickname == user.nickname ? nil : newNickname)
 		}
 	}
 }
