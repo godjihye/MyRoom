@@ -14,19 +14,46 @@ struct HomeView: View {
 	
 	var body: some View {
 		NavigationStack {
-			VStack(spacing: 0) {
-				if UserDefaults.standard.integer(forKey: "homeId") < 1 {
-					enterHomeBtn
-				}
-				else {
-					tabbarView
-					tabviews
+			VStack(alignment: .center, spacing: 0) {
+				VStack {
+					if UserDefaults.standard.integer(forKey: "homeId") < 1 {
+						enterHomeBtn
+					}
+					else {
+						customToolBar
+						tabbarView
+						tabviews
+						Spacer()
+					}
 				}
 			}
-			.toolbar {
-				toolbarItems
+			.navigationBarHidden(true)
+
+			
+//			.toolbar {
+//				toolbarItems
+//			}
+		}
+	}
+	
+	private var customToolBar: some View {
+		HStack(spacing: 0) {
+			Image("logo")
+				.resizable()
+				.frame(width: 45, height: 35)
+			NavigationLink(destination: SearchView()) {
+				SearchButton()
+			}
+			
+			Button {
+				
+			} label: {
+				Image(systemName: "square.and.arrow.up")
+					.font(.system(size: 20))
 			}
 		}
+		.padding(.top, -20)
+		.padding(.horizontal)
 	}
 	private var enterHomeBtn: some View {
 		VStack {
@@ -64,9 +91,10 @@ struct HomeView: View {
 	private var toolbarItems: some ToolbarContent {
 		Group {
 			ToolbarItem(placement: .principal) {
-				NavigationLink(destination: SearchView()) {
-					SearchButton()
-				}
+				SearchButton()
+//					NavigationLink(destination: SearchView()) {
+//					SearchButton()
+//				}
 			}
 			ToolbarItem(placement: .topBarLeading) {
 				Button {
@@ -83,6 +111,7 @@ struct HomeView: View {
 				}
 			}
 		}
+		
 	}
 }
 
@@ -100,6 +129,7 @@ struct TabButton: View {
 					.background(isSelected ? .primary : .secondary)
 			}
 			.fontWeight(.bold)
+			.frame(height: 35)
 			.frame(maxWidth: .infinity)
 			.foregroundColor(isSelected ? .primary : .secondary)
 			.cornerRadius(8)
@@ -110,7 +140,7 @@ struct SearchButton: View {
 	var body: some View {
 		ZStack {
 			RoundedRectangle(cornerRadius: 10)
-				.frame(width: 250, height: 35)
+				.frame(width: 280, height: 35)
 				.foregroundStyle(Color(.systemGray5))
 			HStack {
 				Image(systemName: "magnifyingglass")
@@ -120,12 +150,18 @@ struct SearchButton: View {
 				Spacer()
 			}
 		}
+		.padding()
 		//.frame(height: 35)
 	}
 }
+//#Preview {
+//	let roomVM = RoomViewModel()
+//	let itemVM = ItemViewModel()
+//	let userVM = UserViewModel()
+//	HomeView().environmentObject(roomVM).environmentObject(itemVM).environmentObject(userVM)
+//}
 #Preview {
-	let roomVM = RoomViewModel()
-	let itemVM = ItemViewModel()
-	let userVM = UserViewModel()
-	HomeView().environmentObject(roomVM).environmentObject(itemVM).environmentObject(userVM)
+	TabButton(title: "홈", isSelected: true) {
+		
+	}
 }

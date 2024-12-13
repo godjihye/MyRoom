@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Alamofire
+import SVProgressHUD
 
 
 class ItemViewModel: ObservableObject {
@@ -48,7 +49,7 @@ class ItemViewModel: ObservableObject {
 		addFormData(formData: formData, optionalValue: itemName, withName: "itemName")
 		addFormData(formData: formData, optionalValue: purchaseDate, withName: "purchaseDate")
 		addFormData(formData: formData, optionalValue: expiryDate, withName: "expiryDate")
-		addFormData(formData: formData, optionalValue: itemUrl, withName: "itemUrl")
+		addFormData(formData: formData, optionalValue: itemUrl, withName: "url")
 		addFormData(formData: formData, optionalValue: desc, withName: "desc")
 		addFormData(formData: formData, optionalValue: color, withName: "color")
 		addFormData(formData: formData, optionalValue: openDate, withName: "openDate")
@@ -276,8 +277,9 @@ class ItemViewModel: ObservableObject {
 	//MARK: - 추가 사진
 	//	@Published var isShowingAlertAddAdditionalPhotos: Bool = false
 //	@Published var addAdditionalPhotosMessage: String = ""
-	func addAdditionalPhotos(images: [UIImage]?, itemId: Int?) async {
+	func addAdditionalPhotos(images: [UIImage]?, itemId: Int?) {
 		guard let images, let itemId else {return}
+		SVProgressHUD.show()
 		if images.isEmpty {return}
 		let url = "\(endPoint)/items/additionalPhoto/\(itemId)"
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
@@ -293,12 +295,11 @@ class ItemViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let root = try JSONDecoder().decode(AdditionalPhotosRoot.self, from: data)
+							let root = try JSONDecoder().decode(ApiResponse.self, from: data)
 							self.isShowingAlertAddAdditionalPhotos = true
 							self.addAdditionalPhotosMessage = root.message
 							log("addAdditionalPhotos", trait: .success)
-						} catch{
-							
+						} catch {
 							if let afError = error as? AFError {
 								log("AFError: \(afError.localizedDescription)", trait: .error)
 							} else {
@@ -324,6 +325,7 @@ class ItemViewModel: ObservableObject {
 				}
 			}
 		}
+		SVProgressHUD.dismiss()
 	}
 	
 	func removeAdditionalPhoto(photoId: Int) {
