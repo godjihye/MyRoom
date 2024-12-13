@@ -8,63 +8,89 @@
 import SwiftUI
 
 struct PostListView: View {
-    @EnvironmentObject var postVM:PostViewModel
-    
-    var body: some View {
-        
-        NavigationSplitView {
-            ScrollView{
-                LazyVStack {
-                    ForEach(postVM.posts) { post in
-                        NavigationLink {
-                            PostDetailView(post: post, photos: post.images)
-                                .onAppear {
-                                    Task{
-                                        await postVM.updateViewCnt(postId: post.id)
-                                    }
-                                }
-                        } label: {
-                            PostRowView(post: post)
-                                .padding(.horizontal)
-                        }.onAppear {
-                            Task{
-                                if post == postVM.posts.last {
-                                    await postVM.fetchPosts()
-                                }
-                            }
-                        }.listStyle(.plain)
-                            .navigationTitle("커뮤니티")
-                        
-                    }
-                }.onAppear {
-                    Task{
-                        await postVM.fetchPosts()
-                    }
-                }.toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink {
-                            PostAddView().environmentObject(postVM)
-                            
-                        } label: {
-                            Image(systemName: "plus.app")
-                        }
-                    }
-                }
-            }
-            .refreshable {
-                postVM.page = 1
-                postVM.posts.removeAll()
-                await postVM.fetchPosts() 
-            }
-        } detail: {
-            Text("커뮤니티게시판")
-        }
+		@EnvironmentObject var postVM: PostViewModel
+		
+		var body: some View {
+				NavigationSplitView {
+						postListContent
+								.navigationTitle("커뮤니티")
+								.refreshable {
+										await refreshPosts()
+								}
+								.toolbar {
+										ToolbarItem(placement: .topBarTrailing) {
+												addPostButton
+										}
+								}
+				} detail: {
+						Text("커뮤니티게시판")
+				}
+		}
+}
 
-        
-    }
+// MARK: - Subviews
+private extension PostListView {
+		var postListContent: some View {
+				ScrollView {
+					LazyVStack {
+						ForEach(postVM.posts.indices, id: \.self) { index in
+										postNavigationLink(for: postVM.posts[index])
+												.onAppear {
+													loadMorePostsIfNeeded(currentPost: postVM.posts[index])
+												}
+								}
+						}
+						.task {
+								await loadInitialPosts()
+						}
+				}
+		}
+		
+		func postNavigationLink(for post: Post) -> some View {
+				NavigationLink {
+						PostDetailView(post: post, photos: post.images)
+								.task {
+										await postVM.updateViewCnt(postId: post.id)
+								}
+				} label: {
+						PostRowView(post: post)
+								.padding(.horizontal)
+				}
+		}
+		
+		var addPostButton: some View {
+				NavigationLink {
+						PostAddView().environmentObject(postVM)
+				} label: {
+						Image(systemName: "plus.app")
+				}
+		}
+}
+
+// MARK: - Helper Methods
+private extension PostListView {
+		func loadMorePostsIfNeeded(currentPost: Post) {
+				Task {
+						if currentPost == postVM.posts.last {
+								await postVM.fetchPosts()
+						}
+				}
+		}
+		
+		func loadInitialPosts() async {
+				if postVM.posts.isEmpty {
+						await postVM.fetchPosts()
+				}
+		}
+		
+		func refreshPosts() async {
+				postVM.page = 1
+				postVM.posts.removeAll()
+				await postVM.fetchPosts()
+		}
 }
 
 #Preview {
-    let post = PostViewModel()
-    PostListView().environmentObject(post)
+		let post = PostViewModel()
+		PostListView().environmentObject(post)
 }

@@ -54,10 +54,8 @@ class UserViewModel: ObservableObject {
 							UserDefaults.standard.set(signIn.user.nickname, forKey: "nickName")
 							if let homeId = signIn.user.homeId {
 								UserDefaults.standard.set(homeId, forKey: "homeId")
-								log("homeId: \(homeId)")
 								if let homeName = signIn.user.homeUser?.homeName {
 									UserDefaults.standard.set(homeName, forKey: "homeName")
-									log("homeName: \(homeName)")
 								}
 							} else {
 								self.isHaveHome = false
@@ -194,8 +192,6 @@ class UserViewModel: ObservableObject {
 							log("response.data = \(data.description)")
 							let root = try JSONDecoder().decode(UserInfo.self, from: data)
 							self.userInfo = root.user
-							log("createdAt: \(root.user.createdAt)")
-							log("updatedAt: \(root.user.updatedAt)")
 						}
 					} catch let error {
 						log("decode error: \(error.localizedDescription)")
