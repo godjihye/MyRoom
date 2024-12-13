@@ -54,6 +54,11 @@ class UserViewModel: ObservableObject {
 							UserDefaults.standard.set(signIn.user.nickname, forKey: "nickName")
 							if let homeId = signIn.user.homeId {
 								UserDefaults.standard.set(homeId, forKey: "homeId")
+								log("homeId: \(homeId)")
+								if let homeName = signIn.user.homeUser?.homeName {
+									UserDefaults.standard.set(homeName, forKey: "homeName")
+									log("homeName: \(homeName)")
+								}
 							} else {
 								self.isHaveHome = false
 							}
@@ -172,6 +177,7 @@ class UserViewModel: ObservableObject {
 		UserDefaults.standard.removeObject(forKey: "userImage")
 		UserDefaults.standard.removeObject(forKey: "nickName")
 		UserDefaults.standard.removeObject(forKey: "homeId")
+		UserDefaults.standard.removeObject(forKey: "homeName")
 		userInfo = nil
 		SVProgressHUD.dismiss()
 	}
@@ -241,6 +247,7 @@ class UserViewModel: ObservableObject {
 						guard let data = response.data, let responseString = String(data: data, encoding: .utf8) else {return}
 						log("responseString: \(responseString)")
 						let root = try JSONDecoder().decode(ImageUpload.self, from: data)
+						UserDefaults.standard.set(root.imageUrl, forKey: "userImage")
 						log("upload image success")
 					} catch let error {
 						log("decode error: \(error.localizedDescription)")
@@ -255,7 +262,6 @@ class UserViewModel: ObservableObject {
 	}
 	func changepw(cpw: String?, npw: String?) {
 		SVProgressHUD.show()
-		log("changepw 와쩌염")
 		guard let cpw, let npw else { return }
 		let userId = UserDefaults.standard.integer(forKey: "userId")
 		let url = "\(endPoint)/users/changepw/\(userId)"

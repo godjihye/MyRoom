@@ -52,10 +52,13 @@ struct ItemRoot: Codable {
 	let item: Item
 }
 
+struct AdditionalPhoto: Decodable {
+//	let
+}
 struct AdditionalPhotosRoot: Decodable {
 	let success: Bool
 	let message: String
-	let photos: ItemPhoto
+	let photos: ItemPhoto?
 }
 
 //MARK: - ROOM AND LOCATION (방/위치)
@@ -193,6 +196,7 @@ struct User : Codable,Equatable {
 	let updatedAt: String
 	let homeId: Int?
 	let mates: [MateUser]?
+	let homeUser: Home?
 }
 
 struct MateUser: Codable, Equatable, Identifiable {
