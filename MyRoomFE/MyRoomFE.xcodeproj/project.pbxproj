@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B19B98C2D0D1AAB0042619F /* InviteCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B19B98B2D0D1AAB0042619F /* InviteCodeView.swift */; };
 		0B1BA3362D0A880C00BA2B8C /* MyPageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1BA3352D0A880C00BA2B8C /* MyPageRow.swift */; };
 		0B1BA3382D0A8C0F00BA2B8C /* MateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1BA3372D0A8C0F00BA2B8C /* MateListView.swift */; };
 		0B9CB6192D030EAA00FA1075 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9CB6182D030EAA00FA1075 /* LoginView.swift */; };
@@ -127,6 +128,7 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
+		0B19B98B2D0D1AAB0042619F /* InviteCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteCodeView.swift; sourceTree = "<group>"; };
 		0B1BA3352D0A880C00BA2B8C /* MyPageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageRow.swift; sourceTree = "<group>"; };
 		0B1BA3372D0A8C0F00BA2B8C /* MateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateListView.swift; sourceTree = "<group>"; };
 		0B9CB6182D030EAA00FA1075 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */,
 				0B1BA3352D0A880C00BA2B8C /* MyPageRow.swift */,
 				0B1BA3372D0A8C0F00BA2B8C /* MateListView.swift */,
+				0B19B98B2D0D1AAB0042619F /* InviteCodeView.swift */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -671,6 +674,7 @@
 				B15D9A552D06ED7900FA0253 /* PostWebView.swift in Sources */,
 				B86F35152CF96F920040BB33 /* EntryView.swift in Sources */,
 				0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */,
+				0B19B98C2D0D1AAB0042619F /* InviteCodeView.swift in Sources */,
 				B86F35162CF96F920040BB33 /* MyRoomFEApp.swift in Sources */,
 				B8E916462D016C6F00345B89 /* MyPageView.swift in Sources */,
 				B82E1B9D2D06D373005BB2D4 /* ChatRowView.swift in Sources */,
@@ -814,14 +818,16 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyRoomFE/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "마룸";
+				"INFOPLIST_KEY_CFBundleDisplayName[sdk=iphoneos*]" = "마룸";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -848,14 +854,16 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyRoomFE/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "마룸";
+				"INFOPLIST_KEY_CFBundleDisplayName[sdk=iphoneos*]" = "마룸";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

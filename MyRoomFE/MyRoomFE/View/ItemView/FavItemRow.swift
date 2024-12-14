@@ -32,6 +32,7 @@ struct FavItemRow: View {
 						.aspectRatio(contentMode: .fill)
 						.frame(width: 180, height: 180)
 						.clipShape(RoundedRectangle(cornerRadius: 10))
+						.overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray).opacity(0.3))
 				} placeholder: {
 					ProgressView()
 				}

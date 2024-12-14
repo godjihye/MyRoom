@@ -23,7 +23,6 @@ struct FavListView: View {
 				}
 			}
 			.frame(maxWidth: .infinity)
-			.background(Color.background)
 			.task {
 				await itemVM.fetchFavItems()
 			}
@@ -48,7 +47,7 @@ struct FavListView: View {
 					ForEach(itemVM.favItems) { item in
 						if item.isFav {
 							NavigationLink {
-								ItemDetailView(item: item)
+								ItemDetailView(itemId: item.id)
 							} label: {
 								FavItemRow(item: item)
 							}

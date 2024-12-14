@@ -144,7 +144,7 @@ struct AddItemWithAIView: View {
 		Section(header: Text("기본 정보")) {
 			TextField("아이템 이름", text: $itemName)
 			if !recognizedText.isEmpty {
-				ScrollView(.horizontal) {
+				ScrollView(.horizontal, showsIndicators: false) {
 					HStack {
 						Text("추천: ")
 						ForEach(recognizedText, id: \.self) { text in

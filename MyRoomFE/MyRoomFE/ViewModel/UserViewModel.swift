@@ -353,6 +353,7 @@ class UserViewModel: ObservableObject {
 	// 3. 초대코드 조회
 	func getInviteCode() {
 		let homeId = UserDefaults.standard.integer(forKey: "homeId")
+		guard homeId > 0 else { return }
 		log("homeId: \(homeId)")
 		let url = "\(endPoint)/home/inviteCode/\(homeId)"
 		AF.request(url, method: .get).response { response in
@@ -361,9 +362,9 @@ class UserViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let code = try JSONDecoder().decode(InviteCode.self, from: data)
+							let code = try JSONDecoder().decode(InviteCodeRoot.self, from: data)
 							UserDefaults.standard.set(code.inviteCode, forKey: "inviteCode")
-							self.inviteCode = code.inviteCode
+							self.inviteCode = code.inviteCode.inviteCode
 						} catch {
 							log("decode error")
 						}
@@ -387,8 +388,8 @@ class UserViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let res = try JSONDecoder().decode(InviteCode.self, from: data)
-							self.inviteCode = res.inviteCode
+							let res = try JSONDecoder().decode(InviteCodeRoot.self, from: data)
+							self.inviteCode = res.inviteCode.inviteCode
 						} catch let error {
 							log("decode error: \(error)")
 						}

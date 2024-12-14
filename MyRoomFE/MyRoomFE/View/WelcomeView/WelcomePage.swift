@@ -10,6 +10,7 @@ import SwiftUI
 struct WelcomePage: View {
     var body: some View {
 			VStack {
+				Spacer()
 					Image("logo")
 					.resizable()
 					.renderingMode(.template)
