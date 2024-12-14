@@ -338,7 +338,6 @@
 				B86F34B62CF96F920040BB33 /* ImagePicker.swift */,
 				B8C3F1C22D000263004F8C44 /* CameraPicker.swift */,
 				B86F34B72CF96F920040BB33 /* SearchBar.swift */,
-				B86F34B82CF96F920040BB33 /* SearchView.swift */,
 				B86F34B92CF96F920040BB33 /* TabItemView.swift */,
 				B86F34BA2CF96F920040BB33 /* WideButton.swift */,
 				B86F351E2CF9709C0040BB33 /* WideImageButton.swift */,
@@ -351,6 +350,7 @@
 		B86F34C82CF96F920040BB33 /* ItemView */ = {
 			isa = PBXGroup;
 			children = (
+				B86F34B82CF96F920040BB33 /* SearchView.swift */,
 				B86F34BC2CF96F920040BB33 /* AddItemView.swift */,
 				B86F34BD2CF96F920040BB33 /* AdditionalPhotosView.swift */,
 				B86F34BE2CF96F920040BB33 /* AddLocationView.swift */,

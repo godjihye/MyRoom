@@ -28,19 +28,15 @@ struct HomeView: View {
 				}
 			}
 			.navigationBarHidden(true)
-
-			
-//			.toolbar {
-//				toolbarItems
-//			}
 		}
 	}
-	
 	private var customToolBar: some View {
 		HStack(spacing: 0) {
 			Image("logo")
 				.resizable()
 				.frame(width: 45, height: 35)
+				.padding(.leading, 5)
+				.padding(.trailing, -5)
 			NavigationLink(destination: SearchView()) {
 				SearchButton()
 			}
@@ -52,7 +48,6 @@ struct HomeView: View {
 					.font(.system(size: 20))
 			}
 		}
-		.padding(.top, -20)
 		.padding(.horizontal)
 	}
 	private var enterHomeBtn: some View {
@@ -88,31 +83,6 @@ struct HomeView: View {
 				.tag(1)
 		}
 	}
-	private var toolbarItems: some ToolbarContent {
-		Group {
-			ToolbarItem(placement: .principal) {
-				SearchButton()
-//					NavigationLink(destination: SearchView()) {
-//					SearchButton()
-//				}
-			}
-			ToolbarItem(placement: .topBarLeading) {
-				Button {
-					userVM.logout()
-				} label: {
-					Image(systemName: "rectangle.portrait.and.arrow.right")
-				}
-			}
-			ToolbarItem(placement: .topBarTrailing) {
-				Button {
-					
-				} label: {
-					Image(systemName: "square.and.arrow.up")
-				}
-			}
-		}
-		
-	}
 }
 
 struct TabButton: View {
@@ -136,32 +106,23 @@ struct TabButton: View {
 		}
 	}
 }
+
 struct SearchButton: View {
 	var body: some View {
 		ZStack {
 			RoundedRectangle(cornerRadius: 10)
-				.frame(width: 280, height: 35)
-				.foregroundStyle(Color(.systemGray5))
-			HStack {
+				.frame(width: 280, height: 40)
+				.foregroundStyle(Color(.systemGray6))
+			HStack(spacing: 0) {
 				Image(systemName: "magnifyingglass")
 					.padding()
 				Text("검색어를 입력하세요.")
+					.font(.system(size: 15))
 					.foregroundStyle(Color(.systemGray2))
 				Spacer()
 			}
 		}
 		.padding()
 		//.frame(height: 35)
-	}
-}
-//#Preview {
-//	let roomVM = RoomViewModel()
-//	let itemVM = ItemViewModel()
-//	let userVM = UserViewModel()
-//	HomeView().environmentObject(roomVM).environmentObject(itemVM).environmentObject(userVM)
-//}
-#Preview {
-	TabButton(title: "홈", isSelected: true) {
-		
 	}
 }
