@@ -13,53 +13,53 @@ struct ItemDetailView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
 	
 	@State private var isShowingDeleteAlert: Bool = false
-	@State private var isFav: Bool
 	
-	var item: Item
-	
-	init(item: Item) {
-		self.item = item
-		self._isFav = State(initialValue: item.isFav) // State 초기화
-	}
+	let itemId: Int
 	
 	var body: some View {
-		NavigationStack {
-			ScrollView{
-				VStack(alignment: .leading, spacing: 18) {
-					itemImage
-					itemNameAndHeart
-					itemCreatedAtAndUpdatedAt
-					Divider()
-					itemLocation
-					itemUrl
-					Divider()
-					itemPriceAndColor
-					itemDesc
-					itemPurchaseAndExpiry
-					Divider()
-					
-					AdditionalPhotosView(itemPhotos: item.itemPhoto, itemId: item.id)
-					Spacer()
-				}
-				.padding()
+			NavigationStack {
+					ScrollView {
+							VStack(alignment: .leading, spacing: 18) {
+									// item 선언
+									if let item = itemVM.items.first(where: { $0.id == itemId }) {
+											itemImage(item: item)
+											itemNameAndHeart(item: item)
+											itemCreatedAtAndUpdatedAt(item: item)
+											Divider()
+											itemLocation(item: item)
+											itemUrl(item: item)
+											Divider()
+											itemPriceAndColor(item: item)
+											itemDesc(item: item)
+											itemPurchaseAndExpiry(item: item)
+											Divider()
+
+											AdditionalPhotosView(itemPhotos: item.itemPhoto, itemId: item.id)
+									} else {
+											Text("아이템을 찾을 수 없습니다.")
+													.foregroundColor(.red)
+									}
+									Spacer()
+							}
+							.padding()
+					}
+					.toolbar(content: {
+						if let item = itemVM.items.first(where: {$0.id == itemId}){
+							toolbarContent(item: item)
+						}
+					})
+					.alert("좋아요", isPresented: $itemVM.isShowingAlert, actions: {
+							Button("확인", role: .cancel) {}
+					}, message: {
+							Text(itemVM.message)
+					})
+					.navigationTitle("아이템 상세 조회")
+					.navigationBarTitleDisplayMode(.inline)
 			}
-			.toolbar(content: {
-				toolbarContent
-			})
-			.onAppear(perform: {
-				itemVM.setCurrentItem(item: item)
-			})
-			.alert("좋아요", isPresented: $itemVM.isShowingAlert, actions: {
-				Button("확인", role: .cancel){}
-			}, message: {
-				Text(itemVM.message)
-			})
-			.navigationTitle("아이템 상세 조회")
-			.navigationBarTitleDisplayMode(.inline)
-		}
 	}
+
 	
-	private var itemImage: some View {
+	private func itemImage(item: Item) -> some View {
 		Group {
 			if let photo = item.photo, !photo.isEmpty {
 				AsyncImage(url: URL(string: photo.addingURLPrefix())) { image in
@@ -84,7 +84,7 @@ struct ItemDetailView: View {
 		}
 	}
 	
-	private var itemNameAndHeart: some View {
+	private func itemNameAndHeart(item: Item) -> some View {
 		HStack {
 			Text(item.itemName)
 				.font(.title)
@@ -92,27 +92,25 @@ struct ItemDetailView: View {
 				.lineLimit(1)
 			Spacer()
 			Button {
-				isFav = !isFav
 				Task {
-					await itemVM.updateItemFav(itemId: item.id, itemFav: isFav)
-					await itemVM.fetchItems(locationId: item.locationId)
+					await itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
 				}
 			} label: {
-				Image(systemName: isFav ? "heart.fill" : "heart")
+				Image(systemName: item.isFav ? "heart.fill" : "heart")
 					.resizable()
 					.frame(width: 30, height: 30)
-					.foregroundStyle(isFav ? .red : .gray)
+					.foregroundStyle(item.isFav ? .red : .gray)
 				
 			}
 		}
 	}
 	
-	private var itemLocation: some View {
+	private func itemLocation(item: Item) -> some View {
 		Label("위치  |  \(item.location!.room.roomName)의 \(item.location!.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
 			.font(.headline)
 	}
 	
-	private var itemPurchaseAndExpiry: some View {
+	private func itemPurchaseAndExpiry(item: Item) -> some View {
 		HStack {
 			if let purchaseDate = item.purchaseDate {
 				Label("구매일: \(purchaseDate.dateToString())", systemImage: "calendar.badge.clock")
@@ -127,9 +125,7 @@ struct ItemDetailView: View {
 		}
 	}
 	
-	private var itemDesc: some View {
-		
-		
+	private func itemDesc(item: Item) -> some View {
 		VStack(alignment: .leading) {
 			if let desc = item.desc, !desc.isEmpty {
 				Label("아이템 설명", systemImage: "tag.fill")
@@ -149,7 +145,7 @@ struct ItemDetailView: View {
 		
 	}
 	
-	private var itemPriceAndColor: some View {
+	private func itemPriceAndColor(item: Item) -> some View {
 		HStack {
 			if let price = item.price {
 				Label("가격: \(price)원", systemImage: "tag.fill")
@@ -169,7 +165,7 @@ struct ItemDetailView: View {
 		}
 	}
 	
-	private var itemCreatedAtAndUpdatedAt: some View {
+	private func itemCreatedAtAndUpdatedAt(item: Item) -> some View {
 		HStack {
 			Text("아이템 생성일: \(item.createdAt.dateToString())")
 				.font(.caption)
@@ -184,7 +180,7 @@ struct ItemDetailView: View {
 		}
 	}
 	
-	private var itemUrl: some View {
+	private func itemUrl(item: Item) -> some View {
 		Group {
 			if let strUrl = item.url, let url = URL(string: strUrl) {
 				Link(destination: url) {
@@ -201,33 +197,33 @@ struct ItemDetailView: View {
 			}
 		}
 	}
-	private var toolbarContent: some ToolbarContent {
-		Group {
+	private func toolbarContent(item: Item) -> some ToolbarContent {
 			ToolbarItem(placement: .topBarTrailing) {
-				Menu {
-					NavigationLink("편집") {
-						AddItemWithAIView(isEditMode: true, existingItem: item)
-					}
-					Button("삭제") {
-						isShowingDeleteAlert = true
-					}
-					.confirmationDialog(
-						"\(item.itemName)을/를 삭제하시겠습니까?",
-						isPresented: $isShowingDeleteAlert,
-						titleVisibility: .visible) {
-							Button("삭제", role: .destructive) {
-								Task {
-									await itemVM.removeItem(itemId: item.id)
-									dismiss()
-								}
+					Menu {
+							NavigationLink("편집") {
+									AddItemWithAIView(isEditMode: true, existingItem: item)
 							}
-						}
-				} label: {
-					Image(systemName: "ellipsis")
-				}
+							Button("삭제") {
+									isShowingDeleteAlert = true
+							}
+							.confirmationDialog(
+									"\(item.itemName)을/를 삭제하시겠습니까?",
+									isPresented: $isShowingDeleteAlert,
+									titleVisibility: .visible
+							) {
+									Button("삭제", role: .destructive) {
+											Task {
+													await itemVM.removeItem(itemId: item.id)
+													dismiss()
+											}
+									}
+							}
+					} label: {
+							Image(systemName: "ellipsis")
+					}
 			}
-		}
 	}
+
 }
 
 // Helper: Convert HEX Color to SwiftUI Color
@@ -245,9 +241,3 @@ extension Color {
 	}
 }
 
-
-#Preview {
-	let itemVM = ItemViewModel()
-	let roomVM = RoomViewModel()
-	ItemDetailView(item: sampleItem).environmentObject(itemVM).environmentObject(roomVM)
-}

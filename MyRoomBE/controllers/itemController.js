@@ -98,9 +98,7 @@ const updateAdditionalPhotos = async (req, res) => {
       req.params.itemId
     );
     res.status(201).json({
-      success: true,
-      message: "아이템 추가 정보 사진이 성공적으로 등록되었습니다.",
-      photos: result,
+      documents: [result],
     });
   } catch (e) {
     res.status(500).json({ message: e.message });

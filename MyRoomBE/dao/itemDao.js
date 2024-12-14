@@ -98,7 +98,26 @@ const findAllFavItem = async (id) => {
 };
 // 3. Item 상세 조회
 const findItem = async (id) => {
-  return await models.Item.findByPk(id);
+  return await models.Item.findOne({where: {id}, include: [
+    {
+      model: models.ItemPhoto,
+      as: "itemPhoto",
+      attributes: ["id", "photo"],
+    },
+    {
+      model: models.Location,
+      as: "location",
+      attributes: ["locationName"],
+      include: [
+        {
+          model: models.Room,
+          as: "room",
+          attributes: ["roomName"],
+        },
+      ],
+    },
+  ],
+  order: [["updatedAt", "DESC"]]});
 };
 
 // 3-1. Item 이름으로 상세 조회 (포함 검색)
@@ -161,7 +180,8 @@ const uploadAdditionalPhotos = async (photoData, itemId) => {
     }
     await models.ItemPhoto.bulkCreate(photos, { transaction });
     await transaction.commit();
-    return photos;
+    
+    return await findItem(itemId);
   } catch (error) {
     await transaction.rollback();
     throw error;

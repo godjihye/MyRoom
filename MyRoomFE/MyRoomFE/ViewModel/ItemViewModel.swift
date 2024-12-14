@@ -196,6 +196,9 @@ class ItemViewModel: ObservableObject {
 						let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 						self.isShowingAlert = true
 						self.message = root.message
+						if let index = self.items.firstIndex(where: { $0.id == root.item.id}) {
+							self.items[index] = root.item
+						}
 					} catch let error {
 						self.isShowingAlert = true
 						self.message = "에러가 발생했습니다.\n\(error.localizedDescription)"
@@ -294,10 +297,21 @@ class ItemViewModel: ObservableObject {
 				switch statusCode {
 				case 200..<300:
 					if let data = response.data {
+						log(String(data: data, encoding: .utf8) ?? "")
 						do {
-							let root = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let root = try JSONDecoder().decode(ItemResponse.self, from: data)
 							self.isShowingAlertAddAdditionalPhotos = true
-							self.addAdditionalPhotosMessage = root.message
+							self.addAdditionalPhotosMessage = "추가 사진을 성공적으로 등록했습니다."
+							log("\(root.documents.first?.id)")
+							if let index = self.items.firstIndex(where: { $0.id == root.documents.first?.id}) {
+								log("if let 구문 안에 들어옴")
+								
+								if let itemPhoto = root.documents.first?.itemPhoto {
+									self.items[index].itemPhoto = itemPhoto
+									
+								}
+							}
+							
 							log("addAdditionalPhotos", trait: .success)
 						} catch {
 							if let afError = error as? AFError {

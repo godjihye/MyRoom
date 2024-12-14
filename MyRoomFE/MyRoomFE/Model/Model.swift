@@ -9,36 +9,39 @@ import Foundation
 
 //MARK: - ITEM(물건)
 
-struct Item: Codable,Identifiable, Equatable {
-	let id: Int
-	let itemName: String
-	let purchaseDate: String?
-	let expiryDate: String?
-	let url: String?
-	let photo: String?
-	let desc: String?
-	let color: String?
-	let isFav: Bool 
-	let price: Int?
-	let openDate: String?
-	let locationId: Int
-	let createdAt: String
-	let updatedAt: String
-	let itemPhoto: [ItemPhoto]?
-	let location: Item_Location?
+struct Item: Codable, Identifiable, Equatable {
+	var id: Int
+	var itemName: String
+	var purchaseDate: String?
+	var expiryDate: String?
+	var url: String?
+	var photo: String?
+	var desc: String?
+	var color: String?
+	var isFav: Bool
+	var price: Int?
+	var openDate: String?
+	var locationId: Int
+	var createdAt: String
+	var updatedAt: String
+	var itemPhoto: [ItemPhoto]?
+	var location: Item_Location?
+	static func == (lhs: Item, rhs: Item) -> Bool {
+			return lhs.id == rhs.id
+	}
 }
 
-struct ItemPhoto: Codable, Identifiable,Equatable {
+struct ItemPhoto: Codable, Identifiable, Equatable {
 	let id: Int
 	let photo: String
 }
 
-struct Item_Location: Codable,Equatable {
+struct Item_Location: Codable, Equatable {
 	let locationName: String
 	let room: Item_Room
 }
 
-struct Item_Room: Codable,Equatable {
+struct Item_Room: Codable, Equatable {
 	let roomName: String
 }
 
@@ -53,12 +56,14 @@ struct ItemRoot: Codable {
 }
 
 struct AdditionalPhoto: Decodable {
-//	let
+	let photo: String
+	let itemId: Int
 }
+
 struct AdditionalPhotosRoot: Decodable {
 	let success: Bool
 	let message: String
-	let photos: ItemPhoto?
+	let photos: AdditionalPhoto
 }
 
 //MARK: - ROOM AND LOCATION (방/위치)
@@ -183,6 +188,10 @@ struct HomeRoot: Codable {
 
 struct InviteCode: Codable {
 	let inviteCode: String
+}
+
+struct InviteCodeRoot: Codable {
+	let inviteCode: InviteCode
 }
 
 //MARK: - USER(사용자)
