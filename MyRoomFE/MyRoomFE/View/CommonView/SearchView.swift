@@ -73,7 +73,7 @@ struct SearchView: View {
 					Divider()
 					ForEach(itemVM.searchResultItems) { item in
 						NavigationLink {
-							ItemDetailView(item: item)
+							ItemDetailView(itemId: item.id)
 						} label: {
 							ItemRowView(item: item, isSearch: true)
 						}

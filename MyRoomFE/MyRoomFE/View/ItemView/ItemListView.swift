@@ -25,7 +25,6 @@ struct ItemListView: View {
 								itemListView
 						}
 						.frame(maxHeight: .infinity)
-						.background(Color.background)
 						.task {
 								await itemVM.fetchItems(locationId: location.id)
 						}
@@ -117,7 +116,7 @@ struct ItemListView: View {
 						if !itemVM.items.isEmpty {
 								List(itemVM.items) { item in
 										NavigationLink {
-											ItemDetailView(item: item)
+											ItemDetailView(itemId: item.id)
 										} label: {
 												ItemRowView(item: item)
 										}

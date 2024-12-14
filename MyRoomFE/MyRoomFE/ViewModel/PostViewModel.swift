@@ -26,7 +26,7 @@ class PostViewModel:ObservableObject {
 	private var isLoading = false
 	
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
-	let userId = UserDefaults.standard.value(forKey: "userId") as! Int
+	let userId = UserDefaults.standard.integer(forKey: "userId")
 	
 	var page = 1
 	

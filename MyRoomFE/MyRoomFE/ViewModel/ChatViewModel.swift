@@ -115,7 +115,7 @@ class ChatViewModel: ObservableObject {
 		
 		//채팅방목록 조회
 		func fetchChatRooms() {
-				var currentUser = UserDefaults.standard.value(forKey: "nickName") as! String
+			guard let currentUser = UserDefaults.standard.string(forKey: "nickName") else { return }
 				print("fetchChatRoom start currentUser : \(currentUser)")
 				
 				db.child("users/\(currentUser)/chatRooms").observe(.value) { snapshot in

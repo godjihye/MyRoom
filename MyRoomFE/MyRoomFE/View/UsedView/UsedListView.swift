@@ -8,72 +8,79 @@
 import SwiftUI
 
 struct UsedListView: View {
-    @EnvironmentObject var usedVM:UsedViewModel
-    
-    var body: some View {
-        
-        NavigationSplitView {
-            ScrollView{
-                
-                LazyVStack{
-                    ForEach($usedVM.useds) { $used in
-                        NavigationLink() {
-                            UsedDetailView(used: $used, photos: used.images).environmentObject(ChatViewModel())
-                                .onAppear {
-                                    Task{
-                                        await usedVM.updateViewCnt(usedId: used.id)
-                                    }
-                                }
-                        } label: {
-                            UsedRowView(used: used).padding(.horizontal)
-                        }.onAppear {
-                            if used == usedVM.useds.last {
-                                usedVM.fetchUseds()
-                            }
-                            
-                        }
-                    }.listStyle(.plain)
-                        .navigationTitle("중고거래")
-                    
-                }
-                
-                .onAppear {
-                    usedVM.fetchUseds()
-                }.toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink {
-                            UsedAddView().environmentObject(usedVM)
-                            
-                        } label: {
-                            Image(systemName: "plus.app")
-                        }
-                    }
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button{
-                            
-                        } label: {
-                            Image(systemName: "return")
-                        }
-                    }
-                }
-                
-            }
-            .refreshable {
-                usedVM.page = 1
-                usedVM.useds.removeAll() 
-                usedVM.fetchUseds() // 새로 고침 시 데이터를 불러오는 함수 호출
-            }
-            .alert("판매목록", isPresented: $usedVM.isFetchError) {
-                Button("OK"){}
-            } message: {
-                Text(usedVM.message)
-            }
-            
-        }detail: {
-            Text("판매 목록")
-        }
-        
-    }
+		@EnvironmentObject var usedVM: UsedViewModel
+		
+		var body: some View {
+				NavigationSplitView {
+						contentView
+								.navigationTitle("중고거래")
+								.toolbar { toolbarContent }
+				} detail: {
+						Text("판매 목록")
+				}
+				.refreshable { refreshData() }
+				.alert("판매목록", isPresented: $usedVM.isFetchError) {
+						Button("OK") {}
+				} message: {
+						Text(usedVM.message)
+				}
+		}
+}
+
+// MARK: - Subviews & Components
+extension UsedListView {
+		private var contentView: some View {
+				ScrollView {
+						LazyVStack {
+								ForEach($usedVM.useds) { $used in
+										NavigationLink {
+												UsedDetailView(used: $used, photos: used.images)
+														.environmentObject(ChatViewModel())
+														.onAppear { updateViewCount(for: used.id) }
+										} label: {
+												UsedRowView(used: used)
+														.padding(.horizontal)
+										}
+										.onAppear { loadMoreDataIfNeeded(for: used) }
+								}
+						}
+				}
+				.onAppear { usedVM.fetchUseds() }
+		}
+		
+		private var toolbarContent: some ToolbarContent {
+				ToolbarItemGroup(placement: .topBarTrailing) {
+						NavigationLink {
+								UsedAddView().environmentObject(usedVM)
+						} label: {
+								Image(systemName: "plus.app")
+						}
+						
+						Button(action: {}) {
+								Image(systemName: "return")
+						}
+				}
+		}
+}
+
+// MARK: - Helper Functions
+extension UsedListView {
+		private func refreshData() {
+				usedVM.page = 1
+				usedVM.useds.removeAll()
+				usedVM.fetchUseds()
+		}
+		
+		private func loadMoreDataIfNeeded(for used: Used) {
+				guard used == usedVM.useds.last else { return }
+				usedVM.fetchUseds()
+		}
+		
+		private func updateViewCount(for usedId: Int) {
+				Task {
+						await usedVM.updateViewCnt(usedId: usedId)
+				}
+		}
 }
 
 //#Preview {

@@ -28,7 +28,6 @@ struct HomeListView: View {
 				}
 				Spacer()
 			}
-			.background(Color.background)
 			.sheet(isPresented: $isShowingAddRoomView) {
 				AddRoomView {roomName, roomDesc in
 					Task {
@@ -121,6 +120,8 @@ struct HomeListView: View {
 				
 			}
 		}
+		.scrollContentBackground(.hidden)
+		.background(Color.white)
 		.refreshable {
 			Task {
 				await roomVM.fetchRooms()
