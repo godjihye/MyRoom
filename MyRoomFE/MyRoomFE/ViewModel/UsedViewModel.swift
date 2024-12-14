@@ -22,69 +22,82 @@ class UsedViewModel:ObservableObject {
     @AppStorage("token") var token:String?
     let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 
-    let userId = UserDefaults.standard.value(forKey: "userId") as! Int
+    let userId = UserDefaults.standard.integer(forKey: "userId")
     
-    func fetchUseds(size:Int = 10) {
-        
-        guard !isLoading else { return }
-        isLoading = true
-        let url = "\(endPoint)/useds/\(userId)"
-        //        guard let token = self.token else { return }
-        let params:Parameters = ["page":self.page, "size":size]
-        //        let headers:HTTPHeaders = ["Authorization": "Bearer \(token)"]
-  
-        AF.request(url,method: .get,parameters: params).response { response in
-            defer {
-                    self.isLoading = false
-                    SVProgressHUD.dismiss()
-                }
-            if let statusCode = response.response?.statusCode {
-                switch statusCode {
-                case 200..<300:
-                    if let data = response.data {
-                        
-                        //						if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
-                        //							print("JSON response: \(json)") }
-                        
-                        do {
-                            let root = try JSONDecoder().decode(UsedRoot.self, from: data)
-                            DispatchQueue.main.async {
-                                self.useds.append(contentsOf: root.useds)
-                            }
-                            self.page += 1
-                            if self.useds.isEmpty {
-                                self.isAlertShowing = true
-                                self.message = "useds등록된 상품이 없습니다."
-                            }
-                        } catch let error {
-                            print(error.localizedDescription)
-                            self.isAlertShowing = true
-                            self.message = error.localizedDescription
-                        }
-                    }
-                case 300..<500:
-                    if let data = response.data {
-                        do {
-                            self.isAlertShowing = true
-                            let apiError = try JSONDecoder().decode(APIError.self, from: data)
-                            self.message = apiError.message
-                        } catch let error {
-                            self.isAlertShowing = true
-                            self.message = error.localizedDescription
-                        }
-                    }
-                default:
-                    self.isAlertShowing = true
-                    self.message = "네트워크 오류입니다."
-                }
-                self.isLoading = false
-                SVProgressHUD.dismiss()
-            }
-        }
-        //		AF.request(url).responseDecodable(of: UsedRoot.self) { response in
-        //			print(response)
-        //		}
-    }
+	func fetchUseds(size: Int = 10) {
+			print("fetchUseds start===========")
+			
+			// 중복 호출 방지
+			guard !isLoading else { return }
+			isLoading = true
+			SVProgressHUD.show()
+			
+			let url = "\(endPoint)/useds/\(userId)"
+			let params: Parameters = ["page": self.page, "size": size]
+			
+			AF.request(url, method: .get, parameters: params).response { response in
+					defer {
+							self.isLoading = false // 요청이 끝나면 무조건 isLoading을 false로 설정
+							SVProgressHUD.dismiss()
+					}
+					
+					guard let statusCode = response.response?.statusCode else {
+							self.isAlertShowing = true
+							self.message = "잘못된 응답입니다."
+							print("fetchUseds: Response status code not found")
+							return
+					}
+					
+					switch statusCode {
+					case 200..<300:
+							if let data = response.data {
+									do {
+											let root = try JSONDecoder().decode(UsedRoot.self, from: data)
+											
+											DispatchQueue.main.async {
+													self.useds.append(contentsOf: root.useds)
+											}
+											
+											// 페이지를 증가시켜 다음 데이터를 요청할 준비
+											self.page += 1
+											
+											// 데이터가 비어 있을 경우 사용자에게 메시지 표시
+											if self.useds.isEmpty {
+													self.isAlertShowing = true
+													self.message = "등록된 상품이 없습니다."
+											}
+									} catch let error {
+											self.isAlertShowing = true
+											self.message = "데이터를 처리할 수 없습니다. \(error.localizedDescription)"
+											print("Decoding error: \(error.localizedDescription)")
+									}
+							}
+							
+					case 300..<500:
+							// 클라이언트 오류 처리
+							if let data = response.data {
+									do {
+											let apiError = try JSONDecoder().decode(APIError.self, from: data)
+											self.isAlertShowing = true
+											self.message = apiError.message
+									} catch {
+											self.isAlertShowing = true
+											self.message = "API 오류를 처리할 수 없습니다."
+									}
+							} else {
+									self.isAlertShowing = true
+									self.message = "클라이언트 오류가 발생했습니다."
+							}
+							
+					default:
+							// 기타 오류 처리
+							self.isAlertShowing = true
+							self.message = "네트워크 오류입니다. 다시 시도해주세요."
+							print("fetchUseds: Network error with status code \(statusCode)")
+					}
+			}
+	}
+
     
     // 글상세
     func fetchDetailUsed(usedId : Int,userId:Int) async throws -> Used{

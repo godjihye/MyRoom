@@ -4,8 +4,6 @@
 <dict>
 	<key>AZURESTORAGE</key>
 	<string>$(AZURESTORAGE)</string>
-	<key>KAKAO_NATIVE_APP_KEY</key>
-	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>CFBundleTypeRole</key>
 	<array>
 		<dict>
@@ -19,6 +17,8 @@
 	</array>
 	<key>ENDPOINT</key>
 	<string>$(ENDPOINT)</string>
+	<key>KAKAO_NATIVE_APP_KEY</key>
+	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaolink</string>

@@ -10,7 +10,7 @@ import SwiftUI
 struct MyPageView: View {
 	@EnvironmentObject var userVM: UserViewModel
 	var body: some View {
-		NavigationSplitView {
+		NavigationStack {
 			ScrollView {
 				ProfileView()
 				Divider()
@@ -18,8 +18,6 @@ struct MyPageView: View {
 				Divider()
 				logoutBtn
 			}
-		} detail: {
-			Text("마이페이지입니다.")
 		}
 		
 	}
