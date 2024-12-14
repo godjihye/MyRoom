@@ -14,14 +14,23 @@ struct ItemDetailView: View {
 	
 	@State private var isShowingDeleteAlert: Bool = false
 	
-	let itemId: Int
+	private var itemId: Int? // 아이템 ID
+	private var initialItem: Item? // 직접 받은 아이템
+	
+	init(itemId: Int) { // itemId로 초기화
+			self.itemId = itemId
+	}
+	
+	init(item: Item) { // item 객체로 초기화
+			self.initialItem = item
+	}
 	
 	var body: some View {
 			NavigationStack {
 					ScrollView {
 							VStack(alignment: .leading, spacing: 18) {
 									// item 선언
-									if let item = itemVM.items.first(where: { $0.id == itemId }) {
+								if let item = initialItem ?? itemVM.items.first(where: { $0.id == itemId }) {
 											itemImage(item: item)
 											itemNameAndHeart(item: item)
 											itemCreatedAtAndUpdatedAt(item: item)
