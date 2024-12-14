@@ -40,12 +40,15 @@ struct EntryView: View {
 						Text("마이페이지")
 					}
 			}
+			.tint(.black)
 		} else {
 			LoginView()
 				.transition(.move(edge: .bottom))
 				.animation(.easeInOut, value: userVM.isLoggedIn)
 		}
+			
 	}
+		
 }
 
 #Preview {

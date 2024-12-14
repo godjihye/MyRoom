@@ -9,11 +9,13 @@ import SwiftUI
 
 struct SearchBar: View {
 	@Binding var searchText: String
-	@State var isEditing = false
+	@FocusState var showKeyboard: Bool
 	var handler: ()->Void
+	
 	var body: some View {
 		HStack {
 			TextField("검색어를 입력하세요", text: $searchText)
+				.focused($showKeyboard)
 				.padding(.all, 10)
 				.background(Color(.systemGray5))
 				.clipShape(.rect(cornerRadius: 15))
@@ -22,21 +24,11 @@ struct SearchBar: View {
 				.onSubmit {
 					handler()
 				}
-				.onTapGesture {
-					isEditing = true
+				.onAppear {
+					showKeyboard = true
 				}
-				.animation(.easeInOut, value: isEditing)
 				.textInputAutocapitalization(.none)
-			if isEditing {
-				Button {
-					isEditing = false
-					print("btn clicked")
-				} label: {
-					Text("Cancel")
-				}
-				.padding(.trailing, 15)
-				.transition(.move(edge: .trailing))
-			}
+			
 			Spacer()
 		}
 	}
