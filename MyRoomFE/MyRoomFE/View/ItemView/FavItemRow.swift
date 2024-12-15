@@ -41,6 +41,6 @@ struct FavItemRow: View {
 	}
 }
 
-#Preview {
-	FavItemRow(item: sampleItem)
-}
+//#Preview {
+//	FavItemRow(item: sampleItem)
+//}
