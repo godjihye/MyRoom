@@ -19,6 +19,7 @@ struct WideButton: View {
 		Button(action: action) {
 			WideButtonLabel(icon: icon, title: title, backgroundColor: backgroundColor)
 		}
+        .padding(.horizontal)
 	}
 }
 

@@ -35,6 +35,7 @@ struct UsedItemListView: View {
     
     @Binding var selectMyItem: Item?
     @Binding var isMyItemPresented:Bool
+    var fetchAllItem:Bool
     
     
     let columns = [
@@ -44,18 +45,17 @@ struct UsedItemListView: View {
     ]
     var body: some View {
         ScrollView{
-            LazyVGrid(columns: columns) {
-                ForEach(itemVM.items) { item in
-                    UsedItemRowView(selectedItem: $selectMyItem,
-                                    isMyItemPresented: $isMyItemPresented,item: item).environmentObject(itemVM)
-                }
-            }.task {
-                await itemVM.fetchAllItem()
-                print(itemVM)
-            }
             
-        }
-    }
+            List(itemVM.items) { item in
+                UsedItemRowView(selectedItem: $selectMyItem,
+                                isMyItemPresented: $isMyItemPresented,item: item).environmentObject(itemVM)
+            }.task {
+                       await itemVM.fetchAllItem(filterByItemUrl: fetchAllItem)
+                       print(itemVM.items)
+                   }
+                   
+               }
+           }
 }
 
 //#Preview {

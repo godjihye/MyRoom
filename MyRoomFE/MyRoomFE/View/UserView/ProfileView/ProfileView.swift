@@ -167,8 +167,3 @@ struct ProfileView: View {
 		}
 	}
 }
-
-#Preview {
-	let userVM = UserViewModel()
-	ProfileView().environmentObject(userVM)
-}

@@ -4,7 +4,7 @@ const models = require("../models");
 //댓글작성
 const createCommnet = async (req, res) => {
   console.log("comment start")
-  const parentId = req.params.parentId === 'null' ? null : req.params.parentId;
+  const parentId = req.params.parentId === 'undefined' ? null : req.params.parentId;
   const {postId, userId} = req.params
   const text = req.body.comment
   console.log(parentId,postId,userId,text)
