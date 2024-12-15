@@ -54,7 +54,30 @@ struct ItemDetailView: View {
 					}
 					.toolbar(content: {
 						if let item = itemVM.items.first(where: {$0.id == itemId}){
-							toolbarContent(item: item)
+							ToolbarItem(placement: .topBarTrailing) {
+									Menu {
+											NavigationLink("편집") {
+													AddItemWithAIView(isEditMode: true, existingItem: item)
+											}
+											Button("삭제") {
+													isShowingDeleteAlert = true
+											}
+											.confirmationDialog(
+													"\(item.itemName)을/를 삭제하시겠습니까?",
+													isPresented: $isShowingDeleteAlert,
+													titleVisibility: .visible
+											) {
+													Button("삭제", role: .destructive) {
+															Task {
+																	await itemVM.removeItem(itemId: item.id)
+																	dismiss()
+															}
+													}
+											}
+									} label: {
+											Image(systemName: "ellipsis")
+									}
+							}
 						}
 					})
 					.alert("좋아요", isPresented: $itemVM.isShowingAlert, actions: {
@@ -206,32 +229,7 @@ struct ItemDetailView: View {
 			}
 		}
 	}
-	private func toolbarContent(item: Item) -> some ToolbarContent {
-			ToolbarItem(placement: .topBarTrailing) {
-					Menu {
-							NavigationLink("편집") {
-									AddItemWithAIView(isEditMode: true, existingItem: item)
-							}
-							Button("삭제") {
-									isShowingDeleteAlert = true
-							}
-							.confirmationDialog(
-									"\(item.itemName)을/를 삭제하시겠습니까?",
-									isPresented: $isShowingDeleteAlert,
-									titleVisibility: .visible
-							) {
-									Button("삭제", role: .destructive) {
-											Task {
-													await itemVM.removeItem(itemId: item.id)
-													dismiss()
-											}
-									}
-							}
-					} label: {
-							Image(systemName: "ellipsis")
-					}
-			}
-	}
+
 
 }
 

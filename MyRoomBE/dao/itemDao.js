@@ -167,20 +167,13 @@ const updateItem = async (id, data) => {
 const uploadAdditionalPhotos = async (photoData, itemId) => {
   const transaction = await models.sequelize.transaction();
   try {
-    const photos = [];
-    for (const field in photoData) {
-      if (Array.isArray(photoData[field])) {
-        photoData[field].forEach((photo) => {
-          photos.push({
-            photo: photo.blobName,
-            itemId: itemId,
-          });
-        });
-      }
-    }
+    const photos = photoData.map((photo) => ({
+      photo: photo.blobName,
+      photoText: photo.text,
+      itemId: itemId,
+    }));
     await models.ItemPhoto.bulkCreate(photos, { transaction });
     await transaction.commit();
-    
     return await findItem(itemId);
   } catch (error) {
     await transaction.rollback();

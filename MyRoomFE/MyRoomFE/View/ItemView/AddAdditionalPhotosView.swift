@@ -7,6 +7,7 @@
 
 import SwiftUI
 import _PhotosUI_SwiftUI
+import Vision
 
 struct AddAdditionalPhotosView: View {
 		@Environment(\.dismiss) private var dismiss
@@ -17,8 +18,8 @@ struct AddAdditionalPhotosView: View {
 		@State private var additionalItems: [PhotosPickerItem] = []
 		@State private var additionalPhotos: [UIImage] = []
 		@State private var cameraPhoto: UIImage?
-		
-		private let maxImageCount = 20
+    @State private var imageText: [String] = []
+		private let maxImageCount = 30
 		let itemId: Int
 		let columns = [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)]
 		
@@ -30,17 +31,23 @@ struct AddAdditionalPhotosView: View {
 						saveBtn
 				}
 				.navigationTitle("추가 이미지 등록")
-				.toolbar {
-						ToolbarItem(placement: .principal) {
-								Text("추가 이미지 등록")
-						}
-				}
+//				.toolbar {
+//						ToolbarItem(placement: .principal) {
+//								Text("추가 이미지 등록")
+//						}
+//				}
+			// FIXME: - Text recognize
 				.onChange(of: additionalItems) { _, _ in
 						handleAdditionalItemsChange()
 				}
 				.onChange(of: cameraPhoto) { _, newValue in
-						if let photo = newValue {  // 옵셔널 바인딩으로 처리
+						if let photo = newValue {
 								additionalPhotos.append(photo)
+							if let text = recognizeText(from: photo) {
+								imageText.append(text)
+							} else {
+								imageText.append("")
+							}
 						}
 				}
 				.alert("추가 이미지 등록", isPresented: $itemVM.isShowingAlertAddAdditionalPhotos) {
@@ -63,17 +70,19 @@ struct AddAdditionalPhotosView: View {
 		
 		// MARK: - Subviews
 		private var selectedImagesView: some View {
+			GeometryReader { reader in
 				ScrollView {
-						LazyVGrid(columns: columns, spacing: 10) {
-								ForEach(additionalPhotos, id: \.self) { photo in
-										Image(uiImage: photo)
-												.resizable()
-												.scaledToFill()
-												.frame(width: 100, height: 100)
-												.cornerRadius(10)
-								}
+					LazyVGrid(columns: columns, spacing: 10) {
+						ForEach(additionalPhotos, id: \.self) { photo in
+							Image(uiImage: photo)
+								.resizable()
+								.scaledToFill()
+								.frame(width: reader.size.width / 2 - 20, height: reader.size.width / 2 - 20)
+								.cornerRadius(10)
 						}
-						.padding()
+					}
+					.padding()
+				}
 				}
 		}
 		
@@ -96,7 +105,10 @@ struct AddAdditionalPhotosView: View {
 		
 		private var saveBtn: some View {
 				Button(action: {
-						itemVM.addAdditionalPhotos(images: additionalPhotos, itemId: itemId)
+					//FIXME: - itemVM addAdditionalPhotos
+					itemVM.addAdditionalPhotos(images: additionalPhotos, texts: imageText, itemId: itemId)
+					log("imageText: \(imageText)")
+					
 				}) {
 						Text("추가 이미지 등록")
 								.frame(maxWidth: .infinity)
@@ -115,10 +127,60 @@ struct AddAdditionalPhotosView: View {
 								if let data = try? await item.loadTransferable(type: Data.self),
 									 let uiImage = UIImage(data: data) {
 										additionalPhotos.append(uiImage)
+									if let text = recognizeText(from: uiImage) {
+										imageText.append(text)
+									} else {
+										imageText.append("")
+									}
 								}
 						}
 				}
 		}
+	private func recognizeText(from image: UIImage) -> String? {
+		var recognizedText: String = ""
+		guard let cgImage = image.cgImage else {
+			recognizedText.append("Could not load image.")
+			return ""
+		}
+		
+		let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+		let request = VNRecognizeTextRequest { request, error in
+			guard let observations = request.results as? [VNRecognizedTextObservation], error == nil else {
+				recognizedText.append("Text recognition failed.")
+				return
+			}
+			
+			let text = observations.compactMap {
+				$0.topCandidates(1).first?.string
+			}
+			
+			recognizedText = text.joined(separator: " ")
+			
+		}
+		
+		if #available(iOS 16.0, *) {
+			request.revision = VNRecognizeTextRequestRevision3
+			request.recognitionLevel = .accurate
+			request.recognitionLanguages = ["ko-KR"]
+			request.usesLanguageCorrection = true
+			
+			do {
+				let supportedLanguages = try request.supportedRecognitionLanguages()
+				print("Supported languages: \(supportedLanguages)")
+			} catch {
+				print("Error fetching supported languages: \(error)")
+			}
+		} else {
+			request.recognitionLanguages = ["en-US"]
+			request.usesLanguageCorrection = true
+		}
+		do {
+			try handler.perform([request])
+		} catch {
+				recognizedText.append("Error: \(error.localizedDescription)")
+		}
+		return recognizedText
+	}
 }
 
 #Preview {

@@ -225,12 +225,12 @@ class ItemViewModel: ObservableObject {
 	//MARK: - 4. Delete Item
 	func removeItem(itemId: Int) async {
 		let url = "\(endPoint)/items/\(itemId)"
-		do {
-			let response = try await AF.request(url, method: .delete).serializingData().value
-			log("removeItem Complete! \(response.description)", trait: .success)
-		} catch {
-			log("removeItem Error: \(error.localizedDescription)", trait: .error)
-		}
+//		do {
+//			let response = try await AF.request(url, method: .delete).serializingData().value
+//			log("removeItem Complete! \(response.description)", trait: .success)
+//		} catch {
+//			log("removeItem Error: \(error.localizedDescription)", trait: .error)
+//		}
 	}
 	
 	// Fav 등록 / 해제
@@ -280,8 +280,8 @@ class ItemViewModel: ObservableObject {
 	//MARK: - 추가 사진
 	//	@Published var isShowingAlertAddAdditionalPhotos: Bool = false
 //	@Published var addAdditionalPhotosMessage: String = ""
-	func addAdditionalPhotos(images: [UIImage]?, itemId: Int?) {
-		guard let images, let itemId else {return}
+	func addAdditionalPhotos(images: [UIImage]?, texts: [String]?, itemId: Int?) {
+		guard let images, let itemId, let texts else {return}
 		SVProgressHUD.show()
 		if images.isEmpty {return}
 		let url = "\(endPoint)/items/additionalPhoto/\(itemId)"
@@ -291,6 +291,9 @@ class ItemViewModel: ObservableObject {
 			if let imageData = image.jpegData(compressionQuality: 0.8) {
 				formData.append(imageData, withName: "photos", fileName: "photo\(index + 1).jpg", mimeType: "image/jpeg")
 			}
+		}
+		for text in texts {
+			formData.append(text.data(using: .utf8)!, withName: "photoText")
 		}
 		AF.upload(multipartFormData: formData, to: url, method: .post, headers: headers).response { response in
 			if let statusCode = response.response?.statusCode {
