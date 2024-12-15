@@ -20,7 +20,6 @@
 		0B9CB62A2D04235000FA1075 /* SignInWithKakaoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9CB6292D04235000FA1075 /* SignInWithKakaoView.swift */; };
 		0BBB8ECA2D048D4900DF692C /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */; };
 		0BBB8ECC2D04A5AF00DF692C /* ChangePWView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */; };
-		0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */; };
 		0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */; };
 		B15D9A552D06ED7900FA0253 /* PostWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A542D06ED7900FA0253 /* PostWebView.swift */; };
 		B15D9A582D083C0600FA0253 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A572D083C0600FA0253 /* CommentViewModel.swift */; };
@@ -54,7 +53,6 @@
 		B86F34F52CF96F920040BB33 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B82CF96F920040BB33 /* SearchView.swift */; };
 		B86F34F62CF96F920040BB33 /* TabItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B92CF96F920040BB33 /* TabItemView.swift */; };
 		B86F34F72CF96F920040BB33 /* WideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BA2CF96F920040BB33 /* WideButton.swift */; };
-		B86F34F82CF96F920040BB33 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BC2CF96F920040BB33 /* AddItemView.swift */; };
 		B86F34F92CF96F920040BB33 /* AdditionalPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BD2CF96F920040BB33 /* AdditionalPhotosView.swift */; };
 		B86F34FA2CF96F920040BB33 /* AddLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BE2CF96F920040BB33 /* AddLocationView.swift */; };
 		B86F34FB2CF96F920040BB33 /* AddRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BF2CF96F920040BB33 /* AddRoomView.swift */; };
@@ -137,7 +135,6 @@
 		0B9CB6292D04235000FA1075 /* SignInWithKakaoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithKakaoView.swift; sourceTree = "<group>"; };
 		0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePWView.swift; sourceTree = "<group>"; };
-		0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewModel.swift; sourceTree = "<group>"; };
 		0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipartFormData+AppendOptionalValue.swift"; sourceTree = "<group>"; };
 		B15D9A542D06ED7900FA0253 /* PostWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWebView.swift; sourceTree = "<group>"; };
 		B15D9A572D083C0600FA0253 /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
@@ -169,7 +166,6 @@
 		B86F34B82CF96F920040BB33 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		B86F34B92CF96F920040BB33 /* TabItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItemView.swift; sourceTree = "<group>"; };
 		B86F34BA2CF96F920040BB33 /* WideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideButton.swift; sourceTree = "<group>"; };
-		B86F34BC2CF96F920040BB33 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
 		B86F34BD2CF96F920040BB33 /* AdditionalPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalPhotosView.swift; sourceTree = "<group>"; };
 		B86F34BE2CF96F920040BB33 /* AddLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationView.swift; sourceTree = "<group>"; };
 		B86F34BF2CF96F920040BB33 /* AddRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRoomView.swift; sourceTree = "<group>"; };
@@ -351,7 +347,6 @@
 			isa = PBXGroup;
 			children = (
 				B86F34B82CF96F920040BB33 /* SearchView.swift */,
-				B86F34BC2CF96F920040BB33 /* AddItemView.swift */,
 				B86F34BD2CF96F920040BB33 /* AdditionalPhotosView.swift */,
 				B86F34BE2CF96F920040BB33 /* AddLocationView.swift */,
 				B86F34BF2CF96F920040BB33 /* AddRoomView.swift */,
@@ -417,7 +412,6 @@
 			children = (
 				B8E917A62D01A63700345B89 /* ChatViewModel.swift */,
 				B86F34D72CF96F920040BB33 /* ItemViewModel.swift */,
-				0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */,
 				B86F34D82CF96F920040BB33 /* PostViewModel.swift */,
 				B86F34D92CF96F920040BB33 /* RoomViewModel.swift */,
 				B86F34DA2CF96F920040BB33 /* UsedViewModel.swift */,
@@ -623,7 +617,6 @@
 				0BBB8ECC2D04A5AF00DF692C /* ChangePWView.swift in Sources */,
 				B8E916D92D018B4500345B89 /* String+Validate.swift in Sources */,
 				B86F34F72CF96F920040BB33 /* WideButton.swift in Sources */,
-				B86F34F82CF96F920040BB33 /* AddItemView.swift in Sources */,
 				B86F34F92CF96F920040BB33 /* AdditionalPhotosView.swift in Sources */,
 				B86F34FA2CF96F920040BB33 /* AddLocationView.swift in Sources */,
 				B86F34FB2CF96F920040BB33 /* AddRoomView.swift in Sources */,
@@ -673,7 +666,6 @@
 				B86F35142CF96F920040BB33 /* ContentView.swift in Sources */,
 				B15D9A552D06ED7900FA0253 /* PostWebView.swift in Sources */,
 				B86F35152CF96F920040BB33 /* EntryView.swift in Sources */,
-				0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */,
 				0B19B98C2D0D1AAB0042619F /* InviteCodeView.swift in Sources */,
 				B86F35162CF96F920040BB33 /* MyRoomFEApp.swift in Sources */,
 				B8E916462D016C6F00345B89 /* MyPageView.swift in Sources */,

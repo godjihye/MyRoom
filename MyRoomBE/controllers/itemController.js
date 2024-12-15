@@ -91,16 +91,27 @@ const updateItem = async (req, res) => {
 
 // 3-2. Update Item Add Additional Photos
 const updateAdditionalPhotos = async (req, res) => {
-  const photos = req.files;
+  console.log("req.filed: ", req.files)
+  console.log("req.body: ", req.body)
   try {
+    const {photos} = req.files
+    const {photoText} = req.body;
+    const photoData = photos.map((photo, index) => ({
+      blobName: photo.blobName,
+      text: Array.isArray(photoText) ? photoText[index] || null : photoText || null,
+    }));
+    console.log("photoData ========================")
+    console.log(photoData)
     const result = await itemService.uploadAdditionalPhotos(
-      photos,
+      photoData,
       req.params.itemId
     );
+    console.log(result)
     res.status(201).json({
       documents: [result],
     });
   } catch (e) {
+    console.log(e.message)
     res.status(500).json({ message: e.message });
   }
 };
