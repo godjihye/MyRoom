@@ -30,8 +30,9 @@ const findAllItem = async (req, res) => {
 
 // 2-2. Find All Items By HomeId
 const findAllItemByHomeId = async (req, res) => {
+  console.log(req.query.filterByItemUrl)
   try {
-    const result = await itemService.findAllItemByHomeId(req.params.homeId);
+    const result = await itemService.findAllItemByHomeId(req.params.homeId,req.query.filterByItemUrl);
     res.status(200).json({ documents: result });
   } catch (e) {
     res.status(500).json({ error: e.message });

@@ -11,7 +11,7 @@ struct ChatRowView: View {
             // 사용자 이미지
             if let otherUser = chat.participants.first(where: { $0 != currentUser }) {
                 VStack(alignment: .center) {
-									if let imageUrl = chatVM.userImages["\(otherUser)"], let url = URL(string: "\(imageUrl.addingURLPrefix())") {
+                    if let imageUrl = chatVM.userImages["\(otherUser)"], let url = URL(string: "\(imageUrl)") {
                         AsyncImage(url: url) { image in
                             image.resizable()
                                 .scaledToFill()

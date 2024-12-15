@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ChatListView: View {
     @EnvironmentObject var chatVM: ChatViewModel
+    var chatUsedRoomName:String?
     
     var currentUser = UserDefaults.standard.string(forKey: "nickName")
     
@@ -15,14 +16,19 @@ struct ChatListView: View {
                         } label: {
                             ChatRowView(chat: chatRoom).environmentObject(chatVM).padding(.horizontal)
                         }
-                        // 구분선 추가
+                        
                         Divider()
                     }
                     .listStyle(.plain)
                     .navigationTitle("채팅목록")
                 }
                 .onAppear {
-                    chatVM.fetchChatRooms()   // 채팅방 데이터 가져오기
+                    
+                    if let chatUsedRoomName { //특정 게시글의 채팅목록 가져오기
+                        chatVM.fetchUsedChatRooms(chatRoomName: chatUsedRoomName)
+                    }else{ //전체 채팅목록 가져오기
+                        chatVM.fetchChatRooms()
+                    }
                 }
             }
         }
