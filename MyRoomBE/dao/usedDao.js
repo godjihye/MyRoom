@@ -1,4 +1,5 @@
 const models = require("../models");
+const { Op } = require("sequelize"); // Sequelize operators 가져오기 - search
 
 // write
 const createUsed = async (usedData, photoData) => {
@@ -97,6 +98,45 @@ const findAllUsed = async (page, pageSize, userId) => {
   });
 };
 
+const findUsedByName = async(id,data) => {
+  return await models.Used.findAndCountAll({
+    where: {
+      usedTitle: {
+        [Op.like]: `%${data}%`, // data가 포함된 값을 검색
+      },
+    },
+    include: [
+      {
+        model: models.User, // 조인할 모델 (Post)
+        as: "user", // alias (선택 사항)
+      },
+      {
+        model: models.UsedPhoto,
+        as: "images",
+      },
+      {
+        model: models.UsedFav,
+        as: "usedFav",
+        where: { userId:id },
+        required: false, // LEFT OUTER JOIN
+      },
+    ],
+    attributes: {
+      include: [
+        [
+          models.sequelize.literal(
+            `CASE WHEN "usedFav"."userId" IS NOT NULL THEN true ELSE false END`
+          ),
+          "isFavorite",
+        ],
+      ],
+    },
+    distinct: true, // 중복 방지
+    subQuery: false,
+    //   logging: (sql) => console.log('Executing SQL:', sql)
+  });
+}
+
 //detail
 const findUsedById = async (id, userId) => {
   return await models.Used.findByPk(id, {
@@ -132,9 +172,12 @@ const findUsedById = async (id, userId) => {
 
 //edit
 const updateUsed = async (id, data) => {
-  return await models.Used.update(data, {
+
+  await await models.Used.update(data, {
     where: { id },
   });
+
+  return await models.Used.findOne({ where: { id } });
 };
 
 //delete
@@ -152,7 +195,7 @@ const toggleFavorite = async (usedId, userId, action) => {
   if (used) {
     if (action === "add") {
       used.usedFavCnt += 1;
-      models.UsedFav.create({
+      result = models.UsedFav.create({
         userId: userId,
         usedId: usedId,
         logging: (sql) => console.log("Executing SQL:", sql),
@@ -160,35 +203,14 @@ const toggleFavorite = async (usedId, userId, action) => {
     } else if (action === "remove") {
       console.log("remove 왔어용");
       used.usedFavCnt -= 1;
-      models.UsedFav.destroy({
+      result = models.UsedFav.destroy({
         where: { userId: userId, usedId: usedId },
       });
     }
     await used.save();
 
-    // const returnData = await models.Used.findByPk(usedId,{
-    //     include: [
-    //         {
-    //           model: models.User,
-    //           as: 'user',
-    //           attributes: ['nickname','userImage'],
-    //         }
-    //         ,
-    //         {
-    //             model: models.UsedPhoto,
-    //             as:"images",
-    //             attributes: ['id','image']
-    //         },
-    //         {
-    //             model: models.UsedFav,
-    //             as: "usedFav",
-    //             where: { usedId:usedId },
-    //             required: false,
-    //         }
-    //       ],
-    //     })
 
-    // return returnData;
+    return result;
   }
 };
 
@@ -215,6 +237,7 @@ const updateViewCnt = async (id) => {
 module.exports = {
   createUsed,
   findAllUsed,
+  findUsedByName,
   findUsedById,
   updateUsed,
   deleteUsed,

@@ -36,8 +36,17 @@ const findAllItem = async (id) => {
   });
 };
 // 2-2. Find All Items By HomeId
-const findAllItemByHomeId = async (id) => {
+const findAllItemByHomeId = async (id,filterByItemUrl) => {
+
+  const whereCondition = {};
+  
+  if (filterByItemUrl == 1) {
+    whereCondition.url = { [models.Sequelize.Op.ne]: null };
+  }
+
   return await models.Item.findAll({
+    
+    where: whereCondition,
     include: [
       {
         model: models.ItemPhoto,
