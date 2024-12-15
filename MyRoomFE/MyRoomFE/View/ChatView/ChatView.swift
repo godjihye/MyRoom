@@ -35,16 +35,18 @@ struct ChatView: View {
                             
                                 HStack {
                                     
-                                    if let imageUrl = chatVM.userImages[otherUser ?? ""], let url = URL(string: "\(azuerTarget)\(imageUrl)") {
+																	if let imageUrl = chatVM.userImages[otherUser ?? ""], let url = URL(string: "\(imageUrl.addingURLPrefix())") {
                                         AsyncImage(url: url) { image in
                                             image.resizable()
                                                 .scaledToFill()
                                                 .frame(width: 40, height: 40)
                                                 .clipShape(Circle())
                                         } placeholder: {
-                                            ProgressView()
-                                                .progressViewStyle(CircularProgressViewStyle())
-                                                .frame(width: 40, height: 40)
+																					Image(systemName: "person.circle")
+																							.resizable()
+																							.scaledToFit()
+																							.frame(width: 40, height: 40)
+																							.clipShape(Circle())
                                         }
                                     } else {
                                         Image(systemName: "person.circle")
@@ -56,11 +58,12 @@ struct ChatView: View {
                                 }
                             
                             Text(message.text)
+														.lineLimit(nil)
                                 .padding()
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(10)
                                 .foregroundColor(.black)
-                                .frame(maxWidth: 250, alignment: .leading)
+																.frame(maxWidth: 250, maxHeight: .infinity, alignment: .leading)
                         }
                         Spacer()
                     }
