@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Alamofire
+import SVProgressHUD
 
 
 class ItemViewModel: ObservableObject {
@@ -48,7 +49,7 @@ class ItemViewModel: ObservableObject {
 		addFormData(formData: formData, optionalValue: itemName, withName: "itemName")
 		addFormData(formData: formData, optionalValue: purchaseDate, withName: "purchaseDate")
 		addFormData(formData: formData, optionalValue: expiryDate, withName: "expiryDate")
-		addFormData(formData: formData, optionalValue: itemUrl, withName: "itemUrl")
+		addFormData(formData: formData, optionalValue: itemUrl, withName: "url")
 		addFormData(formData: formData, optionalValue: desc, withName: "desc")
 		addFormData(formData: formData, optionalValue: color, withName: "color")
 		addFormData(formData: formData, optionalValue: openDate, withName: "openDate")
@@ -125,7 +126,7 @@ class ItemViewModel: ObservableObject {
 		}
         
         AF.request(url).responseDecodable(of: ItemResponse.self) { response in
-            print(response)
+            print("response : \(response)")
         }
 	}
 	
@@ -200,6 +201,9 @@ class ItemViewModel: ObservableObject {
 						let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 						self.isShowingAlert = true
 						self.message = root.message
+						if let index = self.items.firstIndex(where: { $0.id == root.item.id}) {
+							self.items[index] = root.item
+						}
 					} catch let error {
 						self.isShowingAlert = true
 						self.message = "에러가 발생했습니다.\n\(error.localizedDescription)"
@@ -226,12 +230,12 @@ class ItemViewModel: ObservableObject {
 	//MARK: - 4. Delete Item
 	func removeItem(itemId: Int) async {
 		let url = "\(endPoint)/items/\(itemId)"
-		do {
-			let response = try await AF.request(url, method: .delete).serializingData().value
-			log("removeItem Complete! \(response.description)", trait: .success)
-		} catch {
-			log("removeItem Error: \(error.localizedDescription)", trait: .error)
-		}
+//		do {
+//			let response = try await AF.request(url, method: .delete).serializingData().value
+//			log("removeItem Complete! \(response.description)", trait: .success)
+//		} catch {
+//			log("removeItem Error: \(error.localizedDescription)", trait: .error)
+//		}
 	}
 	
 	// Fav 등록 / 해제
@@ -281,8 +285,9 @@ class ItemViewModel: ObservableObject {
 	//MARK: - 추가 사진
 	//	@Published var isShowingAlertAddAdditionalPhotos: Bool = false
 //	@Published var addAdditionalPhotosMessage: String = ""
-	func addAdditionalPhotos(images: [UIImage]?, itemId: Int?) async {
-		guard let images, let itemId else {return}
+	func addAdditionalPhotos(images: [UIImage]?, texts: [String]?, itemId: Int?) {
+		guard let images, let itemId, let texts else {return}
+		SVProgressHUD.show()
 		if images.isEmpty {return}
 		let url = "\(endPoint)/items/additionalPhoto/\(itemId)"
 		let headers: HTTPHeaders = ["Content-Type": "multipart/form-data"]
@@ -292,18 +297,31 @@ class ItemViewModel: ObservableObject {
 				formData.append(imageData, withName: "photos", fileName: "photo\(index + 1).jpg", mimeType: "image/jpeg")
 			}
 		}
+		for text in texts {
+			formData.append(text.data(using: .utf8)!, withName: "photoText")
+		}
 		AF.upload(multipartFormData: formData, to: url, method: .post, headers: headers).response { response in
 			if let statusCode = response.response?.statusCode {
 				switch statusCode {
 				case 200..<300:
 					if let data = response.data {
+						log(String(data: data, encoding: .utf8) ?? "")
 						do {
-							let root = try JSONDecoder().decode(AdditionalPhotosRoot.self, from: data)
+							let root = try JSONDecoder().decode(ItemResponse.self, from: data)
 							self.isShowingAlertAddAdditionalPhotos = true
-							self.addAdditionalPhotosMessage = root.message
-							log("addAdditionalPhotos", trait: .success)
-						} catch{
+							self.addAdditionalPhotosMessage = "추가 사진을 성공적으로 등록했습니다."
+							log("\(root.documents.first?.id)")
+							if let index = self.items.firstIndex(where: { $0.id == root.documents.first?.id}) {
+								log("if let 구문 안에 들어옴")
+								
+								if let itemPhoto = root.documents.first?.itemPhoto {
+									self.items[index].itemPhoto = itemPhoto
+									
+								}
+							}
 							
+							log("addAdditionalPhotos", trait: .success)
+						} catch {
 							if let afError = error as? AFError {
 								log("AFError: \(afError.localizedDescription)", trait: .error)
 							} else {
@@ -329,6 +347,7 @@ class ItemViewModel: ObservableObject {
 				}
 			}
 		}
+		SVProgressHUD.dismiss()
 	}
 	
 	func removeAdditionalPhoto(photoId: Int) {

@@ -15,17 +15,10 @@ struct ProfileView: View {
     let userId = UserDefaults.standard.integer(forKey: "userId")
     
     var body: some View {
-        NavigationSplitView {
-            ScrollView {
-                userInfoImage
-                userInfoText
-                editInfoBtn
-                mateList
-                chatList
-                logoutBtn
-            }
-        }detail: {
-            Text("프로필")
+        VStack {
+            userInfoImage
+            userInfoText
+            //logoutBtn
         }
         .onAppear {
             if userVM.userInfo == nil {
@@ -73,7 +66,7 @@ struct ProfileView: View {
     private var userInfoText: some View {
         VStack {
             if let nickname = userVM.userInfo?.nickname,
-               let userId = UserDefaults.standard.value(forKey: "userId"){
+                 let userId = UserDefaults.standard.value(forKey: "userId"){
                 
                 HStack {
                     Text(nickname)
@@ -96,18 +89,12 @@ struct ProfileView: View {
                 
                 Text("마룸과 함께 한지 \(createdAt.datesSince()! + 1)일입니다.")
                     .font(.footnote)
-                    .foregroundStyle(.accent)
+                    .foregroundStyle(Color.myroom1)
                 
             }
         }
-        .padding()
-    }
-    //MARK: - 프로필 수정 버튼
-    private var editInfoBtn: some View {
-        WideImageButton(title: "프로필 수정", backgroundColor: .gray) {
-            showProfileEditView = true
-        }
-        .padding(.horizontal)
+        .padding(.top, -20)
+        .padding(.bottom, 20)
     }
     //MARK: - Mate Users
     private var mateList: some View {
@@ -166,10 +153,10 @@ struct ProfileView: View {
             }
         }
     }
-    
+    //MARK: - Chat List
     private var chatList:some View {
         
-       VStack{
+        VStack{
             Divider()
             NavigationLink(destination: ChatListView().environmentObject(ChatViewModel())) {
                 Text("💬 채팅목록")
@@ -179,21 +166,4 @@ struct ProfileView: View {
             }
         }
     }
-    private var logoutBtn: some View {
-        VStack {
-            Divider()
-            Button {
-                userVM.logout()
-            } label: {
-                Text("로그아웃하기")
-                    .foregroundStyle(.gray)
-                    .padding()
-            }
-        }
-    }
-}
-
-#Preview {
-    let userVM = UserViewModel()
-    ProfileView().environmentObject(userVM)
 }

@@ -5,13 +5,7 @@ const createItem = async (req, res) => {
   const itemData = req.body;
   itemData.photo = req.filename;
   itemData.isFav = false;
-  console.log(`req.filename: ${req.filename}`);
   try {
-    console.log(`{
-      success: true,
-      message: "아이템을 성공적으로 등록했습니다.",
-      item: item,
-    }`);
     const item = await itemService.createItem(itemData);
     res.status(201).json({
       success: true,
@@ -19,7 +13,6 @@ const createItem = async (req, res) => {
       item: item,
     });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ success: false, error: e.message });
   }
 };
@@ -99,19 +92,27 @@ const updateItem = async (req, res) => {
 
 // 3-2. Update Item Add Additional Photos
 const updateAdditionalPhotos = async (req, res) => {
-  const photos = req.files;
+  console.log("req.filed: ", req.files)
+  console.log("req.body: ", req.body)
   try {
+    const {photos} = req.files
+    const {photoText} = req.body;
+    const photoData = photos.map((photo, index) => ({
+      blobName: photo.blobName,
+      text: Array.isArray(photoText) ? photoText[index] || null : photoText || null,
+    }));
+    console.log("photoData ========================")
+    console.log(photoData)
     const result = await itemService.uploadAdditionalPhotos(
-      photos,
+      photoData,
       req.params.itemId
     );
-    console.log(result);
+    console.log(result)
     res.status(201).json({
-      success: true,
-      message: "아이템 추가 정보 사진이 성공적으로 등록되었습니다.",
-      photos: result,
+      documents: [result],
     });
   } catch (e) {
+    console.log(e.message)
     res.status(500).json({ message: e.message });
   }
 };

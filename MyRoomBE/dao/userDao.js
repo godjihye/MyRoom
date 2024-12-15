@@ -4,12 +4,25 @@ const models = require("../models");
 
 // 1-1. Find User By UserName
 const getUserByUserName = async (data) => {
-  return await models.User.findOne({ where: { userName: data } });
+  return await models.User.findOne({ 
+    where: { userName: data },
+    include: [
+    { model: models.Home,
+      as: "homeUser",
+    }
+  ] });
 };
 
 // 1-2. Find User By PK
 const getUserByID = async (id) => {
-  return await models.User.findOne({ where: { id } });
+  return await models.User.findOne({ 
+    where: { id },
+    include: [
+      { model: models.Home,
+        as: "homeUser",
+      }
+    ] }
+  );
 };
 
 // 1-2. Find User Exclude PW By PK
@@ -25,6 +38,11 @@ const getUserByIDExcludePW = async (id) => {
       "updatedAt",
     ],
     where: { id },
+    include: [
+      { model: models.Home,
+        as: "homeUser",
+      }
+    ]
   });
 };
 
@@ -41,6 +59,11 @@ const getUserByUserNameExcludePW = async (userName) => {
       "updatedAt",
     ],
     where: { userName },
+    include: [
+      { model: models.Home,
+        as: "homeUser",
+      }
+    ]
   });
 };
 
@@ -77,7 +100,6 @@ const deleteUser = async (id) => {
 
 // Find Mates
 const findMates = async (id) => {
-  console.log(`id: ${id}`);
   if (id == 0 || id == null) {
     return;
   }

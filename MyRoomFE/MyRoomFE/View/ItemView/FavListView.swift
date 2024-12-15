@@ -11,19 +11,18 @@ struct FavListView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
 	
 	let columns = [
-		GridItem(.flexible(), spacing: 10),
-		GridItem(.flexible(), spacing: 10)
+		GridItem(.flexible()),
+		GridItem(.flexible())
 	]
 	var body: some View {
 		NavigationStack {
 			ScrollView {
 				VStack {
-					titleView
+					//titleView
 					list
 				}
 			}
 			.frame(maxWidth: .infinity)
-			.background(Color.background)
 			.task {
 				await itemVM.fetchFavItems()
 			}
@@ -48,13 +47,15 @@ struct FavListView: View {
 					ForEach(itemVM.favItems) { item in
 						if item.isFav {
 							NavigationLink {
-								ItemDetailView(item: item)
+								ItemDetailView(itemId: item.id)
 							} label: {
 								FavItemRow(item: item)
 							}
 						}
 					}
 				}
+				.padding(.top)
+				.padding(.horizontal)
 			} else {
 				Text("Fav에 추가된 아이템이 없습니다.")
 					.padding(.top, 250)

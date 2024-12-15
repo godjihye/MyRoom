@@ -36,7 +36,7 @@ struct UsedItemListView: View {
     @Binding var selectMyItem: Item?
     @Binding var isMyItemPresented:Bool
     var fetchAllItem:Bool
-    
+    @State private var isLoading = true
     
     let columns = [
         GridItem(.flexible()), // 첫 번째 열
@@ -44,18 +44,36 @@ struct UsedItemListView: View {
         GridItem(.flexible())
     ]
     var body: some View {
-        ScrollView{
+        VStack {
+            ScrollView {
+                LazyVStack {
+                    if isLoading {
+                        // 데이터가 로딩 중일 때 보여줄 로딩 뷰
+                        Text("로딩 중...")
+                    } else {
+                        // 데이터가 로딩된 후 항목 표시
+                        ForEach(itemVM.items) { item in
+                            UsedItemRowView(selectedItem: $selectMyItem,
+                                            isMyItemPresented: $isMyItemPresented,
+                                            item: item)
+                            .environmentObject(itemVM)
+                        }
+                    }
+                }
+                .onAppear {
+                    // 뷰가 나타날 때 fetchAllItem 호출하여 데이터를 가져옵니다.
+                    Task {
+                        await itemVM.fetchAllItem(filterByItemUrl: fetchAllItem)
+                        isLoading = false
+                        print("itemVM.items : \(itemVM.items)")
+                    }
+                }
+                
+            }
             
-            List(itemVM.items) { item in
-                UsedItemRowView(selectedItem: $selectMyItem,
-                                isMyItemPresented: $isMyItemPresented,item: item).environmentObject(itemVM)
-            }.task {
-                       await itemVM.fetchAllItem(filterByItemUrl: fetchAllItem)
-                       print(itemVM.items)
-                   }
-                   
-               }
-           }
+        }
+        .padding()
+    }
 }
 
 //#Preview {
