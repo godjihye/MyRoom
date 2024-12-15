@@ -14,6 +14,8 @@ import SVProgressHUD
 class PostViewModel:ObservableObject {
     @Published var posts:[Post]=[]  //무한스크롤
     @Published var images:[String] = []
+    @Published var searchResultPost: [Post] = []
+    
     
     //postAddView
     @Published var buttonPositions: [[CGPoint]] = [] // 각 이미지별 버튼 위치 배열
@@ -38,6 +40,7 @@ class PostViewModel:ObservableObject {
             "userId" : userId,
             
         ]
+        
         
         guard let postDataJson = try? JSONSerialization.data(withJSONObject: postData, options: []) else {
             print("Failed to encode usedData to JSON")
@@ -86,14 +89,15 @@ class PostViewModel:ObservableObject {
         
         
         
-        let postRegistUrl = "\(endPoint)/posts"
+        let postUrl = "\(endPoint)/posts"
         let headers: HTTPHeaders = [
             "Content-Type": "multipart/form-data"
         ]
-        AF.upload(multipartFormData: formData, to: postRegistUrl,headers: headers).response { response in
-            print("postUpdate start \(response)")
+        AF.upload(multipartFormData: formData, to: postUrl,headers: headers).response { response in
+            log("addPost Complete", trait: .success)
             
         }
+     
     }
     
     
@@ -152,6 +156,7 @@ class PostViewModel:ObservableObject {
                 self.isLoading = false
                 SVProgressHUD.dismiss()
             }
+           
         }
     }
     
@@ -160,8 +165,8 @@ class PostViewModel:ObservableObject {
         print("post toggle gogo11")
         let postFavUrl = "\(endPoint)/posts/\(postId)/favorite"
         
-        let method: HTTPMethod = isFavorite ? .delete : .post
-        let action = isFavorite ? "remove" : "add"
+        let method: HTTPMethod = isFavorite ? .post : .delete
+        let action = isFavorite ? "add" : "remove"
         let params:Parameters = ["action":action,"userId":userId]
         
         AF.request(postFavUrl,method: method,parameters: params, encoding: JSONEncoding.default).response { response in
@@ -173,23 +178,6 @@ class PostViewModel:ObservableObject {
                 completion(false) // 실패 시 false 전달
             }
         }
-        //        do {
-        //            let response =  try await AF.request(postFavUrl,method: method, parameters: params, encoding: JSONEncoding.default).serializingDecodable(PostRoot.self).value
-        //
-        //            print(response)
-        //            log("postToggleFavorite Complete ", trait: .success)
-        //        } catch {
-        //            log("postToggleFavorite: \(error.localizedDescription)", trait: .error)
-        //        }
-        //
-        //        AF.request(postFavUrl).responseDecodable(of: PostRoot.self) { response in
-        //            if let jsonData = response.data {
-        //                           if let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) {
-        //                               print("JSON response: \(json)") }
-        //                       }
-        //            print(response)
-        //        }
-        
     }
     
     //조회수 증가
@@ -203,5 +191,38 @@ class PostViewModel:ObservableObject {
         }
         
     }
+    
+    // 글삭제
+    func removePost(postId:Int) async {
+        let url = "\(endPoint)/posts/\(postId)"
+        do {
+            let response = try await AF.request(url, method: .delete, encoding: JSONEncoding.default).serializingData().value
+            log("removePost Complete! \(response.description)", trait: .success)
+        } catch {
+            log("removePost Error: \(error.localizedDescription)", trait: .error)
+        }
+    }
+    
+    func searchPost(query: String?) async {
+        guard let query = query else { return }
+        let url = "\(endPoint)/posts/search"
+        let params: Parameters = ["userId" : userId,"query": query]
+        do {
+            let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(PostRoot.self).value
+            DispatchQueue.main.async { self.searchResultPost = response.posts }
+        } catch {
+            if let afError = error as? AFError {
+                log("AFError: \(afError.localizedDescription)", trait: .error)
+            } else {
+                log("UnexpectedError: \(error.localizedDescription)", trait: .error)
+            }
+        }
+    }
+    
+    func clearSearchResult() {
+        searchResultPost.removeAll()
+    }
+    
+   
     
 }

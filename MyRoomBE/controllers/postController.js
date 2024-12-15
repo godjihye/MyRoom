@@ -10,7 +10,7 @@ const createPost = async (req, res) => {
 
   const photoData = req.files;
 
-  console.log("buttonData2",jsonButtonData)
+  
   
   const thumbnailBlobName = photoData.postThumbnail.find(
     (item) => item.fieldname === "postThumbnail"
@@ -19,7 +19,7 @@ const createPost = async (req, res) => {
   console.log("photo", photoData);
   try {
     const post = await postService.createPost(jsonPostData, photoData,jsonButtonData);
-    res.status(201).json({ post: post });
+    res.status(201).json({ posts: post });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -58,6 +58,19 @@ const findAllPost = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+
+const findPostByName = async (req,res) => {
+  try {
+    const post = await postService.findPostByName(
+      req.body.userId,
+      req.body.query
+    );
+
+    res.status(200).json({ posts: post });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+}
 
 const updatePost = async (req, res) => {
   try {
@@ -124,6 +137,7 @@ module.exports = {
   createPost,
   findPostById,
   findAllPost,
+  findPostByName,
   updatePost,
   deletePost,
   toggleFavorite,

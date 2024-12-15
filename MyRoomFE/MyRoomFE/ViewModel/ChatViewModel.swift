@@ -113,9 +113,40 @@ class ChatViewModel: ObservableObject {
         }
     }
     
+    // 특정게시글의 채팅방목록 조회
+    func fetchUsedChatRooms(chatRoomName:String) {
+        guard let currentUser = UserDefaults.standard.string(forKey: "nickName") else {return}
+        print("fetchUsedChatRooms start currentUser : \(currentUser)")
+        
+        db.child("chats")
+            .queryOrdered(byChild: "name")  // "name" 필드를 기준으로 정렬
+            .queryEqual(toValue: chatRoomName)  // 특정 값과 일치하는 항목만 조회
+            .observeSingleEvent(of: .value, with: { snapshot in
+                print("snapshot : \(snapshot)")
+                if let value = snapshot.value as? [String: Any] {
+                    let dispatchGroup = DispatchGroup() // 비동기 작업 순서 제어
+                    
+                    dispatchGroup.enter() // 작업 시작
+                    
+                    self.fetchChatRoomDetails(snapshot: snapshot) {
+                        dispatchGroup.leave() // 작업 완료
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) {
+                        print("fetchChatRooms completed chatRooms : \(self.chatRooms)")
+                        self.fetchUserImages()  // 사용자 이미지 조회
+                        self.fetchLastMessages()  // 마지막 메시지 조회
+                    }
+                } else {
+                    
+                    print("No chat rooms found with the name \(chatRoomName)")
+                }
+            })
+    }
+    
     //채팅방목록 조회
     func fetchChatRooms() {
-        var currentUser = UserDefaults.standard.value(forKey: "nickName") as! String
+        guard let currentUser = UserDefaults.standard.string(forKey: "nickName") else {return}
         print("fetchChatRoom start currentUser : \(currentUser)")
         
         db.child("users/\(currentUser)/chatRooms").observe(.value) { snapshot in
@@ -216,7 +247,7 @@ class ChatViewModel: ObservableObject {
                     print("lasemessage snapshot : \(snapshot)")
                     
                     if let messagesData = snapshot.value as? [String: Any],
-                       let lastMessage = messagesData.values.first as? [String: Any] {                        
+                       let lastMessage = messagesData.values.first as? [String: Any] {
                         DispatchQueue.main.async {
                             self.lastMessages[roomId] = lastMessage["text"] as? String ?? ""
                         }

@@ -1,10 +1,9 @@
 const models = require("../models");
-
+const { Op } = require("sequelize"); // Sequelize operators 가져오기 - search
 // write
 const createPost = async (postData, photoData, buttonData) => {
   const transaction = await models.sequelize.transaction();
   const userId = postData.userId;
-  console.log(postData);
 
   try {
     //1. 본문 저장
@@ -63,7 +62,6 @@ const createPost = async (postData, photoData, buttonData) => {
         {
           model: models.User,
           as: "user",
-          attributes: ["nickname", "userImage"],
         },
         {
           model: models.PostPhoto,
@@ -111,8 +109,7 @@ const findAllPost = async (page, pageSize, userId) => {
     include: [
       {
         model: models.User,
-        as: "user",
-        attributes: ["nickname", "userImage"],
+        as: "user"
       },
       {
         model: models.PostPhoto,
@@ -147,6 +144,51 @@ const findAllPost = async (page, pageSize, userId) => {
     logging: (sql) => console.log("Executing SQL:", sql),
   });
 };
+
+const findPostByName = async (id,data) => {
+  return await models.Post.findAll({
+    where: {
+      postTitle: {
+        [Op.like]: `%${data}%`, // data가 포함된 값을 검색
+      },
+    },
+    include: [
+      {
+        model: models.User,
+        as: "user"
+      },
+      {
+        model: models.PostPhoto,
+        as: "images",
+        attributes: ["id", "image"],
+        include: [
+          {
+            model: models.ButtonData,
+            as: "btnData",
+          },
+        ],
+      },
+      {
+        model: models.PostFav,
+        as: "postFav",
+        where: { userId:id },
+        required: false, //left join
+      },
+    ],
+    attributes: {
+      include: [
+        [
+          models.sequelize.literal(
+            `CASE WHEN "postFav"."userId" IS NOT NULL THEN true ELSE false END`
+          ),
+          "isFavorite",
+        ],
+      ],
+    },
+    distinct: true, // 중복 방지
+    subQuery: false,
+  });
+}
 
 //edit
 const updatePost = async (id, data) => {
@@ -184,27 +226,7 @@ const toggleFavorite = async (postId, userId, action) => {
     }
     await post.save();
 
-    // const returnData = await models.Post.findByPk(postId,{
-    //     include: [
-    //         {
-    //           model: models.User,
-    //           as: 'user',
-    //           attributes: ['nickname','userImage'],
-    //         }
-    //         ,
-    //         {
-    //             model: models.PostPhoto,
-    //             as:"images",
-    //             attributes: ['id','image']
-    //         },
-    //         {
-    //             model: models.PostFav,
-    //             as: "postFav",
-    //             where: { postId:postId },
-    //             required: false,
-    //         }
-    //       ],
-    //     })
+    
 
     return result;
   }
@@ -226,6 +248,7 @@ module.exports = {
   createPost,
   findPostById,
   findAllPost,
+  findPostByName,
   updatePost,
   deletePost,
   toggleFavorite,

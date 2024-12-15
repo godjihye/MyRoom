@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UsedListView: View {
     @EnvironmentObject var usedVM:UsedViewModel
+
     
     var body: some View {
         
@@ -31,6 +32,7 @@ struct UsedListView: View {
                                 usedVM.fetchUseds()
                             }
                             
+                            
                         }
                     }.listStyle(.plain)
                         .navigationTitle("중고거래")
@@ -40,6 +42,11 @@ struct UsedListView: View {
                 .onAppear {
                     usedVM.fetchUseds()
                 }.toolbar {
+                    ToolbarItem(placement: .principal) {
+                        NavigationLink(destination: UsedSearchView()) {
+                            SearchButton()
+                        }
+                    }
                     ToolbarItem(placement: .topBarTrailing) {
                         NavigationLink {
                             UsedAddView().environmentObject(usedVM)
@@ -48,19 +55,13 @@ struct UsedListView: View {
                             Image(systemName: "plus.app")
                         }
                     }
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button{
-                            
-                        } label: {
-                            Image(systemName: "return")
-                        }
-                    }
+                    
                 }
                 
             }
             .refreshable {
                 usedVM.page = 1
-                usedVM.useds.removeAll() 
+                usedVM.useds.removeAll()
                 usedVM.fetchUseds() // 새로 고침 시 데이터를 불러오는 함수 호출
             }
             .alert("판매목록", isPresented: $usedVM.isFetchError) {
@@ -72,7 +73,23 @@ struct UsedListView: View {
         }detail: {
             Text("판매 목록")
         }
-        
+        }
+    struct SearchButton: View {
+        var body: some View {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(width: 250, height: 35)
+                    .foregroundStyle(Color(.systemGray5))
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .padding()
+                    Text("검색어를 입력하세요.")
+                        .foregroundStyle(Color(.systemGray2))
+                    Spacer()
+                }
+            }
+            //.frame(height: 35)
+        }
     }
 }
 
