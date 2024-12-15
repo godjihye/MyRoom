@@ -54,6 +54,9 @@ class UserViewModel: ObservableObject {
 							UserDefaults.standard.set(signIn.user.nickname, forKey: "nickName")
 							if let homeId = signIn.user.homeId {
 								UserDefaults.standard.set(homeId, forKey: "homeId")
+								if let homeName = signIn.user.homeUser?.homeName {
+									UserDefaults.standard.set(homeName, forKey: "homeName")
+								}
 							} else {
 								self.isHaveHome = false
 							}
@@ -172,6 +175,7 @@ class UserViewModel: ObservableObject {
 		UserDefaults.standard.removeObject(forKey: "userImage")
 		UserDefaults.standard.removeObject(forKey: "nickName")
 		UserDefaults.standard.removeObject(forKey: "homeId")
+		UserDefaults.standard.removeObject(forKey: "homeName")
 		userInfo = nil
 		SVProgressHUD.dismiss()
 	}
@@ -239,6 +243,7 @@ class UserViewModel: ObservableObject {
 						guard let data = response.data, let responseString = String(data: data, encoding: .utf8) else {return}
 						log("responseString: \(responseString)")
 						let root = try JSONDecoder().decode(ImageUpload.self, from: data)
+						UserDefaults.standard.set(root.imageUrl, forKey: "userImage")
 						log("upload image success")
 					} catch let error {
 						log("decode error: \(error.localizedDescription)")
@@ -251,7 +256,32 @@ class UserViewModel: ObservableObject {
 			}
 		}
 	}
-	
+	func changepw(cpw: String?, npw: String?) {
+		SVProgressHUD.show()
+		guard let cpw, let npw else { return }
+		let userId = UserDefaults.standard.integer(forKey: "userId")
+		let url = "\(endPoint)/users/changepw/\(userId)"
+		let params: Parameters = ["cpw": cpw, "npw": npw]
+		AF.request(url, method: .post, parameters: params).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200...500:
+					if let data = response.data{
+						do {
+							let root = try JSONDecoder().decode(ApiResponse.self, from: data)
+							self.message = root.message
+							self.showAlert = true
+						} catch {
+							log("Decoding error")
+						}
+					}
+				default:
+					log("머징?")
+				}
+			}
+		}
+		SVProgressHUD.dismiss()
+	}
 	
 	//MARK: - HOME
 	// 1. Create Home
@@ -323,6 +353,7 @@ class UserViewModel: ObservableObject {
 	// 3. 초대코드 조회
 	func getInviteCode() {
 		let homeId = UserDefaults.standard.integer(forKey: "homeId")
+		guard homeId > 0 else { return }
 		log("homeId: \(homeId)")
 		let url = "\(endPoint)/home/inviteCode/\(homeId)"
 		AF.request(url, method: .get).response { response in
@@ -331,9 +362,9 @@ class UserViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let code = try JSONDecoder().decode(InviteCode.self, from: data)
+							let code = try JSONDecoder().decode(InviteCodeRoot.self, from: data)
 							UserDefaults.standard.set(code.inviteCode, forKey: "inviteCode")
-							self.inviteCode = code.inviteCode
+							self.inviteCode = code.inviteCode.inviteCode
 						} catch {
 							log("decode error")
 						}
@@ -357,8 +388,8 @@ class UserViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let res = try JSONDecoder().decode(InviteCode.self, from: data)
-							self.inviteCode = res.inviteCode
+							let res = try JSONDecoder().decode(InviteCodeRoot.self, from: data)
+							self.inviteCode = res.inviteCode.inviteCode
 						} catch let error {
 							log("decode error: \(error)")
 						}

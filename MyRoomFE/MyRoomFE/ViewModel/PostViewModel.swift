@@ -217,6 +217,10 @@ class PostViewModel:ObservableObject {
                 log("UnexpectedError: \(error.localizedDescription)", trait: .error)
             }
         }
+        
+        AF.request(url).responseDecodable(of: PostRoot.self) { response in
+                    print(response)
+                }
     }
     
     func clearSearchResult() {

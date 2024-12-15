@@ -23,10 +23,8 @@ struct ItemListView: View {
 						VStack {
 								headerView
 								itemListView
-								Spacer()
 						}
 						.frame(maxHeight: .infinity)
-						.background(Color.background)
 						.task {
 								await itemVM.fetchItems(locationId: location.id)
 						}
@@ -38,6 +36,20 @@ struct ItemListView: View {
 						.sheet(isPresented: $isShowingAddItemWithAIView) {
 								AddItemWithAIView(locationId: location.id)
 						}
+						.toolbar(content: {
+							ToolbarItem(placement: .topBarTrailing) {
+								Menu {
+									editButton
+									deleteButton
+									addItemWithAIButton
+								} label: {
+									Image(systemName: "ellipsis")
+								}
+
+							}
+						})
+						.navigationTitle("\(location.locationName)")
+						.navigationBarTitleDisplayMode(.inline)
 				}
 		}
 		
@@ -46,7 +58,7 @@ struct ItemListView: View {
 						HStack {
 								locationInfo
 								Spacer()
-								addItemButton
+								//addItemButton
 						}
 						.padding(.horizontal)
 				}
@@ -59,14 +71,6 @@ struct ItemListView: View {
 								.bold()
 						Text(location.locationDesc)
 								.font(.caption)
-				}
-		}
-		
-		private var addItemButton: some View {
-				HStack(spacing: 20) {
-						editButton
-						deleteButton
-						addItemWithAIButton
 				}
 		}
 		
@@ -102,9 +106,8 @@ struct ItemListView: View {
 				Button {
 						isShowingAddItemWithAIView = true
 				} label: {
-						Image(systemName: "plus")
-								.font(.title2)
-								.bold()
+					Text("\(location.locationName)에 아이템 추가하기")
+						.foregroundStyle(.accent)
 				}
 		}
 		
@@ -113,7 +116,7 @@ struct ItemListView: View {
 						if !itemVM.items.isEmpty {
 								List(itemVM.items) { item in
 										NavigationLink {
-											ItemDetailView(item: item)
+											ItemDetailView(itemId: item.id)
 										} label: {
 												ItemRowView(item: item)
 										}

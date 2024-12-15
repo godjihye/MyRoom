@@ -56,7 +56,7 @@ struct ItemDetailImageView: View {
 									.resizable()
 									.aspectRatio(contentMode: .fill)
 									.frame(width: 50, height: 50)
-									.clipped()
+									.clipShape(RoundedRectangle(cornerRadius: 10))
 									.overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray).opacity(0.5))
 							}
 							.onTapGesture {

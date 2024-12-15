@@ -66,7 +66,11 @@ const findPostByName = async (req,res) => {
       req.body.query
     );
 
-    res.status(200).json({ posts: post });
+    res.status(201).json({
+      success: true,
+      posts: post,
+      message: "Post 조회성공",
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

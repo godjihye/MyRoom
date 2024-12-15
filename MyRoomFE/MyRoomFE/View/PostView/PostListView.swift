@@ -11,7 +11,7 @@ struct PostListView: View {
     @EnvironmentObject var postVM: PostViewModel
     
     var body: some View {
-        NavigationSplitView {
+        NavigationStack {
             postListContent
                 .navigationTitle("커뮤니티")
                 .refreshable {
@@ -20,15 +20,13 @@ struct PostListView: View {
                 .toolbar {
                     ToolbarItem(placement: .principal) {
                         NavigationLink(destination: PostSearchView()) {
-                            SearchButton()
+                            PostSearchButton()
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         addPostButton
                     }
                 }
-        } detail: {
-            Text("커뮤니티게시판")
         }
     }
     
@@ -74,20 +72,22 @@ private extension PostListView {
         }
     }
     
-    struct SearchButton: View {
+    struct PostSearchButton: View {
         var body: some View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .frame(width: 250, height: 35)
-                    .foregroundStyle(Color(.systemGray5))
-                HStack {
+                    .frame(width: 280, height: 40)
+                    .foregroundStyle(Color(.systemGray6))
+                HStack(spacing: 0) {
                     Image(systemName: "magnifyingglass")
                         .padding()
                     Text("검색어를 입력하세요.")
+                        .font(.system(size: 15))
                         .foregroundStyle(Color(.systemGray2))
                     Spacer()
                 }
             }
+            .padding()
             //.frame(height: 35)
         }
     }

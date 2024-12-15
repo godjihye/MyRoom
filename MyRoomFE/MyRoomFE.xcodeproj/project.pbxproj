@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B19B98C2D0D1AAB0042619F /* InviteCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B19B98B2D0D1AAB0042619F /* InviteCodeView.swift */; };
+		0B1BA3362D0A880C00BA2B8C /* MyPageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1BA3352D0A880C00BA2B8C /* MyPageRow.swift */; };
+		0B1BA3382D0A8C0F00BA2B8C /* MateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1BA3372D0A8C0F00BA2B8C /* MateListView.swift */; };
 		0B9CB6192D030EAA00FA1075 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9CB6182D030EAA00FA1075 /* LoginView.swift */; };
 		0B9CB61D2D041FFB00FA1075 /* SignInWithAppleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9CB61C2D041FFB00FA1075 /* SignInWithAppleView.swift */; };
 		0B9CB6202D04227800FA1075 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 0B9CB61F2D04227800FA1075 /* KakaoSDK */; };
@@ -17,7 +20,6 @@
 		0B9CB62A2D04235000FA1075 /* SignInWithKakaoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9CB6292D04235000FA1075 /* SignInWithKakaoView.swift */; };
 		0BBB8ECA2D048D4900DF692C /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */; };
 		0BBB8ECC2D04A5AF00DF692C /* ChangePWView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */; };
-		0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */; };
 		0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */; };
 		B15D9A552D06ED7900FA0253 /* PostWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A542D06ED7900FA0253 /* PostWebView.swift */; };
 		B15D9A582D083C0600FA0253 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A572D083C0600FA0253 /* CommentViewModel.swift */; };
@@ -52,7 +54,6 @@
 		B86F34F52CF96F920040BB33 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B82CF96F920040BB33 /* SearchView.swift */; };
 		B86F34F62CF96F920040BB33 /* TabItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34B92CF96F920040BB33 /* TabItemView.swift */; };
 		B86F34F72CF96F920040BB33 /* WideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BA2CF96F920040BB33 /* WideButton.swift */; };
-		B86F34F82CF96F920040BB33 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BC2CF96F920040BB33 /* AddItemView.swift */; };
 		B86F34F92CF96F920040BB33 /* AdditionalPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BD2CF96F920040BB33 /* AdditionalPhotosView.swift */; };
 		B86F34FA2CF96F920040BB33 /* AddLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BE2CF96F920040BB33 /* AddLocationView.swift */; };
 		B86F34FB2CF96F920040BB33 /* AddRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F34BF2CF96F920040BB33 /* AddRoomView.swift */; };
@@ -126,13 +127,15 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
+		0B19B98B2D0D1AAB0042619F /* InviteCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteCodeView.swift; sourceTree = "<group>"; };
+		0B1BA3352D0A880C00BA2B8C /* MyPageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageRow.swift; sourceTree = "<group>"; };
+		0B1BA3372D0A8C0F00BA2B8C /* MateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateListView.swift; sourceTree = "<group>"; };
 		0B9CB6182D030EAA00FA1075 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		0B9CB61B2D041F8E00FA1075 /* MyRoomFE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyRoomFE.entitlements; sourceTree = "<group>"; };
 		0B9CB61C2D041FFB00FA1075 /* SignInWithAppleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleView.swift; sourceTree = "<group>"; };
 		0B9CB6292D04235000FA1075 /* SignInWithKakaoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithKakaoView.swift; sourceTree = "<group>"; };
 		0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePWView.swift; sourceTree = "<group>"; };
-		0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewModel.swift; sourceTree = "<group>"; };
 		0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipartFormData+AppendOptionalValue.swift"; sourceTree = "<group>"; };
 		B15D9A542D06ED7900FA0253 /* PostWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWebView.swift; sourceTree = "<group>"; };
 		B15D9A572D083C0600FA0253 /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
@@ -165,7 +168,6 @@
 		B86F34B82CF96F920040BB33 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		B86F34B92CF96F920040BB33 /* TabItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItemView.swift; sourceTree = "<group>"; };
 		B86F34BA2CF96F920040BB33 /* WideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideButton.swift; sourceTree = "<group>"; };
-		B86F34BC2CF96F920040BB33 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
 		B86F34BD2CF96F920040BB33 /* AdditionalPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalPhotosView.swift; sourceTree = "<group>"; };
 		B86F34BE2CF96F920040BB33 /* AddLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationView.swift; sourceTree = "<group>"; };
 		B86F34BF2CF96F920040BB33 /* AddRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRoomView.swift; sourceTree = "<group>"; };
@@ -263,6 +265,9 @@
 				B8E916472D016C8300345B89 /* ProfileRow.swift */,
 				0BBB8EC92D048D4900DF692C /* ProfileEditView.swift */,
 				0BBB8ECB2D04A5AF00DF692C /* ChangePWView.swift */,
+				0B1BA3352D0A880C00BA2B8C /* MyPageRow.swift */,
+				0B1BA3372D0A8C0F00BA2B8C /* MateListView.swift */,
+				0B19B98B2D0D1AAB0042619F /* InviteCodeView.swift */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -331,7 +336,6 @@
 				B86F34B62CF96F920040BB33 /* ImagePicker.swift */,
 				B8C3F1C22D000263004F8C44 /* CameraPicker.swift */,
 				B86F34B72CF96F920040BB33 /* SearchBar.swift */,
-				B86F34B82CF96F920040BB33 /* SearchView.swift */,
 				B86F34B92CF96F920040BB33 /* TabItemView.swift */,
 				B86F34BA2CF96F920040BB33 /* WideButton.swift */,
 				B86F351E2CF9709C0040BB33 /* WideImageButton.swift */,
@@ -344,7 +348,7 @@
 		B86F34C82CF96F920040BB33 /* ItemView */ = {
 			isa = PBXGroup;
 			children = (
-				B86F34BC2CF96F920040BB33 /* AddItemView.swift */,
+				B86F34B82CF96F920040BB33 /* SearchView.swift */,
 				B86F34BD2CF96F920040BB33 /* AdditionalPhotosView.swift */,
 				B86F34BE2CF96F920040BB33 /* AddLocationView.swift */,
 				B86F34BF2CF96F920040BB33 /* AddRoomView.swift */,
@@ -411,7 +415,6 @@
 			children = (
 				B8E917A62D01A63700345B89 /* ChatViewModel.swift */,
 				B86F34D72CF96F920040BB33 /* ItemViewModel.swift */,
-				0BBB8EF72D05C74900DF692C /* ItemDetailsViewModel.swift */,
 				B86F34D82CF96F920040BB33 /* PostViewModel.swift */,
 				B86F34D92CF96F920040BB33 /* RoomViewModel.swift */,
 				B86F34DA2CF96F920040BB33 /* UsedViewModel.swift */,
@@ -618,7 +621,6 @@
 				0BBB8ECC2D04A5AF00DF692C /* ChangePWView.swift in Sources */,
 				B8E916D92D018B4500345B89 /* String+Validate.swift in Sources */,
 				B86F34F72CF96F920040BB33 /* WideButton.swift in Sources */,
-				B86F34F82CF96F920040BB33 /* AddItemView.swift in Sources */,
 				B86F34F92CF96F920040BB33 /* AdditionalPhotosView.swift in Sources */,
 				B86F34FA2CF96F920040BB33 /* AddLocationView.swift in Sources */,
 				B86F34FB2CF96F920040BB33 /* AddRoomView.swift in Sources */,
@@ -660,13 +662,15 @@
 				B86F350F2CF96F920040BB33 /* ItemViewModel.swift in Sources */,
 				B86F35102CF96F920040BB33 /* PostViewModel.swift in Sources */,
 				B86F35112CF96F920040BB33 /* RoomViewModel.swift in Sources */,
+				0B1BA3362D0A880C00BA2B8C /* MyPageRow.swift in Sources */,
+				0B1BA3382D0A8C0F00BA2B8C /* MateListView.swift in Sources */,
 				B86F35122CF96F920040BB33 /* UsedViewModel.swift in Sources */,
 				B86F35132CF96F920040BB33 /* UserViewModel.swift in Sources */,
 				B82E1BA32D06D3F5005BB2D4 /* CustomTapGesture.swift in Sources */,
 				B86F35142CF96F920040BB33 /* ContentView.swift in Sources */,
 				B15D9A552D06ED7900FA0253 /* PostWebView.swift in Sources */,
 				B86F35152CF96F920040BB33 /* EntryView.swift in Sources */,
-				0BBB8EF82D05C74900DF692C /* ItemDetailsViewModel.swift in Sources */,
+				0B19B98C2D0D1AAB0042619F /* InviteCodeView.swift in Sources */,
 				B86F35162CF96F920040BB33 /* MyRoomFEApp.swift in Sources */,
 				B8E916462D016C6F00345B89 /* MyPageView.swift in Sources */,
 				B82E1B9D2D06D373005BB2D4 /* ChatRowView.swift in Sources */,
@@ -810,14 +814,16 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyRoomFE/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "마룸";
+				"INFOPLIST_KEY_CFBundleDisplayName[sdk=iphoneos*]" = "마룸";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -844,14 +850,16 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyRoomFE/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "마룸";
+				"INFOPLIST_KEY_CFBundleDisplayName[sdk=iphoneos*]" = "마룸";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This will be used to upload photos to profile, posts, items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
