@@ -13,7 +13,7 @@ router.post(
   );
 
 router.post("/", postController.createPost);
-// router.get("/:id", postController.findPostById);
+router.post("/search", postController.findPostByName);
 router.get("/:userId", postController.findAllPost);
 router.put("/:id", postController.updatePost);
 router.delete("/:id", postController.deletePost);

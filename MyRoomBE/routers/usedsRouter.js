@@ -14,10 +14,14 @@ router.post(
 );
 
 router.post("/", usedController.createUsed);
-router.get("/:userId", usedController.findAllUsed); //userId
+router.get("/:userId", usedController.findAllUsed); 
+router.post("/search", usedController.findUsedByName);
 router.get("/detail/:id/:userId", usedController.findUsedById);
-router.put("/:id", usedController.updateUsed);
 router.delete("/:id", usedController.deleteUsed);
+
+router.post("/edit/:id", usedController.updateUsed);
+
+
 
 router.post("/:usedId/favorite", usedController.toggleFavorite); // 좋아요 추가
 router.delete("/:usedId/favorite", usedController.toggleFavorite); // 좋아요 제거

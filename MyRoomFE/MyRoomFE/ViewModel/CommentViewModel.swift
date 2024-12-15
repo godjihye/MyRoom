@@ -73,7 +73,7 @@ class CommentViewModel: ObservableObject {
             self.message = "댓글을 작성해주세요"
         }
         let url = "\(endPoint)/comments/\(postId)/\(userId)"
-        let params: Parameters = ["comment" : comment]
+        let params: Parameters = ["comment" : comment,"parentId" : ""]
         do {
             let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingData().value
             log("addComment Complete", trait: .success)
