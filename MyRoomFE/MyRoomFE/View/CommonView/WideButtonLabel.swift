@@ -33,7 +33,3 @@ struct WideButtonLabel: View {
 			)
     }
 }
-
-//#Preview {
-//	WideButtonLabel(icon: <#String#>, title: <#String#>, backgroundColor: <#Color#>, action: <#() -> Void#>)
-//}

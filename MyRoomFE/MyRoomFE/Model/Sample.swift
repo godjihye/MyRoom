@@ -10,9 +10,9 @@ import Foundation
 
 let sampleUserId = 3
 // let sampleUserId = 4
-
-let sampleUser = User(id: 1, userName: "김마룸", nickname: "마루미", userImage: "https://stmyroom.blob.core.windows.net/myrooomdb/itemPhoto1733132798297.jpg", createdAt: "2024-12-05", updatedAt: "2024-12-05", homeId: 1, mates: nil)
-let sampleUser2 = User(id: 47, userName: "myroom@aaa.com", nickname: "마루미", userImage: nil, createdAt: "2024-12-05T09:31:59.536Z", updatedAt: "2024-12-05T09:31:59.536Z", homeId: nil, mates: nil)
+let sampleHome = Home(id: 1, homeName: "마룸집", homeDesc: "마룸의집", updatedAt: "2024-12-11T23:25:51.311Z", createdAt: "2024-12-11T23:25:51.311Z", inviteCode: "123456")
+let sampleUser = User(id: 1, userName: "김마룸", nickname: "마루미", userImage: "https://stmyroom.blob.core.windows.net/myrooomdb/itemPhoto1733132798297.jpg", createdAt: "2024-12-05", updatedAt: "2024-12-05", homeId: 1, mates: nil, homeUser: sampleHome)
+let sampleUser2 = User(id: 47, userName: "myroom@aaa.com", nickname: "마루미", userImage: nil, createdAt: "2024-12-05T09:31:59.536Z", updatedAt: "2024-12-05T09:31:59.536Z", homeId: nil, mates: nil, homeUser: sampleHome)
 
 let sampleLocation = Location(id: 1, locationName: "책장", locationDesc: "책상 옆 책장", roomId: 1)
 
