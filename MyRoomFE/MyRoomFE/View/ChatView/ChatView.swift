@@ -29,13 +29,14 @@ struct ChatView: View {
                                     .background(Color.blue)
                                     .cornerRadius(10)
                                     .foregroundColor(.white)
-                                    .frame(maxWidth: 250, alignment: .trailing)
+                                    .frame(maxWidth: 250, maxHeight: .infinity, alignment: .trailing)
+                                    .lineLimit(nil)
                             }
                         } else {
                             
                                 HStack {
-                                    
 																	if let imageUrl = chatVM.userImages[otherUser ?? ""], let url = URL(string: "\(imageUrl.addingURLPrefix())") {
+                                    if let imageUrl = chatVM.userImages[otherUser ?? ""], let url = URL(string: "\(imageUrl)") {
                                         AsyncImage(url: url) { image in
                                             image.resizable()
                                                 .scaledToFill()

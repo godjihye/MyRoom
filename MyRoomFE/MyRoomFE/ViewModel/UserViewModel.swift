@@ -403,4 +403,3 @@ class UserViewModel: ObservableObject {
 		}
 	}
 }
-

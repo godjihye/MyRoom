@@ -15,11 +15,13 @@ struct UsedItemRowView: View {
     @Binding var selectedItem: Item?
     @Binding var isMyItemPresented:Bool
     
+    let azuerTarget = Bundle.main.object(forInfoDictionaryKey: "AZURESTORAGE") as! String
+    
     let item: Item
     var body: some View {
         VStack {
             if let photo = item.photo {
-                AsyncImage(url: URL(string: photo)) { image in
+                AsyncImage(url: URL(string: "\(azuerTarget)\(photo)")) { image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -40,6 +42,9 @@ struct UsedItemRowView: View {
             selectedItem = item
             isMyItemPresented.toggle()
         }
+        .onAppear(perform: {
+            print("item chk : \(item)")
+        })
         .padding(.vertical, 8)
         
     }
@@ -48,6 +53,6 @@ struct UsedItemRowView: View {
 
 
 //#Preview {
-//		let itemVM = ItemViewModel()
+//        let itemVM = ItemViewModel()
 //    UsedItemRowView(selectedItem: .constant(sampleItem), isMyItemPresented: .constant(isMyItemPresented), item: sampleItem).environmentObject(itemVM)
 //}
