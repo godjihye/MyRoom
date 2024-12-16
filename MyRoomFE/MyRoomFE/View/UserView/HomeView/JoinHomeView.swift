@@ -21,6 +21,7 @@ struct JoinHomeView: View {
 			CustomTextField(icon: "barcode.viewfinder", placeholder: "예시) MYROOM", text: $inviteCode)
 			WideImageButton(icon: "💌", title: "입장", backgroundColor: .accent) {
 				userVM.joinHome(inviteCode: inviteCode)
+				userVM.fetchUser()
 			}
 			.alert("방 입장", isPresented: $userVM.isMakeHomeAlert) {
 				Button("확인", role: .cancel) {

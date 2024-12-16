@@ -289,6 +289,26 @@ class UserViewModel: ObservableObject {
 		SVProgressHUD.dismiss()
 	}
 	
+	func deleteMate(userId: Int) {
+		let url = "\(endPoint)/users/\(userId)"
+		let params: [String: Any] = ["homeId": NSNull()]
+		AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300 :
+					self.showAlert = true
+					self.message = "룸메를 방출시켰습니다."
+					if let index = self.userInfo?.mates?.firstIndex(where: {$0.id == userId})  {
+						self.userInfo?.mates?.remove(at: index)
+					}
+				default:
+					self.showAlert = true
+					self.message = "룸메 방출시키는 데에 실패했습니다."
+				}
+			}
+		}
+	}
+	
 	//MARK: - HOME
 	// 1. Create Home
 	func makeHome(homeName: String, homeDesc: String?) {
