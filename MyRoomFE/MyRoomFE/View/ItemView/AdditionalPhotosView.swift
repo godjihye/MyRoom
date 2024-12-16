@@ -15,11 +15,13 @@ struct AdditionalPhotosView: View {
 	@State var message: String = ""
 	@State var additionalItems: [PhotosPickerItem] = []
 	@State var additionalPhotos: [UIImage] = []
-	private let maxImageCount = 20
 	@State private var selectedPhoto: String = ""
 	@State private var isShowingDetailImageView: Bool = false
+	
 	var itemPhotos: [ItemPhoto]?
 	let itemId: Int
+	private let maxImageCount = 20
+	
 	var body: some View {
 		VStack(alignment: .leading) {
 			Label("추가 사진(사용설명서)", systemImage: "tag.fill")
@@ -37,8 +39,12 @@ struct AdditionalPhotosView: View {
 							.fill(.clear)
 							.frame(width: 100, height: 100)
 							.overlay {
-								Image(systemName: "photo.circle")
-									.font(.system(size: 80))
+								VStack {
+									Image(systemName: "photo.circle")
+										.font(.system(size: 60))
+									Text("사진 추가하기")
+										.bold()
+								}
 							}
 					}
 					if let itemPhotos {
@@ -71,7 +77,7 @@ struct AdditionalPhotosView: View {
 		}
 		.fullScreenCover(isPresented: $isShowingDetailImageView) {
 			if let itemPhotos {
-				ItemDetailImageView(selectedPhoto: selectedPhoto, itemPhotos: itemPhotos)
+				ItemDetailImageView(itemPhotos: itemPhotos)
 			}
 		}
 	}

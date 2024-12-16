@@ -2,6 +2,7 @@ const express = require("express");
 const itemController = require("../controllers/itemController");
 const router = express.Router();
 const upload = require("./uploadImage");
+const summarizeMiddleware = require("./gptRouter")
 
 // 1. Create Item
 router.post("/", upload.single("photo"));
@@ -24,14 +25,14 @@ router.post("/search", itemController.findItemByName);
 router.post("/edit/:itemId", upload.single("photo"));
 router.post("/edit/:itemId", itemController.updateItem);
 router.patch("/:itemId", itemController.updateItem);
+
 // 3-2. Update Item Add Additional Photos
 router.post(
   "/additionalPhoto/:itemId",
-  upload.fields([
-    { name: "photos", maxCount: 20 }, // 최대 20개의 이미지
-  ])
+  upload.fields([{ name: "photos", maxCount: 20 }]), // 이미지 업로드 처리
+  summarizeMiddleware, // GPT 요약 처리
+  itemController.updateAdditionalPhotos // 최종 데이터베이스 저장 처리
 );
-router.post("/additionalPhoto/:itemId", itemController.updateAdditionalPhotos);
 
 // 4. Delete Item
 // 4-1. Delete Item
