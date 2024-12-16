@@ -10,8 +10,7 @@ import SwiftUI
 let isMyItemPresented: Bool = false
 struct UsedItemRowView: View {
     @EnvironmentObject var itemVM: ItemViewModel
-    @EnvironmentObject var postVM: PostViewModel
-    @State private var itemFav: Bool = false
+    
     @Binding var selectedItem: Item?
     @Binding var isMyItemPresented:Bool
     

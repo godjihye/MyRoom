@@ -66,9 +66,9 @@ struct PostAddPhotoView: View {
             }
         }
         .sheet(isPresented: $isMyItemPresented) {
-            UsedItemListView(selectMyItem: $selectMyItem, isMyItemPresented: $isMyItemPresented,fetchAllItem: true).edgesIgnoringSafeArea(.all)
-                .environmentObject(ItemViewModel())
-        }
+                    UsedItemListView(selectMyItem: $selectMyItem, isMyItemPresented: $isMyItemPresented,fetchAllItem: true).edgesIgnoringSafeArea(.all)
+                        .environmentObject(ItemViewModel())
+                }
     }
     
     func loadSelectedImages(from items: [PhotosPickerItem]) async {
