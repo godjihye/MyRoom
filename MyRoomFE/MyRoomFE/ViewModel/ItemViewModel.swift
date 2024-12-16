@@ -228,8 +228,26 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	//MARK: - 4. Delete Item
-	func removeItem(itemId: Int) async {
+	func removeItem(itemId: Int) {
 		let url = "\(endPoint)/items/\(itemId)"
+		AF.request(url, method: .delete).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					do {
+						if let data = response.data {
+							let root = try JSONDecoder().decode(ApiResponse.self, from: data)
+							self.isShowingAlert = true
+							self.message = root.message
+						}
+					} catch {
+						log("decoding error")
+					}
+				default:
+					log("network error")
+				}
+			}
+		}
 //		do {
 //			let response = try await AF.request(url, method: .delete).serializingData().value
 //			log("removeItem Complete! \(response.description)", trait: .success)
@@ -242,9 +260,9 @@ class ItemViewModel: ObservableObject {
 	func updateItemFav(itemId: Int, itemFav: Bool) async {
 		let url = "\(endPoint)/items/\(itemId)"
 		let params: Parameters = [
-			"isFav": itemFav
+			"isFav": !itemFav
 		]
-		log(" isFav 는 \(!itemFav)에서 \(itemFav)로 변경되어야 함")
+		log(" isFav 는 \(itemFav)에서 \(!itemFav)로 변경되어야 함")
 		let response = AF.request(url, method: .patch, parameters: params, encoding: JSONEncoding.default).response { response in
 			if let statusCode = response.response?.statusCode {
 				switch statusCode {
@@ -254,10 +272,13 @@ class ItemViewModel: ObservableObject {
 							let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 							log("root.item.isfav로 변경됨: \(root.item.isFav)")
 							self.isShowingAlert = true
-							DispatchQueue.main.async {
-								self.favItems.append(root.item)
-							}
+//							DispatchQueue.main.async {
+//								self.favItems.append(root.item)
+//							}
 							self.message = root.message
+							if let index = self.items.firstIndex(where: {$0.id == itemId}) {
+								self.items[index].isFav = !itemFav
+							}
 						} catch let error {
 							self.isShowingAlert = true
 							self.message = error.localizedDescription
@@ -297,9 +318,10 @@ class ItemViewModel: ObservableObject {
 				formData.append(imageData, withName: "photos", fileName: "photo\(index + 1).jpg", mimeType: "image/jpeg")
 			}
 		}
-		for text in texts {
-			formData.append(text.data(using: .utf8)!, withName: "photoText")
+		for (index, text) in texts.enumerated() {
+				formData.append(text.data(using: .utf8)!, withName: "photoText[\(index)]")
 		}
+		
 		AF.upload(multipartFormData: formData, to: url, method: .post, headers: headers).response { response in
 			if let statusCode = response.response?.statusCode {
 				switch statusCode {
@@ -356,7 +378,25 @@ class ItemViewModel: ObservableObject {
 			guard let statusCode = response.response?.statusCode else { return }
 			switch statusCode {
 			case 200..<300:
+				if let data = response.data {
+					log(String(data: data, encoding: .utf8) ?? "")
+					do {
+						let root = try JSONDecoder().decode(DeleteAdditionalPhotosRoot.self, from: data)
+						self.message = root.message
+						self.isShowingAlert = root.success
+						log("itemId: \(root.itemId)")
+						log("id: \(root.id)")
+						if let index = self.items.firstIndex(where: { $0.id == root.itemId}) {
+							if let photoIndex = self.items[index].itemPhoto?.firstIndex(where: {$0.id == root.id}) {
+								self.items[index].itemPhoto?.remove(at: photoIndex)
+							}
+						}
+					} catch {
+						log("response decoding error")
+					}
+				}
 				log("removeAdditionalPhotoSuccessfully")
+				
 			default:
 				log("removeAdditionalPhoto Fail", trait: .error)
 			}

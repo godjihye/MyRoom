@@ -85,6 +85,7 @@ struct SignInWithKakaoView: View {
 					UserApi.shared.accessTokenInfo { (_, error) in
 							if let error = error {
 									print("❌ Token invalid or expired: \(error.localizedDescription)")
+								AuthApi.shared.refreshToken(completion: {_, _ in })
 									// 토큰이 유효하지 않으면 로그인 다시 시도
 									self.kakaoLogin()
 							} else {

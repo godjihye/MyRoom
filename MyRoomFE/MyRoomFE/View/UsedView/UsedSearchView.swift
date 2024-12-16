@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct UsedSearchView: View {
+
     @EnvironmentObject var usedVM: UsedViewModel
     @AppStorage("searchHistory") private var searchHistories: [String] = []
     @State private var query: String = ""

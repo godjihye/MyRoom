@@ -39,7 +39,7 @@ struct ProfileEditView: View {
 			.sheet(isPresented: $isImagePickerPresented) {
 				imagePickerView
 			}
-			.alert("회원정보 수정", isPresented: $userVM.isJoinShowing, actions: {
+			.alert("회원정보 수정", isPresented: $userVM.showAlert, actions: {
 				Button(role: .cancel) {
 					dismiss()
 				} label: {

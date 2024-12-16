@@ -11,7 +11,7 @@ const login = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Login Successful", token, user });
   } catch (e) {
-    res.status(500).json({ message: e.message });
+    res.status(500).json({ success: false, message: e.message });
   }
 };
 
@@ -60,9 +60,10 @@ const updateUser = async (req, res) => {
   const userId = req.params.userId;
   try {
     const user = await userService.updateUser(userId, userData);
+    console.log(user)
     res.status(201).json({
       success: true,
-      message: "이미지가 성공적으로 업로드되었습니다.",
+      message: "정보 수정이 완료되었습니다.",
       user,
     });
   } catch (e) {

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct PostSearchView: View {
     @EnvironmentObject var postVM:PostViewModel
     @AppStorage("searchHistory") private var searchHistories: [String] = []
@@ -85,8 +84,4 @@ struct PostSearchView: View {
             }
         }
     }
-}
-
-#Preview {
-    PostSearchView().environmentObject(PostViewModel())
 }

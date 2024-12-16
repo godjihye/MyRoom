@@ -61,8 +61,7 @@ class UserViewModel: ObservableObject {
 								self.isHaveHome = false
 							}
 						} catch let error {
-							self.isLoginError = true
-							self.message = error.localizedDescription
+							log("decoding Error")
 						}
 					}
 				case 300..<600:
@@ -72,7 +71,7 @@ class UserViewModel: ObservableObject {
 							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
 							self.message = apiError.message
 						} catch let error {
-							self.message = error.localizedDescription
+							log("decoding error")
 						}
 					}
 				default:
@@ -242,8 +241,15 @@ class UserViewModel: ObservableObject {
 					do {
 						guard let data = response.data, let responseString = String(data: data, encoding: .utf8) else {return}
 						log("responseString: \(responseString)")
-						let root = try JSONDecoder().decode(ImageUpload.self, from: data)
-						UserDefaults.standard.set(root.imageUrl, forKey: "userImage")
+						let root = try JSONDecoder().decode(UserInfo.self, from: data)
+						if let userImage = root.user.userImage {
+							UserDefaults.standard.set(root.user.userImage, forKey: "userImage")
+							self.userInfo?.userImage = userImage
+						}
+						self.showAlert = true
+						self.message = root.message
+						self.userInfo?.nickname = root.user.nickname
+						
 						log("upload image success")
 					} catch let error {
 						log("decode error: \(error.localizedDescription)")
