@@ -60,7 +60,7 @@ const updateUser = async (req, res) => {
   const userId = req.params.userId;
   try {
     const user = await userService.updateUser(userId, userData);
-    console.log(user)
+    console.log(user);
     res.status(201).json({
       success: true,
       message: "정보 수정이 완료되었습니다.",

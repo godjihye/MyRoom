@@ -74,7 +74,7 @@ class ItemViewModel: ObservableObject {
 					self.isShowingAlert = true
 					if let data = response.data {
 						do {
-							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = apiError.message
 						} catch let error {
 							self.message = error.localizedDescription
@@ -111,23 +111,23 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	/// 2-2. Find All Items By HomeId
-    func fetchAllItem(filterByItemUrl:Bool) async {
+	func fetchAllItem(filterByItemUrl:Bool) async -> [Item]  {
 		let url = "\(endPoint)/items/allItem/\(homeId)"
-        let params:Parameters = ["filterByItemUrl":filterByItemUrl]
+		let params:Parameters = ["filterByItemUrl":filterByItemUrl]
 		do {
-            let response = try await AF.request(url, method: .get,parameters: params)
+			let response = try await AF.request(url, method: .get,parameters: params)
 				.serializingDecodable(ItemResponse.self).value
-			DispatchQueue.main.async {
-				self.items = response.documents
-			}
+			return response.documents
+			//			DispatchQueue.main.async {
+			//				self.allItems = response.documents
+			//			}
 			log("fetchAllItem Complete", trait: .success)
 		} catch {
 			log("fetchAllItem Error: \(error.localizedDescription)", trait: .error)
 		}
-        
-        AF.request(url).responseDecodable(of: ItemResponse.self) { response in
-            print(response)
-        }
+		
+		return []
+		
 	}
 	
 	/// 2-3. Read Fav Items (All location)
@@ -212,7 +212,7 @@ class ItemViewModel: ObservableObject {
 					self.isShowingAlert = true
 					if let data = response.data {
 						do {
-							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = apiError.message
 						} catch let error {
 							self.message = error.localizedDescription
@@ -236,7 +236,7 @@ class ItemViewModel: ObservableObject {
 				case 200..<300:
 					do {
 						if let data = response.data {
-							let root = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let root = try JSONDecoder().decode(APIError.self, from: data)
 							self.isShowingAlert = true
 							self.message = root.message
 						}
@@ -248,12 +248,12 @@ class ItemViewModel: ObservableObject {
 				}
 			}
 		}
-//		do {
-//			let response = try await AF.request(url, method: .delete).serializingData().value
-//			log("removeItem Complete! \(response.description)", trait: .success)
-//		} catch {
-//			log("removeItem Error: \(error.localizedDescription)", trait: .error)
-//		}
+		//		do {
+		//			let response = try await AF.request(url, method: .delete).serializingData().value
+		//			log("removeItem Complete! \(response.description)", trait: .success)
+		//		} catch {
+		//			log("removeItem Error: \(error.localizedDescription)", trait: .error)
+		//		}
 	}
 	
 	// Fav 등록 / 해제
@@ -272,9 +272,9 @@ class ItemViewModel: ObservableObject {
 							let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 							log("root.item.isfav로 변경됨: \(root.item.isFav)")
 							self.isShowingAlert = true
-//							DispatchQueue.main.async {
-//								self.favItems.append(root.item)
-//							}
+							//							DispatchQueue.main.async {
+							//								self.favItems.append(root.item)
+							//							}
 							self.message = root.message
 							if let index = self.items.firstIndex(where: {$0.id == itemId}) {
 								self.items[index].isFav = !itemFav
@@ -287,7 +287,7 @@ class ItemViewModel: ObservableObject {
 				case 300..<500:
 					if let data = response.data {
 						do {
-							let res = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let res = try JSONDecoder().decode(APIError.self, from: data)
 							self.isShowingAlert = true
 							self.message = res.message
 						} catch let error {
@@ -305,7 +305,7 @@ class ItemViewModel: ObservableObject {
 	
 	//MARK: - 추가 사진
 	//	@Published var isShowingAlertAddAdditionalPhotos: Bool = false
-//	@Published var addAdditionalPhotosMessage: String = ""
+	//	@Published var addAdditionalPhotosMessage: String = ""
 	func addAdditionalPhotos(images: [UIImage]?, texts: [String]?, itemId: Int?) {
 		guard let images, let itemId, let texts else {return}
 		SVProgressHUD.show()
@@ -319,7 +319,7 @@ class ItemViewModel: ObservableObject {
 			}
 		}
 		for (index, text) in texts.enumerated() {
-				formData.append(text.data(using: .utf8)!, withName: "photoText[\(index)]")
+			formData.append(text.data(using: .utf8)!, withName: "photoText[\(index)]")
 		}
 		
 		AF.upload(multipartFormData: formData, to: url, method: .post, headers: headers).response { response in
@@ -355,7 +355,7 @@ class ItemViewModel: ObservableObject {
 					if let data = response.data {
 						do {
 							self.isAddShowing = true
-							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
 							self.isShowingAlertAddAdditionalPhotos = true
 							self.addAdditionalPhotosMessage = apiError.message
 						} catch let error {

@@ -10,15 +10,15 @@ import SwiftUI
 struct TabItemView: View {
 	@Binding var isActive: Bool
 	@State var tab: String
-    var body: some View {
-			VStack {
-				Text(tab)
-					.foregroundStyle(isActive ? .accent : .gray)
-					.fontWeight(isActive ? .bold : .regular)
-				Divider()
-					.background(isActive ? .accent : .gray)
-			}
-    }
+	var body: some View {
+		VStack {
+			Text(tab)
+				.foregroundStyle(isActive ? .accent : .gray)
+				.fontWeight(isActive ? .bold : .regular)
+			Divider()
+				.background(isActive ? .accent : .gray)
+		}
+	}
 }
 
 #Preview {

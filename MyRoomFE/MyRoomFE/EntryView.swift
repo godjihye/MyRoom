@@ -46,9 +46,9 @@ struct EntryView: View {
 				.transition(.move(edge: .bottom))
 				.animation(.easeInOut, value: userVM.isLoggedIn)
 		}
-			
-	}
 		
+	}
+	
 }
 
 #Preview {

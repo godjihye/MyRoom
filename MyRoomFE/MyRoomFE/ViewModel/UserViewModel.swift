@@ -68,7 +68,7 @@ class UserViewModel: ObservableObject {
 					self.isLoginError = true
 					if let data = response.data {
 						do {
-							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = apiError.message
 						} catch let error {
 							log("decoding error")
@@ -112,7 +112,7 @@ class UserViewModel: ObservableObject {
 					self.isLoginError = true
 					if let data = response.data {
 						do {
-							let res = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let res = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = res.message
 						} catch let error {
 							log("error : \(error)")
@@ -149,7 +149,7 @@ class UserViewModel: ObservableObject {
 				case 300..<600:
 					if let data = response.data {
 						do {
-							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = apiError.message
 						} catch let error{
 							self.message = error.localizedDescription
@@ -214,7 +214,7 @@ class UserViewModel: ObservableObject {
 		AF.request(url, method: .delete).response { response in
 			do {
 				guard let data = response.data else {return}
-				let resp = try JSONDecoder().decode(ApiResponse.self, from: data)
+				let resp = try JSONDecoder().decode(APIError.self, from: data)
 				self.showAlert = true
 				self.message = resp.message
 			} catch {
@@ -274,7 +274,7 @@ class UserViewModel: ObservableObject {
 				case 200...500:
 					if let data = response.data{
 						do {
-							let root = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let root = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = root.message
 							self.showAlert = true
 						} catch {

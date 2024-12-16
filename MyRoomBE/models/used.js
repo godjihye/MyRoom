@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Used extends Model {
     /**
@@ -10,45 +8,47 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Used.hasMany(models.UsedPhoto,{
-        foreignKey:"usedId",
-        as:"images"
-      })
+      Used.hasMany(models.UsedPhoto, {
+        foreignKey: "usedId",
+        as: "images",
+      });
 
-      Used.hasMany(models.UsedFav,{
-        foreignKey:"usedId",
-        as:"usedFav"
-      })
+      Used.hasMany(models.UsedFav, {
+        foreignKey: "usedId",
+        as: "usedFav",
+      });
 
-      Used.belongsTo(models.User,{
-        foreignKey:"userId",
+      Used.belongsTo(models.User, {
+        foreignKey: "userId",
         onDelete: "CASCADE",
-        as:"user"
-      })
-      
+        as: "user",
+      });
     }
   }
-  Used.init({
-    usedTitle: DataTypes.STRING,
-    usedPrice: DataTypes.INTEGER,
-    usedDesc: DataTypes.STRING,
-    usedPurchaseDate: DataTypes.DATE,
-    usedExpiryDate: DataTypes.DATE,
-    usedOpenDate: DataTypes.DATE,
-    purchasePrice: DataTypes.INTEGER,
-    usedViewCnt: DataTypes.INTEGER,
-    usedChatCnt: DataTypes.INTEGER,
-    usedFavCnt: DataTypes.INTEGER,
-    usedStatus: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
-    usedUrl:DataTypes.STRING,
-    usedThumbnail: DataTypes.STRING,
-    itemName: DataTypes.STRING,
-    itemDesc: DataTypes.STRING,
-    isFavorite: DataTypes.BOOLEAN,
-  }, {
-    sequelize,
-    modelName: 'Used',
-  });
+  Used.init(
+    {
+      usedTitle: DataTypes.STRING,
+      usedPrice: DataTypes.INTEGER,
+      usedDesc: DataTypes.STRING,
+      usedPurchaseDate: DataTypes.DATE,
+      usedExpiryDate: DataTypes.DATE,
+      usedOpenDate: DataTypes.DATE,
+      purchasePrice: DataTypes.INTEGER,
+      usedViewCnt: DataTypes.INTEGER,
+      usedChatCnt: DataTypes.INTEGER,
+      usedFavCnt: DataTypes.INTEGER,
+      usedStatus: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
+      usedUrl: DataTypes.STRING,
+      usedThumbnail: DataTypes.STRING,
+      itemName: DataTypes.STRING,
+      itemDesc: DataTypes.STRING,
+      isFavorite: DataTypes.BOOLEAN,
+    },
+    {
+      sequelize,
+      modelName: "Used",
+    }
+  );
   return Used;
 };

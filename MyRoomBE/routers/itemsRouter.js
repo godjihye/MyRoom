@@ -2,7 +2,7 @@ const express = require("express");
 const itemController = require("../controllers/itemController");
 const router = express.Router();
 const upload = require("./uploadImage");
-const summarizeMiddleware = require("./gptRouter")
+const summarizeMiddleware = require("./gptRouter");
 
 // 1. Create Item
 router.post("/", upload.single("photo"));
