@@ -159,12 +159,11 @@ struct ItemDetailView: View {
 	
 	private func itemDesc(item: Item) -> some View {
 		VStack(alignment: .leading) {
-			if let desc = item.desc, !desc.isEmpty {
 				Label("아이템 설명", systemImage: "tag.fill")
 					.font(.subheadline)
 					.foregroundColor(.primary)
 				
-				Text(desc)
+			Text(item.desc ?? "아이템 설명을 입력해주세요.")
 					.font(.system(size: 15))
 					.padding()
 					.frame(maxWidth: .infinity, alignment: .leading)
@@ -173,7 +172,7 @@ struct ItemDetailView: View {
 							.fill(Color.background)
 					}
 			}
-		}
+		
 		
 	}
 	
@@ -181,6 +180,10 @@ struct ItemDetailView: View {
 		HStack {
 			if let price = item.price {
 				Label("가격: \(price)원", systemImage: "tag.fill")
+					.font(.subheadline)
+					.foregroundColor(.green)
+			} else {
+				Label("가격: 가격을 입력해주세요.", systemImage: "tag.fill")
 					.font(.subheadline)
 					.foregroundColor(.green)
 			}
