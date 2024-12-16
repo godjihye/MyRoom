@@ -30,9 +30,12 @@ const findAllItem = async (req, res) => {
 
 // 2-2. Find All Items By HomeId
 const findAllItemByHomeId = async (req, res) => {
-  console.log(req.query.filterByItemUrl)
+  console.log(req.query.filterByItemUrl);
   try {
-    const result = await itemService.findAllItemByHomeId(req.params.homeId,req.query.filterByItemUrl);
+    const result = await itemService.findAllItemByHomeId(
+      req.params.homeId,
+      req.query.filterByItemUrl
+    );
     res.status(200).json({ documents: result });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -92,27 +95,29 @@ const updateItem = async (req, res) => {
 
 // 3-2. Update Item Add Additional Photos
 const updateAdditionalPhotos = async (req, res) => {
-  console.log("req.filed: ", req.files)
-  console.log("req.body: ", req.body)
+  console.log("req.filed: ", req.files);
+  console.log("req.body: ", req.body);
   try {
-    const {photos} = req.files
-    const {photoTextAI} = req
-    const {photoText} = req.body;
+    const { photos } = req.files;
+    const { photoTextAI } = req;
+    const { photoText } = req.body;
     const photoData = photos.map((photo, index) => ({
       blobName: photo.blobName,
-      text: Array.isArray(photoText) ? photoText[index] || null : photoText || null,
+      text: Array.isArray(photoText)
+        ? photoText[index] || null
+        : photoText || null,
       textAI: Array.isArray(photoTextAI) ? photoTextAI[index] || null : null,
     }));
     const result = await itemService.uploadAdditionalPhotos(
       photoData,
       req.params.itemId
     );
-    console.log(result)
+    console.log(result);
     res.status(201).json({
       documents: [result],
     });
   } catch (e) {
-    console.log(e.message)
+    console.log(e.message);
     res.status(500).json({ message: e.message });
   }
 };
@@ -131,9 +136,11 @@ const deleteItem = async (req, res) => {
 // 4-2. Delete Additional Photo
 const deleteAdditionalPhoto = async (req, res) => {
   try {
-    const {itemId, id} = await itemService.deleteAdditionalPhoto(req.params.photoId);
-    console.log(`itemId: ${itemId}`)
-    console.log(`id: ${id}`)
+    const { itemId, id } = await itemService.deleteAdditionalPhoto(
+      req.params.photoId
+    );
+    console.log(`itemId: ${itemId}`);
+    console.log(`id: ${id}`);
     res.status(200).json({
       success: true,
       message: "성공적으로 삭제되었습니다.",
@@ -141,7 +148,7 @@ const deleteAdditionalPhoto = async (req, res) => {
       id: parseInt(id),
     });
   } catch (e) {
-    console.log(e.message)
+    console.log(e.message);
     res.status(500).json({ success: false, message: e.message });
   }
 };

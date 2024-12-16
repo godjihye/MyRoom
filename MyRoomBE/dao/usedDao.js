@@ -32,22 +32,32 @@ const createUsed = async (usedData, photoData) => {
     const returnData = await models.Used.findByPk(usedId, {
       include: [
         {
-          model: models.User,
-          as: "user",
-          attributes: ["nickname", "userImage"],
+          model: models.User, // 조인할 모델 (Post)
+          as: "user", // alias (선택 사항)
         },
         {
           model: models.UsedPhoto,
           as: "images",
-          attributes: ["id", "image"],
         },
         {
           model: models.UsedFav,
           as: "usedFav",
-          where: { usedId: usedId },
-          required: false,
+          where: { userId },
+          required: false, // LEFT OUTER JOIN
         },
       ],
+      attributes: {
+        include: [
+          [
+            models.sequelize.literal(
+              `CASE WHEN "usedFav"."userId" IS NOT NULL THEN true ELSE false END`
+            ),
+            "isFavorite",
+          ],
+        ],
+      },
+      distinct: true, // 중복 방지
+      subQuery: false,
     });
 
     return returnData;
@@ -98,7 +108,7 @@ const findAllUsed = async (page, pageSize, userId) => {
   });
 };
 
-const findUsedByName = async(id,data) => {
+const findUsedByName = async (id, data) => {
   return await models.Used.findAndCountAll({
     where: {
       usedTitle: {
@@ -117,7 +127,7 @@ const findUsedByName = async(id,data) => {
       {
         model: models.UsedFav,
         as: "usedFav",
-        where: { userId:id },
+        where: { userId: id },
         required: false, // LEFT OUTER JOIN
       },
     ],
@@ -135,7 +145,7 @@ const findUsedByName = async(id,data) => {
     subQuery: false,
     //   logging: (sql) => console.log('Executing SQL:', sql)
   });
-}
+};
 
 //detail
 const findUsedById = async (id, userId) => {
@@ -172,7 +182,6 @@ const findUsedById = async (id, userId) => {
 
 //edit
 const updateUsed = async (id, data) => {
-
   await await models.Used.update(data, {
     where: { id },
   });
@@ -208,7 +217,6 @@ const toggleFavorite = async (usedId, userId, action) => {
       });
     }
     await used.save();
-
 
     return result;
   }

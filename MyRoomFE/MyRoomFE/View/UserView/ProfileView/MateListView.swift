@@ -28,24 +28,24 @@ struct MateListView: View {
 			}
 		}
 		.navigationTitle("동거인 목록")
-	 .navigationBarTitleDisplayMode(.inline)
+		.navigationBarTitleDisplayMode(.inline)
 	}
 	private var addMate: some View {
-				Button {
-					userVM.getInviteCode()
-					showInviteCode = true
-				} label: {
-					Text("동거인 추가하기")
-						.padding(.bottom)
-				}
+		Button {
+			userVM.getInviteCode()
+			showInviteCode = true
+		} label: {
+			Text("동거인 추가하기")
+				.padding(.bottom)
+		}
 	}
-
-private var noHomeView: some View {
-	Text("집을 먼저 등록해야 동거인 추가가 가능합니다.")
-		.font(.headline)
-		.foregroundStyle(.indigo)
-		.padding(.bottom)
-}
+	
+	private var noHomeView: some View {
+		Text("집을 먼저 등록해야 동거인 추가가 가능합니다.")
+			.font(.headline)
+			.foregroundStyle(.indigo)
+			.padding(.bottom)
+	}
 	private var inviteCode: some View {
 		HStack {
 			Text("초대코드 \(userVM.inviteCode)")

@@ -153,17 +153,4 @@ struct ProfileView: View {
 			}
 		}
 	}
-	//MARK: - Chat List
-	private var chatList:some View {
-		
-		VStack{
-			Divider()
-			NavigationLink(destination: ChatListView().environmentObject(ChatViewModel())) {
-				Text("💬 채팅목록")
-					.font(.title3)
-					.bold()
-					.padding()
-			}
-		}
-	}
 }

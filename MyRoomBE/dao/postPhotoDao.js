@@ -13,4 +13,3 @@
 //     createPostPhoto,
 //     findPostPhotoAll
 // }
-

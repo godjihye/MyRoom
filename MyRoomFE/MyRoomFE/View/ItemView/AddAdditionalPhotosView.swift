@@ -10,132 +10,132 @@ import _PhotosUI_SwiftUI
 import Vision
 
 struct AddAdditionalPhotosView: View {
-		@Environment(\.dismiss) private var dismiss
-		@EnvironmentObject var itemVM: ItemViewModel
-		@State private var isShowingImageSource = false
-		@State private var isPhotosPickerPresented = false
-		@State private var isCameraPresented = false
-		@State private var additionalItems: [PhotosPickerItem] = []
-		@State private var additionalPhotos: [UIImage] = []
-		@State private var cameraPhoto: UIImage?
-    @State private var imageText: [String] = []
-		private let maxImageCount = 30
-		let itemId: Int
-		let columns = [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)]
-		
-		var body: some View {
-				VStack {
-						selectedImagesView
-						selectImageBtnView
-						Spacer()
-						saveBtn
-				}
-				.navigationTitle("추가 이미지 등록")
-//				.toolbar {
-//						ToolbarItem(placement: .principal) {
-//								Text("추가 이미지 등록")
-//						}
-//				}
-			// FIXME: - Text recognize
-				.onChange(of: additionalItems) { _, _ in
-						handleAdditionalItemsChange()
-				}
-				.onChange(of: cameraPhoto) { _, newValue in
-						if let photo = newValue {
-								additionalPhotos.append(photo)
-							if let text = recognizeText(from: photo) {
-								imageText.append(text)
-							} else {
-								imageText.append("")
-							}
-						}
-				}
-				.alert("추가 이미지 등록", isPresented: $itemVM.isShowingAlertAddAdditionalPhotos) {
-						Button("확인", role: .cancel) {
-								dismiss()
-						}
-				} message: {
-						Text(itemVM.addAdditionalPhotosMessage)
-				}
-				.sheet(isPresented: $isCameraPresented) {
-						CameraPicker(image: $cameraPhoto, sourceType: .camera)
-				}
-				.photosPicker(
-						isPresented: $isPhotosPickerPresented,
-						selection: $additionalItems,
-						maxSelectionCount: maxImageCount,
-						matching: .images
-				)
+	@Environment(\.dismiss) private var dismiss
+	@EnvironmentObject var itemVM: ItemViewModel
+	@State private var isShowingImageSource = false
+	@State private var isPhotosPickerPresented = false
+	@State private var isCameraPresented = false
+	@State private var additionalItems: [PhotosPickerItem] = []
+	@State private var additionalPhotos: [UIImage] = []
+	@State private var cameraPhoto: UIImage?
+	@State private var imageText: [String] = []
+	private let maxImageCount = 30
+	let itemId: Int
+	let columns = [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)]
+	
+	var body: some View {
+		VStack {
+			selectedImagesView
+			selectImageBtnView
+			Spacer()
+			saveBtn
 		}
-		
-		// MARK: - Subviews
-		private var selectedImagesView: some View {
-			GeometryReader { reader in
-				ScrollView {
-					LazyVGrid(columns: columns, spacing: 10) {
-						ForEach(additionalPhotos, id: \.self) { photo in
-							Image(uiImage: photo)
-								.resizable()
-								.scaledToFill()
-								.frame(width: reader.size.width / 2 - 20, height: reader.size.width / 2 - 20)
-								.cornerRadius(10)
-						}
+		.navigationTitle("추가 이미지 등록")
+		//				.toolbar {
+		//						ToolbarItem(placement: .principal) {
+		//								Text("추가 이미지 등록")
+		//						}
+		//				}
+		// FIXME: - Text recognize
+		.onChange(of: additionalItems) { _, _ in
+			handleAdditionalItemsChange()
+		}
+		.onChange(of: cameraPhoto) { _, newValue in
+			if let photo = newValue {
+				additionalPhotos.append(photo)
+				if let text = recognizeText(from: photo) {
+					imageText.append(text)
+				} else {
+					imageText.append("")
+				}
+			}
+		}
+		.alert("추가 이미지 등록", isPresented: $itemVM.isShowingAlertAddAdditionalPhotos) {
+			Button("확인", role: .cancel) {
+				dismiss()
+			}
+		} message: {
+			Text(itemVM.addAdditionalPhotosMessage)
+		}
+		.sheet(isPresented: $isCameraPresented) {
+			CameraPicker(image: $cameraPhoto, sourceType: .camera)
+		}
+		.photosPicker(
+			isPresented: $isPhotosPickerPresented,
+			selection: $additionalItems,
+			maxSelectionCount: maxImageCount,
+			matching: .images
+		)
+	}
+	
+	// MARK: - Subviews
+	private var selectedImagesView: some View {
+		GeometryReader { reader in
+			ScrollView {
+				LazyVGrid(columns: columns, spacing: 10) {
+					ForEach(additionalPhotos, id: \.self) { photo in
+						Image(uiImage: photo)
+							.resizable()
+							.scaledToFill()
+							.frame(width: reader.size.width / 2 - 20, height: reader.size.width / 2 - 20)
+							.cornerRadius(10)
 					}
-					.padding()
-				}
-				}
-		}
-		
-		private var selectImageBtnView: some View {
-				Button {
-						isShowingImageSource = true
-				} label: {
-						Text("추가 이미지 선택")
-				}
-				.buttonStyle(.bordered)
-				.confirmationDialog("사진 소스 선택", isPresented: $isShowingImageSource) {
-						Button("포토 앨범") {
-								isPhotosPickerPresented = true
-						}
-						Button("카메라") {
-								isCameraPresented = true
-						}
-				}
-		}
-		
-		private var saveBtn: some View {
-				Button(action: {
-					//FIXME: - itemVM addAdditionalPhotos
-					itemVM.addAdditionalPhotos(images: additionalPhotos, texts: imageText, itemId: itemId)
-					log("imageText: \(imageText)")
-					
-				}) {
-						Text("추가 이미지 등록")
-								.frame(maxWidth: .infinity)
-								.padding()
-								.background(Color.accentColor)
-								.foregroundColor(.white)
-								.cornerRadius(10)
 				}
 				.padding()
+			}
 		}
-		
-		// MARK: - Functions
-		private func handleAdditionalItemsChange() {
-				Task {
-						for item in additionalItems {
-								if let data = try? await item.loadTransferable(type: Data.self),
-									 let uiImage = UIImage(data: data) {
-										additionalPhotos.append(uiImage)
-									if let text = recognizeText(from: uiImage) {
-										imageText.append(text)
-									} else {
-										imageText.append("")
-									}
-								}
-						}
+	}
+	
+	private var selectImageBtnView: some View {
+		Button {
+			isShowingImageSource = true
+		} label: {
+			Text("추가 이미지 선택")
+		}
+		.buttonStyle(.bordered)
+		.confirmationDialog("사진 소스 선택", isPresented: $isShowingImageSource) {
+			Button("포토 앨범") {
+				isPhotosPickerPresented = true
+			}
+			Button("카메라") {
+				isCameraPresented = true
+			}
+		}
+	}
+	
+	private var saveBtn: some View {
+		Button(action: {
+			//FIXME: - itemVM addAdditionalPhotos
+			itemVM.addAdditionalPhotos(images: additionalPhotos, texts: imageText, itemId: itemId)
+			log("imageText: \(imageText)")
+			
+		}) {
+			Text("추가 이미지 등록")
+				.frame(maxWidth: .infinity)
+				.padding()
+				.background(Color.accentColor)
+				.foregroundColor(.white)
+				.cornerRadius(10)
+		}
+		.padding()
+	}
+	
+	// MARK: - Functions
+	private func handleAdditionalItemsChange() {
+		Task {
+			for item in additionalItems {
+				if let data = try? await item.loadTransferable(type: Data.self),
+					 let uiImage = UIImage(data: data) {
+					additionalPhotos.append(uiImage)
+					if let text = recognizeText(from: uiImage) {
+						imageText.append(text)
+					} else {
+						imageText.append("")
+					}
 				}
+			}
 		}
+	}
 	private func recognizeText(from image: UIImage) -> String? {
 		var recognizedText: String = ""
 		guard let cgImage = image.cgImage else {
@@ -177,14 +177,14 @@ struct AddAdditionalPhotosView: View {
 		do {
 			try handler.perform([request])
 		} catch {
-				recognizedText.append("Error: \(error.localizedDescription)")
+			recognizedText.append("Error: \(error.localizedDescription)")
 		}
 		return recognizedText
 	}
 }
 
 #Preview {
-		let itemVM = ItemViewModel()
-		AddAdditionalPhotosView(itemId: 1)
-				.environmentObject(itemVM)
+	let itemVM = ItemViewModel()
+	AddAdditionalPhotosView(itemId: 1)
+		.environmentObject(itemVM)
 }
