@@ -9,3 +9,4 @@ node_modules
 MyRoomFE/MyRoomFE.xcodeproj/project.xcworkspace/xcuserdata/jhshin.xcuserdatad/UserInterfaceState.xcuserstate
 MyRoomFE/MyRoomFE.xcodeproj/xcuserdata/jhshin.xcuserdatad/xcschemes/xcschememanagement.plist
 MyRoomBE/migrations/
+MyRoomBE/.env
