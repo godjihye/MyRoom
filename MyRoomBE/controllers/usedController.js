@@ -16,7 +16,11 @@ const createUsed = async(req,res) => {
 
     try {
         const used = await usedService.createUsed(usedData,photoData);
-        res.status(201).json({ used: used });
+        res.status(201).json({ 
+          success: true,
+          useds: [used],
+          message: '게시글 등록이 완료되었습니다.'
+          });
       } catch (e) {
         res.status(500).json({ error: e.message });
       }	

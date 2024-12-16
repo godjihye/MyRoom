@@ -11,7 +11,7 @@ import SVProgressHUD
 
 
 class ItemViewModel: ObservableObject {
-	
+    
 	@Published var items: [Item] = []
 	@Published var favItems: [Item] = []
 	@Published var currentItem: Item?
@@ -111,23 +111,23 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	/// 2-2. Find All Items By HomeId
-    func fetchAllItem(filterByItemUrl:Bool) async {
+    func fetchAllItem(filterByItemUrl:Bool) async -> [Item]  {
 		let url = "\(endPoint)/items/allItem/\(homeId)"
         let params:Parameters = ["filterByItemUrl":filterByItemUrl]
 		do {
             let response = try await AF.request(url, method: .get,parameters: params)
 				.serializingDecodable(ItemResponse.self).value
-			DispatchQueue.main.async {
-				self.items = response.documents
-			}
+            return response.documents
+//			DispatchQueue.main.async {
+//				self.allItems = response.documents
+//			}
 			log("fetchAllItem Complete", trait: .success)
 		} catch {
 			log("fetchAllItem Error: \(error.localizedDescription)", trait: .error)
 		}
         
-        AF.request(url).responseDecodable(of: ItemResponse.self) { response in
-            print("response : \(response)")
-        }
+        return []
+        
 	}
 	
 	/// 2-3. Read Fav Items (All location)

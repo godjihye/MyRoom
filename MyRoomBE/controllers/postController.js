@@ -9,9 +9,6 @@ const createPost = async (req, res) => {
   // const postData = req.body
 
   const photoData = req.files;
-
-  
-  
   const thumbnailBlobName = photoData.postThumbnail.find(
     (item) => item.fieldname === "postThumbnail"
   ).blobName;
@@ -19,7 +16,12 @@ const createPost = async (req, res) => {
   console.log("photo", photoData);
   try {
     const post = await postService.createPost(jsonPostData, photoData,jsonButtonData);
-    res.status(201).json({ posts: post });
+
+    res.status(201).json({
+      success: true,
+      posts: [post],
+      message: "게시글이 등록되었습니다.",
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -93,7 +95,10 @@ const deletePost = async (req, res) => {
   try {
     const result = await postService.deletePost(req.params.id);
     if (result) {
-      res.status(200).json({ message: "success" });
+      res.status(200).json({ 
+        success : true,
+        message: "게시글이 삭제되었습니다." 
+      });
     } else {
       res.status(404).json({ error: `post not found` });
     }
