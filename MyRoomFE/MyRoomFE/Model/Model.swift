@@ -150,10 +150,11 @@ struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
 }
 
 struct ButtonData: Identifiable, Codable, Equatable, Hashable {
-	let id: Int
-	let positionX: CGFloat
-	let positionY: CGFloat
-	let itemUrl: String
+    let id: Int
+    let positionX: CGFloat
+    let positionY: CGFloat
+    let itemUrl: String
+    
 }
 
 struct PostFavData:Identifiable,Codable, Equatable {

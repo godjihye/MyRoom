@@ -12,6 +12,8 @@ const createPost = async (req, res) => {
   ).blobName;
   jsonPostData.postThumbnail = thumbnailBlobName; //postThumbnail 추가
   console.log("photo", photoData);
+  console.log("buttomData",jsonButtonData)
+  console.log("postData",jsonPostData)
   try {
     const post = await postService.createPost(
       jsonPostData,
