@@ -18,10 +18,14 @@ const createPost = async (postData, photoData, buttonData) => {
     const buttons = [];
 
     // 2. 사진 데이터 처리 (이미지와 버튼 저장)
+    // 2. 사진 데이터 처리 (이미지와 버튼 저장)
     for (const field in photoData) {
       if (Array.isArray(photoData[field])) {
-        for (const photo of photoData[field]) {
-          if (photo.fieldname == "image") {
+        // photoData 배열을 순회하면서 index를 구하기 위해 for...of 사용
+        for (let index = 0; index < photoData[field].length; index++) {
+          const photo = photoData[field][index];
+
+          if (photo.fieldname === "image") {
             // 2.1. PostPhoto 테이블에 이미지 정보 저장
             const newPhoto = await models.PostPhoto.create(
               {
@@ -31,17 +35,25 @@ const createPost = async (postData, photoData, buttonData) => {
               { transaction }
             );
 
+            console.log("btn start", buttonData);
+            console.log(index); // 현재 photo의 index
+            
             // 2.2. 해당 이미지에 대한 버튼 데이터 처리
             if (buttonData) {
               try {
-                buttonData.forEach((button) => {
-                  // 2. PostPhotoButton 테이블에 버튼 정보 저장
-                  buttons.push({
-                    postPhotoId: newPhoto.id, // PostPhoto와 연결
-                    positionX: button.positionX,
-                    positionY: button.positionY,
-                    itemUrl: button.itemUrl, // 버튼 URL 저장
-                  });
+                // 버튼 데이터에 대해 index와 매칭하여 처리
+                buttonData.forEach((buttonGroup) => {
+                  if (buttonGroup.imageIndex === index) { // 버튼 데이터의 imageIndex와 현재 photo의 index 비교
+                    // buttonGroup.buttons 배열 순회
+                    buttonGroup.buttons.forEach((button) => {
+                      buttons.push({
+                        postPhotoId: newPhoto.id, // 새로 생성된 PostPhoto ID
+                        positionX: button.positionX,
+                        positionY: button.positionY,
+                        itemUrl: button.itemUrl,
+                      });
+                    });
+                  }
                 });
               } catch (error) {
                 console.error("Invalid JSON in buttonData:", error);
@@ -54,8 +66,8 @@ const createPost = async (postData, photoData, buttonData) => {
 
     // 3. 버튼 데이터 일괄 저장
     await models.ButtonData.bulkCreate(buttons, { transaction });
-
-    await transaction.commit();
+    
+    await transaction.commit(); // 트랜잭션 커밋
 
     const returnData = await models.Post.findByPk(postId, {
       include: [
