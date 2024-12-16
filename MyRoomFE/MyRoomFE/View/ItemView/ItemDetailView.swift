@@ -23,6 +23,7 @@ struct ItemDetailView: View {
 	
 	init(item: Item) { // item 객체로 초기화
 		self.initialItem = item
+		isFav = item.isFav
 	}
 	
 	var body: some View {
@@ -124,13 +125,12 @@ struct ItemDetailView: View {
 				.lineLimit(1)
 			Spacer()
 			Button {
-				Task {
-					await itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
-				}
+				itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
+				
 			} label: {
 				Image(systemName: item.isFav ? "heart.fill" : "heart")
-					.resizable()
-					.frame(width: 30, height: 30)
+					.renderingMode(.original)
+					.font(.title)
 					.foregroundStyle(item.isFav ? .red : .gray)
 				
 			}
@@ -220,7 +220,7 @@ struct ItemDetailView: View {
 						.foregroundStyle(.blue)
 				}
 			} else {
-				if let url = URL(string: "https://search.shopping.naver.com/search/all?bt=-1&frm=NVSCPRO&query=\(item.itemName)") {
+				if let url = URL(string: "https://msearch.shopping.naver.com/search/all?bt=-1&frm=NVSCPRO&query=\(item.itemName)") {
 					Link(destination: url) {
 						Text("등록한 URL이 없어요.\n네이버 가격비교로 가기")
 							.foregroundStyle(.blue)

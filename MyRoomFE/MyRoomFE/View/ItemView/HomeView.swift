@@ -82,6 +82,7 @@ struct HomeView: View {
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
 				.tag(1)
 		}
+		.tabViewStyle(.page)
 	}
 }
 

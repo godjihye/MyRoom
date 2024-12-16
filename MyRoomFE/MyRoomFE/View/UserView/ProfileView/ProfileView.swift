@@ -47,7 +47,7 @@ struct ProfileView: View {
 						.aspectRatio(contentMode: .fill)
 						.frame(width: 150, height: 150)
 						.clipShape(.circle)
-						.overlay(Circle().stroke(.gray).opacity(0.8))
+						.overlay(Circle().stroke(Color.gray).opacity(0.8))
 						.padding(.top, -170)
 				}
 			} else {

@@ -22,6 +22,7 @@ struct InviteCodeView: View {
 						.fill(.yellow)
 				}
 				.onAppear {
+					log(userVM.inviteCode)
 					if userVM.inviteCode == "" {
 						userVM.getInviteCode()
 					}
