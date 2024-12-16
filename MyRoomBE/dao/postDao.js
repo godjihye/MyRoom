@@ -61,7 +61,7 @@ const createPost = async (postData, photoData, buttonData) => {
       include: [
         {
           model: models.User,
-          as: "user",
+          as: "user"
         },
         {
           model: models.PostPhoto,
@@ -81,6 +81,19 @@ const createPost = async (postData, photoData, buttonData) => {
           required: false, //left join
         },
       ],
+      attributes: {
+        include: [
+          [
+            models.sequelize.literal(
+              `CASE WHEN "postFav"."userId" IS NOT NULL THEN true ELSE false END`
+            ),
+            "isFavorite",
+          ],
+        ],
+      },
+      distinct: true, // 중복 방지
+      subQuery: false,
+      logging: (sql) => console.log("Executing SQL:", sql),
     });
 
     return returnData;

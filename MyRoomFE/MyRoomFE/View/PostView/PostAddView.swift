@@ -119,12 +119,20 @@ struct PostAddView: View {
             } else {
                 contentError = nil
             }
-            Task{
-                await postVM.addPost(selectedImages: selectPostImage, postTitle: postTitle, postContent: postContent,selectItemUrl: buttonItemUrls,buttonPositions:buttonPositions)
-                dismiss()
-            }
             
+            
+            postVM.addPost(selectedImages: selectPostImage, postTitle: postTitle, postContent: postContent,selectItemUrl: buttonItemUrls,buttonPositions:buttonPositions)
+        }.alert("게시글 등록", isPresented: $postVM.isAddShowing) {
+            Button("확인") {
+                Task{
+                    postVM.fetchPosts()
+                    dismiss()
+                }
+            }
+        } message: {
+            Text(postVM.message)
         }
+    
     }
     
 }

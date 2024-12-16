@@ -41,7 +41,29 @@ struct PostDetailView: View {
         .frame(maxHeight: .infinity)
         .toolbar(content: {
             if self.loginUserId == post.user.id {
-                toolbarContent
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        NavigationLink("편집") {
+//                            PostAddView(isEditMode: true, existingUsed: post)
+                        }
+                        Button("삭제") {
+                            isShowingDeleteAlert = true
+                        }
+                        
+                    } label: {
+                        Image(systemName: "ellipsis")
+                    }
+                    .confirmationDialog(
+                        "\(post.postTitle)을/를 삭제하시겠습니까?",
+                        isPresented: $isShowingDeleteAlert,
+                        titleVisibility: .visible
+                    ) {
+                        Button("삭제", role: .destructive) {
+                            postVM.removePost(postId: post.id)
+                            dismiss()
+                        }
+                    }
+                }
             }
         })
     }
@@ -121,20 +143,6 @@ struct PostDetailView: View {
                     }
                 }
                 Spacer()
-                Button {
-                    Task {
-                        print("삭제")
-                        await postVM.removePost(postId: post.id)
-                        dismiss()
-                    }
-                    
-                } label: {
-                    Image(systemName: "person")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(.red)
-                }
-
                 
                 Button {
                     post.isFavorite.toggle()
@@ -179,34 +187,6 @@ struct PostDetailView: View {
                 .padding(.vertical, 8)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    
-    private var toolbarContent: some ToolbarContent {
-        Group {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    NavigationLink("편집") {
-//                        PostAddView(isEditMode: true, existingUsed: post)
-                    }
-                    Button("삭제") {
-                        isShowingDeleteAlert.toggle()
-                    }
-                    .confirmationDialog(
-                        "게시글을 삭제하시겠습니까?",
-                        isPresented: $isShowingDeleteAlert,
-                        titleVisibility: .visible) {
-                            Button("삭제", role: .destructive) {
-                                Task {
-//                                    await usedVM.removeUsed(postId: post.id)
-                                    dismiss()
-                                }
-                            }
-                        }
-                } label: {
-                    Image(systemName: "ellipsis")
-                }
-            }
-        }
     }
 }
 

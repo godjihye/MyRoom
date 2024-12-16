@@ -58,7 +58,6 @@ struct CommentListView: View {
             }
             .padding()
         }
-        .navigationTitle("댓글")
         .padding()
         .onAppear {
             Task {

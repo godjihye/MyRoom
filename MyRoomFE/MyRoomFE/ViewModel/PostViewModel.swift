@@ -33,7 +33,7 @@ class PostViewModel:ObservableObject {
     var page = 1
     
     //커뮤니티 등록
-    func addPost(selectedImages:[UIImage], postTitle:String, postContent:String,selectItemUrl:[[String]]?,buttonPositions:[[CGPoint]]? ) async {
+    func addPost(selectedImages:[UIImage], postTitle:String, postContent:String,selectItemUrl:[[String]]?,buttonPositions:[[CGPoint]]? )  {
         let postData: [String:Any?] = [
             "postTitle" : postTitle,
             "postContent" : postContent,
@@ -72,7 +72,7 @@ class PostViewModel:ObservableObject {
             print("Failed to encode postButtonData to JSON")
             return
         }
-       
+        
         let formData = MultipartFormData()
         formData.append(postDataJson, withName: "postData",mimeType: "application/json")
         formData.append(postButtonDataJson, withName: "buttonData", mimeType: "application/json")
@@ -94,28 +94,58 @@ class PostViewModel:ObservableObject {
             "Content-Type": "multipart/form-data"
         ]
         AF.upload(multipartFormData: formData, to: postUrl,headers: headers).response { response in
-            log("addPost Complete", trait: .success)
-            
+            if let statusCode = response.response?.statusCode {
+                switch statusCode {
+                case 200..<300:
+                    if let data =
+                        response.data {
+                        do {
+                            let root = try JSONDecoder().decode(PostRoot.self, from: data)
+                            DispatchQueue.main.async {
+                                self.posts.append(contentsOf: root.posts)
+                            }
+                            self.isAddShowing = true
+                            self.message = root.message
+                            log("addPost Complete", trait: .success)
+                        }catch let error{
+                            self.isAlertShowing = true
+                            self.message = error.localizedDescription
+                            log("addPost UnexpectedError: \(error.localizedDescription)", trait: .error)
+                        }
+                    }
+                case 300..<500:
+                    if let data = response.data {
+                        do {
+                            self.isAlertShowing = true
+                            let apiError = try JSONDecoder().decode(APIError.self, from: data)
+                            self.message = apiError.message
+                        } catch let error {
+                            self.isAlertShowing = true
+                            self.message = error.localizedDescription
+                        }
+                    }
+                default:
+                    self.isAlertShowing = true
+                    self.message = "네트워크 오류입니다."
+                }
+            }
         }
-     
+        AF.request(postUrl).responseDecodable(of: PostRoot.self) { response in
+                    print(response)
+                }
+        
     }
     
     
     // 커뮤니티 검색
-    func fetchPosts(size:Int = 10) async {
+    func fetchPosts(size:Int = 10)   {
         print("fetchPosts start===========")
-        
         guard !isLoading else { return }
         isLoading = true
         let postUrl = "\(endPoint)/posts/\(userId)"
         let params:Parameters = ["page":self.page, "size":size]
         
         AF.request(postUrl,method:.get,parameters: params).response { response in
-            defer {
-                self.isLoading = false
-                SVProgressHUD.dismiss()
-            }
-            
             if let statusCode = response.response?.statusCode {
                 switch statusCode {
                 case 200..<300:
@@ -156,7 +186,6 @@ class PostViewModel:ObservableObject {
                 self.isLoading = false
                 SVProgressHUD.dismiss()
             }
-           
         }
     }
     
@@ -193,11 +222,27 @@ class PostViewModel:ObservableObject {
     }
     
     // 글삭제
-    func removePost(postId:Int) async {
+    func removePost(postId:Int)  {
         let url = "\(endPoint)/posts/\(postId)"
         do {
-            let response = try await AF.request(url, method: .delete, encoding: JSONEncoding.default).serializingData().value
-            log("removePost Complete! \(response.description)", trait: .success)
+            AF.request(url, method: .delete)
+                .response { response in
+                    if let data = response.data {
+                        do {
+                            let root = try JSONDecoder().decode(PostRoot.self, from: data)
+                            self.isAddShowing = true
+                            self.message = root.message
+                            DispatchQueue.main.async {
+                                self.posts.removeAll(where: { $0.id == postId })
+                            }
+                        } catch let error {
+                            self.isAddShowing = true
+                            self.message = error.localizedDescription
+                        }
+                    }
+                }
+            log("removePost Complete! ", trait: .success)
+            return
         } catch {
             log("removePost Error: \(error.localizedDescription)", trait: .error)
         }
@@ -217,12 +262,16 @@ class PostViewModel:ObservableObject {
                 log("UnexpectedError: \(error.localizedDescription)", trait: .error)
             }
         }
+        
+        AF.request(url).responseDecodable(of: PostRoot.self) { response in
+            print(response)
+        }
     }
     
     func clearSearchResult() {
         searchResultPost.removeAll()
     }
     
-   
+    
     
 }
