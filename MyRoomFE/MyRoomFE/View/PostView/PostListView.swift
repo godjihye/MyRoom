@@ -18,11 +18,6 @@ struct PostListView: View {
 					await refreshPosts()
 				}
 				.toolbar {
-					ToolbarItem(placement: .principal) {
-						NavigationLink(destination: PostSearchView()) {
-							PostSearchButton()
-						}
-					}
 					ToolbarItem(placement: .topBarTrailing) {
 						addPostButton
 					}

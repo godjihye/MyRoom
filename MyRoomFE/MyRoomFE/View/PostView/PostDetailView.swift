@@ -92,7 +92,7 @@ struct PostDetailView: View {
                                         isPostWebViewPresented.toggle()
                                     }) {
                                         Circle()
-                                            .fill(Color.acc)
+																				.fill(Color.accentColor)
                                             .frame(width: 20, height: 20)
                                             .overlay(
                                                 Text("+")

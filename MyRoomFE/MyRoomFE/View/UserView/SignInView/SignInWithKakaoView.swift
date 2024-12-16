@@ -47,16 +47,11 @@ struct SignInWithKakaoView: View {
 	
 	// MARK: - Kakao Login
 	func kakaoLogin() {
-		log("Kakao Login Start")
-		if UserApi.isKakaoTalkLoginAvailable() {
-			UserApi.shared.loginWithKakaoTalk { token, error in
-				handleLoginResult(token: token, error: error)
-			}
-		} else {
-			UserApi.shared.loginWithKakaoAccount { token, error in
-				handleLoginResult(token: token, error: error)
-			}
+		
+		UserApi.shared.loginWithKakaoAccount { token, error in
+			handleLoginResult(token: token, error: error)
 		}
+		
 	}
 	
 	// MARK: - Handle Login Result

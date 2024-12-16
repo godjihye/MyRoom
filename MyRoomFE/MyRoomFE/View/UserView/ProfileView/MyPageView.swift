@@ -33,12 +33,7 @@ struct MyPageView: View {
 			NavigationLink {
 				MateListView()
 			} label: {
-				MyPageRow(icon: "🏠", title: "동거인 목록", backgroundColor: .myroom3)
-			}
-			NavigationLink {
-				ChatListView().environmentObject(ChatViewModel())
-			} label: {
-				MyPageRow(icon: "💬", title: "채팅 목록", backgroundColor: .myroom2)
+				MyPageRow(icon: "🏠", title: "동거인 목록", backgroundColor: .myroom2)
 			}
 		}
 	}

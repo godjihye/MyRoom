@@ -40,11 +40,6 @@ struct UsedListView: View {
 				.onAppear {
 					usedVM.fetchUseds()
 				}.toolbar {
-					ToolbarItem(placement: .principal) {
-						NavigationLink(destination: UsedSearchView()) {
-							UsedSearchButton()
-						}
-					}
 					ToolbarItem(placement: .topBarTrailing) {
 						NavigationLink {
 							UsedAddView().environmentObject(usedVM)

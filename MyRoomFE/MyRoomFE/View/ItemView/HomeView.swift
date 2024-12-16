@@ -61,7 +61,6 @@ struct HomeView: View {
 					.bold()
 			}
 		}
-		.padding(.top, -100)
 	}
 	private var tabbarView: some View {
 		HStack(spacing: 0) {
