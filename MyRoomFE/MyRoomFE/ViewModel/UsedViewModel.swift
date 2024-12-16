@@ -20,19 +20,17 @@ class UsedViewModel:ObservableObject {
         @Published var isFetchError = false
         private var isLoading = false
         var page = 1
-        @AppStorage("token") var token:String?
+        
         let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
         
         let userId = UserDefaults.standard.value(forKey: "userId") as! Int
         
         func fetchUseds(size:Int = 10) {
-                
+                print("fetchUseds start")
                 guard !isLoading else { return }
                 isLoading = true
                 let url = "\(endPoint)/useds/\(userId)"
-                //        guard let token = self.token else { return }
                 let params:Parameters = ["page":self.page, "size":size]
-                //        let headers:HTTPHeaders = ["Authorization": "Bearer \(token)"]
                 
                 AF.request(url,method: .get,parameters: params).response { response in
                         defer {
@@ -159,7 +157,7 @@ class UsedViewModel:ObservableObject {
         }
         
         // 글 등록
-        func addUsed(selectedImages:[UIImage],usedTitle:String,usedPrice:Int,usedContent:String,selectMyItem:Item?,completion: @escaping (Bool) -> Void) {
+        func addUsed(selectedImages:[UIImage],usedTitle:String,usedPrice:Int,usedContent:String,selectMyItem:Item?) {
                 let usedData: [String: Any?] = [
                         "usedTitle": usedTitle,
                         "usedPrice": usedPrice,
@@ -200,10 +198,25 @@ class UsedViewModel:ObservableObject {
                 AF.upload(multipartFormData: formData, to: url,headers: headers).response { response in
                         switch response.result {
                         case .success:
-                                completion(true) // 성공 시 true 전달
+                            if let data =
+                                response.data {
+                                do {
+                                    let root = try JSONDecoder().decode(UsedRoot.self, from: data)
+                                    DispatchQueue.main.async {
+                                        self.useds.append(contentsOf: root.useds)
+                                    }
+                                    self.isAddShowing = true
+                                    self.message = root.message
+                                    log("addUsed Complete", trait: .success)
+                                }catch let error{
+                                    self.isAlertShowing = true
+                                    self.message = error.localizedDescription
+                                    log("addUsed UnexpectedError: \(error.localizedDescription)", trait: .error)
+                                }
+                            }
                         case .failure(let error):
                                 print("Error: \(error.localizedDescription)")
-                                completion(false) // 실패 시 false 전달
+                               
                         }
                         
                 }
@@ -247,31 +260,31 @@ class UsedViewModel:ObservableObject {
         }
         
         //글 삭제
-        func removeUsed(usedId:Int) async {
-                let url = "\(endPoint)/useds/\(usedId)"
-                do {
-                        AF.request(url, method: .delete)
-                                .response { response in
-                                        if let data = response.data {
-                                                do {
-                                                        let root = try JSONDecoder().decode(UsedRoot.self, from: data)
-                                                        self.isAddShowing = true
-                                                        self.message = root.message
-                                                        DispatchQueue.main.async {
-                                                                self.useds.removeAll(where: { $0.id == usedId })
-                                                        }
-                                                } catch let error {
-                                                        self.isAddShowing = true
-                                                        self.message = error.localizedDescription
-                                                }
-                                        }
-                                }
-                        log("removeUsed Complete! ", trait: .success)
-                        return
-                } catch {
-                        log("removeUsed Error: \(error.localizedDescription)", trait: .error)
+    func removeUsed(usedId:Int)  {
+        let url = "\(endPoint)/useds/\(usedId)"
+        do {
+            AF.request(url, method: .delete)
+                .response { response in
+                    if let data = response.data {
+                        do {
+                            let root = try JSONDecoder().decode(UsedRoot.self, from: data)
+                            self.isAddShowing = true
+                            self.message = root.message
+                            DispatchQueue.main.async {
+                                self.useds.removeAll(where: { $0.id == usedId })
+                            }
+                        } catch let error {
+                            self.isAddShowing = true
+                            self.message = error.localizedDescription
+                        }
+                    }
                 }
+            log("removeUsed Complete! ", trait: .success)
+            return
+        } catch {
+            log("removeUsed Error: \(error.localizedDescription)", trait: .error)
         }
+    }
         
         func searchUsed(query: String?) async {
                 guard let query = query else { return }

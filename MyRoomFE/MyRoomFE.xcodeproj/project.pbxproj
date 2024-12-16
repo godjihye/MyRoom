@@ -373,7 +373,6 @@
 				B86F34C92CF96F920040BB33 /* PostAddView.swift */,
 				B86F34CA2CF96F920040BB33 /* PostDetailView.swift */,
 				B86F34CB2CF96F920040BB33 /* PostListView.swift */,
-				B86F34CC2CF96F920040BB33 /* PostRowView.swift */,
 				B15D9A542D06ED7900FA0253 /* PostWebView.swift */,
 				B15D9A882D0E16F600FA0253 /* PostSearchView.swift */,
 			);
@@ -416,6 +415,7 @@
 				B8E917A62D01A63700345B89 /* ChatViewModel.swift */,
 				B86F34D72CF96F920040BB33 /* ItemViewModel.swift */,
 				B86F34D82CF96F920040BB33 /* PostViewModel.swift */,
+				B86F34CC2CF96F920040BB33 /* PostRowView.swift */,
 				B86F34D92CF96F920040BB33 /* RoomViewModel.swift */,
 				B86F34DA2CF96F920040BB33 /* UsedViewModel.swift */,
 				B86F34DB2CF96F920040BB33 /* UserViewModel.swift */,

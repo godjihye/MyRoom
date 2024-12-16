@@ -25,9 +25,8 @@ struct UsedDetailView: View {
     @State private var isWebViewPresented = false
     @State private var selectedPhotoIndex: Int = 0
     @State private var isPhotoViewerPresented: Bool = false
-    
-    //툴바
     @State private var isShowingDeleteAlert = false
+    @State private var isItemInfoPresented: Bool = false
     
     //채팅
     @EnvironmentObject var chatVM: ChatViewModel
@@ -44,45 +43,94 @@ struct UsedDetailView: View {
     var loginUserId = UserDefaults.standard.integer(forKey: "userId")
     
     var body: some View {
-        
-        ScrollView{
-            VStack(spacing: 20) {
-                usedImageTabView
-                infoView
-                usedStatusAndTitleView
-                itemInfoView
-                usedContentView
+        ZStack {
+            ScrollView {
+                VStack(spacing: 20) {
+                    usedImageTabView
+                    infoView
+                    usedStatusAndTitleView
+                    
+                    Button(action: {
+                        isItemInfoPresented.toggle()
+                    }) {
+                        Text("판매자의 아이템 정보보기")
+                            .font(.caption)
+                            .foregroundColor(.accent)
+                            .padding(.horizontal)
+                        Spacer()
+                    }
+                    
+                    usedContentView
+                }
             }
-        }
-        .navigationTitle("글 상세")
-        .navigationBarTitleDisplayMode(.inline)
-        .frame(maxHeight: .infinity)
-        .toolbar(content: {
-            if self.loginUserId == used.user.id {
-                toolbarContent
-            }
-        })
-        .onAppear {
-            selectedStatus = used.usedStatus
-            usedUser  = used.user.nickname
-            if let userImg = used.user.userImage {
-                usedUserImg = "\(azuerTarget)\(userImg)"
-            }else {
-                usedUserImg = ""
-            }
-            if let loginImg = UserDefaults.standard.string(forKey: "userImage") {
-                loginUserImg = loginImg
-            }else {
-                loginUserImg = ""
+            .navigationTitle("글 상세")
+            .navigationBarTitleDisplayMode(.inline)
+            .frame(maxHeight: .infinity)
+            .toolbar(content: {
+                if self.loginUserId == used.user.id {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            NavigationLink("편집") {
+                                UsedAddView(isEditMode: true, existingUsed: used)
+                            }
+                            Button("삭제") {
+                                isShowingDeleteAlert = true
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                        }
+                        .confirmationDialog(
+                            "\(used.usedTitle)을/를 삭제하시겠습니까?",
+                            isPresented: $isShowingDeleteAlert,
+                            titleVisibility: .visible
+                        ) {
+                            Button("삭제", role: .destructive) {
+                                usedVM.removeUsed(usedId: used.id)
+                                dismiss()
+                            }
+                        }
+                    }
+                }
+            })
+            .onAppear {
+                selectedStatus = used.usedStatus
+                usedUser = used.user.nickname
+                if let userImg = used.user.userImage {
+                    usedUserImg = "\(azuerTarget)\(userImg)"
+                } else {
+                    usedUserImg = ""
+                }
+                if let loginImg = UserDefaults.standard.string(forKey: "userImage") {
+                    loginUserImg = loginImg
+                } else {
+                    loginUserImg = ""
+                }
+                
+                if self.loginUserId == used.user.id {
+                    chatButtonName = "대화중인 채팅방"
+                } else {
+                    chatButtonName = "채팅하기"
+                }
             }
             
-            if self.loginUserId == used.user.id {
-                chatButtonName = "대화중인 채팅방"
-            }else{
-                chatButtonName = "채팅하기"
+            if isItemInfoPresented {
+                Color.black.opacity(0.3)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        isItemInfoPresented = false // 팝업 닫기
+                    }
+                
+                VStack {
+                    itemInfoView
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(12)
+                        .shadow(radius: 10)
+                        .frame(maxWidth: 400)
+                }
+                .padding(40)
             }
         }
-        
         UsedActionBarView
     }
     
@@ -110,19 +158,6 @@ struct UsedDetailView: View {
                     }
                 }
                 Spacer()
-                Button {
-                    Task {
-                        print("삭제")
-                        await usedVM.removeUsed(usedId: used.id)
-                        dismiss()
-                    }
-                    
-                } label: {
-                    Image(systemName: "person")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(.red)
-                }
                 
                 if let usedUrl = used.usedUrl {
                     Button {
@@ -207,10 +242,22 @@ struct UsedDetailView: View {
     }
     
     private var itemInfoView: some View {
-        VStack{
+        VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .top, spacing: 16) {
-                VStack(alignment: .leading) {
-                    if let purchasePrice = used.purchasePrice {
+                if let itemName = used.itemName {
+                    VStack(alignment: .leading) {
+                        Text("제품명")
+                            .font(.callout)
+                            .foregroundColor(.gray)
+                        Text("\(itemName)")
+                            .font(.footnote)
+                            .foregroundColor(.black)
+                            .bold()
+                    }
+                }
+                
+                if let purchasePrice = used.purchasePrice {
+                    VStack(alignment: .leading) {
                         Text("구매가격")
                             .font(.callout)
                             .foregroundColor(.gray)
@@ -220,8 +267,25 @@ struct UsedDetailView: View {
                             .bold()
                     }
                 }
-                VStack {
-                    if let usedPurchaseDate = used.usedPurchaseDate {
+                
+                if let itemDesc = used.itemDesc {
+                    VStack(alignment: .leading) {
+                        Text("추가설명")
+                            .font(.callout)
+                            .foregroundColor(.gray)
+                        Text("\(itemDesc)")
+                            .font(.footnote)
+                            .foregroundColor(.black)
+                            .bold()
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading) // HStack 전체 왼쪽 정렬
+            .padding(.horizontal)
+            
+            HStack(alignment: .top, spacing: 16) {
+                if let usedPurchaseDate = used.usedPurchaseDate {
+                    VStack(alignment: .leading) {
                         Text("구매일자")
                             .font(.callout)
                             .foregroundColor(.gray)
@@ -232,8 +296,8 @@ struct UsedDetailView: View {
                     }
                 }
                 
-                VStack(alignment: .leading) {
-                    if let usedExpiryDate = used.usedExpiryDate {
+                if let usedExpiryDate = used.usedExpiryDate {
+                    VStack(alignment: .leading) {
                         Text("유통기한")
                             .font(.callout)
                             .foregroundColor(.gray)
@@ -243,9 +307,10 @@ struct UsedDetailView: View {
                             .bold()
                     }
                 }
-                VStack{
-                    if let usedOpenDate = used.usedOpenDate {
-                        Text("사용시작일자")
+                
+                if let usedOpenDate = used.usedOpenDate {
+                    VStack(alignment: .leading) {
+                        Text("사용일자")
                             .font(.callout)
                             .foregroundColor(.gray)
                         Text("\(formatDateString(usedOpenDate))")
@@ -254,43 +319,15 @@ struct UsedDetailView: View {
                             .bold()
                     }
                 }
-                Spacer()
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .leading) // HStack 전체 왼쪽 정렬
             .padding(.horizontal)
-            
-            HStack{
-                VStack{
-                    if let itemName = used.itemName {
-                        Text("제품명")
-                            .font(.callout)
-                            .foregroundColor(.gray)
-                        Text("\(itemName)")
-                            .font(.footnote)
-                            .foregroundColor(.black)
-                            .bold()
-                    }
-                }
-                VStack{
-                    if let itemDesc = used.itemDesc {
-                        Text("제품명")
-                            .font(.callout)
-                            .foregroundColor(.gray)
-                        Text("\(itemDesc)")
-                            .font(.footnote)
-                            .lineLimit(nil)
-                            .foregroundColor(.black)
-                            .bold()
-                    }
-                }
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal)
-            
         }
-        
+        .padding(.vertical, 10)
+        .cornerRadius(8)
     }
+
+    
     
     
     private var UsedActionBarView: some View {
@@ -357,35 +394,6 @@ struct UsedDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
-    private var toolbarContent: some ToolbarContent {
-        Group {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    NavigationLink("편집") {
-                        UsedAddView(isEditMode: true, existingUsed: used)
-                    }
-                    Button("삭제") {
-                        isShowingDeleteAlert.toggle()
-                    }
-                    .confirmationDialog(
-                        "\(used.usedTitle)을/를 삭제하시겠습니까?",
-                        isPresented: $isShowingDeleteAlert,
-                        titleVisibility: .visible) {
-                            Button("삭제", role: .destructive) {
-                                Task {
-                                    await usedVM.removeUsed(usedId: used.id)
-                                    dismiss()
-                                }
-                            }
-                        }
-                } label: {
-                    Image(systemName: "ellipsis")
-                }
-            }
-        }
-    }
-    
     
     func formatDateString(_ dateString: String?) -> String {
         

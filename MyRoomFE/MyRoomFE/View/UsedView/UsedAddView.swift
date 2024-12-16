@@ -54,10 +54,10 @@ struct UsedAddView: View {
     var body: some View {
         ScrollView {
             VStack {
-                usedAddImageView()
+                usedAddImageView
                 
                 VStack(alignment: .leading){
-                    myItemInfoSection()
+                    myItemInfoSection
                     usedTitleSection
                     usedPriceSection
                     usedDescSection
@@ -67,9 +67,6 @@ struct UsedAddView: View {
         }
         .padding(.bottom, 20)
         .padding(.top, 20)
-        
-        
-        
     }
     
     private var addBtn:some View {
@@ -99,38 +96,43 @@ struct UsedAddView: View {
                         newContent: usedContent,
                         newItem: selectMyItem
                     )
-                    dismiss()
+                    
                 }
             } else {
                 // 새 아이템 등록 로직
                 usedVM.addUsed(
-                    selectedImages: [],
+                    selectedImages: selectedImages,
                     usedTitle: usedTitle,
                     usedPrice: usedPrice,
                     usedContent: usedContent,
                     selectMyItem: selectMyItem
-                ) { success in
-                    // 성공/실패 처리
-                }
-                dismiss()
+                )
+                
             }
             
+        }.alert("게시글 등록", isPresented: $usedVM.isAddShowing) {
+            Button("확인") {
+                    usedVM.fetchUseds()
+                    dismiss()
+            }
+        } message: {
+            Text(usedVM.message)
         }
     }
     
-    fileprivate func usedAddImageView() -> HStack<TupleView<(some View, ScrollView<some View>)>> {
-        return HStack {
-            Button {
-                if selectedImages.count < 10 {
-                    isPickerPresented.toggle()
-                    print(selectedImages.count)
-                }else{
-                    showAlert = true
-                    message = "이미지는 10개까지 선택할 수 있습니다."
-                }
-            } label: {
-                Image(systemName: "camera").resizable().frame(width: 30,height: 30).padding(30)
-            }.photosPicker(isPresented: $isPickerPresented, selection: $selectedItems, maxSelectionCount: maxImageCount - selectedImages.count, matching: .images)
+    private var usedAddImageView: some View {
+        HStack {
+           Button {
+               if selectedImages.count < 10 {
+                   isPickerPresented.toggle()
+                   print(selectedImages.count)
+               }else{
+                   showAlert = true
+                   message = "이미지는 10개까지 선택할 수 있습니다."
+               }
+           } label: {
+               Image(systemName: "camera").resizable().scaledToFit().frame(width: 20,height: 20).foregroundColor(.gray).padding(10)
+           }.photosPicker(isPresented: $isPickerPresented, selection: $selectedItems, maxSelectionCount: maxImageCount - selectedImages.count, matching: .images)
                 .alert(isPresented: $showAlert) {
                     Alert(
                         title: Text("알림"),
@@ -138,37 +140,45 @@ struct UsedAddView: View {
                         dismissButton: .default(Text("확인"))
                     )
                 }
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(Array(selectedImages.enumerated()), id: \.element) {index, image in
-                        ZStack (alignment: .topTrailing){
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 100, height: 100)
-                                .cornerRadius(8)
-                                .padding(5)
-                            
-                            
-                            Button(action: {
-                                removeImage(at: index)
-                            }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.gray)
-                                    .padding(4)
-                            }.background(Color.white.opacity(0.7))
-                                .clipShape(Circle())
-                                .offset(x: 5, y: -5)
-                        }
-                    }
-                }.onChange(of: selectedItems) { newItems in
-                    Task {
-                        await loadSelectedImages(from: newItems)
-                    }
-                }
-            }
-        }
+                .frame(width: 100, height: 100)
+                .background(Color.white)
+                .cornerRadius(10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray, lineWidth: 1)
+                )
+                .padding(10)
+           
+           ScrollView(.horizontal, showsIndicators: false) {
+               HStack {
+                   ForEach(Array(selectedImages.enumerated()), id: \.element) {index, image in
+                       ZStack (alignment: .topTrailing){
+                           Image(uiImage: image)
+                               .resizable()
+                               .scaledToFill()
+                               .frame(width: 100, height: 100)
+                               .cornerRadius(8)
+                               .padding(5)
+                           
+                           
+                           Button(action: {
+                               removeImage(at: index)
+                           }) {
+                               Image(systemName: "xmark.circle.fill")
+                                   .foregroundColor(.gray)
+                                   .padding(4)
+                           }.background(Color.white.opacity(0.7))
+                               .clipShape(Circle())
+                               .offset(x: 5, y: -5)
+                       }
+                   }
+               }.onChange(of: selectedItems) { newItems in
+                   Task {
+                       await loadSelectedImages(from: newItems)
+                   }
+               }
+           }
+       }
     }
     
     func loadSelectedImages(from items: [PhotosPickerItem]) async {
@@ -181,24 +191,27 @@ struct UsedAddView: View {
         selectedItems = [] // PhotoPicker 상태 초기화
     }
     
-    fileprivate func myItemInfoSection() -> VStack<TupleView<(some View, VStack<_ConditionalContent<TupleView<(some View, some View)>, some View>>)>> {
-        return VStack{
-            Button {
-                print("item select")
-                isMyItemPresented.toggle()
-            } label: {
-                Image(systemName: "plus").resizable().frame(width: 20,height: 20)
-            }
-            .cornerRadius(8)
-            .padding(.horizontal)
-            .padding(.bottom)
-            .sheet(isPresented: $isMyItemPresented) {
-                UsedItemListView(selectMyItem: $selectMyItem, isMyItemPresented: $isMyItemPresented, fetchAllItem: false)
-                    .edgesIgnoringSafeArea(.all)
-                    .environmentObject(ItemViewModel())
-                
+    private var myItemInfoSection : some View {
+        VStack{
+            HStack{
+                Button {
+                    print("item select")
+                    isMyItemPresented.toggle()
+                } label: {
+                    Image(systemName: "plus.app").resizable().frame(width: 20,height: 20).foregroundColor(.gray).padding(10)
+                }
+                .cornerRadius(8)
+                .padding(.horizontal)
+                .padding(.bottom)
+                .sheet(isPresented: $isMyItemPresented) {
+                    UsedItemListView(selectMyItem: $selectMyItem, isMyItemPresented: $isMyItemPresented, fetchAllItem: false)
+                        .edgesIgnoringSafeArea(.all)
+                        .environmentObject(ItemViewModel())
+                }
+                .frame(width: 40, height: 40)
                 Spacer()
             }
+            
             
             VStack(alignment: .leading,spacing: 10) {
                 if let selectMyItem = selectMyItem {
@@ -215,12 +228,12 @@ struct UsedAddView: View {
                         itemInfo(title: "추가설명", selectMyItem: selectMyItem.desc)
                     }
                     .padding()
-                    .background(Color.white) // 카드 배경
-                    .cornerRadius(16) // 둥근 모서리
-                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4) // 그림자
+                    .background(Color.white)
+                    .cornerRadius(16)
+                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
                     .padding(.horizontal)
                 } else {
-                    Text("내 물건 정보를 선택하세요").padding(.horizontal).padding(.bottom)
+                    Text("내 아이템 정보를 선택하세요").padding(.horizontal).padding(.bottom)
                 }
             }
         }

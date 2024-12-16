@@ -32,22 +32,32 @@ const createUsed = async (usedData, photoData) => {
     const returnData = await models.Used.findByPk(usedId, {
       include: [
         {
-          model: models.User,
-          as: "user",
-          attributes: ["nickname", "userImage"],
+          model: models.User, // 조인할 모델 (Post)
+          as: "user", // alias (선택 사항)
         },
         {
           model: models.UsedPhoto,
           as: "images",
-          attributes: ["id", "image"],
         },
         {
           model: models.UsedFav,
           as: "usedFav",
-          where: { usedId: usedId },
-          required: false,
+          where: { userId },
+          required: false, // LEFT OUTER JOIN
         },
       ],
+      attributes: {
+        include: [
+          [
+            models.sequelize.literal(
+              `CASE WHEN "usedFav"."userId" IS NOT NULL THEN true ELSE false END`
+            ),
+            "isFavorite",
+          ],
+        ],
+      },
+      distinct: true, // 중복 방지
+      subQuery: false,
     });
 
     return returnData;
