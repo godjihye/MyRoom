@@ -15,9 +15,9 @@ struct MyPageRow: View {
 		
 		HStack {
 			Text(icon)
-				.font(.system(size: 20))
+				.font(.system(size: 16))
 			Text(title)
-				.font(.system(size: 20))
+				.font(.system(size: 16))
 				.bold()
 			Spacer()
 			Image(systemName: "greaterthan")

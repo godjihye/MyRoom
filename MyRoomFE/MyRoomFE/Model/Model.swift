@@ -204,10 +204,6 @@ struct InviteCode: Codable {
 	let inviteCode: String
 }
 
-struct InviteCodeRoot: Codable {
-	let inviteCode: InviteCode
-}
-
 
 //MARK: - USER(사용자)
 

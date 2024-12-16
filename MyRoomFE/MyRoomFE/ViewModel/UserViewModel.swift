@@ -368,9 +368,9 @@ class UserViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let code = try JSONDecoder().decode(InviteCodeRoot.self, from: data)
+							let code = try JSONDecoder().decode(InviteCode.self, from: data)
 							UserDefaults.standard.set(code.inviteCode, forKey: "inviteCode")
-							self.inviteCode = code.inviteCode.inviteCode
+							self.inviteCode = code.inviteCode
 						} catch {
 							log("decode error")
 						}
@@ -394,8 +394,8 @@ class UserViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let res = try JSONDecoder().decode(InviteCodeRoot.self, from: data)
-							self.inviteCode = res.inviteCode.inviteCode
+							let res = try JSONDecoder().decode(InviteCode.self, from: data)
+							self.inviteCode = res.inviteCode
 						} catch let error {
 							log("decode error: \(error)")
 						}

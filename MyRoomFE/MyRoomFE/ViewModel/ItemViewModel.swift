@@ -257,13 +257,12 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	// Fav 등록 / 해제
-	func updateItemFav(itemId: Int, itemFav: Bool) async {
+	func updateItemFav(itemId: Int, itemFav: Bool) {
 		let url = "\(endPoint)/items/\(itemId)"
 		let params: Parameters = [
 			"isFav": !itemFav
 		]
-		log(" isFav 는 \(itemFav)에서 \(!itemFav)로 변경되어야 함")
-		let response = AF.request(url, method: .patch, parameters: params, encoding: JSONEncoding.default).response { response in
+		AF.request(url, method: .patch, parameters: params, encoding: JSONEncoding.default).response { response in
 			if let statusCode = response.response?.statusCode {
 				switch statusCode {
 				case 200..<300:
@@ -272,9 +271,6 @@ class ItemViewModel: ObservableObject {
 							let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 							log("root.item.isfav로 변경됨: \(root.item.isFav)")
 							self.isShowingAlert = true
-							//							DispatchQueue.main.async {
-							//								self.favItems.append(root.item)
-							//							}
 							self.message = root.message
 							if let index = self.items.firstIndex(where: {$0.id == itemId}) {
 								self.items[index].isFav = !itemFav

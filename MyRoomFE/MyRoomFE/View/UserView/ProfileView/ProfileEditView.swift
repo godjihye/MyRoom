@@ -30,6 +30,7 @@ struct ProfileEditView: View {
 		NavigationView {
 			VStack {
 				profileImageView
+					.padding()
 				nicknameSection
 				changePasswordLink
 				Spacer()
@@ -48,7 +49,6 @@ struct ProfileEditView: View {
 			}, message: {
 				Text(userVM.message)
 			})
-			.padding()
 		}
 		.navigationTitle("프로필 수정")
 		.navigationBarTitleDisplayMode(.inline)
@@ -64,7 +64,9 @@ struct ProfileEditView: View {
 					.resizable()
 					.clipShape(Circle())
 					.frame(width: 100, height: 100)
+					.overlay(Circle().stroke(Color.gray).opacity(0.8))
 					.overlay(cameraIcon)
+				
 			} else {
 				imageViewForUser
 			}
@@ -88,6 +90,7 @@ struct ProfileEditView: View {
 					image.resizable()
 						.clipShape(Circle())
 						.frame(width: 100, height: 100)
+						.overlay(Circle().stroke(Color.gray).opacity(0.8))
 						.overlay(cameraIcon)
 				} placeholder: {
 					ProgressView()
@@ -97,6 +100,7 @@ struct ProfileEditView: View {
 					.resizable()
 					.clipShape(Circle())
 					.frame(width: 100, height: 100)
+					.overlay(Circle().stroke(Color.gray).opacity(0.8))
 					.overlay(cameraIcon)
 			}
 		}
@@ -104,11 +108,11 @@ struct ProfileEditView: View {
 	
 	private var cameraIcon: some View {
 		Image(systemName: "camera")
-			.resizable()
-			.frame(width: 20, height: 20)
+			.renderingMode(.original)
+			.font(.system(size: 20))
 			.foregroundColor(.accentColor)
 			.padding(9)
-			.background(Color.white)
+			.background(Color.myroom2)
 			.clipShape(Circle())
 			.offset(x: 30, y: 30)
 	}
@@ -123,11 +127,15 @@ struct ProfileEditView: View {
 			}
 			CustomTextField(placeholder: "닉네임을 입력해주세요.", text: $newNickname)
 			if newNickname.isEmpty {
-				Text("닉네임을 입력해주세요!")
-					.font(.footnote)
-					.foregroundColor(.red)
+				HStack {
+					Text("닉네임을 입력해주세요!")
+						.font(.footnote)
+						.foregroundColor(.red)
+					Spacer()
+				}
 			}
 		}
+		.padding()
 	}
 	
 	// MARK: - Change Password Link
@@ -138,7 +146,7 @@ struct ProfileEditView: View {
 			}
 			Spacer()
 		}
-		.padding(.top)
+		.padding()
 	}
 	
 	// MARK: - Image Picker View
@@ -157,6 +165,7 @@ struct ProfileEditView: View {
 		WideButton(title: "변경사항 저장", backgroundColor: .accent) {
 			userVM.editUser(userImage: selectedThumbnail, nickname: newNickname == user.nickname ? nil : newNickname)
 		}
+		.padding(.bottom)
 	}
 }
 
