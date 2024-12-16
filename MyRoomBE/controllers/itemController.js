@@ -96,13 +96,13 @@ const updateAdditionalPhotos = async (req, res) => {
   console.log("req.body: ", req.body)
   try {
     const {photos} = req.files
+    const {photoTextAI} = req
     const {photoText} = req.body;
     const photoData = photos.map((photo, index) => ({
       blobName: photo.blobName,
       text: Array.isArray(photoText) ? photoText[index] || null : photoText || null,
+      textAI: Array.isArray(photoTextAI) ? photoTextAI[index] || null : null,
     }));
-    console.log("photoData ========================")
-    console.log(photoData)
     const result = await itemService.uploadAdditionalPhotos(
       photoData,
       req.params.itemId
@@ -122,7 +122,7 @@ const updateAdditionalPhotos = async (req, res) => {
 const deleteItem = async (req, res) => {
   try {
     const result = await itemService.deleteItem(req.params.itemId);
-    res.status(200).json({ result: result });
+    res.status(200).json({ message: "삭제가 완료되었습니다.", success: true });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -131,13 +131,17 @@ const deleteItem = async (req, res) => {
 // 4-2. Delete Additional Photo
 const deleteAdditionalPhoto = async (req, res) => {
   try {
-    const result = await itemService.deleteAdditionalPhoto(req.params.photoId);
+    const {itemId, id} = await itemService.deleteAdditionalPhoto(req.params.photoId);
+    console.log(`itemId: ${itemId}`)
+    console.log(`id: ${id}`)
     res.status(200).json({
       success: true,
       message: "성공적으로 삭제되었습니다.",
-      data: result,
+      itemId: itemId,
+      id: parseInt(id),
     });
   } catch (e) {
+    console.log(e.message)
     res.status(500).json({ success: false, message: e.message });
   }
 };

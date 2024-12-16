@@ -17,7 +17,7 @@ const findAllItem = async (id) => {
       {
         model: models.ItemPhoto,
         as: "itemPhoto",
-        attributes: ["id", "photo"],
+        attributes: ["id", "photo", "photoText", "photoTextAI"],
       },
       {
         model: models.Location,
@@ -51,7 +51,7 @@ const findAllItemByHomeId = async (id,filterByItemUrl) => {
       {
         model: models.ItemPhoto,
         as: "itemPhoto",
-        attributes: ["id", "photo"],
+        attributes: ["id", "photo", "photoText", "photoTextAI"],
       },
       {
         model: models.Location,
@@ -111,7 +111,7 @@ const findItem = async (id) => {
     {
       model: models.ItemPhoto,
       as: "itemPhoto",
-      attributes: ["id", "photo"],
+      attributes: ["id", "photo", "photoText", "photoTextAI"],
     },
     {
       model: models.Location,
@@ -179,6 +179,7 @@ const uploadAdditionalPhotos = async (photoData, itemId) => {
     const photos = photoData.map((photo) => ({
       photo: photo.blobName,
       photoText: photo.text,
+      photoTextAI: photo.textAI,
       itemId: itemId,
     }));
     await models.ItemPhoto.bulkCreate(photos, { transaction });
@@ -191,9 +192,11 @@ const uploadAdditionalPhotos = async (photoData, itemId) => {
 };
 
 const deleteAdditionalPhoto = async (id) => {
-  return models.ItemPhoto.destroy({
+  const item = await models.ItemPhoto.findOne({where: {id}, attributes: ['itemId']})
+  await models.ItemPhoto.destroy({
     where: { id },
   });
+  return {itemId: item.itemId, id}
 };
 
 module.exports = {

@@ -159,7 +159,6 @@ struct SearchResultsView: View {
 						.foregroundStyle(.blue)
 				}
 			}
-			.padding()
 			
 			Divider()
 			
