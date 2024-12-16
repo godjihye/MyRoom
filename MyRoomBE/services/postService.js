@@ -15,9 +15,9 @@ const findAllPost = async (page, pageSize, userId) => {
   return await postDao.findAllPost(page, pageSize, userId);
 };
 
-const findPostByName = async (id,data) => {
-  return await postDao.findPostByName(id,data);
-}
+const findPostByName = async (id, data) => {
+  return await postDao.findPostByName(id, data);
+};
 
 const updatePost = async (id, data) => {
   return await postDao.updatePost(id, data);

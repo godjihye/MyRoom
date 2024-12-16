@@ -14,19 +14,17 @@ router.post(
 );
 
 router.post("/", usedController.createUsed);
-router.get("/:userId", usedController.findAllUsed); 
+router.get("/:userId", usedController.findAllUsed);
 router.post("/search", usedController.findUsedByName);
 router.get("/detail/:id/:userId", usedController.findUsedById);
 router.delete("/:id", usedController.deleteUsed);
 
 router.post("/edit/:id", usedController.updateUsed);
 
-
-
 router.post("/:usedId/favorite", usedController.toggleFavorite); // 좋아요 추가
 router.delete("/:usedId/favorite", usedController.toggleFavorite); // 좋아요 제거
 
-router.put("/:id/status",usedController.updateUsedStatus) //거래상태 변경
-router.post("/:id/viewCnt",usedController.updateViewCnt) //조회수 증가
+router.put("/:id/status", usedController.updateUsedStatus); //거래상태 변경
+router.post("/:id/viewCnt", usedController.updateViewCnt); //조회수 증가
 
 module.exports = router;

@@ -14,8 +14,8 @@ const findAllItem = async (id) => {
   return await itemDao.findAllItem(id);
 };
 // 2-2. Find All Items By HomeId
-const findAllItemByHomeId = async (id,filterByItemUrl) => {
-  return await itemDao.findAllItemByHomeId(id,filterByItemUrl);
+const findAllItemByHomeId = async (id, filterByItemUrl) => {
+  return await itemDao.findAllItemByHomeId(id, filterByItemUrl);
 };
 // 2-3. Find All Favorites By HomeId
 const findAllFavItem = async (id) => {
