@@ -3,11 +3,8 @@ const models = require("../models");
 // 댓글 작성
 const createComment = async(comment, parentId, postId, userId ) => {
 
-    const newComment = await models.Comment.create({ comment, parentId, postId, userId });;
-
-    if(newComment) {
-        
-    }
+   return newComment = await models.Comment.create({ comment, parentId, postId, userId }, { logging: console.log });
+ 
    
 }
 

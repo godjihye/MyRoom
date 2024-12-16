@@ -121,7 +121,7 @@ struct PostAddView: View {
             }
             
             
-            postVM.addPost(selectedImages: selectPostImage, postTitle: postTitle, postContent: postContent,selectItemUrl: buttonItemUrls,buttonPositions:buttonPositions)
+            postVM.addPost(selectedImages: selectPostImage, postTitle: postTitle, postContent: postContent,selectItemUrls: buttonItemUrls,buttonPositions:buttonPositions)
         }.alert("게시글 등록", isPresented: $postVM.isAddShowing) {
             Button("확인") {
                 Task{

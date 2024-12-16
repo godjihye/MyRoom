@@ -33,37 +33,45 @@ class PostViewModel:ObservableObject {
     var page = 1
     
     //커뮤니티 등록
-    func addPost(selectedImages:[UIImage], postTitle:String, postContent:String,selectItemUrl:[[String]]?,buttonPositions:[[CGPoint]]? )  {
-        let postData: [String:Any?] = [
-            "postTitle" : postTitle,
-            "postContent" : postContent,
-            "userId" : userId,
-            
+    func addPost(selectedImages: [UIImage], postTitle: String, postContent: String, selectItemUrls: [[String]]?, buttonPositions: [[CGPoint]]?) {
+        let postData: [String: Any?] = [
+            "postTitle": postTitle,
+            "postContent": postContent,
+            "userId": userId
         ]
         
-        
         guard let postDataJson = try? JSONSerialization.data(withJSONObject: postData, options: []) else {
-            print("Failed to encode usedData to JSON")
+            print("Failed to encode postData to JSON")
             return
         }
         
-        //buttonData 처리
+        // 버튼 정보 처리
         var postButtonData: [[String: Any]] = []
         
-        if let itemUrls = selectItemUrl, let positions = buttonPositions,
-           itemUrls.count == positions.count {
-            
-            for (index, urls) in itemUrls.enumerated() {
+        if let itemUrls = selectItemUrls, let positions = buttonPositions {
+            print("selectItemUrls: \(selectItemUrls)")
+            print("buttonPositions : \(buttonPositions)")
+            for (imageIndex, urls) in itemUrls.enumerated() {
+                var buttons: [[String: Any]] = []
+                
+                // 각 이미지에 대한 버튼 정보 처리
                 for (buttonIndex, itemUrl) in urls.enumerated() {
-                    if positions.indices.contains(index),
-                       positions[index].indices.contains(buttonIndex) {
-                        let position = positions[index][buttonIndex]
-                        postButtonData.append([
+                    if positions.indices.contains(imageIndex), positions[imageIndex].indices.contains(buttonIndex) {
+                        let position = positions[imageIndex][buttonIndex]
+                        buttons.append([
                             "positionX": "\(position.x)",
                             "positionY": "\(position.y)",
                             "itemUrl": itemUrl
                         ])
                     }
+                }
+                
+                // 버튼 정보가 있을 경우만 `buttonData`에 추가
+                if !buttons.isEmpty {
+                    postButtonData.append([
+                        "imageIndex": imageIndex,
+                        "buttons": buttons
+                    ])
                 }
             }
         }
@@ -74,31 +82,28 @@ class PostViewModel:ObservableObject {
         }
         
         let formData = MultipartFormData()
-        formData.append(postDataJson, withName: "postData",mimeType: "application/json")
+        formData.append(postDataJson, withName: "postData", mimeType: "application/json")
         formData.append(postButtonDataJson, withName: "buttonData", mimeType: "application/json")
         
         for (index, image) in selectedImages.enumerated() {
             if let imageData = image.jpegData(compressionQuality: 0.8) {
-                formData.append(imageData,
-                                withName: "image",
-                                fileName: "image_\(UUID().uuidString).jpeg",
-                                mimeType: "image/jpeg")
-                if index == 0 {formData.append(imageData, withName: "postThumbnail",fileName: "thumbnail_\(UUID().uuidString).jpeg",mimeType: "image/jpeg") }
+                formData.append(imageData, withName: "image", fileName: "image_\(UUID().uuidString).jpeg", mimeType: "image/jpeg")
+                if index == 0 {
+                    formData.append(imageData, withName: "postThumbnail", fileName: "thumbnail_\(UUID().uuidString).jpeg", mimeType: "image/jpeg")
+                }
             }
         }
-        
-        
         
         let postUrl = "\(endPoint)/posts"
         let headers: HTTPHeaders = [
             "Content-Type": "multipart/form-data"
         ]
-        AF.upload(multipartFormData: formData, to: postUrl,headers: headers).response { response in
+        
+        AF.upload(multipartFormData: formData, to: postUrl, headers: headers).response { response in
             if let statusCode = response.response?.statusCode {
                 switch statusCode {
                 case 200..<300:
-                    if let data =
-                        response.data {
+                    if let data = response.data {
                         do {
                             let root = try JSONDecoder().decode(PostRoot.self, from: data)
                             DispatchQueue.main.async {
@@ -107,7 +112,7 @@ class PostViewModel:ObservableObject {
                             self.isAddShowing = true
                             self.message = root.message
                             log("addPost Complete", trait: .success)
-                        }catch let error{
+                        } catch let error {
                             self.isAlertShowing = true
                             self.message = error.localizedDescription
                             log("addPost UnexpectedError: \(error.localizedDescription)", trait: .error)
@@ -133,10 +138,8 @@ class PostViewModel:ObservableObject {
         AF.request(postUrl).responseDecodable(of: PostRoot.self) { response in
                     print(response)
                 }
-        
     }
-    
-    
+
     // 커뮤니티 검색
     func fetchPosts(size:Int = 10)   {
         print("fetchPosts start===========")
@@ -154,12 +157,14 @@ class PostViewModel:ObservableObject {
                         do {
                             let root = try JSONDecoder().decode(PostRoot.self, from: data)
                             DispatchQueue.main.async {
-                                self.posts.append(contentsOf: root.posts)
-                            }
-                            self.page += 1
-                            if self.posts.isEmpty {
-                                self.isAlertShowing = true
-                                self.message = "커뮤니티 게시글이 없습니다"
+                                // 데이터가 없으면 더 이상 페이지 증가하지 않도록 처리
+                                if root.posts.isEmpty {
+                                    self.isAlertShowing = true
+                                    self.message = "등록된 상품이 없습니다."
+                                } else {
+                                    self.posts.append(contentsOf: root.posts)
+                                    self.page += 1 // 데이터가 있으면 페이지를 증가
+                                }
                             }
                             log("fetchPosts Complete", trait: .success)
                         }catch let error{
@@ -187,6 +192,9 @@ class PostViewModel:ObservableObject {
                 SVProgressHUD.dismiss()
             }
         }
+//        AF.request(postUrl).responseDecodable(of: PostRoot.self) { response in
+//                    print(response)
+//                }
     }
     
     //좋아요

@@ -143,6 +143,7 @@ struct ButtonData: Identifiable, Codable, Equatable, Hashable {
     let positionX: CGFloat
     let positionY: CGFloat
     let itemUrl: String
+    
 }
 
 struct PostFavData:Identifiable,Codable, Equatable {

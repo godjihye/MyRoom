@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Comment extends Model {
     static associate(models) {
       Comment.belongsTo(models.Post, {
-        foreignKey: "id",
+        foreignKey: "postId",
         onDelete: "CASCADE",
         as:"postComments"
       });
