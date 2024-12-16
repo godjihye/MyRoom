@@ -4,7 +4,8 @@ const models = require("../models");
 //댓글작성
 const createCommnet = async (req, res) => {
   console.log("comment start")
-  const parentId = req.params.parentId === 'undefined' ? null : req.params.parentId;
+  console.log(req.params.parentId)
+  const parentId = req.params.parentId || null;
   const {postId, userId} = req.params
   const text = req.body.comment
   console.log(parentId,postId,userId,text)
@@ -24,7 +25,7 @@ const createReply = async(req,res) => {
 
   try{
         const reply = await commentService.createReply(comment, parentId, postId, userId )
-        res.status(201).json({ data: reply });
+        res.status(201).json({ comment: reply });
     }catch(e){
         res.status(500).json({ error: e.message })
     }

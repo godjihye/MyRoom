@@ -27,7 +27,7 @@ struct UsedItemListView: View {
     var body: some View {
         VStack {
             ScrollView {
-                LazyVStack {
+                LazyVGrid(columns: columns) {
                     if !self.items.isEmpty {
                         ForEach(self.items) { item in
                             UsedItemRowView(selectedItem: $selectMyItem,

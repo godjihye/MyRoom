@@ -41,9 +41,6 @@ struct UsedItemRowView: View {
             selectedItem = item
             isMyItemPresented.toggle()
         }
-        .onAppear(perform: {
-            print("item chk : \(item)")
-        })
         .padding(.vertical, 8)
         
     }

@@ -25,65 +25,62 @@ class UsedViewModel:ObservableObject {
         
         let userId = UserDefaults.standard.value(forKey: "userId") as! Int
         
-        func fetchUseds(size:Int = 10) {
-                print("fetchUseds start")
-                guard !isLoading else { return }
-                isLoading = true
-                let url = "\(endPoint)/useds/\(userId)"
-                let params:Parameters = ["page":self.page, "size":size]
-                
-                AF.request(url,method: .get,parameters: params).response { response in
-                        defer {
-                                self.isLoading = false
-                                SVProgressHUD.dismiss()
-                        }
-                        if let statusCode = response.response?.statusCode {
-                                switch statusCode {
-                                case 200..<300:
-                                        if let data = response.data {
-                                                
-                                                //                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
-                                                //                            print("JSON response: \(json)") }
-                                                
-                                                do {
-                                                        let root = try JSONDecoder().decode(UsedRoot.self, from: data)
-                                                        DispatchQueue.main.async {
-                                                                self.useds.append(contentsOf: root.useds)
-                                                        }
-                                                        self.page += 1
-                                                        if self.useds.isEmpty {
-                                                                self.isAlertShowing = true
-                                                                self.message = "useds등록된 상품이 없습니다."
-                                                        }
-                                                } catch let error {
-                                                        print(error.localizedDescription)
-                                                        self.isAlertShowing = true
-                                                        self.message = error.localizedDescription
-                                                }
-                                        }
-                                case 300..<500:
-                                        if let data = response.data {
-                                                do {
-                                                        self.isAlertShowing = true
-                                                        let apiError = try JSONDecoder().decode(APIError.self, from: data)
-                                                        self.message = apiError.message
-                                                } catch let error {
-                                                        self.isAlertShowing = true
-                                                        self.message = error.localizedDescription
-                                                }
-                                        }
-                                default:
-                                        self.isAlertShowing = true
-                                        self.message = "네트워크 오류입니다."
+    func fetchUseds(size: Int = 10) {
+        print("fetchUseds start")
+        guard !isLoading else { return }
+        isLoading = true
+        
+        let url = "\(endPoint)/useds/\(userId)"
+        let params: Parameters = ["page": self.page, "size": size]
+        
+        AF.request(url, method: .get, parameters: params).response { response in
+            defer {
+                self.isLoading = false
+                SVProgressHUD.dismiss()
+            }
+            
+            if let statusCode = response.response?.statusCode {
+                switch statusCode {
+                case 200..<300:
+                    if let data = response.data {
+                        do {
+                            let root = try JSONDecoder().decode(UsedRoot.self, from: data)
+                            DispatchQueue.main.async {
+                                // 데이터가 없으면 더 이상 페이지 증가하지 않도록 처리
+                                if root.useds.isEmpty {
+                                    self.isAlertShowing = true
+                                    self.message = "등록된 상품이 없습니다."
+                                } else {
+                                    self.useds.append(contentsOf: root.useds)
+                                    self.page += 1 // 데이터가 있으면 페이지를 증가
                                 }
-                                self.isLoading = false
-                                SVProgressHUD.dismiss()
+                            }
+                        } catch let error {
+                            print(error.localizedDescription)
+                            self.isAlertShowing = true
+                            self.message = error.localizedDescription
                         }
+                    }
+                    
+                case 300..<500:
+                    if let data = response.data {
+                        do {
+                            self.isAlertShowing = true
+                            let apiError = try JSONDecoder().decode(APIError.self, from: data)
+                            self.message = apiError.message
+                        } catch let error {
+                            self.isAlertShowing = true
+                            self.message = error.localizedDescription
+                        }
+                    }
+                    
+                default:
+                    self.isAlertShowing = true
+                    self.message = "네트워크 오류입니다."
                 }
-                //        AF.request(url).responseDecodable(of: UsedRoot.self) { response in
-                //            print(response)
-                //        }
+            }
         }
+    }
         
         // 글상세
         func fetchDetailUsed(usedId : Int,userId:Int) async throws -> Used{

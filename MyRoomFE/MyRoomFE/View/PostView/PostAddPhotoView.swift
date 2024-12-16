@@ -21,6 +21,7 @@ struct PostAddPhotoView: View {
     @State private var currentTabIndex: Int = 0 //선택한 이미지 index
     
     
+    
     //내 아이템 정보 가저오기
     @State private var isMyItemPresented: Bool = false
     @Binding  var selectMyItem: Item?
@@ -66,19 +67,15 @@ struct PostAddPhotoView: View {
             }
         }
         .sheet(isPresented: $isMyItemPresented) {
-                    UsedItemListView(selectMyItem: $selectMyItem, isMyItemPresented: $isMyItemPresented,fetchAllItem: true).edgesIgnoringSafeArea(.all)
-                        .environmentObject(ItemViewModel())
-                }
+            UsedItemListView(selectMyItem: $selectMyItem, isMyItemPresented: $isMyItemPresented,fetchAllItem: true).edgesIgnoringSafeArea(.all)
+                .environmentObject(ItemViewModel())
+        }
     }
     
     func loadSelectedImages(from items: [PhotosPickerItem]) async {
         selectPostImage = []
         buttonPositions = []
         buttonItemUrls = []
-        
-        for _ in items {
-            buttonPositions.append([]) // 각 이미지에 대한 빈 버튼 위치 배열 생성
-        }
         
         for item in items {
             if let data = try? await item.loadTransferable(type: Data.self),
@@ -147,9 +144,9 @@ struct PostAddPhotoView: View {
 
 
 
-#Preview {
-    PostAddPhotoView(selectPostImage: .constant([]), // 빈 배열
-                     buttonPositions: .constant([]), // 빈 2D 배열
-                     buttonItemUrls: .constant([]), // 빈 2D 배열
-                     selectMyItem: .constant(nil)).environmentObject(ItemViewModel())
-}
+//#Preview {
+//    PostAddPhotoView(selectPostImage: .constant([]), // 빈 배열
+//                     buttonPositions: .constant([]), // 빈 2D 배열
+//                     buttonItemUrls: .constant([]), // 빈 2D 배열
+//                     selectMyItem: .constant(nil)).environmentObject(ItemViewModel())
+//}

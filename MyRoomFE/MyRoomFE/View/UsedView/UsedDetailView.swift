@@ -53,7 +53,7 @@ struct UsedDetailView: View {
                     Button(action: {
                         isItemInfoPresented.toggle()
                     }) {
-                        Text("판매자의 아이템 정보보기")
+                        Text("마룸에 저장한 아이템 정보보기")
                             .font(.caption)
                             .foregroundColor(.accent)
                             .padding(.horizontal)
