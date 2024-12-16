@@ -27,13 +27,15 @@ struct Item: Codable, Identifiable, Equatable {
 	var itemPhoto: [ItemPhoto]?
 	var location: Item_Location?
 	static func == (lhs: Item, rhs: Item) -> Bool {
-			return lhs.id == rhs.id
+		return lhs.id == rhs.id
 	}
 }
 
 struct ItemPhoto: Codable, Identifiable, Equatable {
 	let id: Int
 	let photo: String
+	let photoText: String?
+	let photoTextAI: String?
 }
 
 struct Item_Location: Codable, Equatable {
@@ -66,6 +68,13 @@ struct AdditionalPhotosRoot: Decodable {
 	let photos: AdditionalPhoto
 }
 
+struct DeleteAdditionalPhotosRoot: Decodable {
+	let success: Bool
+	let message: String
+	let itemId: Int
+	let id: Int
+}
+
 //MARK: - ROOM AND LOCATION (방/위치)
 
 struct Location: Identifiable, Codable, Hashable {
@@ -96,34 +105,34 @@ struct RoomResponse:Codable {
 //MARK: - POST(커뮤니티 게시글)
 struct PostUser: Codable,Equatable {
 	let id:Int
-    let nickname: String
-    let userImage: String?
+	let nickname: String
+	let userImage: String?
 }
 struct Post: Identifiable,Codable,Equatable {
-    let id: Int
-    let postTitle: String
-    let postContent: String
-    let postThumbnail: String
-    
-    let user: PostUser
-    
-    let postFav: [PostFavData]?
-    var isFavorite:Bool
-    let postFavCnt: Int
-    let postViewCnt: Int
-    
-    let updatedAt:String
-    let createdAt:String
-    
-    let images: [PostPhotoData]
-    
-    mutating func toggleFavorite() {
-        isFavorite.toggle()
-    }
-    
-    mutating func setFavorite(_ value: Bool) {
-        isFavorite = value
-    }
+	let id: Int
+	let postTitle: String
+	let postContent: String
+	let postThumbnail: String
+	
+	let user: PostUser
+	
+	let postFav: [PostFavData]?
+	var isFavorite:Bool
+	let postFavCnt: Int
+	let postViewCnt: Int
+	
+	let updatedAt:String
+	let createdAt:String
+	
+	let images: [PostPhotoData]
+	
+	mutating func toggleFavorite() {
+		isFavorite.toggle()
+	}
+	
+	mutating func setFavorite(_ value: Bool) {
+		isFavorite = value
+	}
 }
 
 struct PostRoot: Codable{
@@ -133,16 +142,16 @@ struct PostRoot: Codable{
 }
 
 struct PostPhotoData:Identifiable,Codable, Equatable, Hashable  {
-    let id:Int
-    let image:String
-    let btnData:[ButtonData]?
+	let id:Int
+	let image:String
+	let btnData:[ButtonData]?
 }
 
 struct ButtonData: Identifiable, Codable, Equatable, Hashable {
-    let id: Int
-    let positionX: CGFloat
-    let positionY: CGFloat
-    let itemUrl: String
+	let id: Int
+	let positionX: CGFloat
+	let positionY: CGFloat
+	let itemUrl: String
 }
 
 struct PostFavData:Identifiable,Codable, Equatable {
@@ -156,18 +165,18 @@ struct PostFavData:Identifiable,Codable, Equatable {
 struct Comment: Identifiable ,Codable{
 	let id:Int
 	let comment: String
-    let user:CommentUser
-    var replies: [Comment]?
+	let user:CommentUser
+	var replies: [Comment]?
 	let updatedAt:String
 }
 
 struct CommentRoot :Codable{
-    let comments : [Comment]
+	let comments : [Comment]
 }
 
 struct CommentUser : Codable {
-    let nickname: String
-    let userImage: String?
+	let nickname: String
+	let userImage: String?
 }
 
 //MARK: - HOME(집)
@@ -200,13 +209,13 @@ struct InviteCodeRoot: Codable {
 struct User : Codable,Equatable {
 	let id: Int
 	let userName: String
-	let nickname: String
-	let userImage: String?
+	var nickname: String
+	var userImage: String?
 	let createdAt: String
 	let updatedAt: String
-	let homeId: Int?
-	let mates: [MateUser]?
-	let homeUser: Home?
+	var homeId: Int?
+	var mates: [MateUser]?
+	var homeUser: Home?
 }
 
 struct MateUser: Codable, Equatable, Identifiable {
@@ -241,13 +250,13 @@ struct Used: Identifiable,Codable,Equatable {
 	let usedDesc: String
 	let user: User
 	let usedUrl: String?
-		var usedStatus: Int
+	var usedStatus: Int
 	let usedPurchaseDate: String?
 	let usedExpiryDate: String?
 	let usedOpenDate: String?
 	let purchasePrice: Int?
-		let itemName:String?
-		let itemDesc:String?
+	let itemName:String?
+	let itemDesc:String?
 	let usedFavCnt: Int
 	let usedViewCnt: Int
 	let usedChatCnt: Int
@@ -256,8 +265,8 @@ struct Used: Identifiable,Codable,Equatable {
 	var isFavorite:Bool
 	let usedFav: [UsedFavData]?
 	let updatedAt: String
-		
-		let item:Item?
+	
+	let item:Item?
 	
 	mutating func toggleFavorite() {
 		isFavorite.toggle()
@@ -265,8 +274,8 @@ struct Used: Identifiable,Codable,Equatable {
 	mutating func setFavorite(_ value: Bool) {
 		isFavorite = value
 	}
-		
-		
+	
+	
 }
 
 
@@ -286,25 +295,25 @@ struct UsedFavData:Identifiable,Codable, Equatable {
 }
 
 struct UsedRoot: Codable{
-		let success: Bool
-		let useds: [Used]
-		let message: String
+	let success: Bool
+	let useds: [Used]
+	let message: String
 }
 
 
 //MARK: - Chat
 struct Message: Identifiable {
-    let id: String
-    let senderId: String
-    let text: String
-    let timestamp: Double
+	let id: String
+	let senderId: String
+	let text: String
+	let timestamp: Double
 }
 
 struct ChatRoom: Identifiable {
-    var id: String
-    var roomName: String
-    var participants: [String]
-    var imageUrls: [String: String]
+	var id: String
+	var roomName: String
+	var participants: [String]
+	var imageUrls: [String: String]
 }
 
 
@@ -315,6 +324,7 @@ struct ApiResponse: Error, Decodable {
 	let success: Bool
 	let message: String
 }
+
 struct APIError: Codable {
 	let message: String
 }

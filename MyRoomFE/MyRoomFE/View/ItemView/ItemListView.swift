@@ -21,7 +21,6 @@ struct ItemListView: View {
 		var body: some View {
 				NavigationStack {
 						VStack {
-								headerView
 								itemListView
 						}
 						.frame(maxHeight: .infinity)
@@ -50,27 +49,6 @@ struct ItemListView: View {
 						})
 						.navigationTitle("\(location.locationName)")
 						.navigationBarTitleDisplayMode(.inline)
-				}
-		}
-		
-		private var headerView: some View {
-				VStack {
-						HStack {
-								locationInfo
-								Spacer()
-								//addItemButton
-						}
-						.padding(.horizontal)
-				}
-		}
-		
-		private var locationInfo: some View {
-				VStack(alignment: .leading) {
-						Text(location.locationName)
-								.font(.title)
-								.bold()
-						Text(location.locationDesc)
-								.font(.caption)
 				}
 		}
 		

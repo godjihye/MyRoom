@@ -29,16 +29,6 @@ struct FavListView: View {
 		}
 	}
 	
-	private var titleView: some View {
-		HStack {
-			Text("Fav List ✨")
-				.font(.title)
-				.bold()
-				.padding(.top)
-			Spacer()
-		}
-		.padding(.horizontal)
-	}
 	
 	private var list: some View {
 		Group {
@@ -47,7 +37,7 @@ struct FavListView: View {
 					ForEach(itemVM.favItems) { item in
 						if item.isFav {
 							NavigationLink {
-								ItemDetailView(itemId: item.id)
+								ItemDetailView(item: item)
 							} label: {
 								FavItemRow(item: item)
 							}

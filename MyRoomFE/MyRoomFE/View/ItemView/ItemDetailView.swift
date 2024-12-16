@@ -13,7 +13,7 @@ struct ItemDetailView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
 	
 	@State private var isShowingDeleteAlert: Bool = false
-	
+	@State private var isFav: Bool = false
 	private var itemId: Int? // 아이템 ID
 	private var initialItem: Item? // 직접 받은 아이템
 	
@@ -52,6 +52,7 @@ struct ItemDetailView: View {
 							}
 							.padding()
 					}
+				
 					.toolbar(content: {
 						if let item = itemVM.items.first(where: {$0.id == itemId}){
 							ToolbarItem(placement: .topBarTrailing) {
@@ -62,25 +63,24 @@ struct ItemDetailView: View {
 											Button("삭제") {
 													isShowingDeleteAlert = true
 											}
-											.confirmationDialog(
-													"\(item.itemName)을/를 삭제하시겠습니까?",
-													isPresented: $isShowingDeleteAlert,
-													titleVisibility: .visible
-											) {
-													Button("삭제", role: .destructive) {
-															Task {
-																	await itemVM.removeItem(itemId: item.id)
-																	dismiss()
-															}
-													}
-											}
+											
 									} label: {
 											Image(systemName: "ellipsis")
+									}
+									.confirmationDialog(
+											"\(item.itemName)을/를 삭제하시겠습니까?",
+											isPresented: $isShowingDeleteAlert,
+											titleVisibility: .visible
+									) {
+											Button("삭제", role: .destructive) {
+												itemVM.removeItem(itemId: item.id)
+												dismiss()
+											}
 									}
 							}
 						}
 					})
-					.alert("좋아요", isPresented: $itemVM.isShowingAlert, actions: {
+					.alert("아이템 수정", isPresented: $itemVM.isShowingAlert, actions: {
 							Button("확인", role: .cancel) {}
 					}, message: {
 							Text(itemVM.message)
@@ -97,7 +97,7 @@ struct ItemDetailView: View {
 				AsyncImage(url: URL(string: photo.addingURLPrefix())) { image in
 					image
 						.resizable()
-						.aspectRatio(contentMode: .fill)
+						.aspectRatio(3/4, contentMode: .fit)
 						.frame(maxWidth: .infinity)
 						.cornerRadius(10)
 						.overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray).opacity(0.2))
@@ -138,7 +138,7 @@ struct ItemDetailView: View {
 	}
 	
 	private func itemLocation(item: Item) -> some View {
-		Label("위치  |  \(item.location!.room.roomName)의 \(item.location!.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
+		Label("위치  |  \(item.location?.room.roomName ?? "")의 \(item.location?.locationName ?? "")에 있습니다.", systemImage: "mappin.and.ellipse")
 			.font(.headline)
 	}
 	
