@@ -141,30 +141,6 @@ struct ProfileEditView: View {
 		.padding(.top)
 	}
 	
-	// MARK: - Toolbar Items
-	//	private func toolbarItems() -> some ToolbarContent {
-	//		Group {
-	//			ToolbarItem(placement: .topBarTrailing) {
-	//				Button {
-	//					userViewModel.editUser(userImage: selectedThumbnail, nickname: newNickname == user.nickname ? nil : newNickname)
-	//				} label: {
-	//					Text("완료")
-	//				}
-	//			}
-	//			ToolbarItem(placement: .principal) {
-	//				Text("프로필 수정")
-	//					.bold()
-	//			}
-	//			ToolbarItem(placement: .topBarLeading) {
-	//				Button {
-	//					dismiss()
-	//				} label: {
-	//					Image(systemName: "xmark")
-	//				}
-	//			}
-	//		}
-	//	}
-	
 	// MARK: - Image Picker View
 	private var imagePickerView: some View {
 		Group {

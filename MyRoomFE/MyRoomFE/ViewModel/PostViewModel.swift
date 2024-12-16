@@ -97,7 +97,7 @@ class PostViewModel:ObservableObject {
             if let statusCode = response.response?.statusCode {
                 switch statusCode {
                 case 200..<300:
-                    if let data =
+									if let data =
                         response.data {
                         do {
                             let root = try JSONDecoder().decode(PostRoot.self, from: data)

@@ -36,16 +36,14 @@ const findAllItem = async (id) => {
   });
 };
 // 2-2. Find All Items By HomeId
-const findAllItemByHomeId = async (id,filterByItemUrl) => {
-
+const findAllItemByHomeId = async (id, filterByItemUrl) => {
   const whereCondition = {};
-  
+
   if (filterByItemUrl == 1) {
     whereCondition.url = { [models.Sequelize.Op.ne]: null };
   }
 
   return await models.Item.findAll({
-    
     where: whereCondition,
     include: [
       {
@@ -107,26 +105,29 @@ const findAllFavItem = async (id) => {
 };
 // 3. Item 상세 조회
 const findItem = async (id) => {
-  return await models.Item.findOne({where: {id}, include: [
-    {
-      model: models.ItemPhoto,
-      as: "itemPhoto",
-      attributes: ["id", "photo", "photoText", "photoTextAI"],
-    },
-    {
-      model: models.Location,
-      as: "location",
-      attributes: ["locationName"],
-      include: [
-        {
-          model: models.Room,
-          as: "room",
-          attributes: ["roomName"],
-        },
-      ],
-    },
-  ],
-  order: [["updatedAt", "DESC"]]});
+  return await models.Item.findOne({
+    where: { id },
+    include: [
+      {
+        model: models.ItemPhoto,
+        as: "itemPhoto",
+        attributes: ["id", "photo", "photoText", "photoTextAI"],
+      },
+      {
+        model: models.Location,
+        as: "location",
+        attributes: ["locationName"],
+        include: [
+          {
+            model: models.Room,
+            as: "room",
+            attributes: ["roomName"],
+          },
+        ],
+      },
+    ],
+    order: [["updatedAt", "DESC"]],
+  });
 };
 
 // 3-1. Item 이름으로 상세 조회 (포함 검색)
@@ -192,11 +193,14 @@ const uploadAdditionalPhotos = async (photoData, itemId) => {
 };
 
 const deleteAdditionalPhoto = async (id) => {
-  const item = await models.ItemPhoto.findOne({where: {id}, attributes: ['itemId']})
+  const item = await models.ItemPhoto.findOne({
+    where: { id },
+    attributes: ["itemId"],
+  });
   await models.ItemPhoto.destroy({
     where: { id },
   });
-  return {itemId: item.itemId, id}
+  return { itemId: item.itemId, id };
 };
 
 module.exports = {

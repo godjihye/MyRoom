@@ -3,11 +3,9 @@ const postService = require("../services/postService");
 const createPost = async (req, res) => {
   console.log("postCreate start~~~~~~~~");
   const postData = req.body.postData;
-  const buttonData = req.body.buttonData
+  const buttonData = req.body.buttonData;
   const jsonPostData = JSON.parse(postData);
   const jsonButtonData = JSON.parse(buttonData);
-  // const postData = req.body
-
   const photoData = req.files;
   const thumbnailBlobName = photoData.postThumbnail.find(
     (item) => item.fieldname === "postThumbnail"
@@ -15,7 +13,11 @@ const createPost = async (req, res) => {
   jsonPostData.postThumbnail = thumbnailBlobName; //postThumbnail 추가
   console.log("photo", photoData);
   try {
-    const post = await postService.createPost(jsonPostData, photoData,jsonButtonData);
+    const post = await postService.createPost(
+      jsonPostData,
+      photoData,
+      jsonButtonData
+    );
 
     res.status(201).json({
       success: true,
@@ -46,7 +48,6 @@ const findAllPost = async (req, res) => {
     const pageNum = parseInt(page) || 1;
     const size = parseInt(pageSize) || 10;
     const userId = req.params.userId;
-
     const posts = await postService.findAllPost(pageNum, size, userId);
     const totalPages = Math.ceil(posts.count / size);
 
@@ -61,7 +62,7 @@ const findAllPost = async (req, res) => {
   }
 };
 
-const findPostByName = async (req,res) => {
+const findPostByName = async (req, res) => {
   try {
     const post = await postService.findPostByName(
       req.body.userId,
@@ -76,7 +77,7 @@ const findPostByName = async (req,res) => {
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
-}
+};
 
 const updatePost = async (req, res) => {
   try {
@@ -95,9 +96,9 @@ const deletePost = async (req, res) => {
   try {
     const result = await postService.deletePost(req.params.id);
     if (result) {
-      res.status(200).json({ 
-        success : true,
-        message: "게시글이 삭제되었습니다." 
+      res.status(200).json({
+        success: true,
+        message: "게시글이 삭제되었습니다.",
       });
     } else {
       res.status(404).json({ error: `post not found` });

@@ -13,26 +13,26 @@ struct JoinHomeView: View {
 	
 	@State private var inviteCode = ""
 	
-    var body: some View {
-			VStack(alignment: .leading) {
-				Text("초대코드로 입장")
-					.font(.largeTitle)
-					.fontWeight(.bold)
-				CustomTextField(icon: "barcode.viewfinder", placeholder: "예시) MYROOM", text: $inviteCode)
-				WideButton(title: "입장", backgroundColor: .accent) {
-					userVM.joinHome(inviteCode: inviteCode)
-				}
-				.alert("방 입장", isPresented: $userVM.isMakeHomeAlert) {
-					Button("확인", role: .cancel) {
-						dismiss()
-					}
-				} message: {
-					Text(userVM.message)
-				}
-
+	var body: some View {
+		VStack(alignment: .leading) {
+			Text("초대코드로 입장")
+				.font(.largeTitle)
+				.fontWeight(.bold)
+			CustomTextField(icon: "barcode.viewfinder", placeholder: "예시) MYROOM", text: $inviteCode)
+			WideButton(title: "입장", backgroundColor: .accent) {
+				userVM.joinHome(inviteCode: inviteCode)
 			}
-			.padding()
-    }
+			.alert("방 입장", isPresented: $userVM.isMakeHomeAlert) {
+				Button("확인", role: .cancel) {
+					dismiss()
+				}
+			} message: {
+				Text(userVM.message)
+			}
+			
+		}
+		.padding()
+	}
 }
 
 #Preview {

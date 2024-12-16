@@ -4,7 +4,7 @@ const axios = require("axios");
 const multer = require("multer");
 require("dotenv").config();
 
-const uploadImage = require("./uploadImage")
+const uploadImage = require("./uploadImage");
 
 const headers = {
   "api-key": process.env.GPT_APIKEY,
@@ -29,9 +29,12 @@ const summarizeMiddleware = async (req, res, next) => {
       }
       const textData = {
         messages: [
-          { role: "system", content: "You are a helpful assistant that summarizes text." },
+          {
+            role: "system",
+            content: "You are a helpful assistant that summarizes text.",
+          },
           { role: "user", content: `${text} 앞 글을 요약해줘` },
-        ]
+        ],
       };
 
       try {
@@ -39,7 +42,7 @@ const summarizeMiddleware = async (req, res, next) => {
         return response.data.choices[0]?.message?.content || "";
       } catch (error) {
         console.error("Error summarizing text:", error.message);
-        return ""; 
+        return "";
       }
     });
 

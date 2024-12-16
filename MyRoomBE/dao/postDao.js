@@ -61,7 +61,7 @@ const createPost = async (postData, photoData, buttonData) => {
       include: [
         {
           model: models.User,
-          as: "user"
+          as: "user",
         },
         {
           model: models.PostPhoto,
@@ -122,7 +122,7 @@ const findAllPost = async (page, pageSize, userId) => {
     include: [
       {
         model: models.User,
-        as: "user"
+        as: "user",
       },
       {
         model: models.PostPhoto,
@@ -158,7 +158,7 @@ const findAllPost = async (page, pageSize, userId) => {
   });
 };
 
-const findPostByName = async (id,data) => {
+const findPostByName = async (id, data) => {
   return await models.Post.findAll({
     where: {
       postTitle: {
@@ -168,7 +168,7 @@ const findPostByName = async (id,data) => {
     include: [
       {
         model: models.User,
-        as: "user"
+        as: "user",
       },
       {
         model: models.PostPhoto,
@@ -184,7 +184,7 @@ const findPostByName = async (id,data) => {
       {
         model: models.PostFav,
         as: "postFav",
-        where: { userId:id },
+        where: { userId: id },
         required: false, //left join
       },
     ],
@@ -201,7 +201,7 @@ const findPostByName = async (id,data) => {
     distinct: true, // 중복 방지
     subQuery: false,
   });
-}
+};
 
 //edit
 const updatePost = async (id, data) => {
@@ -238,8 +238,6 @@ const toggleFavorite = async (postId, userId, action) => {
       });
     }
     await post.save();
-
-    
 
     return result;
   }
