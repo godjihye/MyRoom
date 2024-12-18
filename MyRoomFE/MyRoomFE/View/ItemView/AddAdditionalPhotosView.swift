@@ -52,12 +52,12 @@ struct AddAdditionalPhotosView: View {
 		}
 		.alert("추가 이미지 등록", isPresented: $itemVM.isShowingAlertAddAdditionalPhotos) {
 			Button("확인", role: .cancel) {
-				dismiss()
+				dismiss() 
 			}
 		} message: {
 			Text(itemVM.addAdditionalPhotosMessage)
 		}
-		.sheet(isPresented: $isCameraPresented) {
+		.fullScreenCover(isPresented: $isCameraPresented) {
 			CameraPicker(image: $cameraPhoto, sourceType: .camera)
 		}
 		.photosPicker(
@@ -166,9 +166,9 @@ struct AddAdditionalPhotosView: View {
 			
 			do {
 				let supportedLanguages = try request.supportedRecognitionLanguages()
-				print("Supported languages: \(supportedLanguages)")
+//				print("Supported languages: \(supportedLanguages)")
 			} catch {
-				print("Error fetching supported languages: \(error)")
+//				print("Error fetching supported languages: \(error)")
 			}
 		} else {
 			request.recognitionLanguages = ["en-US"]

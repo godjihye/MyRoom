@@ -11,17 +11,18 @@ private let gradientColors: [Color] = [
 	.myroom2
 ]
 struct WelcomeView: View {
+	@Binding var isFirstLaunching: Bool
 	var body: some View {
 		TabView {
 			WelcomePage()
-			FeaturesPage()
-			HowToUsePage()
+			FeaturesPage(isFirstLaunching: $isFirstLaunching)
+			HowToUsePage(isFirstLaunching: $isFirstLaunching)
 		}
 		.background(Gradient(colors: gradientColors))
 		.tabViewStyle(.page)
 	}
 }
 
-#Preview {
-	WelcomeView()
-}
+//#Preview {
+//	WelcomeView()
+//}

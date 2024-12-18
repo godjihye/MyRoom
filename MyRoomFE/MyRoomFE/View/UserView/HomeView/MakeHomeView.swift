@@ -22,29 +22,37 @@ struct MakeHomeView: View {
 				.font(.largeTitle)
 				.fontWeight(.bold)
 			
+			.padding()
 			VStack(alignment: .leading) {
-				Text("집 이름 *")
-					.fontWeight(.bold)
-				CustomTextField(icon: "house.fill", placeholder: "집 이름을 입력해주세요.(필수)", text: $homeName)
-				if !isValidHomeName {
-					Text("집 이름 작성은 필수입니다.")
-						.font(.footnote)
+				VStack(alignment: .leading) {
+					VStack(alignment: .leading) {
+						Text("집 이름 *")
+							.fontWeight(.bold)
+						CustomTextField(icon: "house.fill", placeholder: "집 이름을 입력해주세요.(필수)", text: $homeName)
+						if !isValidHomeName {
+							Text("집 이름 작성은 필수입니다.")
+								.font(.footnote)
+								.fontWeight(.bold)
+								.foregroundStyle(.red)
+								.offset(x: homeNameOffset)
+								.onAppear(perform: {
+									withAnimation(Animation.easeInOut(duration: 0.1)
+										.repeatCount(10)) {
+											self.homeNameOffset = -5
+										}
+								})
+							
+								.padding()
+						}
+					}
+					.padding(.bottom, 10)
+						
+					Text("집 설명")
 						.fontWeight(.bold)
-						.foregroundStyle(.red)
-						.offset(x: homeNameOffset)
-						.onAppear(perform: {
-							withAnimation(Animation.easeInOut(duration: 0.1)
-								.repeatCount(10)) {
-									self.homeNameOffset = -5
-								}
-						})
-						.padding(.leading, 5)
+					CustomTextField(icon: "house.fill", placeholder: "집 설명을 입력해주세요.(선택)", text: $homeDesc)
 				}
-				Text("집 설명")
-					.fontWeight(.bold)
-				CustomTextField(icon: "house.fill", placeholder: "집 설명을 입력해주세요.(선택)", text: $homeDesc)
-			}
-			.padding(.vertical)
+				.padding(.vertical)
+			}.padding()
 			WideButton(title: "저장", backgroundColor: .accent) {
 				log("homeName.count: \(homeName.count)")
 				if homeName.count > 1 {
@@ -61,7 +69,6 @@ struct MakeHomeView: View {
 				Text(userVM.message)
 			}
 		}
-		.padding()
 	}
 }
 

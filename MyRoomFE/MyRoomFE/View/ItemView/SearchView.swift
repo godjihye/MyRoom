@@ -30,7 +30,7 @@ struct SearchView: View {
 						}
 					)
 				} else {
-					SearchResultsView(combinedItems: itemVM.searchResultItems, itemsByName: itemVM.searchResultItemsByName, itemsByImageText: itemVM.searchResultItemsByImageText,items: itemVM.searchResultItems, onClear: itemVM.clearSearchResult)
+					SearchResultsView(combinedItems: $itemVM.searchResultItems, itemsByName: $itemVM.searchResultItemsByName, itemsByImageText: $itemVM.searchResultItemsByImageText,items: itemVM.searchResultItems, onClear: itemVM.clearSearchResult)
 						.onAppear {
 							showKeyboard = false
 						}
@@ -178,9 +178,9 @@ struct SearchHistoryRow: View {
 
 struct SearchResultsView: View {
 	
-	let combinedItems: [Item]
-	let itemsByName: [Item]
-	let itemsByImageText: [Item]
+	@Binding var combinedItems: [Item]
+	@Binding var itemsByName: [Item]
+	@Binding var itemsByImageText: [Item]
 	
 	@State var items: [Item] = []
 	@State private var isSelected: Int = 0
@@ -209,7 +209,7 @@ struct SearchResultsView: View {
 						Text("통합검색")
 							.foregroundStyle(isSelected == 0 ? .primary : .secondary)
 						Divider()
-							
+							.frame(height: isSelected == 0 ? 1 : 0.5)
 							.frame(maxWidth: .infinity)
 							.background(isSelected == 0 ? .primary : .secondary)
 					}
@@ -221,6 +221,7 @@ struct SearchResultsView: View {
 					VStack {
 						Text("이름").foregroundStyle(isSelected == 1 ? .primary : .secondary)
 						Divider()
+							.frame(height: isSelected == 1 ? 1 : 0.5)
 							.frame(maxWidth: .infinity)
 							.background(isSelected == 1 ? .primary : .secondary)
 					}
@@ -232,6 +233,7 @@ struct SearchResultsView: View {
 					VStack {
 						Text("이미지텍스트").foregroundStyle(isSelected == 2 ? .primary : .secondary)
 						Divider()
+							.frame(height: isSelected == 2 ? 1 : 0.5)
 							.frame(maxWidth: .infinity)
 							.background(isSelected == 2 ? .primary : .secondary)
 					}

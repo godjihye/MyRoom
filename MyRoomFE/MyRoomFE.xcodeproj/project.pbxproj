@@ -23,6 +23,7 @@
 		0BBB8EFA2D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */; };
 		0BC37F4E2D11F8420029C7C0 /* MyHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC37F4D2D11F8420029C7C0 /* MyHomeView.swift */; };
 		0BC37F522D1244A60029C7C0 /* HomeInfoEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC37F512D1244A60029C7C0 /* HomeInfoEditView.swift */; };
+		0BC37F542D12A5520029C7C0 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC37F532D12A5520029C7C0 /* test.swift */; };
 		B15D9A552D06ED7900FA0253 /* PostWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A542D06ED7900FA0253 /* PostWebView.swift */; };
 		B15D9A582D083C0600FA0253 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A572D083C0600FA0253 /* CommentViewModel.swift */; };
 		B15D9A892D0E16F600FA0253 /* PostSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A882D0E16F600FA0253 /* PostSearchView.swift */; };
@@ -140,6 +141,7 @@
 		0BBB8EF92D05C9DC00DF692C /* MultipartFormData+AppendOptionalValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipartFormData+AppendOptionalValue.swift"; sourceTree = "<group>"; };
 		0BC37F4D2D11F8420029C7C0 /* MyHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeView.swift; sourceTree = "<group>"; };
 		0BC37F512D1244A60029C7C0 /* HomeInfoEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInfoEditView.swift; sourceTree = "<group>"; };
+		0BC37F532D12A5520029C7C0 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		B15D9A542D06ED7900FA0253 /* PostWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWebView.swift; sourceTree = "<group>"; };
 		B15D9A572D083C0600FA0253 /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 		B15D9A882D0E16F600FA0253 /* PostSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSearchView.swift; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 			children = (
 				B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */,
 				B86F34C92CF96F920040BB33 /* PostAddView.swift */,
+				0BC37F532D12A5520029C7C0 /* test.swift */,
 				B86F34CA2CF96F920040BB33 /* PostDetailView.swift */,
 				B86F34CB2CF96F920040BB33 /* PostListView.swift */,
 				B15D9A542D06ED7900FA0253 /* PostWebView.swift */,
@@ -643,6 +646,7 @@
 				0B9CB62A2D04235000FA1075 /* SignInWithKakaoView.swift in Sources */,
 				B86F35042CF96F920040BB33 /* PostAddView.swift in Sources */,
 				B86F35052CF96F920040BB33 /* PostDetailView.swift in Sources */,
+				0BC37F542D12A5520029C7C0 /* test.swift in Sources */,
 				B89D55282CFEE6E100DEE4AC /* AddAdditionalPhotosView.swift in Sources */,
 				B86F35062CF96F920040BB33 /* PostListView.swift in Sources */,
 				B8BF24D42D08625600E19D31 /* FeaturesPage.swift in Sources */,

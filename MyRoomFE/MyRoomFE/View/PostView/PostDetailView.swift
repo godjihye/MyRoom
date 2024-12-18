@@ -44,6 +44,7 @@ struct PostDetailView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         NavigationLink("편집") {
+													test()
 //                            PostAddView(isEditMode: true, existingUsed: post)
                         }
                         Button("삭제") {

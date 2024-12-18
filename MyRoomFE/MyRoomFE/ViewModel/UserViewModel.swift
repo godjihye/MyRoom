@@ -27,6 +27,9 @@ class UserViewModel: ObservableObject {
 	@Published var isShowingChangePW: Bool = false
 	@Published var changePWMessage: String = ""
 	
+	@Published var isShowingEditHome: Bool = false
+	@Published var editHomeMessage: String = ""
+	
 	@Published var userInfo: User?
 	
 	init() {
@@ -442,6 +445,7 @@ class UserViewModel: ObservableObject {
 			}
 		}
 	}
+	
 	func deleteHome() {
 		let homeId = UserDefaults.standard.integer(forKey: "homeId")
 		let url = "\(endPoint)/home/\(homeId)"
@@ -464,6 +468,36 @@ class UserViewModel: ObservableObject {
 				default :
 					self.showAlert = true
 					self.message = "집 삭제 실패"
+				}
+			}
+		}
+	}
+	
+	func editHome(_ newHomeName: String?) {
+		SVProgressHUD.show()
+		guard let newHomeName else { return }
+		let homeId = UserDefaults.standard.integer(forKey: "homeId")
+		let params: Parameters = ["homeName": newHomeName]
+		let url = "\(endPoint)/home/\(homeId)"
+		AF.request(url, method: .put, parameters: params).response { response in
+			SVProgressHUD.dismiss()
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					log("success")
+					if let data = response.data {
+						log(String(data: data, encoding: .utf8) ?? "")
+						do {
+							let root = try JSONDecoder().decode(Home.self, from: data)
+							self.editHomeMessage = "\(root.homeName)으로 집 이름이 변경되었습니다."
+							self.isShowingEditHome = true
+							UserDefaults.standard.set(root.homeName, forKey: "homeName")
+						} catch {
+							log("decode error", trait: .error)
+						}
+					}
+				default:
+					log("network error", trait: .error)
 				}
 			}
 		}

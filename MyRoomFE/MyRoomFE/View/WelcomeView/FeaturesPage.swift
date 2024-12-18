@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct FeaturesPage: View {
+	@Binding var isFirstLaunching: Bool
 	var body: some View {
 		VStack {
+			HStack {
+				Spacer()
+				Button {
+					isFirstLaunching.toggle()
+				} label: {
+					Text("Skip")
+						.foregroundStyle(.white)
+				}
+			}
+			Spacer()
 			Text("마룸 앱의 특징")
 				.font(.title)
 				.fontWeight(.bold)
@@ -22,13 +33,16 @@ struct FeaturesPage: View {
 			FeatureCard(iconName: "ellipsis.message.fill", title: "소통과 정보 공유", description: "정리 노하우부터 멋진 방 꾸미기 사진까지 다양한 정보와 아이디어를 공유하세요.")
 			
 			FeatureCard(iconName: "bubble.left.and.text.bubble.right.fill", title: "중고거래 장소 제공", description: "저장한 물건 정보를 활용해 간편하게 중고거래 장소를 찾을 수 있습니다.")
+			
+			Spacer()
+			
 		}
 		.padding()
 	}
 }
 
-#Preview {
-	FeaturesPage()
-}
+//#Preview {
+//	FeaturesPage()
+//}
 
 

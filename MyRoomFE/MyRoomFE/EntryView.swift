@@ -10,6 +10,7 @@ import SwiftUI
 struct EntryView: View {
 	@EnvironmentObject var userVM: UserViewModel
 	@EnvironmentObject var roomVM: RoomViewModel
+	@AppStorage("_isFirstLaunching") var isFirstLaunching: Bool = true
 	var body: some View {
 		if userVM.isLoggedIn {
 			TabView {
@@ -45,6 +46,9 @@ struct EntryView: View {
 			LoginView()
 				.transition(.move(edge: .bottom))
 				.animation(.easeInOut, value: userVM.isLoggedIn)
+				.fullScreenCover(isPresented: $isFirstLaunching) {
+					WelcomeView(isFirstLaunching: $isFirstLaunching)
+				}
 		}
 		
 	}

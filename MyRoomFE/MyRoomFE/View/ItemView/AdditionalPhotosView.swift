@@ -12,11 +12,13 @@ struct AdditionalPhotosView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
 	@State var isPhotosPickerPresented: Bool = false
 	@State var showAlert: Bool = false
+	@State var removeCheckAlert: Bool = false
 	@State var message: String = ""
 	@State var additionalItems: [PhotosPickerItem] = []
 	@State var additionalPhotos: [UIImage] = []
 	@State private var selectedPhoto: String = ""
 	@State private var isShowingDetailImageView: Bool = false
+	@State var removeCheckAlertForPhotoID: Int? = nil
 	
 	var itemPhotos: [ItemPhoto]?
 	let itemId: Int
@@ -64,7 +66,7 @@ struct AdditionalPhotosView: View {
 									ProgressView()
 								}
 								Button {
-									itemVM.removeAdditionalPhoto(photoId: photo.id)
+									removeCheckAlertForPhotoID = photo.id
 								} label: {
 									Text("삭제")
 										.foregroundStyle(.red)
@@ -74,6 +76,22 @@ struct AdditionalPhotosView: View {
 					}
 				}
 			}
+		}
+		.confirmationDialog("추가 이미지 삭제", isPresented: Binding<Bool>(
+			get: { removeCheckAlertForPhotoID != nil },
+			set: { if !$0 { removeCheckAlertForPhotoID = nil } }
+		)) {
+			Button("삭제", role: .destructive) {
+				if let photoID = removeCheckAlertForPhotoID {
+					itemVM.removeAdditionalPhoto(photoId: photoID)
+					removeCheckAlertForPhotoID = nil // 상태 초기화
+				}
+			}
+			Button("취소", role: .cancel) {
+				removeCheckAlertForPhotoID = nil
+			}
+		} message: {
+			Text("이미지를 정말 삭제하시겠습니까?")
 		}
 		.fullScreenCover(isPresented: $isShowingDetailImageView) {
 			if let itemPhotos {
