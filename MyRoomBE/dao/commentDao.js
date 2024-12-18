@@ -2,10 +2,12 @@ const models = require("../models");
 
 // 댓글 작성
 const createComment = async (comment, parentId, postId, userId) => {
-  return (newComment = await models.Comment.create(
-    { comment, parentId, postId, userId },
-    { logging: console.log }
-  ));
+  const newComment = await models.Comment.create({
+    comment,
+    parentId,
+    postId,
+    userId,
+  });
 };
 
 // 대댓글작성

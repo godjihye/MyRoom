@@ -14,8 +14,10 @@ struct UsedAddView: View {
 	
 	@FocusState private var titleIsFocused: Bool
 	@FocusState private var contentIsFocused: Bool
+    @FocusState private var priceIsFocused: Bool
 	@State private var titleError: String? = nil
 	@State private var contentError: String? = nil
+    @State private var priceError: String? = nil
 	
 	@State var isPickerPresented: Bool = false
 	@State private var selectedItems: [PhotosPickerItem] = []
@@ -25,7 +27,7 @@ struct UsedAddView: View {
 	@State private var message = ""
 	
 	@State var usedTitle : String
-	@State var usedPrice : Int
+    @State var usedPrice : String
 	@State var usedContent : String
 	
 	//내 아이템 정보 가저오기
@@ -44,7 +46,7 @@ struct UsedAddView: View {
 		self.isEditMode = isEditMode
 		self.existingUsed = existingUsed
 		_usedTitle = State(initialValue: existingUsed?.usedTitle ?? "")
-		_usedPrice = State(initialValue: existingUsed?.usedPrice ?? 0)
+        _usedPrice = State(initialValue: existingUsed?.usedPrice.map { String($0) } ?? "" )
 		_usedContent = State(initialValue: existingUsed?.usedDesc ?? "")
 		_selectMyItem = State(initialValue: existingUsed?.item)
 	}
@@ -86,13 +88,20 @@ struct UsedAddView: View {
 			} else {
 				contentError = nil
 			}
-			if isEditMode {
+            if usedPrice.isEmpty {
+                priceError = "가격을 입력해주세요."
+                priceIsFocused = true // 콘텐츠 필드로 포커스 이동
+                return
+            } else {
+                contentError = nil
+            }
+            if isEditMode, let used = existingUsed {
 				Task{
 					// 편집 모드일 때 수정 로직
 					await usedVM.updateUsed(
-						usedId: existingUsed?.id ?? 0,
-						newTitle: usedTitle,
-						newPrice: usedPrice,
+                        usedId: used.id,
+                        newTitle: used.usedTitle,
+                        newPrice: used.usedPrice ?? 0,
 						newContent: usedContent,
 						newItem: selectMyItem
 					)
@@ -103,7 +112,7 @@ struct UsedAddView: View {
 				usedVM.addUsed(
 					selectedImages: selectedImages,
 					usedTitle: usedTitle,
-					usedPrice: usedPrice,
+					usedPrice: Int(usedPrice)!,
 					usedContent: usedContent,
 					selectMyItem: selectMyItem
 				)
@@ -266,6 +275,9 @@ struct UsedAddView: View {
 						.background(Color.white)
 						.cornerRadius(16)
 				)
+                .onAppear {
+                    UIApplication.shared.hideKeyboard()
+                }
 		}.padding(.horizontal)
 	}
 	
@@ -276,19 +288,20 @@ struct UsedAddView: View {
 				.foregroundColor(.gray)
 				.padding(.horizontal)
 				.frame(maxWidth: .infinity, alignment: .leading)
-			TextField("가격을 입력해주세요",  text: Binding(
-				get: { String(usedPrice) }, // Int를 String으로 변환
-				set: { usedPrice = Int($0) ?? 0 } // String을 Int로 변환
-			))
+			TextField("가격을 입력해주세요",  text: $usedPrice)
 			.keyboardType(.numberPad)
 			.padding()
 			.padding(.horizontal)
+            .focused($priceIsFocused)
 			.background(
 				RoundedRectangle(cornerRadius: 16)
 					.stroke(Color.gray, lineWidth: 2)
 					.background(Color.white)
 					.cornerRadius(16)
 			)
+            .onAppear {
+                UIApplication.shared.hideKeyboard()
+            }
 		}.padding(.horizontal)
 	}
 	
@@ -319,6 +332,9 @@ struct UsedAddView: View {
 						.background(Color.white)
 						.cornerRadius(16)
 				)
+                .onAppear {
+                    UIApplication.shared.hideKeyboard()
+                }
 		}.padding(.horizontal)
 	}
 	

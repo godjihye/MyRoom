@@ -34,6 +34,8 @@ class PostViewModel:ObservableObject {
     
     //커뮤니티 등록
     func addPost(selectedImages: [UIImage], postTitle: String, postContent: String, selectItemUrls: [[String]]?, buttonPositions: [[CGPoint]]?) {
+        
+        print("addPost ~~~~~")
         let postData: [String: Any?] = [
             "postTitle": postTitle,
             "postContent": postContent,
@@ -136,10 +138,10 @@ class PostViewModel:ObservableObject {
             }
         }
         AF.request(postUrl).responseDecodable(of: PostRoot.self) { response in
-                    print(response)
-                }
+            print(response)
+        }
     }
-
+    
     // 커뮤니티 검색
     func fetchPosts(size:Int = 10)   {
         print("fetchPosts start===========")
@@ -192,10 +194,11 @@ class PostViewModel:ObservableObject {
                 SVProgressHUD.dismiss()
             }
         }
-//        AF.request(postUrl).responseDecodable(of: PostRoot.self) { response in
-//                    print(response)
-//                }
+        //        AF.request(postUrl).responseDecodable(of: PostRoot.self) { response in
+        //                    print(response)
+        //                }
     }
+    
     
     //좋아요
     func toggleFavorite(postId:Int,userId:Int,isFavorite:Bool, completion: @escaping (Bool) -> Void) async {
@@ -280,6 +283,117 @@ class PostViewModel:ObservableObject {
         searchResultPost.removeAll()
     }
     
+    func updatePost(postId:Int, selectedImages: [UIImage], postTitle: String, postContent: String, selectItemUrls: [[String]]?, buttonPositions: [[CGPoint]]?,existingImagesCount:Int) {
+        let postData: [String: Any?] = [
+            "postTitle": postTitle,
+            "postContent": postContent,
+            "userId": userId,
+            "postId" : postId
+        ]
+        
+        guard let postDataJson = try? JSONSerialization.data(withJSONObject: postData, options: []) else {
+            print("Failed to encode postData to JSON")
+            return
+        }
+        
+        // 버튼 정보 처리
+        var postButtonData: [[String: Any]] = []
+        
+        if let itemUrls = selectItemUrls, let positions = buttonPositions {
+            
+            let newImageStartIndex = existingImagesCount
+            
+            for (imageIndex, urls) in itemUrls.enumerated() where imageIndex >= existingImagesCount {
+                let newIndex = imageIndex - newImageStartIndex  // 새로 추가된 이미지의 인덱스
+                
+                var buttons: [[String: Any]] = []
+                
+                // 새로 추가된 이미지에 대한 버튼 정보 처리
+                for (buttonIndex, itemUrl) in urls.enumerated() {
+                    if positions.indices.contains(imageIndex), positions[imageIndex].indices.contains(buttonIndex) {
+                        let position = positions[imageIndex][buttonIndex]
+                        buttons.append([
+                            "positionX": "\(position.x)",
+                            "positionY": "\(position.y)",
+                            "itemUrl": itemUrl
+                        ])
+                    }
+                }
+                
+                // 버튼 정보가 있을 경우만 `postButtonData`에 추가
+                if !buttons.isEmpty {
+                    postButtonData.append([
+                        "imageIndex": newIndex,  // 새로 추가된 이미지의 인덱스로 변경
+                        "buttons": buttons
+                    ])
+                }
+            }
+        }
+        
+        
+        guard let postButtonDataJson = try? JSONSerialization.data(withJSONObject: postButtonData, options: []) else {
+            print("Failed to encode postButtonData to JSON")
+            return
+        }
+        
+        let formData = MultipartFormData()
+        formData.append(postDataJson, withName: "postData", mimeType: "application/json")
+        formData.append(postButtonDataJson, withName: "buttonData", mimeType: "application/json")
+        
+        for (index, image) in selectedImages.enumerated() where index >= existingImagesCount {
+            if let imageData = image.jpegData(compressionQuality: 0.8) {
+                formData.append(imageData, withName: "image", fileName: "image_\(UUID().uuidString).jpeg", mimeType: "image/jpeg")
+            }
+        }
+        
+        let postUrl = "\(endPoint)/posts/edit/\(postId)"
+        let headers: HTTPHeaders = [
+            "Content-Type": "multipart/form-data"
+        ]
+        
+        AF.upload(multipartFormData: formData, to: postUrl, headers: headers).response { response in
+            if let statusCode = response.response?.statusCode {
+                switch statusCode {
+                case 200..<300:
+                    if let data = response.data {
+                        do {
+                            let root = try JSONDecoder().decode(PostRoot.self, from: data)
+                            DispatchQueue.main.async {
+                                root.posts.forEach { updatedPost in
+                                    if let index = self.posts.firstIndex(where: { $0.id == updatedPost.id }) {
+                                        self.posts[index] = updatedPost
+                                    }
+                                }
+                            }
+                            
+                            self.isAddShowing = true
+                            self.message = root.message
+                            log("updatePost Complete", trait: .success)
+                        } catch let error {
+                            self.isAlertShowing = true
+                            self.message = error.localizedDescription
+                            log("updatePost UnexpectedError: \(error.localizedDescription)", trait: .error)
+                        }
+                    }
+                case 300..<500:
+                    if let data = response.data {
+                        do {
+                            self.isAlertShowing = true
+                            let apiError = try JSONDecoder().decode(APIError.self, from: data)
+                            self.message = apiError.message
+                        } catch let error {
+                            self.isAlertShowing = true
+                            self.message = error.localizedDescription
+                        }
+                    }
+                default:
+                    self.isAlertShowing = true
+                    self.message = "네트워크 오류입니다."
+                }
+            }
+        }
+        
+    }
     
     
 }

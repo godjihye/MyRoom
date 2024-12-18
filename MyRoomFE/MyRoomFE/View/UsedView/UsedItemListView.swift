@@ -31,8 +31,8 @@ struct UsedItemListView: View {
                     if !self.items.isEmpty {
                         ForEach(self.items) { item in
                             UsedItemRowView(selectedItem: $selectMyItem,
-                                            isMyItemPresented: $isMyItemPresented,
-                                            item: item)
+                                                            isMyItemPresented: $isMyItemPresented,
+                                                            item: item)
                         }
                         
                     } else {

@@ -19,20 +19,49 @@ struct PostAddView: View {
     @State var postTitle : String = ""
     @State var postContent : String  = ""
     
+    let isEditMode: Bool
+    let existingPost: Post?
+    
+    init(
+        isEditMode : Bool = false,
+        existingPost: Post? = nil
+    ){
+        self.isEditMode = isEditMode
+        self.existingPost = existingPost
+        _postTitle = State(initialValue: existingPost?.postTitle ?? "")
+        _postContent = State(initialValue: existingPost?.postContent ?? "")
+        if let images = existingPost?.images {
+            let initialImages = images.map { $0.image }.compactMap {imagePath in
+                if let url = URL(string: imagePath.addingURLPrefix()),
+                   let data = try? Data(contentsOf: url) {
+                    return UIImage(data: data)
+                }
+                    return nil}
+                _selectPostImage = State(initialValue: initialImages)
+                
+                let initialButtonPositions = images.compactMap { $0.btnData?.map { CGPoint(x: $0.positionX ?? 0, y: $0.positionY ?? 0) } }
+                _buttonPositions = State(initialValue: initialButtonPositions)
+                
+                let initialButtonUrls = images.compactMap { $0.btnData?.compactMap { $0.itemUrl ?? "" } }
+                _buttonItemUrls = State(initialValue: initialButtonUrls)
+            }
+        
+    }
+    
+    
+    
     var body: some View {
         ScrollView {
-            
             postImageSection
             postTitleSection
             postContentSection
             addButtom
         }
-        
     }
     
     private var postImageSection : some View {
         VStack {
-            PostAddPhotoView(selectPostImage: $selectPostImage, buttonPositions: $buttonPositions, buttonItemUrls: $buttonItemUrls, selectMyItem: $selectMyItem)
+            PostAddPhotoView(selectPostImage: $selectPostImage, buttonPositions: $buttonPositions, buttonItemUrls: $buttonItemUrls ,selectMyItem: $selectMyItem)
                 .environmentObject(ItemViewModel())
                 .frame(height: 400)
         }.padding(.horizontal, 0)
@@ -66,6 +95,9 @@ struct PostAddView: View {
                         .background(Color.white)
                         .cornerRadius(16)
                 )
+                .onAppear {
+                    UIApplication.shared.hideKeyboard()
+                }
         }.padding(.horizontal)
     }
     
@@ -97,6 +129,9 @@ struct PostAddView: View {
                         .background(Color.white)
                         .cornerRadius(16)
                 )
+                .onAppear {
+                    UIApplication.shared.hideKeyboard()
+                }
         }.padding(.horizontal)
     }
     
@@ -119,15 +154,30 @@ struct PostAddView: View {
             } else {
                 contentError = nil
             }
+           
+            if isEditMode,let existingImagesCount = existingPost?.images.count {
+                //편집모드
+                    postVM.updatePost(
+                        postId: existingPost?.id ?? 0,
+                        selectedImages: selectPostImage,
+                        postTitle: postTitle,
+                        postContent: postContent,
+                        selectItemUrls: buttonItemUrls,
+                        buttonPositions:buttonPositions,
+                        existingImagesCount:existingImagesCount
+                    )
+            } else {
+                //새글작성
+                postVM.addPost(selectedImages: selectPostImage, postTitle: postTitle, postContent: postContent,selectItemUrls: buttonItemUrls,buttonPositions:buttonPositions)
+            }
             
             
-            postVM.addPost(selectedImages: selectPostImage, postTitle: postTitle, postContent: postContent,selectItemUrls: buttonItemUrls,buttonPositions:buttonPositions)
         }.alert("게시글 등록", isPresented: $postVM.isAddShowing) {
             Button("확인") {
-                Task{
+                
                     postVM.fetchPosts()
                     dismiss()
-                }
+                
             }
         } message: {
             Text(postVM.message)

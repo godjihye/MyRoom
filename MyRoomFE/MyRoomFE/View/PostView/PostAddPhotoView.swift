@@ -73,20 +73,30 @@ struct PostAddPhotoView: View {
     }
     
     func loadSelectedImages(from items: [PhotosPickerItem]) async {
-        selectPostImage = []
-        buttonPositions = []
-        buttonItemUrls = []
+//        selectPostImage = []
+//        buttonPositions = []
+//        buttonItemUrls = []
         
+//        for item in items {
+//            if let data = try? await item.loadTransferable(type: Data.self),
+//               let uiImage = UIImage(data: data) {
+//                selectPostImage.append(uiImage)
+//                
+//            }
+//        }
         for item in items {
-            if let data = try? await item.loadTransferable(type: Data.self),
-               let uiImage = UIImage(data: data) {
-                selectPostImage.append(uiImage)
-                
+                if let data = try? await item.loadTransferable(type: Data.self),
+                   let uiImage = UIImage(data: data) {
+                    selectPostImage.append(uiImage)
+                    print("Image added: \(uiImage)") // 디버깅: 이미지 추가 확인
+                } else {
+                    print("Failed to load image") // 디버깅: 실패 확인
+                }
             }
-        }
         
-        buttonPositions = Array(repeating: [], count: selectPostImage.count)
-        buttonItemUrls = Array(repeating: [], count: selectPostImage.count)
+        buttonPositions.append(contentsOf: Array(repeating: [], count: items.count))
+            buttonItemUrls.append(contentsOf: Array(repeating: [], count: items.count))
+        print("Total images: \(selectPostImage.count)")
     }
 
 
@@ -144,9 +154,10 @@ struct PostAddPhotoView: View {
 
 
 
-#Preview {
-    PostAddPhotoView(selectPostImage: .constant([]), // 빈 배열
-                     buttonPositions: .constant([]), // 빈 2D 배열
-                     buttonItemUrls: .constant([]), // 빈 2D 배열
-                     selectMyItem: .constant(nil)).environmentObject(ItemViewModel())
-}
+
+//#Preview {
+//    PostAddPhotoView(selectPostImage: .constant([]), // 빈 배열
+//                     buttonPositions: .constant([]), // 빈 2D 배열
+//                     buttonItemUrls: .constant([]), // 빈 2D 배열
+//                     selectMyItem: .constant(nil)).environmentObject(ItemViewModel())
+//}

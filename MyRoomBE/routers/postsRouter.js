@@ -11,11 +11,14 @@ router.post(
     { name: "postThumbnail", maxCount: 1 }, // 썸네일
   ])
 );
-
 router.post("/", postController.createPost);
 router.post("/search", postController.findPostByName);
+
 router.get("/:userId", postController.findAllPost);
-router.put("/:id", postController.updatePost);
+router.get("/detail/:postId",postController.findPostById)
+
+router.post("/edit/:postId", upload.array("image"), postController.updatePost);
+
 router.delete("/:id", postController.deletePost);
 
 router.post("/:postId/favorite", postController.toggleFavorite); // 좋아요 추가
