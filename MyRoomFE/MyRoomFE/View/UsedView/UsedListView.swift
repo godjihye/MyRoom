@@ -39,9 +39,7 @@ struct UsedListView: View {
 				}
 				
 				.onAppear {
-					if usedVM.useds.isEmpty {
-						usedVM.fetchUseds()
-					}
+					usedVM.fetchUseds()
 				}.toolbar {
 					ToolbarItem(placement: .principal) {
 						NavigationLink(destination: UsedSearchView()) {
