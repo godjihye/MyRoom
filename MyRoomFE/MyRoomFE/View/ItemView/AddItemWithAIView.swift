@@ -77,7 +77,7 @@ struct AddItemWithAIView: View {
 			}
 			.navigationTitle(isEditMode ? "아이템 편집" : "새로운 아이템 추가")
 			.toolbar { toolbarContent }
-			.sheet(isPresented: $showImagePicker) {
+			.fullScreenCover(isPresented: $showImagePicker) {
 				if isCamera {
 					CameraPicker(image: $itemThumbnail, sourceType: .camera)
 				} else {
@@ -86,6 +86,9 @@ struct AddItemWithAIView: View {
 			}
 			.task { await roomVM.fetchRooms() }
 			.onAppear { loadInitialImages() }
+			.onAppear {
+				UIApplication.shared.hideKeyboard()
+			}
 			.onChange(of: itemThumbnail ?? UIImage(), { oldValue, newValue in
 				recognizeText(from: newValue)
 			})

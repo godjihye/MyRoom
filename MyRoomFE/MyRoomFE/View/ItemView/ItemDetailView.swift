@@ -75,16 +75,32 @@ struct ItemDetailView: View {
 						) {
 							Button("삭제", role: .destructive) {
 								itemVM.removeItem(itemId: item.id)
-								dismiss()
+								
 							}
 						}
 					}
 				}
 			})
-			.alert("아이템 수정", isPresented: $itemVM.isShowingAlert, actions: {
-				Button("확인", role: .cancel) {}
+			.alert("아이템", isPresented: $itemVM.isRemoveShowing, actions: {
+				Button("확인", role: .cancel) {
+					dismiss()
+				}
 			}, message: {
 				Text(itemVM.message)
+			})
+			.alert("아이템", isPresented: $itemVM.isEditShowing, actions: {
+				Button("확인", role: .cancel) {
+					
+				}
+			}, message: {
+				Text(itemVM.message)
+			})
+			.alert("아이템", isPresented: $itemVM.isShowingAlertRemoveAdditionalPhotos, actions: {
+				Button("확인", role: .cancel) {
+//					dismiss()
+				}
+			}, message: {
+				Text(itemVM.removeAdditionalPhotosMessage)
 			})
 			.navigationTitle("아이템 상세 조회")
 			.navigationBarTitleDisplayMode(.inline)
@@ -225,8 +241,10 @@ struct ItemDetailView: View {
 			} else {
 				if let url = URL(string: "https://msearch.shopping.naver.com/search/all?bt=-1&frm=NVSCPRO&query=\(item.itemName)") {
 					Link(destination: url) {
-						Text("등록한 URL이 없어요.\n네이버 가격비교로 가기")
-							.foregroundStyle(.blue)
+						VStack {
+							Text("등록한 URL이 없어요.\n네이버 가격비교로 가기")
+								.foregroundStyle(.blue)
+						}
 					}
 				}
 			}

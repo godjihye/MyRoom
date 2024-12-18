@@ -40,6 +40,7 @@ struct HomeView: View {
 			}
 		}
 		.padding(.horizontal, 10)
+		.padding(.bottom, 10)
 	}
 	private var enterHomeBtn: some View {
 		VStack {

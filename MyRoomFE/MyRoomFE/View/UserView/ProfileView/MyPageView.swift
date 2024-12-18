@@ -11,15 +11,16 @@ struct MyPageView: View {
 	@EnvironmentObject var userVM: UserViewModel
 	var body: some View {
 		NavigationStack {
-			ScrollView {
-				ProfileView()
-				Divider()
-				menuView
-				Divider()
-				logoutBtn
+				ScrollView {
+					ProfileView()
+					Divider()
+					menuView
+					Divider()
+					logoutBtn
+				}
 			}
 		}
-	}
+	
 	
 	private var menuView: some View {
 		VStack {

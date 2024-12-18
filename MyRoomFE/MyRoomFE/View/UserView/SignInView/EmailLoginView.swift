@@ -25,6 +25,11 @@ struct EmailLoginView: View {
 	@State private var pwcheckOffset: CGFloat = 0
 	@State private var nickOffset: CGFloat = 0
 	
+	@FocusState private var focusedField: Field?
+	enum Field: Hashable {
+		case email, password1, password2, nickname
+	}
+	
 	var body: some View {
 		VStack {
 			logoAndTextImage
@@ -38,8 +43,12 @@ struct EmailLoginView: View {
 				loginButton
 			}
 		}
+		.submitLabel(.next)
 		.padding()
 		.padding(.bottom, 50)
+		.onAppear {
+			UIApplication.shared.hideKeyboard()
+		}
 	}
 	
 	private var logoAndTextImage: some View {
@@ -61,6 +70,8 @@ struct EmailLoginView: View {
 			Text("이메일 *")
 				.fontWeight(.bold)
 			CustomTextField(icon: "person.fill", placeholder: "예) myroom@gmail.com", text: $email)
+				.focused($focusedField, equals: .email)
+				.onSubmit { focusedField = .password1 }
 				.onChange(of: email) { oldValue, newValue in
 					isVaildEmail = true
 				}
@@ -86,6 +97,14 @@ struct EmailLoginView: View {
 			Text("비밀번호 *")
 				.fontWeight(.bold)
 			CustomTextField(icon: "lock.fill", placeholder: "영문, 숫자 조합 8~16자", text: $password1, isSecured: true)
+				.focused($focusedField, equals: .password1) // 포커스 연결
+				.onSubmit {
+					if isRegister {
+						focusedField = .password2
+					} else {
+						focusedField = nil
+					}
+				}
 				.onChange(of: password1) { oldValue, newValue in
 					isVaildPW = true
 				}
@@ -112,6 +131,8 @@ struct EmailLoginView: View {
 			Text("비밀번호 확인 *")
 				.fontWeight(.bold)
 			CustomTextField(icon: "lock.fill", placeholder: "비밀번호와 똑같이 입력해주세요.", text: $password2, isSecured: true)
+				.focused($focusedField, equals: .password2) // 포커스 연결
+				.onSubmit { focusedField = .nickname }
 				.onChange(of: password2) { oldValue, newValue in
 					isEqualPW = password1.isEqualPW(newValue)
 				}
@@ -139,6 +160,8 @@ struct EmailLoginView: View {
 				Text("닉네임 *")
 					.fontWeight(.bold)
 				CustomTextField(icon: "person.fill", placeholder: "2자 이상 입력", text: $nickname)
+					.focused($focusedField, equals: .nickname) // 포커스 연결
+					.onSubmit { focusedField = nil }
 				if !isVaildNick {
 					Text("닉네임 2자 이상 입력해주세요.")
 						.font(.footnote)
