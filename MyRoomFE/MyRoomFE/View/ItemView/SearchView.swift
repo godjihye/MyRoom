@@ -21,15 +21,19 @@ struct SearchView: View {
 				if itemVM.searchResultItems.isEmpty {
 					SearchHistoryView(
 						searchHistories: $searchHistories,
+						query: $query,
 						onSearch: { query in
-							Task { await itemVM.searchItem(query: query) }
+							itemVM.searchItem(query: query)
 						},
 						onDelete: { index in
 							searchHistories.remove(at: index)
 						}
 					)
 				} else {
-					SearchResultsView(items: itemVM.searchResultItems, onClear: itemVM.clearSearchResult)
+					SearchResultsView(combinedItems: itemVM.searchResultItems, itemsByName: itemVM.searchResultItemsByName, itemsByImageText: itemVM.searchResultItemsByImageText,items: itemVM.searchResultItems, onClear: itemVM.clearSearchResult)
+						.onAppear {
+							showKeyboard = false
+						}
 				}
 				Spacer()
 			}
@@ -39,6 +43,11 @@ struct SearchView: View {
 				DispatchQueue.main.async {
 					showKeyboard = true
 				}
+			}
+			.alert("아이템 검색 결과", isPresented: $itemVM.isShowingAlert) {
+				Button("확인", role: .none){}
+			} message: {
+				Text(itemVM.message)
 			}
 		}
 		.navigationBarBackButtonHidden()
@@ -62,8 +71,17 @@ struct SearchView: View {
 					.clipShape(RoundedRectangle(cornerRadius: 10))
 					.frame(width: reader.size.width - 70)
 					.focused($showKeyboard)
+					.overlay(
+						Image(systemName: query.isEmpty ? "" : "xmark.circle.fill")
+							.foregroundStyle(.secondary)
+							.padding(.trailing, 10)
+							.onTapGesture {
+								query = ""
+							},
+						alignment: .trailing
+					)
 					.onSubmit {
-						Task { await itemVM.searchItem(query: query) }
+						itemVM.searchItem(query: query)
 						if !searchHistories.contains(query) {
 							searchHistories.append(query)
 						}
@@ -89,6 +107,7 @@ struct SearchView: View {
 
 struct SearchHistoryView: View {
 	@Binding var searchHistories: [String]
+	@Binding var query: String
 	let onSearch: (String) -> Void
 	let onDelete: (Int) -> Void
 	
@@ -110,10 +129,21 @@ struct SearchHistoryView: View {
 				ForEach(searchHistories.reversed().indices, id: \.self) { index in
 					SearchHistoryRow(
 						searchText: searchHistories[searchHistories.count - 1 - index],
-						onSearch: { onSearch(searchHistories[searchHistories.count - 1 - index]) },
+						onSearch: { onSearch(searchHistories[searchHistories.count - 1 - index])
+							query = searchHistories[searchHistories.count - 1 - index] },
 						onDelete: { onDelete(searchHistories.count - 1 - index) }
 					)
+					Divider()
 				}
+				Button {
+					searchHistories.removeAll()
+				} label: {
+					Text("검색어 전체삭제")
+						.font(.system(size: 12))
+						.foregroundStyle(.secondary)
+				}
+				
+				
 			}
 		}
 		.frame(maxWidth: .infinity, alignment: .leading)
@@ -132,6 +162,7 @@ struct SearchHistoryRow: View {
 					Image(systemName: "clock.arrow.circlepath")
 						.foregroundStyle(Color.secondary)
 					Text(searchText)
+						.font(.system(size: 16))
 						.foregroundStyle(.primary)
 					Spacer()
 				}
@@ -146,8 +177,16 @@ struct SearchHistoryRow: View {
 }
 
 struct SearchResultsView: View {
-	let items: [Item]
+	
+	let combinedItems: [Item]
+	let itemsByName: [Item]
+	let itemsByImageText: [Item]
+	
+	@State var items: [Item] = []
+	@State private var isSelected: Int = 0
+	
 	let onClear: () -> Void
+	
 	
 	var body: some View {
 		VStack(alignment: .leading) {
@@ -161,6 +200,46 @@ struct SearchResultsView: View {
 			}
 			
 			Divider()
+			HStack(spacing: 0) {
+				Button {
+					items = combinedItems
+					isSelected = 0
+				} label: {
+					VStack {
+						Text("통합검색")
+							.foregroundStyle(isSelected == 0 ? .primary : .secondary)
+						Divider()
+							
+							.frame(maxWidth: .infinity)
+							.background(isSelected == 0 ? .primary : .secondary)
+					}
+				}
+				Button {
+					items = itemsByName
+					isSelected = 1
+				} label: {
+					VStack {
+						Text("이름").foregroundStyle(isSelected == 1 ? .primary : .secondary)
+						Divider()
+							.frame(maxWidth: .infinity)
+							.background(isSelected == 1 ? .primary : .secondary)
+					}
+				}
+				Button {
+					items = itemsByImageText
+					isSelected = 2
+				} label: {
+					VStack {
+						Text("이미지텍스트").foregroundStyle(isSelected == 2 ? .primary : .secondary)
+						Divider()
+							.frame(maxWidth: .infinity)
+							.background(isSelected == 2 ? .primary : .secondary)
+					}
+					
+				}
+			}
+			.fontWeight(.bold)
+			.padding(.top)
 			
 			ForEach(items) { item in
 				NavigationLink {
@@ -171,6 +250,7 @@ struct SearchResultsView: View {
 			}
 		}
 	}
+	
 }
 
 #Preview {

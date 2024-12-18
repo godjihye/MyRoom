@@ -19,7 +19,7 @@ struct UsedListView: View {
 				LazyVStack{
 					ForEach($usedVM.useds) { $used in
 						NavigationLink() {
-							UsedDetailView(used: $used, photos: used.images).environmentObject(ChatViewModel())
+							UsedDetailView(used: $used, photos: used.images)
 								.onAppear {
 									Task{
 										await usedVM.updateViewCnt(usedId: used.id)
@@ -27,7 +27,8 @@ struct UsedListView: View {
 								}
 						} label: {
 							UsedRowView(used: used).padding(.horizontal)
-						}.onAppear {
+						}
+						.onAppear {
 							if used == usedVM.useds.last {
 								usedVM.fetchUseds()
 							}
@@ -38,8 +39,15 @@ struct UsedListView: View {
 				}
 				
 				.onAppear {
-					usedVM.fetchUseds()
+					if usedVM.useds.isEmpty {
+						usedVM.fetchUseds()
+					}
 				}.toolbar {
+					ToolbarItem(placement: .principal) {
+						NavigationLink(destination: UsedSearchView()) {
+							UsedSearchButton()
+						}
+					}
 					ToolbarItem(placement: .topBarTrailing) {
 						NavigationLink {
 							UsedAddView().environmentObject(usedVM)

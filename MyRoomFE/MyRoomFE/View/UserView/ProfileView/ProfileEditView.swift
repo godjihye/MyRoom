@@ -109,10 +109,10 @@ struct ProfileEditView: View {
 	private var cameraIcon: some View {
 		Image(systemName: "camera")
 			.renderingMode(.original)
-			.font(.system(size: 20))
-			.foregroundColor(.accentColor)
+			.font(.system(size: 18))
+			.foregroundColor(.black)
 			.padding(9)
-			.background(Color.myroom2)
+			.background(.gray)
 			.clipShape(Circle())
 			.offset(x: 30, y: 30)
 	}

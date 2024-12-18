@@ -36,7 +36,7 @@ struct ChatView: View {
 							
 							HStack {
 								
-								if let imageUrl = chatVM.userImages[otherUser ?? ""], let url = URL(string: "\(imageUrl)") {
+								if let imageUrl = chatVM.userImages[otherUser ?? ""], let url = URL(string: "\(imageUrl.addingURLPrefix())") {
 									AsyncImage(url: url) { image in
 										image.resizable()
 											.scaledToFill()

@@ -130,7 +130,6 @@ const findItem = async (id) => {
   });
 };
 
-// 3-1. Item 이름으로 상세 조회 (포함 검색)
 const findItemByName = async (id, data) => {
   return await models.Item.findAll({
     where: {
@@ -157,6 +156,42 @@ const findItemByName = async (id, data) => {
     ],
   });
 };
+
+const findItemByQuery = async (id, data) => {
+  return await models.Item.findAll({
+    include: [
+      {
+        model: models.ItemPhoto,
+        as: "itemPhoto",
+        attributes: ["id", "photo", "photoText", "photoTextAI"],
+        where: {
+          photoText: {
+            [Op.like]: `%${data}%`, // ItemPhoto의 itemPhotoText에 data가 포함된 값
+          },
+        },
+        required: true, // ItemPhoto 조건을 만족하는 경우만 반환
+      },
+      {
+        model: models.Location,
+        as: "location", // Item -> Location 관계
+        attributes: ["locationName"],
+        required: true, // Location은 필수 조건
+        include: [
+          {
+            model: models.Room,
+            as: "room", // Location -> Room 관계
+            attributes: ["roomName", "homeId"],
+            where: {
+              homeId: id, // Room의 id가 요청받은 id와 일치
+            },
+            required: true, // Room 조건을 만족하는 경우만 반환
+          },
+        ],
+      },
+    ],
+  });
+};
+
 // 4. Item 삭제
 const deleteItem = async (id) => {
   return await models.Item.destroy({
@@ -214,4 +249,5 @@ module.exports = {
   findAllItemByHomeId,
   uploadAdditionalPhotos,
   deleteAdditionalPhoto,
+  findItemByQuery,
 };

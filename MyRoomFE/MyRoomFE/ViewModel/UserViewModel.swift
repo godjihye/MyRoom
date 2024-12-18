@@ -24,6 +24,9 @@ class UserViewModel: ObservableObject {
 	@Published var isHaveHome: Bool = false
 	@Published var inviteCode: String = ""
 	
+	@Published var isShowingChangePW: Bool = false
+	@Published var changePWMessage: String = ""
+	
 	@Published var userInfo: User?
 	
 	init() {
@@ -170,7 +173,6 @@ class UserViewModel: ObservableObject {
 		UserDefaults.standard.removeObject(forKey: "userName")
 		UserDefaults.standard.removeObject(forKey: "userId")
 		UserDefaults.standard.removeObject(forKey: "isLoggedIn")
-		UserDefaults.standard.removeObject(forKey: "homeId")
 		UserDefaults.standard.removeObject(forKey: "userImage")
 		UserDefaults.standard.removeObject(forKey: "nickName")
 		UserDefaults.standard.removeObject(forKey: "homeId")
@@ -275,8 +277,8 @@ class UserViewModel: ObservableObject {
 					if let data = response.data{
 						do {
 							let root = try JSONDecoder().decode(APIError.self, from: data)
-							self.message = root.message
-							self.showAlert = true
+							self.changePWMessage = root.message
+							self.isShowingChangePW = true
 						} catch {
 							log("Decoding error")
 						}
@@ -290,6 +292,7 @@ class UserViewModel: ObservableObject {
 	}
 	
 	func deleteMate(userId: Int) {
+		let myUserId = UserDefaults.standard.integer(forKey: "userId")
 		let url = "\(endPoint)/users/\(userId)"
 		let params: [String: Any] = ["homeId": NSNull()]
 		AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).response { response in
@@ -297,13 +300,24 @@ class UserViewModel: ObservableObject {
 				switch statusCode {
 				case 200..<300 :
 					self.showAlert = true
-					self.message = "룸메를 방출시켰습니다."
-					if let index = self.userInfo?.mates?.firstIndex(where: {$0.id == userId})  {
-						self.userInfo?.mates?.remove(at: index)
+					if myUserId != userId {
+						self.message = "룸메를 방출시켰습니다."
+						if let index = self.userInfo?.mates?.firstIndex(where: {$0.id == userId})  {
+						 self.userInfo?.mates?.remove(at: index)
+					 }
+					} else {
+						self.message = "집 나가기 성공"
+						
+						UserDefaults.standard.removeObject(forKey: "homeId")
+						UserDefaults.standard.removeObject(forKey: "homeName")
 					}
 				default:
 					self.showAlert = true
-					self.message = "룸메 방출시키는 데에 실패했습니다."
+					if myUserId != userId {
+						self.message = "룸메 방출시키는 데에 실패했습니다."
+					} else {
+						self.message = "집 나가기 실패"
+					}
 				}
 			}
 		}
@@ -424,6 +438,32 @@ class UserViewModel: ObservableObject {
 					log("statusCode is 300..<500")
 				default:
 					log("success")
+				}
+			}
+		}
+	}
+	func deleteHome() {
+		let homeId = UserDefaults.standard.integer(forKey: "homeId")
+		let url = "\(endPoint)/home/\(homeId)"
+		AF.request(url, method: .delete).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data {
+						do {
+							let root = try JSONDecoder().decode(APIError.self, from: data)
+							self.showAlert = true
+							self.message = root.message
+							
+							UserDefaults.standard.removeObject(forKey: "homeId")
+							UserDefaults.standard.removeObject(forKey: "homeName")
+						} catch {
+							log("decoding error")
+						}
+					}
+				default :
+					self.showAlert = true
+					self.message = "집 삭제 실패"
 				}
 			}
 		}
