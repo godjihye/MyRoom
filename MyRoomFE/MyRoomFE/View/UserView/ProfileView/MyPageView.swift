@@ -31,9 +31,9 @@ struct MyPageView: View {
 				MyPageRow(icon: "👤", title: "회원정보 수정", backgroundColor: .myroom1)
 			}
 			NavigationLink {
-				MateListView()
+				MyHomeView()
 			} label: {
-				MyPageRow(icon: "🏠", title: "동거인 목록", backgroundColor: .myroom2)
+				MyPageRow(icon: "🏠", title: "집 정보 수정", backgroundColor: .myroom2)
 			}
 		}
 	}

@@ -108,6 +108,8 @@ struct AddItemWithAIView: View {
 	private var imageSection: some View {
 		Section(header: Text("Image")) {
 			Group {
+				HStack {
+					Spacer()
 				if let image = itemThumbnail {
 					Image(uiImage: image)
 						.resizable()
@@ -115,11 +117,15 @@ struct AddItemWithAIView: View {
 						.frame(height: 200)
 						.cornerRadius(10)
 				} else {
-					Image(systemName: "photo")
-						.resizable()
-						.scaledToFit()
-						.frame(height: 200)
-						.cornerRadius(10)
+					Image(systemName: "photo.badge.plus")
+						.renderingMode(.template)
+						.font(.system(size: 200))
+						.foregroundStyle(.accent)
+						.onTapGesture {
+							isShowingImageSource = true
+						}
+				}
+					Spacer()
 				}
 			}
 			Button("사진 선택 / 변경") {

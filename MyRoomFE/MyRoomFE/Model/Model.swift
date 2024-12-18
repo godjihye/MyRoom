@@ -51,6 +51,14 @@ struct ItemResponse: Codable {
 	let documents: [Item]
 }
 
+struct ItemSearchResult: Decodable {
+	let combinedItems: [Item]
+	let findByName: [Item]
+	let findByQuery: [Item]
+}
+struct ItemSearchResultRoot: Decodable {
+	let items: ItemSearchResult
+}
 struct ItemRoot: Codable {
 	let success: Bool
 	let message: String

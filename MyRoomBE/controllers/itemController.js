@@ -65,12 +65,11 @@ const findItem = async (req, res) => {
 // 2-5. Find Item By ItemName
 const findItemByName = async (req, res) => {
   try {
-    const item = await itemService.findItemByName(
+    const items = await itemService.findItemByName(
       req.body.homeId,
       req.body.query
     );
-
-    res.status(200).json({ documents: item });
+    res.status(200).json({ items });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -95,8 +94,6 @@ const updateItem = async (req, res) => {
 
 // 3-2. Update Item Add Additional Photos
 const updateAdditionalPhotos = async (req, res) => {
-  console.log("req.filed: ", req.files);
-  console.log("req.body: ", req.body);
   try {
     const { photos } = req.files;
     const { photoTextAI } = req;

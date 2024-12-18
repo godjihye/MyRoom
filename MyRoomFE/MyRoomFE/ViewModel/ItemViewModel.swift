@@ -17,8 +17,10 @@ class ItemViewModel: ObservableObject {
 	@Published var currentItem: Item?
 	@Published var message: String = ""
 	@Published var isShowingAlert: Bool = false
-	@Published var searchResultItems: [Item] = []
 	@Published var isAddShowing: Bool = false
+	@Published var searchResultItems: [Item] = []
+	@Published var searchResultItemsByName: [Item] = []
+	@Published var searchResultItemsByImageText: [Item] = []
 	
 	// ALERT STATE VARIABLES
 	@Published var isShowingAlertAddAdditionalPhotos: Bool = false
@@ -66,6 +68,10 @@ class ItemViewModel: ObservableObject {
 						let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 						self.isShowingAlert = true
 						self.message = root.message
+						let item = root.item
+						if let index = self.items.firstIndex(where: {$0.id == item.id}) {
+							self.items[index] = item
+						}
 					} catch let error {
 						self.isShowingAlert = true
 						self.message = "에러가 발생했습니다.\n\(error.localizedDescription)"
@@ -400,20 +406,36 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	//MARK: - Search Item
-	func searchItem(query: String?) async {
+	func searchItem(query: String?) {
 		guard let query = query else { return }
 		let url = "\(endPoint)/items/search"
 		let params: Parameters = ["homeId": homeId, "query": query]
-		do {
-			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(ItemResponse.self).value
-			DispatchQueue.main.async { self.searchResultItems = response.documents }
-		} catch {
-			if let afError = error as? AFError {
-				log("AFError: \(afError.localizedDescription)", trait: .error)
-			} else {
-				log("UnexpectedError: \(error.localizedDescription)", trait: .error)
+		AF.request(url, method: .post, parameters: params).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					do {
+						if let data = response.data {
+							log(String(data: data, encoding: .utf8) ?? "")
+							let root = try JSONDecoder().decode(ItemSearchResultRoot.self, from: data)
+							self.searchResultItems = root.items.combinedItems
+							if root.items.combinedItems.count == 0 {
+								self.isShowingAlert = true
+								self.message = "검색 결과가 없습니다."
+							}
+							self.searchResultItemsByName = root.items.findByName
+							self.searchResultItemsByImageText = root.items.findByQuery
+						}
+					} catch {
+						
+						log("decode error", trait: .error)
+					}
+				default:
+					log("error", trait: .error)
+				}
 			}
 		}
+		
 	}
 	
 	func clearSearchResult() {

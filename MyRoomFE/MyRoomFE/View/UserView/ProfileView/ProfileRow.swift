@@ -49,6 +49,7 @@ struct ProfileRow: View {
 						.aspectRatio(contentMode: .fill)
 						.frame(width: 60, height: 60)
 						.clipShape(Circle())
+						.overlay{Circle().stroke(.gray).opacity(0.8)}
 				} placeholder: {
 					ProgressView()
 				}

@@ -374,8 +374,8 @@ struct UsedDetailView: View {
                        let usedUser = usedUser,
                        let loginUser = UserDefaults.standard.string(forKey: "nickName"){
                         if loginUserId == used.user.id {
-                            ChatListView(chatUsedRoomName: used.usedTitle)
-                        }else {
+													ChatListView(chatUsedRoomName: used.usedTitle).environmentObject(ChatViewModel())
+                        } else {
                             ChatView(roomId: roomId, loginUser: loginUser)
                         }
                     }
