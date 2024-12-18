@@ -7,8 +7,8 @@ const createComment = async (comment, parentId, postId, userId) => {
   return await commentDao.createComment(comment, parentId, postId, userId);
 };
 
-const createReply = async (comment, parentId, postId, userId ) => {
-  return await commentDao.createReply(comment, parentId, postId, userId );
+const createReply = async (comment, parentId, postId, userId) => {
+  return await commentDao.createReply(comment, parentId, postId, userId);
 };
 
 const findAllComment = async (postId) => {

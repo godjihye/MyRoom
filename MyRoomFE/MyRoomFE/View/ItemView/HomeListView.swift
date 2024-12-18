@@ -55,6 +55,7 @@ struct HomeListView: View {
 					secondaryButton: .cancel(Text("취소"))
 				)
 			}
+			
 		}
 		.task {
 			await roomVM.fetchRooms()

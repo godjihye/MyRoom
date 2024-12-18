@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class PostPhoto extends Model {
     /**
@@ -11,24 +9,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      PostPhoto.belongsTo(models.Post,{
-        foreignKey:"postId",
+      PostPhoto.belongsTo(models.Post, {
+        foreignKey: "postId",
         onDelete: "CASCADE",
-        as:"images"
-      })
+        as: "images",
+      });
 
-      PostPhoto.hasMany(models.ButtonData,{
-        foreignKey:"postPhotoId",
-        as:"btnData"
-      })
+      PostPhoto.hasMany(models.ButtonData, {
+        foreignKey: "postPhotoId",
+        as: "btnData",
+      });
     }
   }
-  PostPhoto.init({
-    image: DataTypes.STRING,
-    postId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'PostPhoto',
-  });
+  PostPhoto.init(
+    {
+      image: DataTypes.STRING,
+      postId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "PostPhoto",
+    }
+  );
   return PostPhoto;
 };

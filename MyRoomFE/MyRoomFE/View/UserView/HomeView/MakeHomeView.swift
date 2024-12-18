@@ -48,7 +48,7 @@ struct MakeHomeView: View {
 			WideButton(title: "저장", backgroundColor: .accent) {
 				log("homeName.count: \(homeName.count)")
 				if homeName.count > 1 {
-						userVM.makeHome(homeName: homeName, homeDesc: homeDesc)
+					userVM.makeHome(homeName: homeName, homeDesc: homeDesc)
 				} else {
 					isValidHomeName = false
 				}

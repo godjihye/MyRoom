@@ -11,27 +11,27 @@ struct MyPageRow: View {
 	let icon: String
 	let title: String
 	var backgroundColor: Color = Color.accentColor
-    var body: some View {
-			
-			HStack {
-				Text(icon)
-					.font(.system(size: 20))
-				Text(title)
-					.font(.system(size: 20))
-					.bold()
-				Spacer()
-				Image(systemName: "greaterthan")
-					.renderingMode(.original)
-			}
-			.padding()
-			.background {
-				RoundedRectangle(cornerRadius: 10)
-					.foregroundStyle(backgroundColor)
-					.opacity(0.3)
-			}
-			.foregroundStyle(.black)
-			.padding(.horizontal)
-    }
+	var body: some View {
+		
+		HStack {
+			Text(icon)
+				.font(.system(size: 20))
+			Text(title)
+				.font(.system(size: 20))
+				.bold()
+			Spacer()
+			Image(systemName: "greaterthan")
+				.renderingMode(.original)
+		}
+		.padding()
+		.background {
+			RoundedRectangle(cornerRadius: 10)
+				.foregroundStyle(backgroundColor)
+				.opacity(0.3)
+		}
+		.foregroundStyle(.black)
+		.padding(.horizontal)
+	}
 }
 
 #Preview {

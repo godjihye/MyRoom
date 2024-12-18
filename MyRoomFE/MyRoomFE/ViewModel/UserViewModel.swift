@@ -61,18 +61,17 @@ class UserViewModel: ObservableObject {
 								self.isHaveHome = false
 							}
 						} catch let error {
-							self.isLoginError = true
-							self.message = error.localizedDescription
+							log("decoding Error")
 						}
 					}
 				case 300..<600:
 					self.isLoginError = true
 					if let data = response.data {
 						do {
-							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = apiError.message
 						} catch let error {
-							self.message = error.localizedDescription
+							log("decoding error")
 						}
 					}
 				default:
@@ -113,7 +112,7 @@ class UserViewModel: ObservableObject {
 					self.isLoginError = true
 					if let data = response.data {
 						do {
-							let res = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let res = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = res.message
 						} catch let error {
 							log("error : \(error)")
@@ -150,7 +149,7 @@ class UserViewModel: ObservableObject {
 				case 300..<600:
 					if let data = response.data {
 						do {
-							let apiError = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let apiError = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = apiError.message
 						} catch let error{
 							self.message = error.localizedDescription
@@ -215,7 +214,7 @@ class UserViewModel: ObservableObject {
 		AF.request(url, method: .delete).response { response in
 			do {
 				guard let data = response.data else {return}
-				let resp = try JSONDecoder().decode(ApiResponse.self, from: data)
+				let resp = try JSONDecoder().decode(APIError.self, from: data)
 				self.showAlert = true
 				self.message = resp.message
 			} catch {
@@ -242,8 +241,15 @@ class UserViewModel: ObservableObject {
 					do {
 						guard let data = response.data, let responseString = String(data: data, encoding: .utf8) else {return}
 						log("responseString: \(responseString)")
-						let root = try JSONDecoder().decode(ImageUpload.self, from: data)
-						UserDefaults.standard.set(root.imageUrl, forKey: "userImage")
+						let root = try JSONDecoder().decode(UserInfo.self, from: data)
+						if let userImage = root.user.userImage {
+							UserDefaults.standard.set(root.user.userImage, forKey: "userImage")
+							self.userInfo?.userImage = userImage
+						}
+						self.showAlert = true
+						self.message = root.message
+						self.userInfo?.nickname = root.user.nickname
+						
 						log("upload image success")
 					} catch let error {
 						log("decode error: \(error.localizedDescription)")
@@ -268,7 +274,7 @@ class UserViewModel: ObservableObject {
 				case 200...500:
 					if let data = response.data{
 						do {
-							let root = try JSONDecoder().decode(ApiResponse.self, from: data)
+							let root = try JSONDecoder().decode(APIError.self, from: data)
 							self.message = root.message
 							self.showAlert = true
 						} catch {

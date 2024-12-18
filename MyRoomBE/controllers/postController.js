@@ -3,21 +3,23 @@ const postService = require("../services/postService");
 const createPost = async (req, res) => {
   console.log("postCreate start~~~~~~~~");
   const postData = req.body.postData;
-  const buttonData = req.body.buttonData
+  const buttonData = req.body.buttonData;
   const jsonPostData = JSON.parse(postData);
   const jsonButtonData = JSON.parse(buttonData);
-  // const postData = req.body
-
   const photoData = req.files;
+  
   const thumbnailBlobName = photoData.postThumbnail.find(
     (item) => item.fieldname === "postThumbnail"
   ).blobName;
   jsonPostData.postThumbnail = thumbnailBlobName; //postThumbnail 추가
-  console.log("photo", photoData);
-  console.log("buttomData",jsonButtonData)
-  console.log("postData",jsonPostData)
+  console.log(photoData)
+  
   try {
-    const post = await postService.createPost(jsonPostData, photoData,jsonButtonData);
+    const post = await postService.createPost(
+      jsonPostData,
+      photoData,
+      jsonButtonData
+    );
 
     res.status(201).json({
       success: true,
@@ -31,9 +33,9 @@ const createPost = async (req, res) => {
 
 const findPostById = async (req, res) => {
   try {
-    const post = await postService.findPostById(req.params.id);
+    const post = await postService.findPostById(req.params.id,req.body.userId);
     if (post) {
-      res.status(200).json({ data: post });
+      res.status(200).json({ post: post });
     } else {
       res.status(404).json({ error: `post not found` });
     }
@@ -48,7 +50,6 @@ const findAllPost = async (req, res) => {
     const pageNum = parseInt(page) || 1;
     const size = parseInt(pageSize) || 10;
     const userId = req.params.userId;
-
     const posts = await postService.findAllPost(pageNum, size, userId);
     const totalPages = Math.ceil(posts.count / size);
 
@@ -63,7 +64,7 @@ const findAllPost = async (req, res) => {
   }
 };
 
-const findPostByName = async (req,res) => {
+const findPostByName = async (req, res) => {
   try {
     const post = await postService.findPostByName(
       req.body.userId,
@@ -78,13 +79,35 @@ const findPostByName = async (req,res) => {
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
-}
+};
 
 const updatePost = async (req, res) => {
   try {
-    const post = await postService.updatePost(req.params.id, req.body);
+    const postId = req.params.postId;
+    const postData = req.body.postData;
+    const buttonData = req.body.buttonData;
+    const photoData = req.files;
+
+    const jsonPostData = JSON.parse(postData);
+    const jsonButtonData = JSON.parse(buttonData);
+    // const jsonButtonData =  [
+    //   { buttons: [ [Object], [Object] ], imageIndex: 0 },
+    //   { buttons: [ [Object] ], imageIndex: 2 }
+    // ]
+
+    // console.log(jsonPostData)
+    // console.log(jsonButtonData)
+    // console.log(photoData)
+
+    const post = await postService.updatePost(postId,jsonPostData);
+
+    const postPhoto = await postService.updatePostPhoto(postId,photoData,jsonButtonData);
+
     if (post) {
-      res.status(200).json({ data: post });
+      res.status(200).json({
+        success: true,
+        posts: [post],
+        message: "게시글이 등록되었습니다.", });
     } else {
       res.status(404).json({ error: `post not found` });
     }
@@ -97,9 +120,9 @@ const deletePost = async (req, res) => {
   try {
     const result = await postService.deletePost(req.params.id);
     if (result) {
-      res.status(200).json({ 
-        success : true,
-        message: "게시글이 삭제되었습니다." 
+      res.status(200).json({
+        success: true,
+        message: "게시글이 삭제되었습니다.",
       });
     } else {
       res.status(404).json({ error: `post not found` });

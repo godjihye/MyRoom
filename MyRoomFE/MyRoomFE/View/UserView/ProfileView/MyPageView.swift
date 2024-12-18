@@ -19,8 +19,8 @@ struct MyPageView: View {
 				logoutBtn
 			}
 		}
-		
 	}
+	
 	private var menuView: some View {
 		VStack {
 			NavigationLink {
@@ -42,6 +42,7 @@ struct MyPageView: View {
 			}
 		}
 	}
+	
 	private var logoutBtn: some View {
 		Button {
 			userVM.logout()

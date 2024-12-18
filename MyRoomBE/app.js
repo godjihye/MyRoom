@@ -6,21 +6,21 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const homeRouter = require("./routers/homeRouter")
+const homeRouter = require("./routers/homeRouter");
 const roomRouter = require("./routers/roomsRouter");
 const locationRouter = require("./routers/locationRouter");
 const itemRouter = require("./routers/itemsRouter");
 const userRouter = require("./routers/userRouter");
 const postRouter = require("./routers/postsRouter");
 const usedRouter = require("./routers/usedsRouter");
-const imageRouter = require("./routers/imageRouter")
-const commnetRouter = require("./routers/commentsRouter")
+const imageRouter = require("./routers/imageRouter");
+const commnetRouter = require("./routers/commentsRouter");
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/home",homeRouter)
+app.use("/home", homeRouter);
 app.use("/rooms", roomRouter);
 app.use("/locations", locationRouter);
 app.use("/items", itemRouter);

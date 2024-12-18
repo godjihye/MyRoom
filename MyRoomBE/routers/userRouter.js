@@ -27,7 +27,7 @@ router.post("/:userId", userController.updateUser);
 router.delete("/:userId", userController.deleteUser);
 
 // 7. 비밀번호 변경
-router.post("/changepw/:userId", userController.changePW)
+router.post("/changepw/:userId", userController.changePW);
 
 // router.patch("/:userId", userController.changePW);
 module.exports = router;

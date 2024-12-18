@@ -28,6 +28,8 @@ struct SignInWithAppleView: View {
 		case .success(let auth):
 			if let credential = auth.credential as? ASAuthorizationAppleIDCredential {
 				// self.userId = credential.user
+				log("email: \(credential.email)")
+				log("email: \(self.email)")
 				self.email = credential.email
 				if let email = self.email {
 					userVM.socialLogin(userName: email)

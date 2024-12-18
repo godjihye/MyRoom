@@ -44,7 +44,8 @@ struct PostDetailView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         NavigationLink("편집") {
-//                            PostAddView(isEditMode: true, existingUsed: post)
+                            PostAddView(isEditMode: true, existingPost: post)
+//                            test()
                         }
                         Button("삭제") {
                             isShowingDeleteAlert = true
@@ -92,7 +93,7 @@ struct PostDetailView: View {
                                         isPostWebViewPresented.toggle()
                                     }) {
                                         Circle()
-                                            .fill(Color.acc)
+                                            .fill(Color.blue)
                                             .frame(width: 20, height: 20)
                                             .overlay(
                                                 Text("+")
