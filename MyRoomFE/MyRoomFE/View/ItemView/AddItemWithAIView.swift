@@ -258,7 +258,7 @@ struct AddItemWithAIView: View {
 		}
 		
 	}
-
+	
 	private var isSaveButtonDisabled: Bool {
 		if let existingItem = existingItem {
 			let isUnchanged = itemName == existingItem.itemName &&

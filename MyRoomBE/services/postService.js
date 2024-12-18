@@ -7,21 +7,25 @@ const createPost = async (postData, photoData, buttonData) => {
   return await postDao.createPost(postData, photoData, buttonData);
 };
 
-const findPostById = async (id) => {
-  return await postDao.findPostById(id);
+const findPostById = async (userId,id) => {
+  return await postDao.findPostById(userId,id);
 };
 
 const findAllPost = async (page, pageSize, userId) => {
   return await postDao.findAllPost(page, pageSize, userId);
 };
 
-const findPostByName = async (id,data) => {
-  return await postDao.findPostByName(id,data);
-}
-
-const updatePost = async (id, data) => {
-  return await postDao.updatePost(id, data);
+const findPostByName = async (id, data) => {
+  return await postDao.findPostByName(id, data);
 };
+
+const updatePost = async (postId,postData) => {
+  return await postDao.updatePost(postId,postData);
+};
+
+const updatePostPhoto = async (id,photoData,buttonData) => {
+  return await postDao.updatePostPhoto(id,photoData,buttonData);
+}
 
 const deletePost = async (id) => {
   return await postDao.deletePost(id);
@@ -41,6 +45,7 @@ module.exports = {
   findAllPost,
   findPostByName,
   updatePost,
+  updatePostPhoto,
   deletePost,
   toggleFavorite,
   updateViewCnt,

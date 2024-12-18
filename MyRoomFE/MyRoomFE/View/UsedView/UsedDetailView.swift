@@ -53,7 +53,7 @@ struct UsedDetailView: View {
                     Button(action: {
                         isItemInfoPresented.toggle()
                     }) {
-                        Text("마룸에 저장한 아이템 정보보기")
+                        Text("판매자의 아이템 정보보기")
                             .font(.caption)
                             .foregroundColor(.accent)
                             .padding(.horizontal)
@@ -159,7 +159,7 @@ struct UsedDetailView: View {
                 }
                 Spacer()
                 
-                if let usedUrl = used.usedUrl {
+                if let usedUrl = used.usedUrl,let url = URL(string:usedUrl) {
                     Button {
                         isWebViewPresented.toggle()
                     } label: {
@@ -170,7 +170,7 @@ struct UsedDetailView: View {
                         .cornerRadius(8)
                         .padding(.horizontal,10)
                         .sheet(isPresented: $isWebViewPresented) {
-                            UsedWebView(url: URL(string: used.usedUrl ?? "")!)
+                            UsedWebView(url: url)
                                 .edgesIgnoringSafeArea(.all)
                         }
                 }
@@ -326,7 +326,7 @@ struct UsedDetailView: View {
         .padding(.vertical, 10)
         .cornerRadius(8)
     }
-
+    
     
     
     
@@ -348,7 +348,9 @@ struct UsedDetailView: View {
             .padding(.horizontal)
             
             //중고물품가격
-            Text("\(used.usedPrice)").font(.title2)
+            if let usedprice = used.usedPrice {
+                Text("\(usedprice)").font(.title2)
+            }
             Spacer()
             
             //채팅하기
@@ -371,8 +373,8 @@ struct UsedDetailView: View {
                 .padding(.horizontal,10)
                 .sheet(isPresented: $isChatViewPresented) {
                     if let roomId = roomId,
-                       let usedUser = usedUser,
-                       let loginUser = UserDefaults.standard.string(forKey: "nickName"){
+                         let usedUser = usedUser,
+                         let loginUser = UserDefaults.standard.string(forKey: "nickName"){
                         if loginUserId == used.user.id {
                             ChatListView(chatUsedRoomName: used.usedTitle)
                         }else {
@@ -405,7 +407,7 @@ struct UsedDetailView: View {
         
         
         if let dateString = dateString,
-           let date = inputFormatter.date(from: dateString) {
+             let date = inputFormatter.date(from: dateString) {
             return outputFormatter.string(from: date)
         }
         return "Invalid Date"
@@ -455,7 +457,7 @@ struct UsedDetailView: View {
 
 //
 //#Preview {
-//		let used = UsedViewModel()
-//		UsedDetailView(isFavorite:.constant(false), used: sampleUsed, photos: photoData).environmentObject(used)
+//        let used = UsedViewModel()
+//        UsedDetailView(isFavorite:.constant(false), used: sampleUsed, photos: photoData).environmentObject(used)
 ////    UsedDetailView(used: userSample, photos: photoData)
 //}

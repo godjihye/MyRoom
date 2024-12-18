@@ -11,9 +11,9 @@ const findAllUsed = async (page, pageSize, userId) => {
   return await usedDao.findAllUsed(page, pageSize, userId);
 };
 
-const findUsedByName = async (id,data) => {
-  return await usedDao.findUsedByName(id,data)
-}
+const findUsedByName = async (id, data) => {
+  return await usedDao.findUsedByName(id, data);
+};
 
 const findUsedById = async (id, userId) => {
   return await usedDao.findUsedById(id, userId);

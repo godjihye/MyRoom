@@ -12,16 +12,28 @@ const createHash = async (password, saltRound) => {
   return hashed;
 };
 
+class NotFoundError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "NotFoundError";
+    this.statusCode = 404;
+  }
+}
+
 // 1. Login
 const login = async (data) => {
   const { userName, password } = data;
   const user = await userDao.getUserByUserName(userName);
   if (!user) {
-    throw new Error("유저를 찾을 수 없습니다.");
+    throw new NotFoundError(
+      "로그인에 실패했습니다.\n이메일 주소와 비밀번호를 확인해주세요."
+    );
   }
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    throw new Error("패스워드가 틀립니다.");
+    throw new NotFoundError(
+      "로그인에 실패했습니다.\n이메일 주소와 비밀번호를 확인해주세요."
+    );
   }
   const token = jwt.sign({ userId: user.id }, secret, {
     expiresIn: expiresIn,

@@ -108,7 +108,7 @@ const findAllUsed = async (page, pageSize, userId) => {
   });
 };
 
-const findUsedByName = async(id,data) => {
+const findUsedByName = async (id, data) => {
   return await models.Used.findAndCountAll({
     where: {
       usedTitle: {
@@ -127,7 +127,7 @@ const findUsedByName = async(id,data) => {
       {
         model: models.UsedFav,
         as: "usedFav",
-        where: { userId:id },
+        where: { userId: id },
         required: false, // LEFT OUTER JOIN
       },
     ],
@@ -145,7 +145,7 @@ const findUsedByName = async(id,data) => {
     subQuery: false,
     //   logging: (sql) => console.log('Executing SQL:', sql)
   });
-}
+};
 
 //detail
 const findUsedById = async (id, userId) => {
@@ -182,7 +182,6 @@ const findUsedById = async (id, userId) => {
 
 //edit
 const updateUsed = async (id, data) => {
-
   await await models.Used.update(data, {
     where: { id },
   });
@@ -218,7 +217,6 @@ const toggleFavorite = async (usedId, userId, action) => {
       });
     }
     await used.save();
-
 
     return result;
   }

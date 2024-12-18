@@ -13,83 +13,83 @@ struct ItemDetailView: View {
 	@EnvironmentObject var itemVM: ItemViewModel
 	
 	@State private var isShowingDeleteAlert: Bool = false
-	
+	@State private var isFav: Bool = false
 	private var itemId: Int? // 아이템 ID
 	private var initialItem: Item? // 직접 받은 아이템
 	
 	init(itemId: Int) { // itemId로 초기화
-			self.itemId = itemId
+		self.itemId = itemId
 	}
 	
 	init(item: Item) { // item 객체로 초기화
-			self.initialItem = item
+		self.initialItem = item
 	}
 	
 	var body: some View {
-			NavigationStack {
-					ScrollView {
-							VStack(alignment: .leading, spacing: 18) {
-									// item 선언
-								if let item = initialItem ?? itemVM.items.first(where: { $0.id == itemId }) {
-											itemImage(item: item)
-											itemNameAndHeart(item: item)
-											itemCreatedAtAndUpdatedAt(item: item)
-											Divider()
-											itemLocation(item: item)
-											itemUrl(item: item)
-											Divider()
-											itemPriceAndColor(item: item)
-											itemDesc(item: item)
-											itemPurchaseAndExpiry(item: item)
-											Divider()
-
-											AdditionalPhotosView(itemPhotos: item.itemPhoto, itemId: item.id)
-									} else {
-											Text("아이템을 찾을 수 없습니다.")
-													.foregroundColor(.red)
-									}
-									Spacer()
-							}
-							.padding()
+		NavigationStack {
+			ScrollView {
+				VStack(alignment: .leading, spacing: 18) {
+					// item 선언
+					if let item = initialItem ?? itemVM.items.first(where: { $0.id == itemId }) {
+						itemImage(item: item)
+						itemNameAndHeart(item: item)
+						itemCreatedAtAndUpdatedAt(item: item)
+						Divider()
+						itemLocation(item: item)
+						itemUrl(item: item)
+						Divider()
+						itemPriceAndColor(item: item)
+						itemDesc(item: item)
+						itemPurchaseAndExpiry(item: item)
+						Divider()
+						
+						AdditionalPhotosView(itemPhotos: item.itemPhoto, itemId: item.id)
+					} else {
+						Text("아이템을 찾을 수 없습니다.")
+							.foregroundColor(.red)
 					}
-					.toolbar(content: {
-						if let item = itemVM.items.first(where: {$0.id == itemId}){
-							ToolbarItem(placement: .topBarTrailing) {
-									Menu {
-											NavigationLink("편집") {
-													AddItemWithAIView(isEditMode: true, existingItem: item)
-											}
-											Button("삭제") {
-													isShowingDeleteAlert = true
-											}
-											.confirmationDialog(
-													"\(item.itemName)을/를 삭제하시겠습니까?",
-													isPresented: $isShowingDeleteAlert,
-													titleVisibility: .visible
-											) {
-													Button("삭제", role: .destructive) {
-															Task {
-																	await itemVM.removeItem(itemId: item.id)
-																	dismiss()
-															}
-													}
-											}
-									} label: {
-											Image(systemName: "ellipsis")
-									}
+					Spacer()
+				}
+				.padding()
+			}
+			
+			.toolbar(content: {
+				if let item = itemVM.items.first(where: {$0.id == itemId}){
+					ToolbarItem(placement: .topBarTrailing) {
+						Menu {
+							NavigationLink("편집") {
+								AddItemWithAIView(isEditMode: true, existingItem: item)
+							}
+							Button("삭제") {
+								isShowingDeleteAlert = true
+							}
+							
+						} label: {
+							Image(systemName: "ellipsis")
+						}
+						.confirmationDialog(
+							"\(item.itemName)을/를 삭제하시겠습니까?",
+							isPresented: $isShowingDeleteAlert,
+							titleVisibility: .visible
+						) {
+							Button("삭제", role: .destructive) {
+								itemVM.removeItem(itemId: item.id)
+								dismiss()
 							}
 						}
-					})
-					.alert("좋아요", isPresented: $itemVM.isShowingAlert, actions: {
-							Button("확인", role: .cancel) {}
-					}, message: {
-							Text(itemVM.message)
-					})
-					.navigationTitle("아이템 상세 조회")
-					.navigationBarTitleDisplayMode(.inline)
-			}
+					}
+				}
+			})
+			.alert("아이템 수정", isPresented: $itemVM.isShowingAlert, actions: {
+				Button("확인", role: .cancel) {}
+			}, message: {
+				Text(itemVM.message)
+			})
+			.navigationTitle("아이템 상세 조회")
+			.navigationBarTitleDisplayMode(.inline)
+		}
 	}
-
+	
 	
 	private func itemImage(item: Item) -> some View {
 		Group {
@@ -97,7 +97,7 @@ struct ItemDetailView: View {
 				AsyncImage(url: URL(string: photo.addingURLPrefix())) { image in
 					image
 						.resizable()
-						.aspectRatio(contentMode: .fill)
+						.aspectRatio(3/4, contentMode: .fit)
 						.frame(maxWidth: .infinity)
 						.cornerRadius(10)
 						.overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray).opacity(0.2))
@@ -138,7 +138,7 @@ struct ItemDetailView: View {
 	}
 	
 	private func itemLocation(item: Item) -> some View {
-		Label("위치  |  \(item.location!.room.roomName)의 \(item.location!.locationName)에 있습니다.", systemImage: "mappin.and.ellipse")
+		Label("위치  |  \(item.location?.room.roomName ?? "")의 \(item.location?.locationName ?? "")에 있습니다.", systemImage: "mappin.and.ellipse")
 			.font(.headline)
 	}
 	
@@ -229,8 +229,8 @@ struct ItemDetailView: View {
 			}
 		}
 	}
-
-
+	
+	
 }
 
 // Helper: Convert HEX Color to SwiftUI Color
