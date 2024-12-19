@@ -13,9 +13,6 @@ struct SignInWithAppleView: View {
 	@State var email: String?
 	
 	var body: some View {
-		if let email {
-			Text(email)
-		}
 		SignInWithAppleButton(.continue, onRequest: configureRequest, onCompletion: handleAuthorization)
 			.frame(height: 60)
 	}
@@ -27,9 +24,6 @@ struct SignInWithAppleView: View {
 		switch result {
 		case .success(let auth):
 			if let credential = auth.credential as? ASAuthorizationAppleIDCredential {
-				// self.userId = credential.user
-				log("email: \(credential.email)")
-				log("email: \(self.email)")
 				self.email = credential.email
 				if let email = self.email {
 					userVM.socialLogin(userName: email)

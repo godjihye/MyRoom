@@ -46,7 +46,9 @@ struct UsedRowView: View {
 				
 				HStack {
 					Text(status).font(.caption);
-					Text("\(used.usedPrice)").padding(.horizontal,10)
+                    if let usedPrice = used.usedPrice {
+                        Text("\(usedPrice)").padding(.horizontal,10)
+                    }
 				}
 				
 				

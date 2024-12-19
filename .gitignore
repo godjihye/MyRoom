@@ -5,7 +5,7 @@ xcuserdata/
 DerivedData/
 build/
 node_modules
-.env
+*.env
 MyRoomFE/MyRoomFE.xcodeproj/project.xcworkspace/xcuserdata/
 MyRoomFE/MyRoomFE.xcodeproj/xcuserdata/
 MyRoomBE/migrations/

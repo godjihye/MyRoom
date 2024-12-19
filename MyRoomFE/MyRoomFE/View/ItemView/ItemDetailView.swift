@@ -23,6 +23,7 @@ struct ItemDetailView: View {
 	
 	init(item: Item) { // item 객체로 초기화
 		self.initialItem = item
+		isFav = item.isFav
 	}
 	
 	var body: some View {
@@ -74,16 +75,32 @@ struct ItemDetailView: View {
 						) {
 							Button("삭제", role: .destructive) {
 								itemVM.removeItem(itemId: item.id)
-								dismiss()
+								
 							}
 						}
 					}
 				}
 			})
-			.alert("아이템 수정", isPresented: $itemVM.isShowingAlert, actions: {
-				Button("확인", role: .cancel) {}
+			.alert("아이템", isPresented: $itemVM.isRemoveShowing, actions: {
+				Button("확인", role: .cancel) {
+					dismiss()
+				}
 			}, message: {
 				Text(itemVM.message)
+			})
+			.alert("아이템", isPresented: $itemVM.isEditShowing, actions: {
+				Button("확인", role: .cancel) {
+					
+				}
+			}, message: {
+				Text(itemVM.message)
+			})
+			.alert("아이템", isPresented: $itemVM.isShowingAlertRemoveAdditionalPhotos, actions: {
+				Button("확인", role: .cancel) {
+//					dismiss()
+				}
+			}, message: {
+				Text(itemVM.removeAdditionalPhotosMessage)
 			})
 			.navigationTitle("아이템 상세 조회")
 			.navigationBarTitleDisplayMode(.inline)
@@ -124,13 +141,12 @@ struct ItemDetailView: View {
 				.lineLimit(1)
 			Spacer()
 			Button {
-				Task {
-					await itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
-				}
+				itemVM.updateItemFav(itemId: item.id, itemFav: item.isFav)
+				
 			} label: {
 				Image(systemName: item.isFav ? "heart.fill" : "heart")
-					.resizable()
-					.frame(width: 30, height: 30)
+					.renderingMode(.original)
+					.font(.title)
 					.foregroundStyle(item.isFav ? .red : .gray)
 				
 			}
@@ -159,12 +175,11 @@ struct ItemDetailView: View {
 	
 	private func itemDesc(item: Item) -> some View {
 		VStack(alignment: .leading) {
-			if let desc = item.desc, !desc.isEmpty {
 				Label("아이템 설명", systemImage: "tag.fill")
 					.font(.subheadline)
 					.foregroundColor(.primary)
 				
-				Text(desc)
+			Text(item.desc ?? "아이템 설명을 입력해주세요.")
 					.font(.system(size: 15))
 					.padding()
 					.frame(maxWidth: .infinity, alignment: .leading)
@@ -173,7 +188,7 @@ struct ItemDetailView: View {
 							.fill(Color.background)
 					}
 			}
-		}
+		
 		
 	}
 	
@@ -181,6 +196,10 @@ struct ItemDetailView: View {
 		HStack {
 			if let price = item.price {
 				Label("가격: \(price)원", systemImage: "tag.fill")
+					.font(.subheadline)
+					.foregroundColor(.green)
+			} else {
+				Label("가격: 가격을 입력해주세요.", systemImage: "tag.fill")
 					.font(.subheadline)
 					.foregroundColor(.green)
 			}
@@ -220,10 +239,12 @@ struct ItemDetailView: View {
 						.foregroundStyle(.blue)
 				}
 			} else {
-				if let url = URL(string: "https://search.shopping.naver.com/search/all?bt=-1&frm=NVSCPRO&query=\(item.itemName)") {
+				if let url = URL(string: "https://msearch.shopping.naver.com/search/all?bt=-1&frm=NVSCPRO&query=\(item.itemName)") {
 					Link(destination: url) {
-						Text("등록한 URL이 없어요.\n네이버 가격비교로 가기")
-							.foregroundStyle(.blue)
+						VStack {
+							Text("등록한 URL이 없어요.\n네이버 가격비교로 가기")
+								.foregroundStyle(.blue)
+						}
 					}
 				}
 			}

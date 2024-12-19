@@ -11,15 +11,16 @@ struct MyPageView: View {
 	@EnvironmentObject var userVM: UserViewModel
 	var body: some View {
 		NavigationStack {
-			ScrollView {
-				ProfileView()
-				Divider()
-				menuView
-				Divider()
-				logoutBtn
+				ScrollView {
+					ProfileView()
+					Divider()
+					menuView
+					Divider()
+					logoutBtn
+				}
 			}
 		}
-	}
+	
 	
 	private var menuView: some View {
 		VStack {
@@ -31,14 +32,9 @@ struct MyPageView: View {
 				MyPageRow(icon: "👤", title: "회원정보 수정", backgroundColor: .myroom1)
 			}
 			NavigationLink {
-				MateListView()
+				MyHomeView()
 			} label: {
-				MyPageRow(icon: "🏠", title: "동거인 목록", backgroundColor: .myroom3)
-			}
-			NavigationLink {
-				ChatListView().environmentObject(ChatViewModel())
-			} label: {
-				MyPageRow(icon: "💬", title: "채팅 목록", backgroundColor: .myroom2)
+				MyPageRow(icon: "🏠", title: "집 정보 수정", backgroundColor: .myroom2)
 			}
 		}
 	}

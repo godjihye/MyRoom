@@ -8,9 +8,6 @@ const createComment = async (comment, parentId, postId, userId) => {
     postId,
     userId,
   });
-
-  if (newComment) {
-  }
 };
 
 // 대댓글작성

@@ -99,14 +99,14 @@ struct HomeListView: View {
 							}
 						}
 					}
-					.font(.system(size: 15))
+					.font(.system(size: 12))
 					.foregroundStyle(.secondary)
 					Button {
 						isShowingAlert = true
 						removeRoomId = room.id
 					} label: {
 						Text("삭제")
-							.font(.system(size: 15))
+							.font(.system(size: 12))
 							.foregroundStyle(.red)
 					}
 				}) {

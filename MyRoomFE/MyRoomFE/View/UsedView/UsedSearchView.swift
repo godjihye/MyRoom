@@ -10,7 +10,7 @@ import SwiftUI
 struct UsedSearchView: View {
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject var usedVM: UsedViewModel
-	@AppStorage("searchHistory") private var searchHistories: [String] = []
+	@AppStorage("searchHistoryUsed") private var searchHistories: [String] = []
 	@FocusState private var showKeyboard: Bool
 	@State private var query: String = ""
 	

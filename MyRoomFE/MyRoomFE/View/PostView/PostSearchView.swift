@@ -10,7 +10,7 @@ import SwiftUI
 struct PostSearchView: View {
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject var postVM:PostViewModel
-	@AppStorage("searchHistory") private var searchHistories: [String] = []
+	@AppStorage("searchHistoryPost") private var searchHistories: [String] = []
 	@FocusState private var showKeyboard: Bool
 	@State private var query: String = ""
 	

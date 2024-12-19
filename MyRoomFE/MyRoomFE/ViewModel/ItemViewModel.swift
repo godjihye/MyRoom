@@ -17,12 +17,19 @@ class ItemViewModel: ObservableObject {
 	@Published var currentItem: Item?
 	@Published var message: String = ""
 	@Published var isShowingAlert: Bool = false
-	@Published var searchResultItems: [Item] = []
+	
 	@Published var isAddShowing: Bool = false
+	@Published var isRemoveShowing: Bool = false
+	@Published var isEditShowing: Bool = false
+	@Published var searchResultItems: [Item] = []
+	@Published var searchResultItemsByName: [Item] = []
+	@Published var searchResultItemsByImageText: [Item] = []
 	
 	// ALERT STATE VARIABLES
 	@Published var isShowingAlertAddAdditionalPhotos: Bool = false
 	@Published var addAdditionalPhotosMessage: String = ""
+	@Published var isShowingAlertRemoveAdditionalPhotos: Bool = false
+	@Published var removeAdditionalPhotosMessage: String = ""
 	
 	let endPoint = Bundle.main.object(forInfoDictionaryKey: "ENDPOINT") as! String
 	let userId = UserDefaults.standard.integer(forKey: "userId")
@@ -66,6 +73,8 @@ class ItemViewModel: ObservableObject {
 						let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 						self.isShowingAlert = true
 						self.message = root.message
+						let item = root.item
+						self.items.append(item)
 					} catch let error {
 						self.isShowingAlert = true
 						self.message = "에러가 발생했습니다.\n\(error.localizedDescription)"
@@ -199,13 +208,13 @@ class ItemViewModel: ObservableObject {
 					do {
 						guard let data = response.data else { return }
 						let root = try JSONDecoder().decode(ItemRoot.self, from: data)
-						self.isShowingAlert = true
+						self.isEditShowing = true
 						self.message = root.message
 						if let index = self.items.firstIndex(where: { $0.id == root.item.id}) {
 							self.items[index] = root.item
 						}
 					} catch let error {
-						self.isShowingAlert = true
+						self.isEditShowing = true
 						self.message = "에러가 발생했습니다.\n\(error.localizedDescription)"
 					}
 				case 300..<600:
@@ -237,7 +246,7 @@ class ItemViewModel: ObservableObject {
 					do {
 						if let data = response.data {
 							let root = try JSONDecoder().decode(APIError.self, from: data)
-							self.isShowingAlert = true
+							self.isRemoveShowing = true
 							self.message = root.message
 						}
 					} catch {
@@ -257,13 +266,12 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	// Fav 등록 / 해제
-	func updateItemFav(itemId: Int, itemFav: Bool) async {
+	func updateItemFav(itemId: Int, itemFav: Bool) {
 		let url = "\(endPoint)/items/\(itemId)"
 		let params: Parameters = [
 			"isFav": !itemFav
 		]
-		log(" isFav 는 \(itemFav)에서 \(!itemFav)로 변경되어야 함")
-		let response = AF.request(url, method: .patch, parameters: params, encoding: JSONEncoding.default).response { response in
+		AF.request(url, method: .patch, parameters: params, encoding: JSONEncoding.default).response { response in
 			if let statusCode = response.response?.statusCode {
 				switch statusCode {
 				case 200..<300:
@@ -272,9 +280,6 @@ class ItemViewModel: ObservableObject {
 							let root = try JSONDecoder().decode(ItemRoot.self, from: data)
 							log("root.item.isfav로 변경됨: \(root.item.isFav)")
 							self.isShowingAlert = true
-							//							DispatchQueue.main.async {
-							//								self.favItems.append(root.item)
-							//							}
 							self.message = root.message
 							if let index = self.items.firstIndex(where: {$0.id == itemId}) {
 								self.items[index].isFav = !itemFav
@@ -304,8 +309,6 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	//MARK: - 추가 사진
-	//	@Published var isShowingAlertAddAdditionalPhotos: Bool = false
-	//	@Published var addAdditionalPhotosMessage: String = ""
 	func addAdditionalPhotos(images: [UIImage]?, texts: [String]?, itemId: Int?) {
 		guard let images, let itemId, let texts else {return}
 		SVProgressHUD.show()
@@ -323,6 +326,9 @@ class ItemViewModel: ObservableObject {
 		}
 		
 		AF.upload(multipartFormData: formData, to: url, method: .post, headers: headers).response { response in
+			defer {
+				SVProgressHUD.dismiss()
+			}
 			if let statusCode = response.response?.statusCode {
 				switch statusCode {
 				case 200..<300:
@@ -330,9 +336,10 @@ class ItemViewModel: ObservableObject {
 						log(String(data: data, encoding: .utf8) ?? "")
 						do {
 							let root = try JSONDecoder().decode(ItemResponse.self, from: data)
-							self.isShowingAlertAddAdditionalPhotos = true
-							self.addAdditionalPhotosMessage = "추가 사진을 성공적으로 등록했습니다."
-							log("\(root.documents.first?.id)")
+							DispatchQueue.main.async {
+									self.isShowingAlertAddAdditionalPhotos = true
+									self.addAdditionalPhotosMessage = "추가 사진을 성공적으로 등록했습니다."
+							}
 							if let index = self.items.firstIndex(where: { $0.id == root.documents.first?.id}) {
 								log("if let 구문 안에 들어옴")
 								
@@ -369,7 +376,6 @@ class ItemViewModel: ObservableObject {
 				}
 			}
 		}
-		SVProgressHUD.dismiss()
 	}
 	
 	func removeAdditionalPhoto(photoId: Int) {
@@ -382,8 +388,8 @@ class ItemViewModel: ObservableObject {
 					log(String(data: data, encoding: .utf8) ?? "")
 					do {
 						let root = try JSONDecoder().decode(DeleteAdditionalPhotosRoot.self, from: data)
-						self.message = root.message
-						self.isShowingAlert = root.success
+						self.removeAdditionalPhotosMessage = root.message
+						self.isShowingAlertRemoveAdditionalPhotos = true
 						log("itemId: \(root.itemId)")
 						log("id: \(root.id)")
 						if let index = self.items.firstIndex(where: { $0.id == root.itemId}) {
@@ -404,20 +410,36 @@ class ItemViewModel: ObservableObject {
 	}
 	
 	//MARK: - Search Item
-	func searchItem(query: String?) async {
+	func searchItem(query: String?) {
 		guard let query = query else { return }
 		let url = "\(endPoint)/items/search"
 		let params: Parameters = ["homeId": homeId, "query": query]
-		do {
-			let response = try await AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).serializingDecodable(ItemResponse.self).value
-			DispatchQueue.main.async { self.searchResultItems = response.documents }
-		} catch {
-			if let afError = error as? AFError {
-				log("AFError: \(afError.localizedDescription)", trait: .error)
-			} else {
-				log("UnexpectedError: \(error.localizedDescription)", trait: .error)
+		AF.request(url, method: .post, parameters: params).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					do {
+						if let data = response.data {
+							log(String(data: data, encoding: .utf8) ?? "")
+							let root = try JSONDecoder().decode(ItemSearchResultRoot.self, from: data)
+							self.searchResultItems = root.items.combinedItems
+							if root.items.combinedItems.count == 0 {
+								self.isShowingAlert = true
+								self.message = "검색 결과가 없습니다."
+							}
+							self.searchResultItemsByName = root.items.findByName
+							self.searchResultItemsByImageText = root.items.findByQuery
+						}
+					} catch {
+						
+						log("decode error", trait: .error)
+					}
+				default:
+					log("error", trait: .error)
+				}
 			}
 		}
+		
 	}
 	
 	func clearSearchResult() {

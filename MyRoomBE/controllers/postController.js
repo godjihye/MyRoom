@@ -7,11 +7,13 @@ const createPost = async (req, res) => {
   const jsonPostData = JSON.parse(postData);
   const jsonButtonData = JSON.parse(buttonData);
   const photoData = req.files;
+  
   const thumbnailBlobName = photoData.postThumbnail.find(
     (item) => item.fieldname === "postThumbnail"
   ).blobName;
   jsonPostData.postThumbnail = thumbnailBlobName; //postThumbnail 추가
-  console.log("photo", photoData);
+  console.log(photoData)
+  
   try {
     const post = await postService.createPost(
       jsonPostData,
@@ -31,9 +33,9 @@ const createPost = async (req, res) => {
 
 const findPostById = async (req, res) => {
   try {
-    const post = await postService.findPostById(req.params.id);
+    const post = await postService.findPostById(req.params.id,req.body.userId);
     if (post) {
-      res.status(200).json({ data: post });
+      res.status(200).json({ post: post });
     } else {
       res.status(404).json({ error: `post not found` });
     }
@@ -81,9 +83,31 @@ const findPostByName = async (req, res) => {
 
 const updatePost = async (req, res) => {
   try {
-    const post = await postService.updatePost(req.params.id, req.body);
+    const postId = req.params.postId;
+    const postData = req.body.postData;
+    const buttonData = req.body.buttonData;
+    const photoData = req.files;
+
+    const jsonPostData = JSON.parse(postData);
+    const jsonButtonData = JSON.parse(buttonData);
+    // const jsonButtonData =  [
+    //   { buttons: [ [Object], [Object] ], imageIndex: 0 },
+    //   { buttons: [ [Object] ], imageIndex: 2 }
+    // ]
+
+    // console.log(jsonPostData)
+    // console.log(jsonButtonData)
+    // console.log(photoData)
+
+    const post = await postService.updatePost(postId,jsonPostData);
+
+    const postPhoto = await postService.updatePostPhoto(postId,photoData,jsonButtonData);
+
     if (post) {
-      res.status(200).json({ data: post });
+      res.status(200).json({
+        success: true,
+        posts: [post],
+        message: "게시글이 등록되었습니다.", });
     } else {
       res.status(404).json({ error: `post not found` });
     }

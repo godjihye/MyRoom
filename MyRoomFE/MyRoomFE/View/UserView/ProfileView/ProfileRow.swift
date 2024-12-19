@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ProfileRow: View {
-	
+	@EnvironmentObject var userVM: UserViewModel
 	@State private var isShowingAlert: Bool = false
 	@State private var message: String = ""
-	
+	@State private var deleteMateId: Int = 0
 	var mate: MateUser?
 	
 	var body: some View {
@@ -24,13 +24,20 @@ struct ProfileRow: View {
 		}
 		.alert("동거인 삭제", isPresented: $isShowingAlert) {
 			Button("삭제", role: .destructive) {
-				
+				userVM.deleteMate(userId: deleteMateId)
 			}
 			Button("취소", role: .cancel) {
 				
 			}
 		} message: {
 			Text(message)
+		}
+		.alert("동거인 삭제", isPresented: $userVM.showAlert) {
+			Button("확인", role: .cancel) {
+				
+			}
+		} message: {
+			Text(userVM.message)
 		}
 	}
 	
@@ -42,6 +49,7 @@ struct ProfileRow: View {
 						.aspectRatio(contentMode: .fill)
 						.frame(width: 60, height: 60)
 						.clipShape(Circle())
+						.overlay{Circle().stroke(.gray).opacity(0.8)}
 				} placeholder: {
 					ProgressView()
 				}
@@ -70,6 +78,9 @@ struct ProfileRow: View {
 	private var userDeleteBtn: some View {
 		Button {
 			message = "동거인 목록에서 삭제할까요?"
+			if let id = mate?.id {
+				deleteMateId = id
+			}
 			isShowingAlert = true
 		} label: {
 			Text("방출")

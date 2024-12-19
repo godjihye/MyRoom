@@ -77,7 +77,7 @@ struct AddItemWithAIView: View {
 			}
 			.navigationTitle(isEditMode ? "아이템 편집" : "새로운 아이템 추가")
 			.toolbar { toolbarContent }
-			.sheet(isPresented: $showImagePicker) {
+			.fullScreenCover(isPresented: $showImagePicker) {
 				if isCamera {
 					CameraPicker(image: $itemThumbnail, sourceType: .camera)
 				} else {
@@ -86,6 +86,9 @@ struct AddItemWithAIView: View {
 			}
 			.task { await roomVM.fetchRooms() }
 			.onAppear { loadInitialImages() }
+			.onAppear {
+				UIApplication.shared.hideKeyboard()
+			}
 			.onChange(of: itemThumbnail ?? UIImage(), { oldValue, newValue in
 				recognizeText(from: newValue)
 			})
@@ -108,6 +111,8 @@ struct AddItemWithAIView: View {
 	private var imageSection: some View {
 		Section(header: Text("Image")) {
 			Group {
+				HStack {
+					Spacer()
 				if let image = itemThumbnail {
 					Image(uiImage: image)
 						.resizable()
@@ -115,11 +120,15 @@ struct AddItemWithAIView: View {
 						.frame(height: 200)
 						.cornerRadius(10)
 				} else {
-					Image(systemName: "photo")
-						.resizable()
-						.scaledToFit()
-						.frame(height: 200)
-						.cornerRadius(10)
+					Image(systemName: "photo.badge.plus")
+						.renderingMode(.template)
+						.font(.system(size: 200))
+						.foregroundStyle(.accent)
+						.onTapGesture {
+							isShowingImageSource = true
+						}
+				}
+					Spacer()
 				}
 			}
 			Button("사진 선택 / 변경") {

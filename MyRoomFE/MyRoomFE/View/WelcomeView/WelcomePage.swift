@@ -17,13 +17,13 @@ struct WelcomePage: View {
 				.foregroundStyle(.white)
 				.opacity(0.8)
 				.frame(width: 200, height: 160)
-			
 			Text("마룸에 오신 걸 환영합니다.")
 				.font(.title2)
 				.fontWeight(.bold)
 				.foregroundStyle(.white)
 				.opacity(0.8)
 				.padding()
+			Spacer()
 		}
 		.padding()
 	}

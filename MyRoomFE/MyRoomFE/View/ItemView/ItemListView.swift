@@ -111,7 +111,6 @@ struct ItemListView: View {
 	
 	private var noItemsView: some View {
 		Text("아이템이 없네요...")
-			.padding(.top, 200)
 	}
 	
 	private var alertActions: some View {

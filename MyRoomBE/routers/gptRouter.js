@@ -33,7 +33,7 @@ const summarizeMiddleware = async (req, res, next) => {
             role: "system",
             content: "You are a helpful assistant that summarizes text.",
           },
-          { role: "user", content: `${text} 앞 글을 요약해줘` },
+          { role: "user", content: `${text} 앞 글을 3줄 정도로 요약해줘` },
         ],
       };
 

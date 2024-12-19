@@ -27,9 +27,26 @@ const findItem = async (id) => {
 };
 // 2-5. Find Item By ItemName
 const findItemByName = async (id, data) => {
-  return await itemDao.findItemByName(id, data);
-};
+  const findByQuery = await itemDao.findItemByQuery(id, data);
+  const findByName = await itemDao.findItemByName(id, data);
+  // 결과를 통합하고 중복 제거
+  const combinedItemsMap = new Map();
 
+  // 이름으로 검색된 항목을 Map에 추가
+  findByQuery.forEach((item) => {
+    combinedItemsMap.set(item.id, item);
+  });
+
+  // 사진 텍스트로 검색된 항목을 Map에 추가 (중복된 ID는 덮어쓰기)
+  findByName.forEach((item) => {
+    combinedItemsMap.set(item.id, item);
+  });
+
+  // Map의 값을 배열로 변환
+  const combinedItems = Array.from(combinedItemsMap.values());
+
+  return { combinedItems, findByName, findByQuery };
+};
 // 3. Update Item
 // 3-1. Update Item
 const updateItem = async (id, data) => {

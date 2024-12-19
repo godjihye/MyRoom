@@ -31,24 +31,16 @@ struct HomeView: View {
 		}
 	}
 	private var customToolBar: some View {
-		HStack(spacing: 0) {
+		HStack(spacing: 7.5) {
 			Image("logo")
 				.resizable()
 				.frame(width: 45, height: 35)
-				.padding(.leading, 5)
-				.padding(.trailing, -5)
 			NavigationLink(destination: SearchView()) {
 				SearchButton()
 			}
-			
-			Button {
-				
-			} label: {
-				Image(systemName: "square.and.arrow.up")
-					.font(.system(size: 20))
-			}
 		}
-		.padding(.horizontal)
+		.padding(.horizontal, 10)
+		.padding(.bottom, 10)
 	}
 	private var enterHomeBtn: some View {
 		VStack {
@@ -61,7 +53,6 @@ struct HomeView: View {
 					.bold()
 			}
 		}
-		.padding(.top, -100)
 	}
 	private var tabbarView: some View {
 		HStack(spacing: 0) {
@@ -82,6 +73,7 @@ struct HomeView: View {
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
 				.tag(1)
 		}
+		.tabViewStyle(.page)
 	}
 }
 
@@ -109,20 +101,21 @@ struct TabButton: View {
 
 struct SearchButton: View {
 	var body: some View {
-		ZStack {
 			RoundedRectangle(cornerRadius: 10)
-				.frame(width: 280, height: 40)
+				.frame(width: 300, height: 40)
 				.foregroundStyle(Color(.systemGray6))
-			HStack(spacing: 0) {
-				Image(systemName: "magnifyingglass")
-					.padding()
-				Text("검색어를 입력하세요.")
-					.font(.system(size: 15))
-					.foregroundStyle(Color(.systemGray2))
-				Spacer()
-			}
-		}
-		.padding()
+				.overlay {
+					HStack(spacing: 0) {
+						Image(systemName: "magnifyingglass")
+							.padding()
+						Text("검색어를 입력하세요.")
+							.font(.system(size: 15))
+							.foregroundStyle(Color(.systemGray2))
+						Spacer()
+					}
+				}
+		
+		//.padding()
 		//.frame(height: 35)
 	}
 }

@@ -24,6 +24,12 @@ class UserViewModel: ObservableObject {
 	@Published var isHaveHome: Bool = false
 	@Published var inviteCode: String = ""
 	
+	@Published var isShowingChangePW: Bool = false
+	@Published var changePWMessage: String = ""
+	
+	@Published var isShowingEditHome: Bool = false
+	@Published var editHomeMessage: String = ""
+	
 	@Published var userInfo: User?
 	
 	init() {
@@ -170,7 +176,6 @@ class UserViewModel: ObservableObject {
 		UserDefaults.standard.removeObject(forKey: "userName")
 		UserDefaults.standard.removeObject(forKey: "userId")
 		UserDefaults.standard.removeObject(forKey: "isLoggedIn")
-		UserDefaults.standard.removeObject(forKey: "homeId")
 		UserDefaults.standard.removeObject(forKey: "userImage")
 		UserDefaults.standard.removeObject(forKey: "nickName")
 		UserDefaults.standard.removeObject(forKey: "homeId")
@@ -275,8 +280,8 @@ class UserViewModel: ObservableObject {
 					if let data = response.data{
 						do {
 							let root = try JSONDecoder().decode(APIError.self, from: data)
-							self.message = root.message
-							self.showAlert = true
+							self.changePWMessage = root.message
+							self.isShowingChangePW = true
 						} catch {
 							log("Decoding error")
 						}
@@ -287,6 +292,38 @@ class UserViewModel: ObservableObject {
 			}
 		}
 		SVProgressHUD.dismiss()
+	}
+	
+	func deleteMate(userId: Int) {
+		let myUserId = UserDefaults.standard.integer(forKey: "userId")
+		let url = "\(endPoint)/users/\(userId)"
+		let params: [String: Any] = ["homeId": NSNull()]
+		AF.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300 :
+					self.showAlert = true
+					if myUserId != userId {
+						self.message = "룸메를 방출시켰습니다."
+						if let index = self.userInfo?.mates?.firstIndex(where: {$0.id == userId})  {
+						 self.userInfo?.mates?.remove(at: index)
+					 }
+					} else {
+						self.message = "집 나가기 성공"
+						
+						UserDefaults.standard.removeObject(forKey: "homeId")
+						UserDefaults.standard.removeObject(forKey: "homeName")
+					}
+				default:
+					self.showAlert = true
+					if myUserId != userId {
+						self.message = "룸메 방출시키는 데에 실패했습니다."
+					} else {
+						self.message = "집 나가기 실패"
+					}
+				}
+			}
+		}
 	}
 	
 	//MARK: - HOME
@@ -368,9 +405,9 @@ class UserViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let code = try JSONDecoder().decode(InviteCodeRoot.self, from: data)
+							let code = try JSONDecoder().decode(InviteCode.self, from: data)
 							UserDefaults.standard.set(code.inviteCode, forKey: "inviteCode")
-							self.inviteCode = code.inviteCode.inviteCode
+							self.inviteCode = code.inviteCode
 						} catch {
 							log("decode error")
 						}
@@ -394,8 +431,8 @@ class UserViewModel: ObservableObject {
 				case 200..<300:
 					if let data = response.data {
 						do {
-							let res = try JSONDecoder().decode(InviteCodeRoot.self, from: data)
-							self.inviteCode = res.inviteCode.inviteCode
+							let res = try JSONDecoder().decode(InviteCode.self, from: data)
+							self.inviteCode = res.inviteCode
 						} catch let error {
 							log("decode error: \(error)")
 						}
@@ -404,6 +441,63 @@ class UserViewModel: ObservableObject {
 					log("statusCode is 300..<500")
 				default:
 					log("success")
+				}
+			}
+		}
+	}
+	
+	func deleteHome() {
+		let homeId = UserDefaults.standard.integer(forKey: "homeId")
+		let url = "\(endPoint)/home/\(homeId)"
+		AF.request(url, method: .delete).response { response in
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					if let data = response.data {
+						do {
+							let root = try JSONDecoder().decode(APIError.self, from: data)
+							self.showAlert = true
+							self.message = root.message
+							
+							UserDefaults.standard.removeObject(forKey: "homeId")
+							UserDefaults.standard.removeObject(forKey: "homeName")
+						} catch {
+							log("decoding error")
+						}
+					}
+				default :
+					self.showAlert = true
+					self.message = "집 삭제 실패"
+				}
+			}
+		}
+	}
+	
+	func editHome(_ newHomeName: String?) {
+		SVProgressHUD.show()
+		guard let newHomeName else { return }
+		let homeId = UserDefaults.standard.integer(forKey: "homeId")
+		let params: Parameters = ["homeName": newHomeName]
+		let url = "\(endPoint)/home/\(homeId)"
+		AF.request(url, method: .put, parameters: params).response { response in
+			SVProgressHUD.dismiss()
+			if let statusCode = response.response?.statusCode {
+				switch statusCode {
+				case 200..<300:
+					log("success")
+					if let data = response.data {
+						log(String(data: data, encoding: .utf8) ?? "")
+						do {
+							let root = try JSONDecoder().decode(Home.self, from: data)
+							self.editHomeMessage = "\(root.homeName)으로 집 이름이 변경되었습니다."
+							self.isShowingEditHome = true
+							UserDefaults.standard.set(root.homeName, forKey: "homeName")
+						} catch {
+							log("decode error", trait: .error)
+						}
+					}
+				default:
+					log("network error", trait: .error)
 				}
 			}
 		}

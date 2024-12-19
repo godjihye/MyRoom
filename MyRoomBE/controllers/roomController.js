@@ -58,9 +58,8 @@ const updateRoom = async (req, res) => {
 const deleteRoom = async (req, res) => {
   try {
     const result = await roomService.deleteRoom(req.params.roomId);
-    if (result) {
-      res.status(200).json({ message: "success" });
-    }
+
+    res.status(200).json({ message: "success" });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

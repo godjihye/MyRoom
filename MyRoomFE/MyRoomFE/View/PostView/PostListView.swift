@@ -54,7 +54,7 @@ private extension PostListView {
 		let postBinding = $postVM.posts[postVM.posts.firstIndex(where: { $0.id == post.id })!]
 		
 		return NavigationLink {
-			PostDetailView(post: postBinding, photos: post.images)
+            PostDetailView(post: postBinding, photos: post.images).environmentObject(postVM)
 				.task {
 					await postVM.updateViewCnt(postId: post.id)
 				}
