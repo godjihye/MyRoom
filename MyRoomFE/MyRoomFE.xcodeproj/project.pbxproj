@@ -25,6 +25,7 @@
 		B15D9A582D083C0600FA0253 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A572D083C0600FA0253 /* CommentViewModel.swift */; };
 		B15D9A892D0E16F600FA0253 /* PostSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A882D0E16F600FA0253 /* PostSearchView.swift */; };
 		B15D9A8B2D0E24A400FA0253 /* UsedSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9A8A2D0E24A400FA0253 /* UsedSearchView.swift */; };
+		B15D9AC02D2532BB00FA0253 /* AzureServicesSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D9ABF2D2532BB00FA0253 /* AzureServicesSpeech.swift */; };
 		B82E1B9D2D06D373005BB2D4 /* ChatRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B9C2D06D373005BB2D4 /* ChatRowView.swift */; };
 		B82E1B9F2D06D38C005BB2D4 /* PostAddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */; };
 		B82E1BA12D06D3E5005BB2D4 /* onCustomTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82E1BA02D06D3E5005BB2D4 /* onCustomTapGesture.swift */; };
@@ -140,6 +141,7 @@
 		B15D9A572D083C0600FA0253 /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 		B15D9A882D0E16F600FA0253 /* PostSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSearchView.swift; sourceTree = "<group>"; };
 		B15D9A8A2D0E24A400FA0253 /* UsedSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedSearchView.swift; sourceTree = "<group>"; };
+		B15D9ABF2D2532BB00FA0253 /* AzureServicesSpeech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AzureServicesSpeech.swift; sourceTree = "<group>"; };
 		B82E1B9C2D06D373005BB2D4 /* ChatRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRowView.swift; sourceTree = "<group>"; };
 		B82E1B9E2D06D38C005BB2D4 /* PostAddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddPhotoView.swift; sourceTree = "<group>"; };
 		B82E1BA02D06D3E5005BB2D4 /* onCustomTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onCustomTapGesture.swift; sourceTree = "<group>"; };
@@ -222,6 +224,14 @@
 		B8E917A62D01A63700345B89 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		B8E917A82D01A66800345B89 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B15D9AC32D253B8D00FA0253 /* Resource */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Resource;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B89A1B522CE5D432001AA7AE /* Frameworks */ = {
@@ -338,6 +348,7 @@
 				B86F34BA2CF96F920040BB33 /* WideButton.swift */,
 				B86F351E2CF9709C0040BB33 /* WideImageButton.swift */,
 				B86A23FA2D02D20F007D69D3 /* WideButtonLabel.swift */,
+				B15D9ABF2D2532BB00FA0253 /* AzureServicesSpeech.swift */,
 			);
 			path = CommonView;
 			sourceTree = "<group>";
@@ -424,6 +435,7 @@
 		B86F34E32CF96F920040BB33 /* MyRoomFE */ = {
 			isa = PBXGroup;
 			children = (
+				B15D9AC32D253B8D00FA0253 /* Resource */,
 				0B9CB61B2D041F8E00FA1075 /* MyRoomFE.entitlements */,
 				B86F34A62CF96F920040BB33 /* Extension */,
 				B86F34A92CF96F920040BB33 /* Model */,
@@ -505,6 +517,9 @@
 				0B9CB61A2D041F7F00FA1075 /* PBXBuildRule */,
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B15D9AC32D253B8D00FA0253 /* Resource */,
 			);
 			name = MyRoomFE;
 			packageProductDependencies = (
@@ -633,6 +648,7 @@
 				B86F35032CF96F920040BB33 /* ItemRowView.swift in Sources */,
 				B8E916DD2D0192E900345B89 /* MakeHomeView.swift in Sources */,
 				B15D9A8B2D0E24A400FA0253 /* UsedSearchView.swift in Sources */,
+				B15D9AC02D2532BB00FA0253 /* AzureServicesSpeech.swift in Sources */,
 				0B9CB62A2D04235000FA1075 /* SignInWithKakaoView.swift in Sources */,
 				B86F35042CF96F920040BB33 /* PostAddView.swift in Sources */,
 				B86F35052CF96F920040BB33 /* PostDetailView.swift in Sources */,
@@ -814,7 +830,9 @@
 				"INFOPLIST_KEY_CFBundleDisplayName[sdk=iphoneos*]" = "마룸";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This will be used to upload photos to profile, posts, items";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "검색을 위해 오디오가 녹음됩니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This will be used to upload photos to profile, posts, items";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "앱에서 음성으로 아이템을 검색할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -850,7 +868,9 @@
 				"INFOPLIST_KEY_CFBundleDisplayName[sdk=iphoneos*]" = "마룸";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This will be used to upload photos to profile, posts, items";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "검색을 위해 오디오가 녹음됩니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This will be used to upload photos to profile, posts, items";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "앱에서 음성으로 아이템을 검색할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

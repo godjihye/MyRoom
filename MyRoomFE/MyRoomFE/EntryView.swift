@@ -34,11 +34,16 @@ struct EntryView: View {
 						Image(systemName: "ellipsis.message.fill")
 						Text("채팅목록")
 					}
-				MyPageView()
-					.tabItem {
-						Image(systemName: "person.fill")
-						Text("마이페이지")
-					}
+//				MyPageView()
+//					.tabItem {
+//						Image(systemName: "person.fill")
+//						Text("마이페이지")
+//					}
+                AzureServicesSpeech()
+                    .tabItem {
+                        Image(systemName: "person.fill")
+                        Text("Test")
+                    }
 			}
 			.tint(.black)
 		} else {
