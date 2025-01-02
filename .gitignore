@@ -1,11 +1,12 @@
 *.xcconfig
+*.env
+*.plist
 .DS_Store
 *.xcuserstate
 xcuserdata/
 DerivedData/
 build/
 node_modules
-*.env
 MyRoomFE/MyRoomFE.xcodeproj/project.xcworkspace/xcuserdata/
 MyRoomFE/MyRoomFE.xcodeproj/xcuserdata/
 MyRoomBE/migrations/
